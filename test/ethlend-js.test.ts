@@ -1,14 +1,14 @@
-import LoanRequest from '../src/ethlend-js'
+import { Marketplace } from '../src/ethlend-js'
 
 /**
  * Dummy test
  */
-describe('LoanRequest test', () => {
+describe('Marketplace test', () => {
   it('works if true is truthy', () => {
     expect(true).toBeTruthy()
   })
 
   it('LoanRequest is instantiable', () => {
-    expect(new LoanRequest({}, 'token')).toBeInstanceOf(LoanRequest)
+    expect(new Marketplace('token')).toBeInstanceOf(Marketplace)
   })
 })
