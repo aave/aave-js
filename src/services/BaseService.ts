@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import keccak from 'keccak'
 
-import { BaseResponse } from './types'
+import { BaseResponse } from '../types'
 
 export default class BaseService {
   protected readonly api: AxiosInstance

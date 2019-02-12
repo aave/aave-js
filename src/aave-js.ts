@@ -2,9 +2,9 @@
 // import "core-js/fn/array.find"
 // ...
 import { LoanAPIInstance } from './types'
-import LoanRequest from './LoanRequest'
+import LoanRequest from './services/LoanRequest'
 
-export class Marketplace {
+export class Marketplace implements Marketplace {
   public request: LoanAPIInstance
 
   constructor(token: string) {

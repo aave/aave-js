@@ -7,7 +7,7 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-const libraryName = 'ethlend-js'
+const libraryName = 'aave-js'
 
 export default {
   input: `src/${libraryName}.ts`,

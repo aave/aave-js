@@ -1,4 +1,4 @@
-import { Marketplace } from '../src/ethlend-js'
+import { Marketplace } from '../src/aave-js'
 
 /**
  * Dummy test

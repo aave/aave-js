@@ -66,6 +66,7 @@ export interface LoanAddressesByBorrowerResponse extends BaseResponse {
 export interface LoanAPIInstance {
   create(creatorWalletAddress: string, params: LoanRequestModel): Promise<LoanTransactionResponse>
   placeCollateral(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
+  fund(loanAddress: string, lenderAddress: string, amount: number): Promise<LoanTransactionResponse>
   payback(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
   getLoanData(loanAddress: string): Promise<LoanRequestResponse>
   getAllAddresses(): Promise<LoansAddressesResponse>
@@ -73,6 +74,10 @@ export interface LoanAPIInstance {
   getMetadata(): Promise<LoanMetadataResponse>
 }
 
-declare const EthlendAPI: LoanAPIInstance
+export interface MarketplaceInstance {
+  request: LoanAPIInstance
+}
 
-export default EthlendAPI
+declare const Marketplace: MarketplaceInstance
+
+export default Marketplace
