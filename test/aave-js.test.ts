@@ -1,14 +1,10 @@
 import { Marketplace } from '../src/aave-js'
 
 /**
- * Dummy test
+ * Marketplace test
  */
 describe('Marketplace test', () => {
-  it('works if true is truthy', () => {
-    expect(true).toBeTruthy()
-  })
-
-  it('LoanRequest is instantiable', () => {
+  it('Marketplace is instantiable', () => {
     expect(new Marketplace('token')).toBeInstanceOf(Marketplace)
   })
 })

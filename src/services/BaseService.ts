@@ -1,34 +1,20 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
-import keccak from 'keccak'
+import { isValidChecksumAddress } from 'ethereumjs-util'
 
 import { BaseResponse } from '../types'
 
 export default class BaseService {
   protected readonly api: AxiosInstance
 
-  constructor(token: string) {
+  constructor(token: string, apiUrl?: string) {
     this.api = axios.create({
-      baseURL: 'https://our-api-endpoint.com',
-      headers: { Authorisation: token }
+      baseURL: apiUrl || 'https://api.aave.com',
+      headers: { Authorization: `Bearer ${token}` }
     })
   }
 
   protected static checkAddressChecksum(address: string): void {
-    const tempAddress = address.toLowerCase().replace('0x', '')
-    const hash = keccak('keccak256')
-      .update(address)
-      .digest('hex')
-    let checksummedAddress = '0x'
-
-    for (let i = 0; i < tempAddress.length; i += 1) {
-      if (parseInt(String(hash[i]), 16) >= 8) {
-        checksummedAddress += tempAddress[i].toUpperCase()
-      } else {
-        checksummedAddress += tempAddress[i]
-      }
-    }
-
-    if (address !== checksummedAddress) {
+    if (!isValidChecksumAddress(address)) {
       throw `For security reason address ${address} should have correct checksum`
     }
   }

@@ -7,7 +7,7 @@ import LoanRequest from './services/LoanRequest'
 export class Marketplace implements Marketplace {
   public request: LoanAPIInstance
 
-  constructor(token: string) {
-    this.request = new LoanRequest(token)
+  constructor(token: string, apiUrl?: string) {
+    this.request = new LoanRequest(token, apiUrl)
   }
 }

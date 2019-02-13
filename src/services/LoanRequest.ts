@@ -1,19 +1,19 @@
 import {
   LoanTransactionResponse,
   LoanMetadataResponse,
-  LoanRequestModel,
   LoanRequestResponse,
   LoanAddressesByBorrowerResponse,
   LoansAddressesResponse,
   LoanAPIInstance,
-  BaseResponse
+  BaseResponse,
+  BaseLoanModel
 } from '../types'
 
 import BaseService from './BaseService'
 
 export default class LoanRequest extends BaseService implements LoanAPIInstance {
-  constructor(token: string) {
-    super(token)
+  constructor(token: string, apiUrl?: string) {
+    super(token, apiUrl)
   }
 
   private async apiRequest(
@@ -34,7 +34,7 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
     }
   }
 
-  public async create(creatorWalletAddress: string, params: LoanRequestModel): Promise<LoanTransactionResponse> {
+  public async create(creatorWalletAddress: string, params: BaseLoanModel): Promise<LoanTransactionResponse> {
     BaseService.checkAddressChecksum(creatorWalletAddress)
 
     return await this.apiRequest(`/request/create/${creatorWalletAddress}`, 'loan request creation', '', 'post', params)

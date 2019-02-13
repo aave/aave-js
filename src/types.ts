@@ -14,14 +14,17 @@ export interface LoanMetadata {
   durationRange: { min: number; max: number }
 }
 
-export interface LoanRequestModel {
-  loanAddress?: string
+export interface BaseLoanModel {
+  moe: string
   loanAmount: number
+  collateralType: string
   collateralAmount: number
   mpr: number
-  collateralType: string
-  moe: string
   duration: number
+}
+
+export interface LoanRequestModel extends BaseLoanModel {
+  loanAddress?: string
   state?: string
   borrower?: string
   fundedAmount?: number
@@ -64,7 +67,7 @@ export interface LoanAddressesByBorrowerResponse extends BaseResponse {
 }
 
 export interface LoanAPIInstance {
-  create(creatorWalletAddress: string, params: LoanRequestModel): Promise<LoanTransactionResponse>
+  create(creatorWalletAddress: string, params: BaseLoanModel): Promise<LoanTransactionResponse>
   placeCollateral(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
   fund(loanAddress: string, lenderAddress: string, amount: number): Promise<LoanTransactionResponse>
   payback(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
