@@ -1,3 +1,6 @@
+// tslint:disable-next-line
+import Web3 from 'web3'
+
 import {
   LoanTransactionResponse,
   LoanMetadataResponse,
@@ -5,39 +8,23 @@ import {
   LoanAddressesByBorrowerResponse,
   LoansAddressesResponse,
   LoanAPIInstance,
-  BaseResponse,
-  BaseLoanModel
+  BaseLoanModel,
+  MaxLoanAmountResponse
 } from '../types'
-
 import BaseService from './BaseService'
 
 export default class LoanRequest extends BaseService implements LoanAPIInstance {
-  constructor(token: string, apiUrl?: string) {
-    super(token, apiUrl)
+  constructor(token: string, web3?: Web3, apiUrl?: string) {
+    super(token, web3, apiUrl)
   }
 
-  private async apiRequest(
-    endpoint: string,
-    resourceType: string,
-    errorParam: string = '',
-    method: 'get' | 'post' = 'get',
-    params?: object
-  ): Promise<BaseResponse> {
-    const api = method === 'post' ? this.api.post : this.api.get
+  public async create(borrowerWalletAddress: string, params: BaseLoanModel): Promise<LoanTransactionResponse> {
+    BaseService.checkAddressChecksum(borrowerWalletAddress)
 
-    try {
-      const { data } = await api(endpoint, params)
-
-      return { data, code: 200 }
-    } catch (e) {
-      return LoanRequest.errorHandler(e, resourceType, errorParam)
-    }
-  }
-
-  public async create(creatorWalletAddress: string, params: BaseLoanModel): Promise<LoanTransactionResponse> {
-    BaseService.checkAddressChecksum(creatorWalletAddress)
-
-    return await this.apiRequest(`/request/create/${creatorWalletAddress}`, 'loan request creation', '', 'post', params)
+    return await this.apiRequest('/request', 'loan requests creation', '', 'post', {
+      borrower: borrowerWalletAddress,
+      ...params
+    })
   }
 
   public async placeCollateral(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse> {
@@ -46,7 +33,7 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
 
     return await this.apiRequest(
       `/request/placecollateral/${loanAddress}/${borrowerAddress}`,
-      'placing loan request collateral',
+      'placing loan requests collateral',
       loanAddress,
       'post'
     )
@@ -58,7 +45,7 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
 
     return await this.apiRequest(
       `/request/fund/${loanAddress}/${lenderAddress}/${amount}`,
-      'funding loan request',
+      'funding loan requests',
       loanAddress,
       'post'
     )
@@ -70,29 +57,46 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
 
     return await this.apiRequest(
       `/request/payback/${loanAddress}/${borrowerAddress}`,
-      'placing loan request payback',
+      'placing loan requests payback',
       loanAddress,
       'post'
     )
+  }
+  public async getMaxLoanAmountFromCollateral(
+    collateralAmount: number,
+    collateralType: string,
+    moe: string,
+    ltv?: number
+  ): Promise<MaxLoanAmountResponse> {
+    return await this.apiRequest('/request/maxamount/', 'getting max loan amount', collateralType, 'post', {
+      collateralAmount,
+      collateralType,
+      moe,
+      ltv
+    })
   }
 
   public async getLoanData(loanAddress: string): Promise<LoanRequestResponse> {
     BaseService.checkAddressChecksum(loanAddress)
 
-    return await this.apiRequest(`/request/${loanAddress}`, 'loan request', loanAddress)
+    return await this.apiRequest(`/request/getone/${loanAddress}`, 'loan requests', loanAddress)
   }
 
   public async getAllAddresses(): Promise<LoansAddressesResponse> {
-    return await this.apiRequest('/requests', 'loan request addresses')
+    return await this.apiRequest('/request', 'loan requests addresses')
   }
 
   public async getLoansByBorrower(borrowerAddress: string): Promise<LoanAddressesByBorrowerResponse> {
     BaseService.checkAddressChecksum(borrowerAddress)
 
-    return await this.apiRequest(`/requests/${borrowerAddress}`, 'loan addresses by borrower', borrowerAddress)
+    return await this.apiRequest(
+      `/request/getlistbyborrower/${borrowerAddress}`,
+      'loan addresses by borrower',
+      borrowerAddress
+    )
   }
 
   public async getMetadata(): Promise<LoanMetadataResponse> {
-    return await this.apiRequest('/requests/metadata', 'loan requests metadata')
+    return await this.apiRequest('/request/metadata', 'loan requests metadata')
   }
 }

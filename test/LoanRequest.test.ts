@@ -3,7 +3,7 @@ import LoanRequest from '../src/services/LoanRequest'
  * LoanRequest test
  */
 describe('LoanRequest test', () => {
-  const request = new LoanRequest('86C019FF04C4', 'http://localhost:3333')
+  const request = new LoanRequest('86C019FF04C4', undefined, 'http://localhost:3333')
 
   it('LoanRequest is instantiable', () => {
     expect(request).toBeInstanceOf(LoanRequest)
@@ -16,6 +16,11 @@ describe('LoanRequest test', () => {
 
   it('Should load requests metadata from api', async () => {
     const data = await request.getMetadata()
+    expect(data.code).toBe(200)
+  })
+
+  it('Should load requests metadata from api', async () => {
+    const data = await request.getMaxLoanAmountFromCollateral(2312, 'LEND', 'ETH')
     expect(data.code).toBe(200)
   })
 

@@ -1,4 +1,4 @@
-import { TransactionObject } from 'web3/eth/types'
+import { Transaction } from 'web3/eth/types'
 
 export type ResponseCodes = 200 | 401 | 404 | 500 | 504
 
@@ -43,8 +43,12 @@ export interface BaseResponse {
   code: ResponseCodes
 }
 
+export interface MaxLoanAmountResponse extends BaseResponse {
+  data?: number
+}
+
 export interface LoanTransactionResponse extends BaseResponse {
-  data?: TransactionObject<any>
+  data?: Transaction
 }
 
 export interface LoanRequestResponse extends BaseResponse {
@@ -71,6 +75,12 @@ export interface LoanAPIInstance {
   placeCollateral(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
   fund(loanAddress: string, lenderAddress: string, amount: number): Promise<LoanTransactionResponse>
   payback(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
+  getMaxLoanAmountFromCollateral(
+    collateralAmount: number,
+    collateralType: string,
+    moe: string,
+    ltv?: number
+  ): Promise<MaxLoanAmountResponse>
   getLoanData(loanAddress: string): Promise<LoanRequestResponse>
   getAllAddresses(): Promise<LoansAddressesResponse>
   getLoansByBorrower(borrowerAddress: string): Promise<LoanAddressesByBorrowerResponse>

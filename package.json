@@ -1,8 +1,8 @@
 {
   "name": "aave-js",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "js wrapper for Aave ETHLend marketplace",
+  "keywords": ["aave", "loans", "crypto", "marketplace", "js"],
   "main": "dist/aave-js.umd.js",
   "module": "dist/aave-js.es5.js",
   "typings": "dist/types/aave-js.d.ts",
@@ -71,8 +71,7 @@
       }
     },
     "collectCoverageFrom": [
-      "src/*.{js,ts}",
-      "src/services/*.{js,ts}"
+      "src/**/*.{js,ts}"
     ]
   },
   "prettier": {
