@@ -112,16 +112,15 @@ During it's lifecycle, the loan request goes through the following states, that 
 &nbsp;
 ## Functions
 
+&nbsp;
+### - Get the addresses of all the requests
+```javascript
+const allRequestsAddresses = await marketplace.requests.getAllAddresses();
+```
+&nbsp;
 ### - Get the data of all the requests in the marketplace
 ```javascript
-// First we get the Ethereum addresses of all the loan requests
-const allRequestsAddresses = await marketplace.requests.getAllAddresses();
-
-const requestsData = [];
-for (const requestAddress of allRequestsAddresses) {
-    const data = await marketplace.requests.getLoanData(requestAddress);
-    requestsData.push(data);
-}
+const allRequestsAddresses = await marketplace.requests.getDataAllLoans();
 ```
 
 &nbsp;
