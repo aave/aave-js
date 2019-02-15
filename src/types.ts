@@ -39,7 +39,6 @@ export interface LoanRequestModel extends BaseLoanModel {
 }
 
 export interface LoanAPIInstance {
-  approve(amount: number, tokenSymbol: string): Promise<Transaction>
   create(creatorWalletAddress: string, params: BaseLoanModel): Promise<Transaction>
   placeCollateral(loanAddress: string, borrowerAddress: string): Promise<Transaction>
   fund(loanAddress: string, lenderAddress: string, amount: number): Promise<Transaction>

@@ -7,12 +7,6 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
   constructor(token: string, apiUrl?: string) {
     super(token, apiUrl)
   }
-  public async approve(amount: number, tokenSymbol: string): Promise<Transaction> {
-    return await this.apiRequest('/request/approveTransfer', 'token approval', tokenSymbol, 'post', {
-      amount,
-      tokenSymbol
-    })
-  }
 
   public async create(borrowerWalletAddress: string, params: BaseLoanModel): Promise<Transaction> {
     BaseService.checkAddressChecksum(borrowerWalletAddress)
@@ -78,6 +72,13 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
 
   public async getAllAddresses(): Promise<string[]> {
     return await this.apiRequest('/request', 'loan requests addresses')
+  }
+
+  public async getDataAllLoans(): Promise<LoanRequestModel[]> {
+      const allRequestAddresses : string[] = await this.getAllAddresses();  
+      const allDataPromises = allRequestAddresses.map(address => this.getLoanData(address))
+
+      return await Promise.all(allDataPromises);
   }
 
   public async getLoansByBorrower(borrowerAddress: string): Promise<string[]> {

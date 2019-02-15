@@ -39,6 +39,12 @@ describe('LoanRequest test', () => {
     expect(data).toBeTruthy()
   })
 
+  it('Should get all loans data from api', async () => {
+    const data = await request.getDataAllLoans();
+    console.log(data);
+    expect(data).toBeTruthy();
+  })
+
   it('Should get loan creation transaction from api', async () => {
     const data = await request.create('0x4206925f7652a5af8a0F48aB714ABbd1EF27D916', {
       loanAmount: 0.0416,

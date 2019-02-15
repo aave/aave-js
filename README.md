@@ -40,7 +40,36 @@ Through the Marketplace object, it is possible to execute all the previous steps
 &nbsp;
 ## Usage of Marketplace (ETHLend API)
 
-### Main points
+&nbsp;
+### Get an API secret key
+All the features of the API will be available after initializing the Marketplace object, using a valid API secret Key.
+
+You can get an API secret key using directly the library as following:
+
+```javascript
+import { Marketplace } from "aave-js";
+
+const signupParams = {
+    email: "an-email@email.com",
+    name: "my-name",
+    password: "a-super-random-password",
+    organisation: "my-team-name" // Optional
+}
+const marketplace = new Marketplace("");
+const API_SECRET_KEY = await marketplace.utils.signup(...signupParams)
+```
+
+You can also send an HTTP POST request to **https://ethdenver-api.aave.com/auth/signup** with the body:
+```
+{
+    "email": "an-email@email.com",
+    "name": "my-name",
+    "password": "a-super-random-password",
+    "organisation": "my-team-name"
+}
+```
+
+### General guidelines
 
 In this early access version, the library allows to interact only with the requests in testnet version of the platform (**Kovan smart contracts**). Collateral call and default functionality is not available.
 
@@ -52,18 +81,6 @@ For the functions that modify the marketplace state (like creating a new request
 &nbsp;
 ### Initialization of Martketplace
 
-All the features of the API will be available after initializing the Marketplace object, using a valid API secret Key.
-
-To get an API secret key, it's necessary to send to **https://ethdenver-api.aave.com/auth/signup** a POST request with the body:
-```
-{
-   "name": "my name",
-   "company": "company name", // optional
-   "email": "my_email@mail.com",
-   "password": "my-secret-password"
-}
-```
-
 Once you have the API secret key, you can initialize the Marketplace object with:
 
 ```javascript
@@ -73,11 +90,17 @@ import { Marketplace } from "aave-js";
 const MY_API_SECRET_KEY = "A_VALID_API_SECRET_KEY";
 
 const marketplace = new Marketplace(MY_API_SECRET_KEY);
-
 ```
 
+### Error types
+- {code: 400, message: "bad request ERROR_TEXT"}
+- {code: 401, message: "invalid access token"}
+- {code: 404, message: "RESOURCE_TYPE LOAN_ADDRESS doesn't exist"}
+- {code: 504, message: "probably some troubles with network connection"}
+- {code: 500, message: "internal server error, please contact support"}
+
 &nbsp;
-### States of the loan
+### States of the loans
 During it's lifecycle, the loan request goes through the following states, that will be returned in the field **state** of the request data (marketplace.requests.getLoanData(requestAddress)).
 - **Init**. Initial state of a loan request. At creation, the smart contract will verify that the ratio loan amount/collateral is correct, and the loan will remain in this state until is finished. 
 - **WaitingForCollateral**. The initial conditions of the loan were valid, and the borrower needs to place the collateral.
@@ -87,7 +110,7 @@ During it's lifecycle, the loan request goes through the following states, that 
 
 
 &nbsp;
-## Available features
+## Functions
 
 ### - Get the data of all the requests in the marketplace
 ```javascript
@@ -170,9 +193,9 @@ const { loanAddress, borrower, collateralType, collateralAmount, state } = loanD
 const isCollateralPriceUpdated = await marketplace.utils.isCollateralPriceUpdated(loanAddress);
 
 if (state === "WaitingForCollateral" && isCollateralPriceUpdated) {
-    const isApproved = await marketplace.utils.isApproved(borrower, collateralType, collateralAmount);
+    const isApproved = await marketplace.utils.isTransferApproved(borrower, collateralType, collateralAmount);
     if (!isApproved) {
-        const approveTx = await marketplace.utils.approve(collateralType, borrower);
+        const approveTx = await marketplace.utils.approveTransfer(collateralType, borrower);
         await web3.eth.sendTransaction(approveTx);
     }
 
@@ -190,9 +213,9 @@ Like placing the collateral, if the loan currency is an ERC20 token, it's necess
 const { loanAddress, moe, loanAmount } = loanData;
 const lenderAddress = "0x94D5E24B4c3cb244b9E48eB33AE6ccAD6b715456"; // The wallet that funds the request
 
-const isApproved = await marketplace.utils.isApproved(lenderAddress, moe, loanAmount);
+const isApproved = await marketplace.utils.isTransferApproved(lenderAddress, moe, loanAmount);
 if (!isApproved) {
-    const approveTx = await marketplace.utils.approve(moe, lenderAddress);
+    const approveTx = await marketplace.utils.approveTransfer(moe, lenderAddress);
     await web3.eth.sendTransaction(approveTx);
 }
 
@@ -206,9 +229,9 @@ await web3.eth.sendTransaction(tx);
 ```javascript
 const { loanAddress, borrower, moe, nextInstalmentAmount } = loanData;
 
-const isApproved = await marketplace.utils.isApproved(borrower, moe, nextInstalmentAmount);
+const isApproved = await marketplace.utils.isTransferApproved(borrower, moe, nextInstalmentAmount);
 if (!isApproved) {
-    const approveTx = await marketplace.utils.approve(moe, borrower);
+    const approveTx = await marketplace.utils.approveTransfer(moe, borrower);
     await web3.eth.sendTransaction(approveTx);
 }
 
