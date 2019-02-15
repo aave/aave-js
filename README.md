@@ -54,9 +54,11 @@ For the functions that modify the marketplace state (like creating a new request
 
 All the features of the API will be available after initializing the Marketplace object, using a valid API secret Key.
 
-To get an API secret key, it's necessary to send to **https://ethdenver-api.aave.com/signup** a POST request with the body:
+To get an API secret key, it's necessary to send to **https://ethdenver-api.aave.com/auth/signup** a POST request with the body:
 ```
 {
+   "name": "my name",
+   "company": "company name", // optional
    "email": "my_email@mail.com",
    "password": "my-secret-password"
 }

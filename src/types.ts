@@ -34,57 +34,22 @@ export interface LoanRequestModel extends BaseLoanModel {
   isCrowdLendingLoan: boolean
   peggedCurrency?: string
   peggedMedium?: string
+  nextInstalmentAmount?: number
   type: string
 }
 
-export interface BaseResponse {
-  data?: any
-  error?: string
-  code: ResponseCodes
-}
-
-export interface MaxLoanAmountResponse extends BaseResponse {
-  data?: number
-}
-
-export interface LoanTransactionResponse extends BaseResponse {
-  data?: Transaction
-}
-
-export interface LoanRequestResponse extends BaseResponse {
-  data?: LoanRequestModel
-}
-
-export interface LoanMetadataResponse extends BaseResponse {
-  data?: LoanMetadata
-}
-
-export interface LoansAddressesResponse extends BaseResponse {
-  data?: string[]
-}
-
-export interface LoanAddressesByBorrowerResponse extends BaseResponse {
-  data?: {
-    requestsAsBorrower: string[]
-    requestsAsLender: string[]
-  }
-}
-
 export interface LoanAPIInstance {
-  create(creatorWalletAddress: string, params: BaseLoanModel): Promise<LoanTransactionResponse>
-  placeCollateral(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
-  fund(loanAddress: string, lenderAddress: string, amount: number): Promise<LoanTransactionResponse>
-  payback(loanAddress: string, borrowerAddress: string): Promise<LoanTransactionResponse>
-  getMaxLoanAmountFromCollateral(
-    collateralAmount: number,
-    collateralType: string,
-    moe: string,
-    ltv?: number
-  ): Promise<MaxLoanAmountResponse>
-  getLoanData(loanAddress: string): Promise<LoanRequestResponse>
-  getAllAddresses(): Promise<LoansAddressesResponse>
-  getLoansByBorrower(borrowerAddress: string): Promise<LoanAddressesByBorrowerResponse>
-  getMetadata(): Promise<LoanMetadataResponse>
+  approve(amount: number, tokenSymbol: string): Promise<Transaction>
+  create(creatorWalletAddress: string, params: BaseLoanModel): Promise<Transaction>
+  placeCollateral(loanAddress: string, borrowerAddress: string): Promise<Transaction>
+  fund(loanAddress: string, lenderAddress: string, amount: number): Promise<Transaction>
+  payback(loanAddress: string, borrowerAddress: string): Promise<Transaction>
+  getMaxLoanAmountFromCollateral(collateralAmount: number, collateralType: string, moe: string): Promise<number>
+  getLoanData(loanAddress: string): Promise<LoanRequestModel>
+  getAllAddresses(): Promise<string[]>
+  getLoansByBorrower(borrowerAddress: string): Promise<string[]>
+  getLoansByLender(lenderAddress: string): Promise<string[]>
+  getMetadata(): Promise<LoanMetadata>
 }
 
 export interface MarketplaceInstance {

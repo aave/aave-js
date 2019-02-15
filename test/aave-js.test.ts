@@ -5,6 +5,6 @@ import { Marketplace } from '../src/aave-js'
  */
 describe('Marketplace test', () => {
   it('Marketplace is instantiable', () => {
-    expect(new Marketplace('token', undefined, undefined)).toBeInstanceOf(Marketplace)
+    expect(new Marketplace('token', undefined)).toBeInstanceOf(Marketplace)
   })
 })

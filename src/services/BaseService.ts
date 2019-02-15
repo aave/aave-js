@@ -1,22 +1,22 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { isValidChecksumAddress } from 'ethereumjs-util'
-// tslint:disable-next-line
-import Web3 from 'web3'
 
-import { BaseResponse } from '../types'
-import { Transaction } from 'web3/eth/types'
-import { TransactionReceipt } from 'web3-core/types'
+class ServiceError extends Error {
+  public code: number
+  constructor(message: string, code: number) {
+    super(message)
+    this.code = code
+  }
+}
 
 export default class BaseService {
   protected readonly api: AxiosInstance
-  protected readonly web3?: Web3
 
-  constructor(token: string, web3?: Web3, apiUrl?: string) {
+  constructor(token: string, apiUrl?: string) {
     this.api = axios.create({
       baseURL: apiUrl || 'https://api.aave.com',
       headers: { Authorization: `Bearer ${token}` }
     })
-    this.web3 = web3
   }
 
   protected static checkAddressChecksum(address: string): void {
@@ -25,18 +25,22 @@ export default class BaseService {
     }
   }
 
-  protected static errorHandler(e: AxiosError, resourceType: string, address: string = ''): BaseResponse {
+  protected static errorHandler(e: AxiosError, resourceType: string, address: string = ''): ServiceError {
     const status = e.response ? e.response.status : 504
 
     switch (status) {
-      case 404:
-        return { error: `${resourceType} ${address} doesn't exists`, code: 404 }
+      case 400: {
+        const errorText = e.response && e.response.data && e.response.data.error ? e.response.data.error : ''
+        return new ServiceError(`bad request: ${errorText}`, 400)
+      }
       case 401:
-        return { error: 'invalid access token', code: 401 }
+        return new ServiceError('invalid access token', 401)
+      case 404:
+        return new ServiceError(`${resourceType} ${address} doesn't exists`, 404)
       case 504:
-        return { error: 'probably some troubles with network connection', code: 504 }
+        return new ServiceError('probably some troubles with network connection', 504)
       default:
-        return { error: 'internal server error, please contact support', code: 500 }
+        return new ServiceError('internal server error, please contact support', 500)
     }
   }
 
@@ -46,26 +50,14 @@ export default class BaseService {
     errorParam: string = '',
     method: 'get' | 'post' = 'get',
     params?: object
-  ): Promise<BaseResponse> {
+  ): Promise<any> {
     const api = method === 'post' ? this.api.post : this.api.get
 
     try {
       const { data } = await api(endpoint, params)
-
-      return { data, code: 200 }
+      return data
     } catch (e) {
-      return BaseService.errorHandler(e, resourceType, errorParam)
+      throw BaseService.errorHandler(e, resourceType, errorParam)
     }
-  }
-
-  private async sendTransaction(tx: Transaction): Promise<TransactionReceipt> {
-    if (this.web3) {
-      const currentNetwork = await this.web3.eth.net.getNetworkType()
-      if (currentNetwork === 'kovan') {
-        return await this.web3.eth.sendTransaction(tx)
-      }
-      throw `this version of API allows transactions only on kovan network, but ${currentNetwork} chosen`
-    }
-    throw 'web3 provider is not specified'
   }
 }
