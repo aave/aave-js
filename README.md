@@ -1,4 +1,4 @@
-# Aave.js - Decentralized finance Javascript library
+# aave-js - Decentralized finance Javascript library
 
 JavaScript library to connect with the APIs of the [Aave](https://aave.com) ecosystem.
 
@@ -10,7 +10,7 @@ Initially, the library allows you to interact with the API of the decentralized 
 ### Npm
 
 ```
-npm install aave
+npm install aave-js
 ```
 
 &nbsp;
@@ -20,7 +20,7 @@ On the ETHLend marketplace, the user is able to be borrower or lender of crypto 
 
 As a borrower, he can create a request defining the conditions of the loan, and registering it in an Ethereum smart contract.
 
-The different loan requests stored on the Ethereum smart contracts are available for the other user to fund, acting as lenders.
+The different loan requests stored on the Ethereum smart contracts are available for the other users to fund, acting as lenders.
 
 Practical example:
 - An user is in possesion of some amount of ERC20 tokens, like 10000 LEND, and he wants to borrow ETH using them as collateral.
@@ -76,8 +76,8 @@ const marketplace = new Marketplace(MY_API_SECRET_KEY);
 
 &nbsp;
 ### States of the loan
-During it's lifecycle, the loan request goes through the following states, that will be returned in the field **state** of the request.
-- **Init**. Initial state of a loan request. At creation, the smart contract will verify that the ratio loan amount/collateral is correct, and the loan will remain in this state until that is finished. 
+During it's lifecycle, the loan request goes through the following states, that will be returned in the field **state** of the request data (marketplace.requests.getLoanData(requestAddress)).
+- **Init**. Initial state of a loan request. At creation, the smart contract will verify that the ratio loan amount/collateral is correct, and the loan will remain in this state until is finished. 
 - **WaitingForCollateral**. The initial conditions of the loan were valid, and the borrower needs to place the collateral.
 - **Funding**. Period while the lender can fund the loan request.
 - **WaitingForPayback**. The loan was funded, the borrower has received the funds, and the cycle of repayments has started.
@@ -222,7 +222,7 @@ If the collateral of a request is not placed within 30 minutes after the creatio
 ```javascript
 const { loanAddress } = loanData;
 
-const await.marketplace.utils.refreshCollateralPrice
+const await.marketplace.utils.refreshCollateralPrice(loanAddress);
 ```
 
 
