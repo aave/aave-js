@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { isValidChecksumAddress } from 'ethereumjs-util'
+import { ResponseCodes, ServiceErrorInstance } from '../types'
 
-class ServiceError extends Error {
-  public code: number
-  constructor(message: string, code: number) {
+class ServiceError extends Error implements ServiceErrorInstance {
+  public code: ResponseCodes
+  constructor(message: string, code: ResponseCodes) {
     super(message)
     this.code = code
   }
