@@ -1,11 +1,15 @@
 import { Transaction } from 'web3/eth/types'
 
-export type ResponseCodes = 200 | 401 | 404 | 500 | 504
+export type ResponseCodes = 200 | 400 | 401 | 404 | 500 | 504
 
 type Currency = {
   value: string
   description: string
   subChoices?: Currency[]
+}
+
+export interface ServiceErrorInstance extends Error {
+  code: ResponseCodes
 }
 
 export interface LoanMetadata {
@@ -51,6 +55,13 @@ export interface LoanAPIInstance {
   getLoansByBorrower(borrowerAddress: string): Promise<string[]>
   getLoansByLender(lenderAddress: string): Promise<string[]>
   getMetadata(): Promise<LoanMetadata>
+}
+
+export interface UtilsInstance {
+  approveTransfer(address: string, tokenSymbol: string): Promise<Transaction>
+  isTransferApproved(address: string, tokenSymbol: string, amount: number): Promise<boolean>
+  signup(email: string, name: string, password: string, organisation?: string): Promise<string>
+  renewToken(email: string, password: string): Promise<string>
 }
 
 export interface MarketplaceInstance {

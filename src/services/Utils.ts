@@ -1,8 +1,9 @@
 import { Transaction } from 'web3/eth/types'
 
 import BaseService from './BaseService'
+import { UtilsInstance } from '../types'
 
-export default class Utils extends BaseService {
+export default class Utils extends BaseService implements UtilsInstance {
   constructor(token: string, apiUrl?: string) {
     super(token, apiUrl)
   }
