@@ -190,7 +190,7 @@ If the collateral is an ERC20 token, we need to approve the marketplace smart co
 // loanData comes from calling await marketplace.requests.getLoanData(requestAddress);
 const { loanAddress, borrower, collateralType, collateralAmount, state } = loanData;
 
-const isCollateralPriceUpdated = await marketplace.utils.isCollateralPriceUpdated(loanAddress);
+const isCollateralPriceUpdated = await marketplace.requests.isCollateralPriceUpdated(loanAddress);
 
 if (state === "WaitingForCollateral" && isCollateralPriceUpdated) {
     const isApproved = await marketplace.utils.isTransferApproved(borrower, collateralType, collateralAmount);
@@ -247,7 +247,7 @@ If the collateral of a request is not placed within 30 minutes after the creatio
 ```javascript
 const { loanAddress } = loanData;
 
-const await.marketplace.utils.refreshCollateralPrice(loanAddress);
+const await.marketplace.requests.refreshCollateralPrice(loanAddress);
 ```
 
 
