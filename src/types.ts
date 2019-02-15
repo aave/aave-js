@@ -45,6 +45,8 @@ export interface LoanAPIInstance {
   fund(loanAddress: string, lenderAddress: string, amount: number): Promise<Transaction>
   payback(loanAddress: string, borrowerAddress: string): Promise<Transaction>
   getMaxLoanAmountFromCollateral(collateralAmount: number, collateralType: string, moe: string): Promise<number>
+  isCollateralPriceUpdated(loanAddress: string): Promise<boolean>
+  refreshCollateralPrice(loanAddress: string, walletAddress: string): Promise<Transaction>
   getLoanData(loanAddress: string): Promise<LoanRequestModel>
   getAllAddresses(): Promise<string[]>
   getLoansByBorrower(borrowerAddress: string): Promise<string[]>
