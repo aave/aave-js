@@ -42,4 +42,12 @@ describe('BaseService tests', () => {
       )
     })
   })
+
+  it('apiRequest should throw error', async () => {
+    try {
+      await defaultService['apiRequest']('/adoasd', 'some')
+    } catch (e) {
+      expect(e).toBeTruthy()
+    }
+  })
 })
