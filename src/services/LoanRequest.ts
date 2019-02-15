@@ -64,6 +64,24 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
     })
   }
 
+  public async isCollateralPriceUpdated(loanAddress: string): Promise<boolean> {
+    return await this.apiRequest(
+      `/request/iscollateralpriceupdated/${loanAddress}`,
+      'getting isCollateralPriceUpdated',
+      loanAddress
+    )
+  }
+
+  public async refreshCollateralPrice(loanAddress: string, walletAddress: string): Promise<Transaction> {
+    return await this.apiRequest(
+      '/request/refreshcollateralprice',
+      'refreshCollateralPrice transaction',
+      loanAddress,
+      'post',
+      { loanAddress, caller: walletAddress }
+    )
+  }
+
   public async getLoanData(loanAddress: string): Promise<LoanRequestModel> {
     BaseService.checkAddressChecksum(loanAddress)
 

@@ -19,13 +19,26 @@ describe('LoanRequest test', () => {
     expect(data).toBeTruthy()
   })
 
-  it('Should load requests metadata from api', async () => {
+  it('Should load requests getMaxLoanAmountFromCollateral from api', async () => {
     const data = await request.getMaxLoanAmountFromCollateral(2312, 'LEND', 'ETH')
     expect(data).toBeTruthy()
   })
 
   it('Should get single loan data from api', async () => {
     const data = await request.getLoanData('0x71f4CF5Cfb74a9D3c9060aC4c25070F989cFC39C')
+    expect(data).toBeTruthy()
+  })
+
+  it('Should check isCollateralPriceUpdated via api', async () => {
+    const data = await request.isCollateralPriceUpdated('0x71f4CF5Cfb74a9D3c9060aC4c25070F989cFC39C')
+    expect(data).toBeTruthy()
+  })
+
+  it('Should get refreshCollateralPrice transaction via api', async () => {
+    const data = await request.refreshCollateralPrice(
+      '0x71f4CF5Cfb74a9D3c9060aC4c25070F989cFC39C',
+      '0x4206925f7652a5af8a0F48aB714ABbd1EF27D916'
+    )
     expect(data).toBeTruthy()
   })
 
