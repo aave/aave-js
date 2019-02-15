@@ -15,7 +15,7 @@ export default class BaseService {
 
   constructor(token: string, apiUrl?: string) {
     this.api = axios.create({
-      baseURL: apiUrl || 'https://api.aave.com',
+      baseURL: apiUrl || 'https://ethdenver-api.aave.com/',
       headers: { Authorization: `Bearer ${token}` }
     })
   }
