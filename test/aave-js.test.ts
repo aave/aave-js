@@ -1,4 +1,4 @@
-import { Marketplace } from '../src/aave-js'
+import { Marketplace } from '../src/index'
 
 /**
  * Marketplace test

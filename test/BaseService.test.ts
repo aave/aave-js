@@ -3,7 +3,7 @@ import BaseService from '../src/services/BaseService'
  * BaseService test
  */
 describe('BaseService tests', () => {
-  const defaultService = new BaseService('86C019FF04C4')
+  const defaultService = new BaseService('075be6041815e845c921edbbc6201fc4bc2d5f42312fa97a86')
 
   it('BaseService is instantiable', () => {
     expect(defaultService).toBeInstanceOf(BaseService)

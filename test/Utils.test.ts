@@ -3,7 +3,7 @@ import Utils from '../src/services/Utils'
  * Utils test
  */
 describe('Utils test', () => {
-  const utils = new Utils('86C019FF04C4', 'http://localhost:3333')
+  const utils = new Utils('075be6041815e845c921edbbc6201fc4bc2d5f42312fa97a86', 'https://ethdenver-api.aave.com')
 
   it('Utils is instantiable', () => {
     expect(utils).toBeInstanceOf(Utils)

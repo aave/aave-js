@@ -9,9 +9,9 @@
     "marketplace",
     "js"
   ],
-  "main": "dist/aave-js.umd.js",
-  "module": "dist/aave-js.es5.js",
-  "typings": "dist/types/aave-js.d.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es5.js",
+  "typings": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],

@@ -3,7 +3,10 @@ import LoanRequest from '../src/services/LoanRequest'
  * LoanRequest test
  */
 describe('LoanRequest test', () => {
-  const request = new LoanRequest('86C019FF04C4', 'http://localhost:3333')
+  const request = new LoanRequest(
+    '075be6041815e845c921edbbc6201fc4bc2d5f42312fa97a86',
+    'https://ethdenver-api.aave.com'
+  )
 
   it('LoanRequest is instantiable', () => {
     expect(request).toBeInstanceOf(LoanRequest)
