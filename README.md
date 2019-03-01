@@ -9,7 +9,7 @@ Initially, the library allows you to interact with the API of the decentralized 
 
 ### Npm
 
-```
+```bash
 npm install aave-js
 ```
 
@@ -60,7 +60,7 @@ const API_SECRET_KEY = await marketplace.utils.signup(...signupParams)
 ```
 
 You can also send an HTTP POST request to **https://ethdenver-api.aave.com/auth/signup** with the body:
-```
+```json
 {
     "email": "an-email@email.com",
     "name": "my-name",
@@ -112,15 +112,16 @@ During it's lifecycle, the loan request goes through the following states, that 
 &nbsp;
 ## Functions
 
-&nbsp;
-### - Get the addresses of all the requests
-```javascript
-const allRequestsAddresses = await marketplace.requests.getAllAddresses();
-```
-&nbsp;
 ### - Get the data of all the requests in the marketplace
 ```javascript
-const allRequestsAddresses = await marketplace.requests.getDataAllLoans();
+// First we get the Ethereum addresses of all the loan requests
+const allRequestsAddresses = await marketplace.requests.getAllAddresses();
+
+const requestsData = [];
+for (const requestAddress of allRequestsAddresses) {
+    const data = await marketplace.requests.getLoanData(requestAddress);
+    requestsData.push(data);
+}
 ```
 
 &nbsp;
@@ -157,12 +158,9 @@ const collateralAmount = 10000;
 const collateralType = "LEND";
 const loanCurrency = "ETH";
 // We get the maximum loan amount, depending on the Loan-To-Value ratio allowed
-const maxLoanAmount = await marketplace
-                            .requests
-                            .getMaxLoanAmountFromCollateral(
-                                collateralAmount, 
-                                collateralType, 
-                                loanCurrency);
+const maxLoanAmount = await marketplace.requests.getMaxLoanAmountFromCollateral(
+  collateralAmount, collateralType, loanCurrency
+);
 
 const loanRequestParams = {
     loanAmount: maxLoanAmount,
@@ -171,7 +169,7 @@ const loanRequestParams = {
     collateralType: collateralType,
     mpr: 1.5,
     duration: 4
-}
+};
 const tx = await marketplace.requests.create(borrowerAddress,loanRequestParams);
 
 await web3.eth.sendTransaction(tx);
@@ -192,7 +190,9 @@ const { loanAddress, borrower, collateralType, collateralAmount, state } = loanD
 const isCollateralPriceUpdated = await marketplace.requests.isCollateralPriceUpdated(loanAddress);
 
 if (state === "WaitingForCollateral" && isCollateralPriceUpdated) {
-    const isApproved = await marketplace.utils.isTransferApproved(borrower, collateralType, collateralAmount);
+    const isApproved = await marketplace.utils.isTransferApproved(
+      borrower, collateralType, collateralAmount
+    );
     if (!isApproved) {
         const approveTx = await marketplace.utils.approveTransfer(collateralType, borrower);
         await web3.eth.sendTransaction(approveTx);
@@ -246,7 +246,7 @@ If the collateral of a request is not placed within 30 minutes after the creatio
 ```javascript
 const { loanAddress } = loanData;
 
-const await.marketplace.requests.refreshCollateralPrice(loanAddress);
+await.marketplace.requests.refreshCollateralPrice(loanAddress);
 ```
 
 
