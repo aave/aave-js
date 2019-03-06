@@ -112,7 +112,7 @@ During it's lifecycle, the loan request goes through the following states, that 
 &nbsp;
 ## Functions
 
-### - Get all requests asddresses in the marketplace
+### - Get all requests addresses in the marketplace
 ```javascript
 const allRequestsAddresses = await marketplace.requests.getAllAddresses();
 ```
