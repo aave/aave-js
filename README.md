@@ -124,18 +124,26 @@ const requestsData = await marketplace.requests.getDataAllLoans();
 ```
 
 &nbsp;
+### - Get the data of a loan request by ethereum address
+```javascript
+const loanRequestAddress = "0x94D5E24B4c3cb244b9E48eB33AE6ccAD6b715456";
+const loanRequestData = await marketplace.requests.getLoanData(loanRequestAddress);
+```
+
+&nbsp;
 ### - Get the data of all requests by borrower ethereum address
 ```javascript
-const borrowerAddress = "0x94D5E24B4c3cb244b9E48eB33AE6ccAD6b715456"; // The address to filter
-// First we get the Ethereum addresses of all borrower requests
-const requestsAddressesByBorrower = await marketplace.requests.getLoansByBorrower(borrowerAddress);
-
-const requestsData = [];
-for (const requestAddress of requestsAddressesByBorrower) {
-    const data = await marketplace.requests.getLoanData(requestAddress);
-    requestsData.push(data);
-}
+const borrowerAddress = "0x94D5E24B4c3cb244b9E48eB33AE6ccAD6b715456";
+const requestsAddressesByBorrower = await marketplace.requests.getDataAllLoansByBorrower(borrowerAddress);
 ```
+
+&nbsp;
+### - Get the data of all requests by lender ethereum address
+```javascript
+const lenderAddress = "0x94D5E24B4c3cb244b9E48eB33AE6ccAD6b715456";
+const requestsAddressesByLender = await marketplace.requests.getDataAllLoansByLender(lenderAddress);
+```
+
 
 &nbsp;
 ### - Get the marketplace metadata

@@ -93,10 +93,10 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
   }
 
   public async getDataAllLoans(): Promise<LoanRequestModel[]> {
-      const allRequestAddresses : string[] = await this.getAllAddresses();  
-      const allDataPromises = allRequestAddresses.map(address => this.getLoanData(address))
+    const allRequestAddresses: string[] = await this.getAllAddresses()
+    const allDataPromises = allRequestAddresses.map(address => this.getLoanData(address))
 
-      return await Promise.all(allDataPromises);
+    return await Promise.all(allDataPromises)
   }
 
   public async getLoansByBorrower(borrowerAddress: string): Promise<string[]> {
@@ -113,6 +113,20 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
     BaseService.checkAddressChecksum(lenderAddress)
 
     return await this.apiRequest(`/request/getlistbylender/${lenderAddress}`, 'loan addresses by lender', lenderAddress)
+  }
+
+  public async getDataAllLoansByBorrower(borrowerAddress: string): Promise<LoanRequestModel[]> {
+    const requestAddressesBorrower = await this.getLoansByBorrower(borrowerAddress)
+    const allDataPromises = requestAddressesBorrower.map(address => this.getLoanData(address))
+
+    return await Promise.all(allDataPromises)
+  }
+
+  public async getDataAllLoansByLender(lenderAddress: string): Promise<LoanRequestModel[]> {
+    const requestAddressesLender = await this.getLoansByBorrower(lenderAddress)
+    const allDataPromises = requestAddressesLender.map(address => this.getLoanData(address))
+
+    return await Promise.all(allDataPromises)
   }
 
   public async getMetadata(): Promise<LoanMetadata> {
