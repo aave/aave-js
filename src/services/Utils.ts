@@ -28,4 +28,29 @@ export default class Utils extends BaseService implements UtilsInstance {
   public async renewToken(email: string, password: string): Promise<string> {
     return await this.apiRequest('/auth/renewtoken', 'token renewal', '', 'post', { email, password })
   }
+
+  public async getMaxLoanAmountFromCollateral(
+    collateralAmount: number,
+    collateralType: string,
+    moe: string
+  ): Promise<number> {
+    return await this.apiRequest('/common/maxamount/', 'getting max loan amount', collateralType, 'post', {
+      collateralAmount,
+      collateralType,
+      moe
+    })
+  }
+
+  public async getCollateralFromLoanAmount(
+    loanAmount: number,
+    collateralType: string,
+    moe: string
+  ): Promise<number> {
+    return await this.apiRequest('/common/collateralfromamount/', 'gets the amount of collateral needed for a specific loan amount', collateralType, 'post', {
+      loanAmount,
+      collateralType,
+      moe
+    })
+  }
+
 }

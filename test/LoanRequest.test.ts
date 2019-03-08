@@ -1,11 +1,12 @@
 import LoanRequest from '../src/services/LoanRequest'
+import { LoanRequestModel } from '../src/types';
 /**
  * LoanRequest test
  */
 describe('LoanRequest test', () => {
   const request = new LoanRequest(
-    '075be6041815e845c921edbbc6201fc4bc2d5f42312fa97a86',
-    'https://ethdenver-api.aave.com'
+    'a94be1bc8e770454d8c7e7a23f2d205ecd6003c341d7a28e88',
+    'https://apikovan.aave.com/'
   )
 
   it('LoanRequest is instantiable', () => {
@@ -22,18 +23,13 @@ describe('LoanRequest test', () => {
     expect(data).toBeTruthy()
   })
 
-  it('Should load requests getMaxLoanAmountFromCollateral from api', async () => {
-    const data = await request.getMaxLoanAmountFromCollateral(2312, 'LEND', 'ETH')
-    expect(data).toBeTruthy()
-  })
-
   it('Should get single loan data from api', async () => {
-    const data = await request.getLoanData('0x71f4CF5Cfb74a9D3c9060aC4c25070F989cFC39C')
+    const data = await request.getLoanData('0x43faA0DB2891e4e793D976917991411eC77Ac481')
     expect(data).toBeTruthy()
   })
 
   it('Should check isCollateralPriceUpdated via api', async () => {
-    const data = await request.isCollateralPriceUpdated('0x71f4CF5Cfb74a9D3c9060aC4c25070F989cFC39C')
+    const data = await request.isCollateralPriceUpdated('0x43faA0DB2891e4e793D976917991411eC77Ac481')
     expect(data).toBeTruthy()
   })
 
@@ -61,14 +57,20 @@ describe('LoanRequest test', () => {
   })
 
   it('Should get loan creation transaction from api', async () => {
-    const data = await request.create('0x4206925f7652a5af8a0F48aB714ABbd1EF27D916', {
+    const loanData : LoanRequestModel = {
       loanAmount: 0.0416,
       moe: 'ETH',
       collateralAmount: 1000,
       collateralType: 'LEND',
       mpr: 2,
-      duration: 7
-    })
+      duration: 7,
+      isPeggedLoan: false,
+      type: "REQUEST",
+      isCrowdLendingLoan: false,
+      outstandingLoanAmount: 0
+    };
+
+    const data = await request.create('0x4206925f7652a5af8a0F48aB714ABbd1EF27D916', loanData)
     expect(data).toBeTruthy()
   })
 

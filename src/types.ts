@@ -25,39 +25,70 @@ export interface BaseLoanModel {
   collateralAmount: number
   mpr: number
   duration: number
-}
-
-export interface LoanRequestModel extends BaseLoanModel {
   loanAddress?: string
   state?: string
   borrower?: string
   fundedAmount?: number
   outstandingLoanAmount: number
   startTimeoutTime?: number
+  nextInstalmentAmount?: number
+  type: string
+ }
+
+export interface LoanRequestModel extends BaseLoanModel {
   isPeggedLoan: boolean
   isCrowdLendingLoan: boolean
   peggedCurrency?: string
   peggedMedium?: string
-  nextInstalmentAmount?: number
-  type: string
 }
 
-export interface LoanAPIInstance {
+export interface LoanOfferModel extends BaseLoanModel {
+  minimumLoanAmount: number | null;
+  maximumLoanAmount: number;
+  durationRange: LoanOfferDuration;
+  collaterals: LoanOfferCollateral[];
+}
+
+export interface LoanOfferCollateral {
+  id: number;
+  symbol: string;
+  ltv: number;
+  mpr: number;
+  valid: boolean;
+}
+export interface LoanOfferDuration {
+  min: number;
+  max: number;
+}
+export interface LoanAPIInstanceBase {
   create(creatorWalletAddress: string, params: BaseLoanModel): Promise<Transaction>
-  placeCollateral(loanAddress: string, borrowerAddress: string): Promise<Transaction>
   fund(loanAddress: string, lenderAddress: string, amount: number): Promise<Transaction>
   payback(loanAddress: string, borrowerAddress: string): Promise<Transaction>
-  getMaxLoanAmountFromCollateral(collateralAmount: number, collateralType: string, moe: string): Promise<number>
   isCollateralPriceUpdated(loanAddress: string): Promise<boolean>
   refreshCollateralPrice(loanAddress: string, walletAddress: string): Promise<Transaction>
-  getLoanData(loanAddress: string): Promise<LoanRequestModel>
   getAllAddresses(): Promise<string[]>
   getLoansByBorrower(borrowerAddress: string): Promise<string[]>
   getLoansByLender(lenderAddress: string): Promise<string[]>
   getMetadata(): Promise<LoanMetadata>
+  callCollateral(loanAddress: string, lender: string) : Promise<Transaction>
+  partialCallDefault(loanAddress: string, lender: string) : Promise<Transaction>
+  withdrawPartialDefaultAmount(loanAddress: string, lender: string) : Promise<Transaction>
 }
 
+export interface LoanRequestAPIInstance extends LoanAPIInstanceBase{
+  getLoanData(loanAddress: string): Promise<LoanRequestModel>
+  placeCollateral(loanAddress: string, borrowerAddress: string): Promise<Transaction>
+}
+
+export interface LoanOfferAPIInstance extends LoanAPIInstanceBase{
+  getLoanData(loanAddress: string): Promise<LoanOfferModel>
+  takeLoanOffer(loanAddress: string, params: BaseLoanModel) : Promise<Transaction>
+}
+
+
+
 export interface UtilsInstance {
+  getMaxLoanAmountFromCollateral( collateralAmount: number,collateralType: string,moe: string): Promise<number>
   approveTransfer(address: string, tokenSymbol: string): Promise<Transaction>
   isTransferApproved(address: string, tokenSymbol: string, amount: number): Promise<boolean>
   signup(email: string, name: string, password: string, organisation?: string): Promise<string>
@@ -65,7 +96,7 @@ export interface UtilsInstance {
 }
 
 export interface MarketplaceInstance {
-  request: LoanAPIInstance
+  request: LoanRequestAPIInstance
 }
 
 declare const Marketplace: MarketplaceInstance

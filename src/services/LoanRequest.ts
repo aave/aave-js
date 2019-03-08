@@ -1,9 +1,9 @@
 import { Transaction } from 'web3/eth/types'
 
-import { LoanAPIInstance, BaseLoanModel, LoanRequestModel, LoanMetadata } from '../types'
+import { LoanRequestAPIInstance, BaseLoanModel, LoanRequestModel, LoanMetadata } from '../types'
 import BaseService from './BaseService'
 
-export default class LoanRequest extends BaseService implements LoanAPIInstance {
+export default class LoanRequest extends BaseService implements LoanRequestAPIInstance {
   constructor(token: string, apiUrl?: string) {
     super(token, apiUrl)
   }
@@ -52,17 +52,7 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
       'post'
     )
   }
-  public async getMaxLoanAmountFromCollateral(
-    collateralAmount: number,
-    collateralType: string,
-    moe: string
-  ): Promise<number> {
-    return await this.apiRequest('/request/maxamount/', 'getting max loan amount', collateralType, 'post', {
-      collateralAmount,
-      collateralType,
-      moe
-    })
-  }
+
 
   public async isCollateralPriceUpdated(loanAddress: string): Promise<boolean> {
     return await this.apiRequest(
@@ -123,7 +113,7 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
   }
 
   public async getDataAllLoansByLender(lenderAddress: string): Promise<LoanRequestModel[]> {
-    const requestAddressesLender = await this.getLoansByBorrower(lenderAddress)
+    const requestAddressesLender = await this.getLoansByLender(lenderAddress)
     const allDataPromises = requestAddressesLender.map(address => this.getLoanData(address))
 
     return await Promise.all(allDataPromises)
@@ -131,5 +121,33 @@ export default class LoanRequest extends BaseService implements LoanAPIInstance 
 
   public async getMetadata(): Promise<LoanMetadata> {
     return await this.apiRequest('/request/metadata', 'loan requests metadata')
+  }
+
+
+  public async partialCallDefault(loanAddress: string, lender: string): Promise<Transaction> {
+    return await this.apiRequest(
+      `/request/calldefault/${loanAddress}/${lender}`,
+      'Default call on loan',
+      loanAddress,
+      'post'
+    )
+  }
+
+  public async callCollateral(loanAddress: string, lender: string): Promise<Transaction> {
+    return await this.apiRequest(
+      `/request/callcollateral/${loanAddress}/${lender}`,
+      'Default call on loan',
+      loanAddress,
+      'post'
+    )
+  }
+
+  public async withdrawPartialDefaultAmount(loanAddress: string, lender: string): Promise<Transaction> {
+    return await this.apiRequest(
+      `/request/withdrawpartialdefaultamount/${loanAddress}/${lender}`,
+      'Withdraw defaulted amount on loan',
+      loanAddress,
+      'post'
+    )
   }
 }
