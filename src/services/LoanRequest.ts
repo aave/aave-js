@@ -1,12 +1,12 @@
 import { Transaction } from 'web3/eth/types'
 
-import { LoanRequestAPIInstance, BaseLoanModel, LoanRequestModel, LoanMetadata } from '../types'
+import { LoanRequestAPIInstance, LoanRequestModel } from '../types'
 import BaseService from './BaseService'
-import BaseLoanService from './BaseLoanService';
+import BaseLoanService from './BaseLoanService'
 
 export default class LoanRequest extends BaseLoanService implements LoanRequestAPIInstance {
   constructor(token: string, apiUrl?: string) {
-    super('/request',token, apiUrl)
+    super('/request', token, apiUrl)
   }
 
   public async create(borrowerWalletAddress: string, params: LoanRequestModel): Promise<Transaction> {
@@ -42,7 +42,6 @@ export default class LoanRequest extends BaseLoanService implements LoanRequestA
     )
   }
 
-
   public async getLoanData(loanAddress: string): Promise<LoanRequestModel> {
     BaseService.checkAddressChecksum(loanAddress)
 
@@ -60,7 +59,6 @@ export default class LoanRequest extends BaseLoanService implements LoanRequestA
     return await Promise.all(allDataPromises)
   }
 
-
   public async getDataAllLoansByBorrower(borrowerAddress: string): Promise<LoanRequestModel[]> {
     const requestAddressesBorrower = await this.getLoansByBorrower(borrowerAddress)
     const allDataPromises = requestAddressesBorrower.map(address => this.getLoanData(address))
@@ -74,5 +72,4 @@ export default class LoanRequest extends BaseLoanService implements LoanRequestA
 
     return await Promise.all(allDataPromises)
   }
-
 }

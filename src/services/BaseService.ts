@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import { isValidChecksumAddress } from 'ethereumjs-util'
 import { ResponseCodes, ServiceErrorInstance, LoanMetadata, LoanAPIInstanceBase } from '../types'
-import { Transaction } from 'web3/eth/types';
 
 class ServiceError extends Error implements ServiceErrorInstance {
   public code: ResponseCodes
@@ -15,9 +14,8 @@ export default class BaseService {
   protected readonly api: AxiosInstance
   protected readonly serviceUrlRoot: string
 
-  constructor(serviceUrlRoot : string, token: string, apiUrl?: string ) {
-
-    this.serviceUrlRoot = serviceUrlRoot;    
+  constructor(serviceUrlRoot: string, token: string, apiUrl?: string) {
+    this.serviceUrlRoot = serviceUrlRoot
     this.api = axios.create({
       baseURL: apiUrl || 'https://apikovan.aave.com/',
       headers: { Authorization: `Bearer ${token}` }
@@ -65,5 +63,4 @@ export default class BaseService {
       throw BaseService.errorHandler(e, resourceType, errorParam)
     }
   }
-
 }
