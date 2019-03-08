@@ -5,7 +5,7 @@ import { UtilsInstance } from '../types'
 
 export default class Utils extends BaseService implements UtilsInstance {
   constructor(token: string, apiUrl?: string) {
-    super(token, apiUrl)
+    super('',token, apiUrl)
   }
   public async approveTransfer(address: string, tokenSymbol: string): Promise<Transaction> {
     return await this.apiRequest('/common/approvetransfer/', 'token approval', tokenSymbol, 'post', {

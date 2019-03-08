@@ -2,16 +2,17 @@ import { Transaction } from 'web3/eth/types'
 
 import { LoanRequestAPIInstance, BaseLoanModel, LoanRequestModel, LoanMetadata } from '../types'
 import BaseService from './BaseService'
+import BaseLoanService from './BaseLoanService';
 
-export default class LoanRequest extends BaseService implements LoanRequestAPIInstance {
+export default class LoanRequest extends BaseLoanService implements LoanRequestAPIInstance {
   constructor(token: string, apiUrl?: string) {
-    super(token, apiUrl)
+    super('/request',token, apiUrl)
   }
 
-  public async create(borrowerWalletAddress: string, params: BaseLoanModel): Promise<Transaction> {
+  public async create(borrowerWalletAddress: string, params: LoanRequestModel): Promise<Transaction> {
     BaseService.checkAddressChecksum(borrowerWalletAddress)
 
-    return await this.apiRequest('/request', 'loan requests creation', '', 'post', {
+    return await this.apiRequest('', 'loan requests creation', '', 'post', {
       borrower: borrowerWalletAddress,
       ...params
     })
@@ -22,7 +23,7 @@ export default class LoanRequest extends BaseService implements LoanRequestAPIIn
     BaseService.checkAddressChecksum(borrowerAddress)
 
     return await this.apiRequest(
-      `/request/placecollateral/${loanAddress}/${borrowerAddress}`,
+      `/placecollateral/${loanAddress}/${borrowerAddress}`,
       'placing loan requests collateral',
       loanAddress,
       'post'
@@ -34,52 +35,22 @@ export default class LoanRequest extends BaseService implements LoanRequestAPIIn
     BaseService.checkAddressChecksum(lenderAddress)
 
     return await this.apiRequest(
-      `/request/fund/${loanAddress}/${lenderAddress}/${amount}`,
+      `/fund/${loanAddress}/${lenderAddress}/${amount}`,
       'funding loan requests',
       loanAddress,
       'post'
     )
   }
 
-  public async payback(loanAddress: string, borrowerAddress: string): Promise<Transaction> {
-    BaseService.checkAddressChecksum(loanAddress)
-    BaseService.checkAddressChecksum(borrowerAddress)
-
-    return await this.apiRequest(
-      `/request/payback/${loanAddress}/${borrowerAddress}`,
-      'placing loan requests payback',
-      loanAddress,
-      'post'
-    )
-  }
-
-
-  public async isCollateralPriceUpdated(loanAddress: string): Promise<boolean> {
-    return await this.apiRequest(
-      `/request/iscollateralpriceupdated/${loanAddress}`,
-      'getting isCollateralPriceUpdated',
-      loanAddress
-    )
-  }
-
-  public async refreshCollateralPrice(loanAddress: string, walletAddress: string): Promise<Transaction> {
-    return await this.apiRequest(
-      '/request/refreshcollateralprice',
-      'refreshCollateralPrice transaction',
-      loanAddress,
-      'post',
-      { loanAddress, caller: walletAddress }
-    )
-  }
 
   public async getLoanData(loanAddress: string): Promise<LoanRequestModel> {
     BaseService.checkAddressChecksum(loanAddress)
 
-    return await this.apiRequest(`/request/getone/${loanAddress}`, 'loan requests', loanAddress)
+    return await this.apiRequest(`/getone/${loanAddress}`, 'loan requests', loanAddress)
   }
 
   public async getAllAddresses(): Promise<string[]> {
-    return await this.apiRequest('/request', 'loan requests addresses')
+    return await this.apiRequest('', 'loan requests addresses')
   }
 
   public async getDataAllLoans(): Promise<LoanRequestModel[]> {
@@ -89,21 +60,6 @@ export default class LoanRequest extends BaseService implements LoanRequestAPIIn
     return await Promise.all(allDataPromises)
   }
 
-  public async getLoansByBorrower(borrowerAddress: string): Promise<string[]> {
-    BaseService.checkAddressChecksum(borrowerAddress)
-
-    return await this.apiRequest(
-      `/request/getlistbyborrower/${borrowerAddress}`,
-      'loan addresses by borrower',
-      borrowerAddress
-    )
-  }
-
-  public async getLoansByLender(lenderAddress: string): Promise<string[]> {
-    BaseService.checkAddressChecksum(lenderAddress)
-
-    return await this.apiRequest(`/request/getlistbylender/${lenderAddress}`, 'loan addresses by lender', lenderAddress)
-  }
 
   public async getDataAllLoansByBorrower(borrowerAddress: string): Promise<LoanRequestModel[]> {
     const requestAddressesBorrower = await this.getLoansByBorrower(borrowerAddress)
@@ -119,35 +75,4 @@ export default class LoanRequest extends BaseService implements LoanRequestAPIIn
     return await Promise.all(allDataPromises)
   }
 
-  public async getMetadata(): Promise<LoanMetadata> {
-    return await this.apiRequest('/request/metadata', 'loan requests metadata')
-  }
-
-
-  public async partialCallDefault(loanAddress: string, lender: string): Promise<Transaction> {
-    return await this.apiRequest(
-      `/request/calldefault/${loanAddress}/${lender}`,
-      'Default call on loan',
-      loanAddress,
-      'post'
-    )
-  }
-
-  public async callCollateral(loanAddress: string, lender: string): Promise<Transaction> {
-    return await this.apiRequest(
-      `/request/callcollateral/${loanAddress}/${lender}`,
-      'Default call on loan',
-      loanAddress,
-      'post'
-    )
-  }
-
-  public async withdrawPartialDefaultAmount(loanAddress: string, lender: string): Promise<Transaction> {
-    return await this.apiRequest(
-      `/request/withdrawpartialdefaultamount/${loanAddress}/${lender}`,
-      'Withdraw defaulted amount on loan',
-      loanAddress,
-      'post'
-    )
-  }
 }

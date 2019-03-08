@@ -61,8 +61,6 @@ export interface LoanOfferDuration {
   max: number;
 }
 export interface LoanAPIInstanceBase {
-  create(creatorWalletAddress: string, params: BaseLoanModel): Promise<Transaction>
-  fund(loanAddress: string, lenderAddress: string, amount: number): Promise<Transaction>
   payback(loanAddress: string, borrowerAddress: string): Promise<Transaction>
   isCollateralPriceUpdated(loanAddress: string): Promise<boolean>
   refreshCollateralPrice(loanAddress: string, walletAddress: string): Promise<Transaction>
@@ -76,11 +74,15 @@ export interface LoanAPIInstanceBase {
 }
 
 export interface LoanRequestAPIInstance extends LoanAPIInstanceBase{
+  create(creatorWalletAddress: string, params: BaseLoanModel): Promise<Transaction>
+  fund(loanAddress: string, lenderAddress: string, amount: number): Promise<Transaction>
   getLoanData(loanAddress: string): Promise<LoanRequestModel>
   placeCollateral(loanAddress: string, borrowerAddress: string): Promise<Transaction>
 }
 
 export interface LoanOfferAPIInstance extends LoanAPIInstanceBase{
+  create(creatorWalletAddress: string, params: LoanOfferModel): Promise<Transaction>
+  fund(loanAddress: string, lenderAddress: string): Promise<Transaction>
   getLoanData(loanAddress: string): Promise<LoanOfferModel>
   takeLoanOffer(loanAddress: string, params: BaseLoanModel) : Promise<Transaction>
 }
