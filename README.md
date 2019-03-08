@@ -241,7 +241,7 @@ await web3.eth.sendTransaction(tx);
 ```
 
 ## Generic Methods
-These methods are available on both the ```javascript offers ``` and ```javascript requests``` objects. Here we will use the ```javascript requests ``` object as reference.
+These methods are available on both the ``` offers ``` and ``` requests``` objects. Here we will use the ``` requests ``` object as reference.
 
 ### - Get all requests addresses in the marketplace
 ```javascript
