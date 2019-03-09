@@ -49,12 +49,13 @@ You can get an API secret key using directly the library as following:
 ```javascript
 import { Marketplace } from "aave-js";
 
-const signupParams = {
-    email: "an-email@email.com",
-    name: "my-name",
-    password: "a-super-random-password",
-    organisation: "my-team-name" // Optional
-}
+const signupParams = [
+  "an-email@email.com", //email
+  "my-name", //name
+  "a-super-random-password", //password
+  "my-team-name" // Optional, organisation name
+]
+
 const marketplace = new Marketplace("");
 const API_SECRET_KEY = await marketplace.utils.signup(...signupParams)
 ```
@@ -158,7 +159,7 @@ if (state === "WaitingForCollateral" && isCollateralPriceUpdated) {
       borrower, collateralType, collateralAmount
     );
     if (!isApproved) {
-        const approveTx = await marketplace.utils.approveTransfer(collateralType, borrower);
+        const approveTx = await marketplace.utils.approveTransfer(borrower, collateralType);
         await web3.eth.sendTransaction(approveTx);
     }
 
@@ -178,7 +179,7 @@ const lenderAddress = "0x94D5E24B4c3cb244b9E48eB33AE6ccAD6b715456"; // The walle
 
 const isApproved = await marketplace.utils.isTransferApproved(lenderAddress, moe, loanAmount);
 if (!isApproved) {
-    const approveTx = await marketplace.utils.approveTransfer(moe, lenderAddress);
+    const approveTx = await marketplace.utils.approveTransfer(lenderAddress, moe);
     await web3.eth.sendTransaction(approveTx);
 }
 
@@ -300,7 +301,7 @@ const { loanAddress, borrower, moe, nextInstalmentAmount } = loanData;
 
 const isApproved = await marketplace.utils.isTransferApproved(borrower, moe, nextInstalmentAmount);
 if (!isApproved) {
-    const approveTx = await marketplace.utils.approveTransfer(moe, borrower);
+    const approveTx = await marketplace.utils.approveTransfer(borrower, moe);
     await web3.eth.sendTransaction(approveTx);
 }
 
