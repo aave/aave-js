@@ -150,16 +150,17 @@ If the collateral is an ERC20 token, we need to approve the marketplace smart co
 
 ```javascript
 // loanData comes from calling await marketplace.requests.getLoanData(requestAddress);
-const { loanAddress, borrower, collateralType, collateralAmount, state } = loanData;
+const { loanAddress, collateralType, collateralAmount, state } = loanData;
+const borrowerAddress = '0x27499a2aaaa3a7a4a98a3274dad897' // The wallet that places collateral
 
 const isCollateralPriceUpdated = await marketplace.requests.isCollateralPriceUpdated(loanAddress);
 
 if (state === "WaitingForCollateral" && isCollateralPriceUpdated) {
     const isApproved = await marketplace.utils.isTransferApproved(
-      borrower, collateralType, collateralAmount
+      borrowerAddress, collateralType, collateralAmount
     );
     if (!isApproved) {
-        const approveTx = await marketplace.utils.approveTransfer(borrower, collateralType);
+        const approveTx = await marketplace.utils.approveTransfer(borrowerAddress, collateralType);
         await web3.eth.sendTransaction(approveTx);
     }
 
