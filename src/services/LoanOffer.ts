@@ -12,7 +12,7 @@ export default class LoanOffer extends BaseLoanService implements LoanOfferAPIIn
   public async create(lenderAddress: string, params: LoanOfferModel): Promise<Transaction> {
     BaseService.checkAddressChecksum(lenderAddress)
 
-    return await this.apiRequest('/offer', 'loan offer creation', '', 'post', {
+    return await this.apiRequest('', 'loan offer creation', '', 'post', {
       lender: lenderAddress,
       ...params
     })
