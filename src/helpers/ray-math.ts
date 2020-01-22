@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { BigNumberValue, valueToZDBigNumber } from 'helpers/bignumber';
+import { BigNumberValue, valueToZDBigNumber } from './bignumber';
 
 export const WAD = valueToZDBigNumber(10).pow(18);
 export const HALF_WAD = WAD.dividedBy(2);
