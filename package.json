@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "license": "MIT",
-  "name": "@aave/protocol.js",
+  "name": "@aave/protocol-js",
   "description": "Aave protocol data aggregation tool",
   "keywords": [
     "Aave",
@@ -26,7 +26,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aave/protocol-js.git"
+    "url": "git+https://github.com/aave/aave-js.git"
   },
   "module": "dist/protocol-js.esm.js",
   "main": "dist/index.js",
