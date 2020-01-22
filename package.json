@@ -1,0 +1,65 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "name": "@aave/protocol.js",
+  "description": "Aave protocol data aggregation tool",
+  "keywords": [
+    "Aave",
+    "protocol",
+    "lending",
+    "defi"
+  ],
+  "author": "Aave <tech@aave.com>",
+  "contributors": [
+    {
+      "name": "Andrey Kozlov",
+      "email": "andrey@aave.com"
+    },
+    {
+      "name": "Ernesto Boado",
+      "email": "ernesto@aave.com"
+    },
+    {
+      "name": "Emilio Frangella",
+      "email": "emilio@aave.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aave/protocol-js.git"
+  },
+  "module": "dist/protocol-js.esm.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build && cp -R ./{src,dist}/graphql",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.9.0",
+    "husky": "^4.0.10",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "bignumber.js": "^9.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  }
+}

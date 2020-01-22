@@ -1,0 +1,5 @@
+mutation SwapBorrowRateMode($data: ApproveInput!) {
+    swapBorrowRateMode(data: $data) {
+        ...EthTransaction
+    }
+}

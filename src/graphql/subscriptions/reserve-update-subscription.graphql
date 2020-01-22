@@ -1,0 +1,5 @@
+subscription ReserveUpdateSubscription {
+  reserves {
+    ...ReserveData
+  }
+}

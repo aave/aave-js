@@ -1,0 +1,5 @@
+mutation Deposit($data: TransferInput!) {
+    deposit(data: $data) {
+        ...EthTransaction
+    }
+}

@@ -1,0 +1,5 @@
+subscription LiquidityRateHistoryUpdate($reserveAddress: String!) {
+  reserveParamsHistoryItems(where: { reserve: $reserveAddress }, first: 100){
+    ...LiquidityRateHistoryData
+  }
+}

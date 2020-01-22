@@ -1,0 +1,30 @@
+fragment ReserveData on Reserve {
+  id
+  name
+  symbol
+  decimals
+  isActive
+  usageAsCollateralEnabled
+  borrowingEnabled
+  stableBorrowRateEnabled
+  baseLTVasCollateral
+  liquidityIndex
+  reserveLiquidationThreshold
+  variableBorrowIndex
+  aToken {
+    id
+  }
+  availableLiquidity
+  stableBorrowRate
+  liquidityRate
+  totalBorrows
+  totalBorrowsStable
+  totalBorrowsVariable
+  totalLiquidity
+  utilizationRate
+  variableBorrowRate
+  price {
+    priceInEth
+  }
+  lastUpdateTimestamp
+}

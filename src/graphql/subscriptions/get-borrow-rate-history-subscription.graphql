@@ -1,0 +1,5 @@
+subscription BorrowRateHistoryUpdate($reserveAddress: String!) {
+  reserveParamsHistoryItems(where: { reserve: $reserveAddress }, first: 100){
+    ...BorrowRateHistoryData
+  }
+}

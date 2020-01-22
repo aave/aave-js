@@ -1,0 +1,3 @@
+query ConnectionStatus {
+  isDisconnected @client
+}

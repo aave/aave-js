@@ -1,0 +1,24 @@
+fragment UserReserveData on UserReserve {
+  principalATokenBalance
+  userBalanceIndex
+  redirectedBalance
+  interestRedirectionAddress
+  reserve{
+    id
+    name
+    symbol
+    decimals
+    liquidityRate
+    lastUpdateTimestamp
+    aToken {
+      id
+    }
+  }
+  usageAsCollateralEnabledOnUser
+  borrowRate
+  borrowRateMode
+  originationFee
+  principalBorrows
+  variableBorrowIndex
+  lastUpdateTimestamp
+}
