@@ -10,9 +10,9 @@ export type ReserveData = {
   symbol: string;
   decimals: number;
   isActive: boolean;
-  usageAsCollateralEnabled: number;
-  borrowingEnabled: number;
-  stableBorrowRateEnabled: number;
+  usageAsCollateralEnabled: boolean;
+  borrowingEnabled: boolean;
+  stableBorrowRateEnabled: boolean;
   baseLTVasCollateral: string;
   liquidityIndex: string;
   reserveLiquidationThreshold: string;
@@ -40,7 +40,7 @@ export type UserReserveData = {
   userBalanceIndex: string;
   redirectedBalance: string;
   interestRedirectionAddress: string;
-  usageAsCollateralEnabledOnUser: string;
+  usageAsCollateralEnabledOnUser: boolean;
   borrowRate: string;
   borrowRateMode: BorrowRateMode;
   originationFee: string;
