@@ -21,6 +21,7 @@ export function normalize(n: BigNumberValue, decimals: number): string {
 }
 
 const SECONDS_PER_YEAR = valueToBigNumber('31536000');
+const ETH_DECIMALS = 18;
 const USD_DECIMALS = 10;
 const RAY_DECIMALS = 27;
 
@@ -399,7 +400,6 @@ export function formatUserSummaryData(
     usdPriceEth,
     currentTimestamp
   );
-  const ethDecimals = 18;
   const userReservesData = userData.reservesData.map(
     (userReserve): ComputedUserReserve => {
       const poolReserve = poolReservesData.find(
@@ -436,7 +436,7 @@ export function formatUserSummaryData(
         ),
         currentUnderlyingBalanceETH: normalize(
           userReserve.currentUnderlyingBalanceETH,
-          ethDecimals
+          ETH_DECIMALS
         ),
         currentUnderlyingBalanceUSD: normalize(
           userReserve.currentUnderlyingBalanceUSD,
@@ -448,7 +448,7 @@ export function formatUserSummaryData(
         ),
         principalBorrowsETH: normalize(
           userReserve.principalBorrowsETH,
-          ethDecimals
+          ETH_DECIMALS
         ),
         principalBorrowsUSD: normalize(
           userReserve.principalBorrowsUSD,
@@ -457,7 +457,7 @@ export function formatUserSummaryData(
         currentBorrows: normalize(userReserve.currentBorrows, reserveDecimals),
         currentBorrowsETH: normalize(
           userReserve.currentBorrowsETH,
-          ethDecimals
+          ETH_DECIMALS
         ),
         currentBorrowsUSD: normalize(
           userReserve.currentBorrowsUSD,
@@ -466,7 +466,7 @@ export function formatUserSummaryData(
         originationFee: normalize(userReserve.originationFee, reserveDecimals),
         originationFeeETH: normalize(
           userReserve.originationFeeETH,
-          ethDecimals
+          ETH_DECIMALS
         ),
         originationFeeUSD: normalize(
           userReserve.originationFeeUSD,
@@ -478,14 +478,14 @@ export function formatUserSummaryData(
   return {
     id: userData.id,
     reservesData: userReservesData,
-    totalLiquidityETH: normalize(userData.totalLiquidityETH, ethDecimals),
+    totalLiquidityETH: normalize(userData.totalLiquidityETH, ETH_DECIMALS),
     totalLiquidityUSD: normalize(userData.totalLiquidityUSD, USD_DECIMALS),
-    totalCollateralETH: normalize(userData.totalCollateralETH, ethDecimals),
+    totalCollateralETH: normalize(userData.totalCollateralETH, ETH_DECIMALS),
     totalCollateralUSD: normalize(userData.totalCollateralUSD, USD_DECIMALS),
-    totalFeesETH: normalize(userData.totalFeesETH, ethDecimals),
-    totalBorrowsETH: normalize(userData.totalBorrowsETH, ethDecimals),
+    totalFeesETH: normalize(userData.totalFeesETH, ETH_DECIMALS),
+    totalBorrowsETH: normalize(userData.totalBorrowsETH, ETH_DECIMALS),
     totalBorrowsUSD: normalize(userData.totalBorrowsUSD, USD_DECIMALS),
-    availableBorrowsETH: normalize(userData.availableBorrowsETH, ethDecimals),
+    availableBorrowsETH: normalize(userData.availableBorrowsETH, ETH_DECIMALS),
     currentLoanToValue: normalize(userData.currentLoanToValue, 2),
     currentLiquidationThreshold: normalize(
       userData.currentLiquidationThreshold,
@@ -493,7 +493,7 @@ export function formatUserSummaryData(
     ),
     maxAmountToWithdrawInEth: normalize(
       userData.maxAmountToWithdrawInEth,
-      ethDecimals
+      ETH_DECIMALS
     ),
     healthFactor: userData.healthFactor,
   };
@@ -504,7 +504,7 @@ export function formatReserves(reserves: ReserveData[]): ReserveData[] {
     ...reserve,
     price: {
       ...reserve.price,
-      priceInEth: normalize(reserve.price.priceInEth, reserve.decimals),
+      priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
     },
     baseLTVasCollateral: normalize(reserve.baseLTVasCollateral, 2),
     variableBorrowRate: normalize(reserve.variableBorrowRate, RAY_DECIMALS),
