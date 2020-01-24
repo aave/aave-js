@@ -51,10 +51,8 @@ function getCompoundedBorrowBalance(
   }
 
   return RayMath.rayToWad(
-    RayMath.rayMul(borrowBalanceRay, cumulatedInterest).plus(
-      userReserve.originationFee
-    )
-  );
+    RayMath.rayMul(borrowBalanceRay, cumulatedInterest)
+  ).plus(userReserve.originationFee);
 }
 
 const calculateCompoundedInterest = (
