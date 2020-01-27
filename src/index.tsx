@@ -84,7 +84,7 @@ export function calculateHealthFactorFromBalances(
   collateralBalanceETH: BigNumberValue,
   borrowBalanceETH: BigNumberValue,
   totalFeesETH: BigNumberValue,
-  currentLiquidationThreshold: BigNumber
+  currentLiquidationThreshold: BigNumberValue
 ): BigNumber {
   if (valueToBigNumber(borrowBalanceETH).eq(0)) {
     return valueToBigNumber('-1'); // invalid number
@@ -363,7 +363,9 @@ export function computeRawUserSummaryData(
   const maxAmountToWithdrawInEth = totalLiquidityETH.minus(
     totalBorrowsAndFeesETH.eq(0)
       ? '0'
-      : totalBorrowsAndFeesETH.dividedBy(currentLiquidationThreshold)
+      : totalBorrowsAndFeesETH
+          .multipliedBy(100)
+          .dividedBy(currentLiquidationThreshold)
   );
 
   return {
