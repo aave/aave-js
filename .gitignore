@@ -5,3 +5,5 @@ dist
 .idea
 .DS_Store
 .vscode
+.graphqlconfig
+schema.graphql
