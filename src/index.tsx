@@ -321,12 +321,12 @@ export function computeRawUserSummaryData(
   if (currentLtv.gt(0)) {
     currentLtv = currentLtv
       .div(totalCollateralETH)
-      .decimalPlaces(2, BigNumber.ROUND_DOWN);
+      .decimalPlaces(0, BigNumber.ROUND_DOWN);
   }
   if (currentLiquidationThreshold.gt(0)) {
     currentLiquidationThreshold = currentLiquidationThreshold
       .div(totalCollateralETH)
-      .decimalPlaces(2, BigNumber.ROUND_DOWN);
+      .decimalPlaces(0, BigNumber.ROUND_DOWN);
   }
 
   const healthFactor = calculateHealthFactorFromBalances(
