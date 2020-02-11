@@ -82,9 +82,12 @@ export type UserSummaryData = {
   totalCollateralETH: string;
   totalBorrowsETH: string;
   totalFeesETH: string;
+  totalFeesUSD: string;
   totalLiquidityUSD: string;
   totalCollateralUSD: string;
   totalBorrowsUSD: string;
+  totalBorrowsWithFeesETH: string;
+  totalBorrowsWithFeesUSD: string;
   availableBorrowsETH: string;
   currentLoanToValue: string;
   currentLiquidationThreshold: string;

@@ -350,6 +350,13 @@ export function computeRawUserSummaryData(
     .multipliedBy(10 ** USD_DECIMALS)
     .dividedBy(usdPriceEth)
     .toString();
+
+  const totalFeesUSD = totalFeesETH
+    .multipliedBy(10 ** USD_DECIMALS)
+    .dividedBy(usdPriceEth);
+
+  const totalBorrowsWithFeesETH = totalFeesETH.plus(totalBorrowsETH);
+  const totalBorrowsWithFeesUSD = totalFeesUSD.plus(totalBorrowsUSD);
   const availableBorrowsETH = calculateAvailableBorrowsETH(
     totalCollateralETH,
     totalBorrowsETH,
@@ -381,6 +388,9 @@ export function computeRawUserSummaryData(
     maxAmountToWithdrawInEth: maxAmountToWithdrawInEth.toString(),
     healthFactor: healthFactor.toString(),
     reservesData: userReservesData,
+    totalFeesUSD: totalFeesUSD.toString(),
+    totalBorrowsWithFeesETH: totalBorrowsWithFeesETH.toString(),
+    totalBorrowsWithFeesUSD: totalBorrowsWithFeesUSD.toString(),
   };
 }
 
@@ -481,8 +491,17 @@ export function formatUserSummaryData(
     totalCollateralETH: normalize(userData.totalCollateralETH, ETH_DECIMALS),
     totalCollateralUSD: normalize(userData.totalCollateralUSD, USD_DECIMALS),
     totalFeesETH: normalize(userData.totalFeesETH, ETH_DECIMALS),
+    totalFeesUSD: normalize(userData.totalFeesUSD, USD_DECIMALS),
     totalBorrowsETH: normalize(userData.totalBorrowsETH, ETH_DECIMALS),
     totalBorrowsUSD: normalize(userData.totalBorrowsUSD, USD_DECIMALS),
+    totalBorrowsWithFeesETH: normalize(
+      userData.totalBorrowsWithFeesETH,
+      ETH_DECIMALS
+    ),
+    totalBorrowsWithFeesUSD: normalize(
+      userData.totalBorrowsWithFeesUSD,
+      USD_DECIMALS
+    ),
     availableBorrowsETH: normalize(userData.availableBorrowsETH, ETH_DECIMALS),
     currentLoanToValue: normalize(userData.currentLoanToValue, 2),
     currentLiquidationThreshold: normalize(
