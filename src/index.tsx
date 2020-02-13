@@ -93,6 +93,22 @@ export function calculateHealthFactorFromBalances(
     .div(valueToBigNumber(borrowBalanceETH).plus(totalFeesETH));
 }
 
+export function calculateHealthFactorFromBalancesBigUnits(
+  collateralBalanceETH: BigNumberValue,
+  borrowBalanceETH: BigNumberValue,
+  totalFeesETH: BigNumberValue,
+  currentLiquidationThreshold: BigNumberValue
+): BigNumber {
+  return calculateHealthFactorFromBalances(
+    collateralBalanceETH,
+    borrowBalanceETH,
+    totalFeesETH,
+    new BigNumber(currentLiquidationThreshold)
+      .multipliedBy(100)
+      .decimalPlaces(0, BigNumber.ROUND_DOWN)
+  );
+}
+
 function calculateAvailableBorrowsETH(
   collateralBalanceETH: BigNumberValue,
   borrowBalanceETH: BigNumberValue,
