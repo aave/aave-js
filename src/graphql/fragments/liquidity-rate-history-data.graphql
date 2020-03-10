@@ -1,4 +1,0 @@
-fragment LiquidityRateHistoryData on ReserveParamsHistoryItem {
-  liquidityRate
-  timestamp
-}

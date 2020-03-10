@@ -1,5 +1,0 @@
-fragment BorrowRateHistoryData on ReserveParamsHistoryItem {
-  variableBorrowRate
-  stableBorrowRate
-  timestamp
-}
