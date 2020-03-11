@@ -35,20 +35,28 @@ function getCompoundedBorrowBalance(
     return valueToZDBigNumber('0');
   }
 
-  let cumulatedInterest = calculateCompoundedInterest(
-    userReserve.borrowRate,
-    currentTimestamp,
-    userReserve.lastUpdateTimestamp
-  );
-
-  const borrowBalanceRay = RayMath.wadToRay(principalBorrows);
-
+  let cumulatedInterest;
   if (userReserve.borrowRateMode === BorrowRateMode.Variable) {
+    let compoundedInterest = calculateCompoundedInterest(
+      reserve.variableBorrowRate,
+      currentTimestamp,
+      reserve.lastUpdateTimestamp
+    );
+
     cumulatedInterest = RayMath.rayDiv(
-      RayMath.rayMul(cumulatedInterest, reserve.variableBorrowIndex),
+      RayMath.rayMul(compoundedInterest, reserve.variableBorrowIndex),
       userReserve.variableBorrowIndex
     );
+  } else {
+    // if stable
+    cumulatedInterest = calculateCompoundedInterest(
+      userReserve.borrowRate,
+      currentTimestamp,
+      userReserve.lastUpdateTimestamp
+    );
   }
+
+  const borrowBalanceRay = RayMath.wadToRay(principalBorrows);
 
   return RayMath.rayToWad(RayMath.rayMul(borrowBalanceRay, cumulatedInterest));
 }
