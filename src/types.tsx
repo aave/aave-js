@@ -16,6 +16,7 @@ export type ReserveData = {
   baseLTVasCollateral: string;
   liquidityIndex: string;
   reserveLiquidationThreshold: string;
+  reserveLiquidationBonus: string;
   variableBorrowIndex: string;
   availableLiquidity: string;
   stableBorrowRate: string;

@@ -22,6 +22,7 @@ fragment ReserveData on Reserve {
   totalBorrowsVariable
   totalLiquidity
   utilizationRate
+  reserveLiquidationBonus
   variableBorrowRate
   price {
     priceInEth
