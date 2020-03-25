@@ -558,7 +558,10 @@ export function formatReserves(reserves: ReserveData[]): ReserveData[] {
       reserve.reserveLiquidationThreshold,
       2
     ),
-    reserveLiquidationBonus: normalize(reserve.reserveLiquidationBonus, 2),
+    reserveLiquidationBonus: normalize(
+      valueToBigNumber(reserve.reserveLiquidationBonus).minus(100),
+      2
+    ),
     totalBorrows: normalize(reserve.totalBorrows, reserve.decimals),
     totalBorrowsVariable: normalize(
       reserve.totalBorrowsVariable,
