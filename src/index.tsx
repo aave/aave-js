@@ -561,8 +561,9 @@ export function formatReserves(
 ): ReserveData[] {
   return reserves.map(reserve => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
-      res => res.symbol === reserve.symbol
+      res => res.symbol.toUpperCase() === reserve.symbol.toUpperCase()
     )?.paramsHistory[0];
+
     return {
       ...reserve,
       price: {
@@ -579,7 +580,7 @@ export function formatReserves(
             reserve.lastUpdateTimestamp
           )
         : undefined,
-      averageVariableLiquidityRate: reserve30DaysAgo
+      avg30DaysLiquidityRate: reserve30DaysAgo
         ? calculateAverageRate(
             reserve30DaysAgo.liquidityIndex,
             reserve.liquidityIndex,
