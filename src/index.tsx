@@ -7,6 +7,7 @@ import {
   UserReserveData,
   UserSummaryData,
   BorrowRateMode,
+  ReserveRatesData,
 } from './types';
 import {
   BigNumberValue,
@@ -540,34 +541,79 @@ export function formatUserSummaryData(
   };
 }
 
-export function formatReserves(reserves: ReserveData[]): ReserveData[] {
-  return reserves.map(reserve => ({
-    ...reserve,
-    price: {
-      ...reserve.price,
-      priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
-    },
-    baseLTVasCollateral: normalize(reserve.baseLTVasCollateral, 2),
-    variableBorrowRate: normalize(reserve.variableBorrowRate, RAY_DECIMALS),
-    stableBorrowRate: normalize(reserve.stableBorrowRate, RAY_DECIMALS),
-    liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
-    totalLiquidity: normalize(reserve.totalLiquidity, reserve.decimals),
-    availableLiquidity: normalize(reserve.availableLiquidity, reserve.decimals),
-    liquidityIndex: normalize(reserve.liquidityIndex, RAY_DECIMALS),
-    reserveLiquidationThreshold: normalize(
-      reserve.reserveLiquidationThreshold,
-      2
-    ),
-    reserveLiquidationBonus: normalize(
-      valueToBigNumber(reserve.reserveLiquidationBonus).minus(100),
-      2
-    ),
-    totalBorrows: normalize(reserve.totalBorrows, reserve.decimals),
-    totalBorrowsVariable: normalize(
-      reserve.totalBorrowsVariable,
-      reserve.decimals
-    ),
-    totalBorrowsStable: normalize(reserve.totalBorrowsStable, reserve.decimals),
-    variableBorrowIndex: normalize(reserve.variableBorrowIndex, RAY_DECIMALS),
-  }));
+export function calculateAverageRate(
+  index0: string,
+  index1: string,
+  timestamp0: number,
+  timestamp1: number
+): string {
+  return new BigNumber(index1)
+    .dividedBy(index0)
+    .minus('1')
+    .dividedBy(timestamp1 - timestamp0)
+    .multipliedBy('31536000')
+    .toString();
+}
+
+export function formatReserves(
+  reserves: ReserveData[],
+  reserveIndexes30DaysAgo?: ReserveRatesData[]
+): ReserveData[] {
+  return reserves.map(reserve => {
+    const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
+      res => res.symbol === reserve.symbol
+    )?.paramsHistory[0];
+    return {
+      ...reserve,
+      price: {
+        ...reserve.price,
+        priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
+      },
+      baseLTVasCollateral: normalize(reserve.baseLTVasCollateral, 2),
+      variableBorrowRate: normalize(reserve.variableBorrowRate, RAY_DECIMALS),
+      avg30DaysVariableBorrowRate: reserve30DaysAgo
+        ? calculateAverageRate(
+            reserve30DaysAgo.variableBorrowIndex,
+            reserve.variableBorrowIndex,
+            reserve30DaysAgo.timestamp,
+            reserve.lastUpdateTimestamp
+          )
+        : undefined,
+      averageVariableLiquidityRate: reserve30DaysAgo
+        ? calculateAverageRate(
+            reserve30DaysAgo.liquidityIndex,
+            reserve.liquidityIndex,
+            reserve30DaysAgo.timestamp,
+            reserve.lastUpdateTimestamp
+          )
+        : undefined,
+
+      stableBorrowRate: normalize(reserve.stableBorrowRate, RAY_DECIMALS),
+      liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
+      totalLiquidity: normalize(reserve.totalLiquidity, reserve.decimals),
+      availableLiquidity: normalize(
+        reserve.availableLiquidity,
+        reserve.decimals
+      ),
+      liquidityIndex: normalize(reserve.liquidityIndex, RAY_DECIMALS),
+      reserveLiquidationThreshold: normalize(
+        reserve.reserveLiquidationThreshold,
+        2
+      ),
+      reserveLiquidationBonus: normalize(
+        valueToBigNumber(reserve.reserveLiquidationBonus).minus(100),
+        2
+      ),
+      totalBorrows: normalize(reserve.totalBorrows, reserve.decimals),
+      totalBorrowsVariable: normalize(
+        reserve.totalBorrowsVariable,
+        reserve.decimals
+      ),
+      totalBorrowsStable: normalize(
+        reserve.totalBorrowsStable,
+        reserve.decimals
+      ),
+      variableBorrowIndex: normalize(reserve.variableBorrowIndex, RAY_DECIMALS),
+    };
+  });
 }

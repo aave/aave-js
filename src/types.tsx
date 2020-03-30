@@ -4,6 +4,16 @@ export enum BorrowRateMode {
   Variable = 'Variable',
 }
 
+export type ReserveRatesData = {
+  id: string;
+  symbol: string;
+  paramsHistory: {
+    variableBorrowIndex: string;
+    liquidityIndex: string;
+    timestamp: number;
+  }[];
+};
+
 export type ReserveData = {
   id: string;
   name: string;
@@ -18,15 +28,17 @@ export type ReserveData = {
   reserveLiquidationThreshold: string;
   reserveLiquidationBonus: string;
   variableBorrowIndex: string;
+  variableBorrowRate: string;
+  avg30DaysVariableBorrowRate?: string;
   availableLiquidity: string;
   stableBorrowRate: string;
   liquidityRate: string;
+  avg30DaysLiquidityRate?: string;
   totalBorrows: string;
   totalBorrowsStable: string;
   totalBorrowsVariable: string;
   totalLiquidity: string;
   utilizationRate: string;
-  variableBorrowRate: string;
   lastUpdateTimestamp: number;
   aToken: {
     id: string;
