@@ -66,6 +66,7 @@ export type UserReserveData = {
     symbol: string;
     decimals: number;
     liquidityRate: string;
+    reserveLiquidationBonus: string;
     lastUpdateTimestamp: number;
     aToken: {
       id: string;

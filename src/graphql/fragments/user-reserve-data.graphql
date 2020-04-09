@@ -9,6 +9,7 @@ fragment UserReserveData on UserReserve {
     symbol
     decimals
     liquidityRate
+    reserveLiquidationBonus
     lastUpdateTimestamp
     aToken {
       id

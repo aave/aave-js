@@ -434,19 +434,17 @@ export function formatUserSummaryData(
     currentTimestamp
   );
   const userReservesData = userData.reservesData.map(
-    (userReserve): ComputedUserReserve => {
-      const poolReserve = poolReservesData.find(
-        reserve => reserve.id === userReserve.reserve.id
-      );
-      const reserveDecimals = poolReserve?.decimals || 18;
+    ({ reserve, ...userReserve }): ComputedUserReserve => {
+      const reserveDecimals = reserve.decimals;
       return {
         ...userReserve,
         reserve: {
-          ...userReserve.reserve,
-          liquidityRate: normalize(
-            userReserve.reserve.liquidityRate,
-            RAY_DECIMALS
+          ...reserve,
+          reserveLiquidationBonus: normalize(
+            valueToBigNumber(reserve.reserveLiquidationBonus).minus(100),
+            2
           ),
+          liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
         },
         redirectedBalance: normalize(
           userReserve.redirectedBalance,
