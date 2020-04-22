@@ -1,5 +1,6 @@
 fragment ReserveData on Reserve {
   id
+  underlyingAsset
   name
   symbol
   decimals
