@@ -16,6 +16,7 @@ export type ReserveRatesData = {
 
 export type ReserveData = {
   id: string;
+  underlyingAsset: string;
   name: string;
   symbol: string;
   decimals: number;
