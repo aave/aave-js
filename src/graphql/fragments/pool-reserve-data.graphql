@@ -8,6 +8,13 @@ fragment ReserveData on Reserve {
   borrowingEnabled
   stableBorrowRateEnabled
   baseLTVasCollateral
+  optimalUtilisationRate
+  averageStableBorrowRate
+  stableRateSlope1
+  stableRateSlope2
+  baseVariableBorrowRate
+  variableRateSlope1
+  variableRateSlope2
   liquidityIndex
   reserveLiquidationThreshold
   variableBorrowIndex

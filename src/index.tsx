@@ -616,3 +616,78 @@ export function formatReserves(
     };
   });
 }
+
+export function calculateInterestRates(
+  reserve: ReserveData,
+  amountToDeposit: BigNumberValue,
+  amountToBorrow: BigNumberValue,
+  borrowMode: 'stable' | 'variable' = 'variable'
+) {
+  const { optimalUtilisationRate } = reserve;
+  const baseVariableBorrowRate = valueToBigNumber(
+    reserve.baseVariableBorrowRate
+  );
+  const totalBorrowsStable = valueToBigNumber(reserve.totalBorrowsStable).plus(
+    borrowMode === 'stable' ? amountToBorrow : '0'
+  );
+  const totalBorrowsVariable = valueToBigNumber(
+    reserve.totalBorrowsVariable
+  ).plus(borrowMode === 'variable' ? amountToBorrow : '0');
+  const totalBorrows = totalBorrowsStable.plus(totalBorrowsVariable);
+  const totalDeposits = valueToBigNumber(reserve.totalBorrows).plus(
+    amountToDeposit
+  );
+  const utilizationRate =
+    totalDeposits.eq(0) && totalBorrows.eq(0)
+      ? valueToBigNumber(0)
+      : totalBorrows.dividedBy(totalDeposits);
+
+  let currentStableBorrowRate = valueToBigNumber(reserve.stableBorrowRate);
+  let currentVariableBorrowRate = valueToBigNumber(0);
+  let currentLiquidityRate = valueToBigNumber(0);
+
+  if (utilizationRate.gt(optimalUtilisationRate)) {
+    const excessUtilizationRateRatio = utilizationRate
+      .minus(optimalUtilisationRate)
+      .dividedBy(valueToBigNumber(1).minus(optimalUtilisationRate));
+
+    currentStableBorrowRate = currentStableBorrowRate
+      .plus(reserve.stableRateSlope1)
+      .plus(excessUtilizationRateRatio.multipliedBy(reserve.stableRateSlope2));
+    currentVariableBorrowRate = baseVariableBorrowRate
+      .plus(reserve.variableRateSlope1)
+      .plus(
+        excessUtilizationRateRatio.multipliedBy(reserve.variableRateSlope2)
+      );
+  } else {
+    currentVariableBorrowRate = currentVariableBorrowRate.plus(
+      utilizationRate
+        .dividedBy(optimalUtilisationRate)
+        .multipliedBy(reserve.stableRateSlope1)
+    );
+    currentVariableBorrowRate = baseVariableBorrowRate.plus(
+      utilizationRate
+        .dividedBy(optimalUtilisationRate)
+        .multipliedBy(reserve.variableRateSlope1)
+    );
+  }
+
+  if (!totalBorrows.eq(0)) {
+    const weightedVariableRate = currentVariableBorrowRate.multipliedBy(
+      totalBorrowsVariable
+    );
+    const weightedStableRate = valueToBigNumber(
+      reserve.averageStableBorrowRate
+    ).multipliedBy(totalBorrowsStable);
+
+    currentLiquidityRate = weightedVariableRate
+      .plus(weightedStableRate)
+      .dividedBy(totalBorrows);
+  }
+
+  return {
+    variableBorrowRate: currentVariableBorrowRate.toString(),
+    stableBorrowRate: currentStableBorrowRate.toString(),
+    liquidityRate: currentLiquidityRate.toString(),
+  };
+}

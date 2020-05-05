@@ -24,6 +24,13 @@ export type ReserveData = {
   borrowingEnabled: boolean;
   stableBorrowRateEnabled: boolean;
   baseLTVasCollateral: string;
+  optimalUtilisationRate: string;
+  stableRateSlope1: string;
+  stableRateSlope2: string;
+  averageStableBorrowRate: string;
+  baseVariableBorrowRate: string;
+  variableRateSlope1: string;
+  variableRateSlope2: string;
   liquidityIndex: string;
   reserveLiquidationThreshold: string;
   reserveLiquidationBonus: string;
