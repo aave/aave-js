@@ -634,7 +634,7 @@ export function calculateInterestRates(
     reserve.totalBorrowsVariable
   ).plus(borrowMode === 'variable' ? amountToBorrow : '0');
   const totalBorrows = totalBorrowsStable.plus(totalBorrowsVariable);
-  const totalDeposits = valueToBigNumber(reserve.totalBorrows).plus(
+  const totalDeposits = valueToBigNumber(reserve.totalLiquidity).plus(
     amountToDeposit
   );
   const utilizationRate =
