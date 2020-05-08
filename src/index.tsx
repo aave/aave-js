@@ -559,7 +559,7 @@ export function formatReserves(
 ): ReserveData[] {
   return reserves.map(reserve => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
-      res => res.symbol.toUpperCase() === reserve.symbol.toUpperCase()
+      res => res.id === reserve.id
     )?.paramsHistory[0];
 
     return {
