@@ -42,11 +42,11 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
-    "husky": "^4.2.3",
+    "@types/jest": "^25.2.3",
+    "husky": "^4.2.5",
     "tsdx": "^0.13.2",
-    "tslib": "^1.11.1",
-    "typescript": "^3.8.3"
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.3"
   },
   "dependencies": {
     "bignumber.js": "^9.0.0"

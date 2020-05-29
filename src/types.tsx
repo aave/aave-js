@@ -63,6 +63,7 @@ export type UserReserveData = {
   lastUpdateTimestamp: number;
   reserve: {
     id: string;
+    underlyingAsset: string;
     name: string;
     symbol: string;
     decimals: number;
