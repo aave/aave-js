@@ -660,7 +660,7 @@ export function calculateInterestRates(
         excessUtilizationRateRatio.multipliedBy(reserve.variableRateSlope2)
       );
   } else {
-    currentVariableBorrowRate = currentVariableBorrowRate.plus(
+    currentStableBorrowRate = currentVariableBorrowRate.plus(
       utilizationRate
         .dividedBy(optimalUtilisationRate)
         .multipliedBy(reserve.stableRateSlope1)
