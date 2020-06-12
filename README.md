@@ -1,6 +1,6 @@
 # Aave Protocol js
 
-Beta version of the Aave protocol logic package
+Aave protocol logic package, supports main and uniswap markets
 
 
 The simplest way to get initial protocol data - use our subgraphs on TheGraph protocol:
