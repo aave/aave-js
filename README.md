@@ -4,8 +4,9 @@ Beta version of the Aave protocol logic package
 
 
 The simplest way to get initial protocol data - use our subgraphs on TheGraph protocol:
-https://thegraph.com/explorer/subgraph/aave/protocol-ropsten-raw - ropsten
-https://thegraph.com/explorer/subgraph/aave/protocol-raw - mainnet
+https://thegraph.com/explorer/subgraph/aave/protocol-multy-ropsten-raw - ropsten
+https://thegraph.com/explorer/subgraph/aave/protocol-multy-kovan-raw - kovan
+https://thegraph.com/explorer/subgraph/aave/protocol-multy-raw - mainnet
 
 _/graphql/_ folder contains graphql documents with the structures needed for aggregation methods.
 
@@ -22,6 +23,13 @@ returns user summary data in small units with 0 decimal places, except health-fa
 ```formatReserves(reserves)```
 
 returns reserves data formatted to big units.
+
+## Braking changes in v1
+* Endpoint addresses should be changed (addresses above)
+* Graphql documents should be "recompiled"
+* Reserve id not underlying asset address anymore, it's not unique enough because same asset can be in 2 or more pools.
+* But reserve has underlyingAssetAddress field
+
 
 ## TODO
 * Extra documentation

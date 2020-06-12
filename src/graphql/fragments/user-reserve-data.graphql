@@ -5,6 +5,7 @@ fragment UserReserveData on UserReserve {
   interestRedirectionAddress
   reserve{
     id
+    underlyingAsset
     name
     symbol
     decimals
