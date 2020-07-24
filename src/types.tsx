@@ -21,6 +21,7 @@ export type ReserveData = {
   symbol: string;
   decimals: number;
   isActive: boolean;
+  isFreezed: boolean;
   usageAsCollateralEnabled: boolean;
   borrowingEnabled: boolean;
   stableBorrowRateEnabled: boolean;

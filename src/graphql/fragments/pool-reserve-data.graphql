@@ -5,6 +5,7 @@ fragment ReserveData on Reserve {
   symbol
   decimals
   isActive
+  isFreezed
   usageAsCollateralEnabled
   borrowingEnabled
   stableBorrowRateEnabled
