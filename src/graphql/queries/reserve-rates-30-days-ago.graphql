@@ -1,4 +1,4 @@
-query ReservesRates30DaysAgo($timestamp: Int, $pool: String) {
+query ReservesRates30DaysAgoQuery($timestamp: Int, $pool: String) {
   reserves(where: {pool: $pool}) {
     id
     symbol
