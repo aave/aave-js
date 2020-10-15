@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { RAY, rayMul } from '../src/helpers/ray-math';
+import { RAY, rayMul } from '../helpers/ray-math';
 
 describe('wadMul should', () => {
   it('works correct', () => {
