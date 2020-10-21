@@ -57,7 +57,7 @@ export type UserReserveData = {
   variableBorrowIndex: string;
   stableBorrowRate: string;
   principalStableBorrows: string;
-  lastStableBorrowsUpdateTimestamp: number;
+  stableBorrowLastUpdateTimestamp: number;
   reserve: {
     id: string;
     underlyingAsset: string;

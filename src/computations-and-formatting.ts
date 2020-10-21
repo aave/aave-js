@@ -89,7 +89,7 @@ function computeUserReserveData(
   const stableBorrows = getCompoundedStableBalance(
     userReserve.principalStableBorrows,
     userReserve.stableBorrowRate,
-    userReserve.lastStableBorrowsUpdateTimestamp,
+    userReserve.stableBorrowLastUpdateTimestamp,
     currentTimestamp
   ).toString();
 
@@ -276,8 +276,6 @@ export function formatUserSummaryData(
           reserveDecimals
         ),
         stableBorrowRate: normalize(userReserve.stableBorrowRate, RAY_DECIMALS),
-        lastStableBorrowsUpdateTimestamp:
-          userReserve.lastStableBorrowsUpdateTimestamp,
         variableBorrowIndex: normalize(
           userReserve.variableBorrowIndex,
           RAY_DECIMALS

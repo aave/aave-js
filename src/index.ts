@@ -1,9 +1,16 @@
-export { valueToZDBigNumber } from './helpers/bignumber';
+export {
+  valueToZDBigNumber,
+  valueToBigNumber,
+  BigNumberValue,
+} from './helpers/bignumber';
 export {
   normalize,
   calculateAvailableBorrowsETH,
   calculateHealthFactorFromBalances,
   calculateHealthFactorFromBalancesBigUnits,
+  getCompoundedBalance,
+  getCompoundedStableBalance,
+  LTV_PRECISION,
 } from './helpers/pool-math';
 export {
   ReserveData,
