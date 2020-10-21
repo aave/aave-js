@@ -3,6 +3,7 @@ export {
   valueToBigNumber,
   BigNumberValue,
 } from './helpers/bignumber';
+export { BigNumber } from 'bignumber.js';
 export {
   normalize,
   calculateAvailableBorrowsETH,
