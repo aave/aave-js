@@ -26,9 +26,8 @@ fragment ReserveData on Reserve {
   availableLiquidity
   stableBorrowRate
   liquidityRate
-  totalBorrows
-  totalBorrowsStable
-  totalBorrowsVariable
+  totalPrincipalStableDebt
+  totalScaledVariableDebt
   totalLiquidity
   utilizationRate
   reserveLiquidationBonus

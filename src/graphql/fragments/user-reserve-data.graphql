@@ -1,9 +1,6 @@
 fragment UserReserveData on UserReserve {
-  principalATokenBalance
-  userBalanceIndex
-  redirectedBalance
-  interestRedirectionAddress
-  reserve{
+  scaledATokenBalance
+  reserve {
     id
     underlyingAsset
     name
@@ -19,7 +16,6 @@ fragment UserReserveData on UserReserve {
   usageAsCollateralEnabledOnUser
   borrowRate
   borrowRateMode
-  originationFee
   principalBorrows
   variableBorrowIndex
   lastUpdateTimestamp

@@ -53,7 +53,7 @@ function computeUserReserveData(
     decimals,
   } = poolReserve;
   const underlyingBalance = getCompoundedBalance(
-    userReserve.principalATokenBalance,
+    userReserve.scaledATokenBalance,
     poolReserve.liquidityIndex,
     poolReserve.liquidityRate,
     poolReserve.lastUpdateTimestamp,
@@ -72,7 +72,7 @@ function computeUserReserveData(
   );
 
   const variableBorrows = getCompoundedBalance(
-    userReserve.principalVariableBorrows,
+    userReserve.scaledVariableDebt,
     poolReserve.variableBorrowIndex,
     poolReserve.variableBorrowRate,
     poolReserve.lastUpdateTimestamp,
@@ -87,7 +87,7 @@ function computeUserReserveData(
   );
 
   const stableBorrows = getCompoundedStableBalance(
-    userReserve.principalStableBorrows,
+    userReserve.principalStableDebt,
     userReserve.stableBorrowRate,
     userReserve.stableBorrowLastUpdateTimestamp,
     currentTimestamp
@@ -271,8 +271,8 @@ export function formatUserSummaryData(
           ),
           liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
         },
-        principalATokenBalance: normalize(
-          userReserve.principalATokenBalance,
+        scaledATokenBalance: normalize(
+          userReserve.scaledATokenBalance,
           reserveDecimals
         ),
         stableBorrowRate: normalize(userReserve.stableBorrowRate, RAY_DECIMALS),
@@ -280,7 +280,6 @@ export function formatUserSummaryData(
           userReserve.variableBorrowIndex,
           RAY_DECIMALS
         ),
-        userBalanceIndex: normalize(userReserve.userBalanceIndex, RAY_DECIMALS),
         underlyingBalance: normalize(
           userReserve.underlyingBalance,
           reserveDecimals
@@ -388,12 +387,12 @@ export function formatReserves(
         4
       ),
       totalBorrows: normalize(reserve.totalBorrows, reserve.decimals),
-      totalBorrowsVariable: normalize(
-        reserve.totalBorrowsVariable,
+      totalScaledVariableDebt: normalize(
+        reserve.totalScaledVariableDebt,
         reserve.decimals
       ),
-      totalBorrowsStable: normalize(
-        reserve.totalBorrowsStable,
+      totalPrincipalStableDebt: normalize(
+        reserve.totalPrincipalStableDebt,
         reserve.decimals
       ),
       variableBorrowIndex: normalize(reserve.variableBorrowIndex, RAY_DECIMALS),
