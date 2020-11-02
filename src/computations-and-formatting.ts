@@ -361,6 +361,11 @@ export function formatReserves(
       reserve.decimals
     );
 
+    const totalDebt = normalize(
+      valueToZDBigNumber(totalStableDebt).plus(totalVariableDebt),
+      reserve.decimals
+    );
+
     const totalLiquidity = normalize(
       valueToZDBigNumber(reserve.availableLiquidity)
         .plus(totalStableDebt)
@@ -378,6 +383,7 @@ export function formatReserves(
       totalStableDebt,
       totalLiquidity,
       utilizationRate,
+      totalDebt,
       price: {
         ...reserve.price,
         priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),

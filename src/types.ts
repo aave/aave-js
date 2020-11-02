@@ -51,6 +51,7 @@ export type ComputedReserveData = {
   utilizationRate: string;
   totalStableDebt: string;
   totalVariableDebt: string;
+  totalDebt: string;
   totalLiquidity: string;
 } & ReserveData;
 
