@@ -15,7 +15,7 @@ export type ReserveData = {
   symbol: string;
   decimals: number;
   isActive: boolean;
-  isFreezed: boolean;
+  isFrozen: boolean;
   usageAsCollateralEnabled: boolean;
   borrowingEnabled: boolean;
   stableBorrowRateEnabled: boolean;
@@ -24,7 +24,8 @@ export type ReserveData = {
   optimalUtilisationRate: string;
   stableRateSlope1: string;
   stableRateSlope2: string;
-  averageStableBorrowRate: string;
+  averageStableRate: string;
+  stableDebtLastUpdateTimestamp: string;
   baseVariableBorrowRate: string;
   variableRateSlope1: string;
   variableRateSlope2: string;
@@ -38,25 +39,28 @@ export type ReserveData = {
   stableBorrowRate: string;
   liquidityRate: string;
   avg30DaysLiquidityRate?: string;
-  totalBorrows: string;
-  totalBorrowsStable: string;
-  totalBorrowsVariable: string;
-  totalLiquidity: string;
-  utilizationRate: string;
+  totalPrincipalStableDebt: string;
+  totalScaledVariableDebt: string;
   lastUpdateTimestamp: number;
   price: {
     priceInEth: string;
   };
 };
 
+export type ComputedReserveData = {
+  utilizationRate: string;
+  totalStableDebt: string;
+  totalVariableDebt: string;
+  totalLiquidity: string;
+} & ReserveData;
+
 export type UserReserveData = {
-  principalATokenBalance: string;
-  userBalanceIndex: string;
+  scaledATokenBalance: string;
   usageAsCollateralEnabledOnUser: boolean;
-  principalVariableBorrows: string;
+  scaledVariableDebt: string;
   variableBorrowIndex: string;
   stableBorrowRate: string;
-  principalStableBorrows: string;
+  principalStableDebt: string;
   stableBorrowLastUpdateTimestamp: number;
   reserve: {
     id: string;

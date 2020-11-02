@@ -11,10 +11,12 @@ export {
   calculateHealthFactorFromBalancesBigUnits,
   getCompoundedBalance,
   getCompoundedStableBalance,
+  calculateCompoundedInterest,
   LTV_PRECISION,
 } from './helpers/pool-math';
 export {
   ReserveData,
+  ComputedReserveData,
   UserReserveData,
   UserSummaryData,
   ComputedUserReserve,

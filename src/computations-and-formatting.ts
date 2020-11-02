@@ -13,13 +13,16 @@ import {
   normalize,
   calculateAverageRate,
   LTV_PRECISION,
+  calculateCompoundedInterest,
 } from './helpers/pool-math';
+import { rayMul } from './helpers/ray-math';
 import {
   ComputedUserReserve,
   ReserveData,
   UserReserveData,
   UserSummaryData,
   ReserveRatesData,
+  ComputedReserveData,
 } from './types';
 
 const ETH_DECIMALS = 18;
@@ -43,7 +46,7 @@ function getEthAndUsdBalance(
 }
 
 function computeUserReserveData(
-  poolReserve: ReserveData,
+  poolReserve: ComputedReserveData,
   userReserve: UserReserveData,
   usdPriceEth: BigNumberValue,
   currentTimestamp: number
@@ -53,7 +56,7 @@ function computeUserReserveData(
     decimals,
   } = poolReserve;
   const underlyingBalance = getCompoundedBalance(
-    userReserve.principalATokenBalance,
+    userReserve.scaledATokenBalance,
     poolReserve.liquidityIndex,
     poolReserve.liquidityRate,
     poolReserve.lastUpdateTimestamp,
@@ -72,7 +75,7 @@ function computeUserReserveData(
   );
 
   const variableBorrows = getCompoundedBalance(
-    userReserve.principalVariableBorrows,
+    userReserve.scaledVariableDebt,
     poolReserve.variableBorrowIndex,
     poolReserve.variableBorrowRate,
     poolReserve.lastUpdateTimestamp,
@@ -87,7 +90,7 @@ function computeUserReserveData(
   );
 
   const stableBorrows = getCompoundedStableBalance(
-    userReserve.principalStableBorrows,
+    userReserve.principalStableDebt,
     userReserve.stableBorrowRate,
     userReserve.stableBorrowLastUpdateTimestamp,
     currentTimestamp
@@ -124,7 +127,7 @@ function computeUserReserveData(
 }
 
 export function computeRawUserSummaryData(
-  poolReservesData: ReserveData[],
+  poolReservesData: ComputedReserveData[],
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
@@ -243,7 +246,7 @@ export function computeRawUserSummaryData(
 }
 
 export function formatUserSummaryData(
-  poolReservesData: ReserveData[],
+  poolReservesData: ComputedReserveData[],
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
@@ -271,8 +274,8 @@ export function formatUserSummaryData(
           ),
           liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
         },
-        principalATokenBalance: normalize(
-          userReserve.principalATokenBalance,
+        scaledATokenBalance: normalize(
+          userReserve.scaledATokenBalance,
           reserveDecimals
         ),
         stableBorrowRate: normalize(userReserve.stableBorrowRate, RAY_DECIMALS),
@@ -280,7 +283,6 @@ export function formatUserSummaryData(
           userReserve.variableBorrowIndex,
           RAY_DECIMALS
         ),
-        userBalanceIndex: normalize(userReserve.userBalanceIndex, RAY_DECIMALS),
         underlyingBalance: normalize(
           userReserve.underlyingBalance,
           reserveDecimals
@@ -335,15 +337,47 @@ export function formatUserSummaryData(
 
 export function formatReserves(
   reserves: ReserveData[],
+  currentTimestamp: number,
   reserveIndexes30DaysAgo?: ReserveRatesData[]
-): ReserveData[] {
+): ComputedReserveData[] {
   return reserves.map(reserve => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
       res => res.id === reserve.id
     )?.paramsHistory[0];
 
+    const totalVariableDebt = normalize(
+      rayMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
+      reserve.decimals
+    );
+    const totalStableDebt = normalize(
+      rayMul(
+        reserve.totalPrincipalStableDebt,
+        calculateCompoundedInterest(
+          reserve.averageStableRate,
+          reserve.stableDebtLastUpdateTimestamp,
+          currentTimestamp
+        )
+      ),
+      reserve.decimals
+    );
+
+    const totalLiquidity = normalize(
+      valueToZDBigNumber(reserve.availableLiquidity)
+        .plus(totalStableDebt)
+        .plus(totalVariableDebt),
+      reserve.decimals
+    );
+    const utilizationRate = valueToBigNumber(totalVariableDebt)
+      .plus(totalStableDebt)
+      .dividedBy(totalLiquidity)
+      .toString();
+
     return {
       ...reserve,
+      totalVariableDebt,
+      totalStableDebt,
+      totalLiquidity,
+      utilizationRate,
       price: {
         ...reserve.price,
         priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
@@ -373,7 +407,6 @@ export function formatReserves(
 
       stableBorrowRate: normalize(reserve.stableBorrowRate, RAY_DECIMALS),
       liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
-      totalLiquidity: normalize(reserve.totalLiquidity, reserve.decimals),
       availableLiquidity: normalize(
         reserve.availableLiquidity,
         reserve.decimals
@@ -387,13 +420,12 @@ export function formatReserves(
         valueToBigNumber(reserve.reserveLiquidationBonus).minus(LTV_PRECISION),
         4
       ),
-      totalBorrows: normalize(reserve.totalBorrows, reserve.decimals),
-      totalBorrowsVariable: normalize(
-        reserve.totalBorrowsVariable,
+      totalScaledVariableDebt: normalize(
+        reserve.totalScaledVariableDebt,
         reserve.decimals
       ),
-      totalBorrowsStable: normalize(
-        reserve.totalBorrowsStable,
+      totalPrincipalStableDebt: normalize(
+        reserve.totalPrincipalStableDebt,
         reserve.decimals
       ),
       variableBorrowIndex: normalize(reserve.variableBorrowIndex, RAY_DECIMALS),
