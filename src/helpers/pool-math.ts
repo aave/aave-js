@@ -16,7 +16,7 @@ export function normalize(n: BigNumberValue, decimals: number): string {
     .toString();
 }
 
-function calculateCompoundedInterest(
+export function calculateCompoundedInterest(
   rate: BigNumberValue,
   currentTimestamp: BigNumberValue,
   lastUpdateTimestamp: BigNumberValue
