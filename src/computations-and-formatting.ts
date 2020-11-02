@@ -46,7 +46,7 @@ function getEthAndUsdBalance(
 }
 
 function computeUserReserveData(
-  poolReserve: ComputedReserveData,
+  poolReserve: ReserveData,
   userReserve: UserReserveData,
   usdPriceEth: BigNumberValue,
   currentTimestamp: number
@@ -127,7 +127,7 @@ function computeUserReserveData(
 }
 
 export function computeRawUserSummaryData(
-  poolReservesData: ComputedReserveData[],
+  poolReservesData: ReserveData[],
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
@@ -246,7 +246,7 @@ export function computeRawUserSummaryData(
 }
 
 export function formatUserSummaryData(
-  poolReservesData: ComputedReserveData[],
+  poolReservesData: ReserveData[],
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
