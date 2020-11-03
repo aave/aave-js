@@ -25,7 +25,7 @@ export type ReserveData = {
   stableRateSlope1: string;
   stableRateSlope2: string;
   averageStableRate: string;
-  stableDebtLastUpdateTimestamp: string;
+  stableBorrowLastUpdateTimestamp: string;
   baseVariableBorrowRate: string;
   variableRateSlope1: string;
   variableRateSlope2: string;
