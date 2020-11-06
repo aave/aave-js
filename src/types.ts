@@ -17,6 +17,9 @@ export type ReserveData = {
   isActive: boolean;
   isFrozen: boolean;
   usageAsCollateralEnabled: boolean;
+  aTokenAddress: string;
+  stableDebtTokenAddress: string;
+  variableDebtTokenAddress: string;
   borrowingEnabled: boolean;
   stableBorrowRateEnabled: boolean;
   reserveFactor: string;
