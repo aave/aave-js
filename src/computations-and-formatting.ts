@@ -345,6 +345,11 @@ export function formatReserves(
       res => res.id === reserve.id
     )?.paramsHistory[0];
 
+    const availableLiquidity = normalize(
+      reserve.availableLiquidity,
+      reserve.decimals
+    );
+
     const totalVariableDebt = normalize(
       rayMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
       reserve.decimals
@@ -361,29 +366,19 @@ export function formatReserves(
       reserve.decimals
     );
 
-    const totalDebt = normalize(
-      valueToZDBigNumber(totalStableDebt).plus(totalVariableDebt),
-      reserve.decimals
-    );
+    const totalDebt = valueToBigNumber(totalStableDebt).plus(totalVariableDebt);
 
-    const totalLiquidity = normalize(
-      valueToZDBigNumber(reserve.availableLiquidity)
-        .plus(totalStableDebt)
-        .plus(totalVariableDebt),
-      reserve.decimals
-    );
-    const utilizationRate = valueToBigNumber(totalVariableDebt)
-      .plus(totalStableDebt)
-      .dividedBy(totalLiquidity)
-      .toString();
+    const totalLiquidity = totalDebt.plus(availableLiquidity).toString();
+    const utilizationRate = totalDebt.dividedBy(totalLiquidity).toString();
 
     return {
       ...reserve,
       totalVariableDebt,
       totalStableDebt,
       totalLiquidity,
+      availableLiquidity,
       utilizationRate,
-      totalDebt,
+      totalDebt: totalDebt.toString(),
       price: {
         ...reserve.price,
         priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
@@ -413,10 +408,6 @@ export function formatReserves(
 
       stableBorrowRate: normalize(reserve.stableBorrowRate, RAY_DECIMALS),
       liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
-      availableLiquidity: normalize(
-        reserve.availableLiquidity,
-        reserve.decimals
-      ),
       liquidityIndex: normalize(reserve.liquidityIndex, RAY_DECIMALS),
       reserveLiquidationThreshold: normalize(
         reserve.reserveLiquidationThreshold,
