@@ -1,5 +1,0 @@
-mutation Withdraw($data: RedeemInput!) {
-    redeem(data: $data) {
-        ...EthTransaction
-    }
-}

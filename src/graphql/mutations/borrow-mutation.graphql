@@ -1,5 +1,0 @@
-mutation Borrow($data: BorrowInput!) {
-    borrow(data: $data) {
-        ...EthTransaction
-    }
-}

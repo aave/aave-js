@@ -1,5 +1,0 @@
-mutation Mint($data: MintInput!) {
-    mint(data: $data) {
-        ...EthTransaction
-    }
-}

@@ -1,5 +1,0 @@
-mutation SetUsageAsCollateralMode($data: SetUsageAsCollateralInput!) {
-    setUsageAsCollateral(data: $data) {
-        ...EthTransaction
-    }
-}
