@@ -5,13 +5,13 @@ fragment ReserveData on Reserve {
   symbol
   decimals
   isActive
-  isFreezed
+  isFrozen
   usageAsCollateralEnabled
   borrowingEnabled
   stableBorrowRateEnabled
   baseLTVasCollateral
   optimalUtilisationRate
-  averageStableBorrowRate
+  averageStableRate
   stableRateSlope1
   stableRateSlope2
   baseVariableBorrowRate
@@ -22,6 +22,12 @@ fragment ReserveData on Reserve {
   variableBorrowIndex
   aToken {
     id
+  }
+  vToken {
+    id
+  }
+  sToken {
+    id 
   }
   availableLiquidity
   stableBorrowRate
@@ -36,4 +42,6 @@ fragment ReserveData on Reserve {
     priceInEth
   }
   lastUpdateTimestamp
+  stableDebtLastUpdateTimestamp
+  reserveFactor
 }
