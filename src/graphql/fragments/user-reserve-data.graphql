@@ -16,7 +16,8 @@ fragment UserReserveData on UserReserve {
   usageAsCollateralEnabledOnUser
   borrowRate
   borrowRateMode
-  principalBorrows
+  principalStableDebt
+  scaledVariableDebt
   variableBorrowIndex
   lastUpdateTimestamp
 }
