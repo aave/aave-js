@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0-beta.9",
+  "version": "2.0.0-beta.7",
   "license": "MIT",
   "name": "@aave/protocol-js",
   "description": "Aave protocol data aggregation tool",
