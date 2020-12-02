@@ -61,12 +61,7 @@ function computeUserReserveData(
     poolReserve.liquidityRate,
     poolReserve.lastUpdateTimestamp,
     currentTimestamp
-  )
-    .multipliedBy(
-      valueToZDBigNumber(LTV_PRECISION).minus(poolReserve.reserveFactor)
-    )
-    .dividedBy(LTV_PRECISION)
-    .toString();
+  ).toString();
   const [underlyingBalanceETH, underlyingBalanceUSD] = getEthAndUsdBalance(
     underlyingBalance,
     priceInEth,
