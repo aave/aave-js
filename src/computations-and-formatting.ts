@@ -364,7 +364,10 @@ export function formatReserves(
     const totalDebt = valueToBigNumber(totalStableDebt).plus(totalVariableDebt);
 
     const totalLiquidity = totalDebt.plus(availableLiquidity).toString();
-    const utilizationRate = totalDebt.dividedBy(totalLiquidity).toString();
+    const utilizationRate =
+      totalLiquidity !== '0'
+        ? totalDebt.dividedBy(totalLiquidity).toString()
+        : '0';
 
     return {
       ...reserve,
