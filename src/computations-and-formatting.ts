@@ -368,7 +368,6 @@ export function formatReserves(
       totalLiquidity !== '0'
         ? totalDebt.dividedBy(totalLiquidity).toString()
         : '0';
-
     return {
       ...reserve,
       totalVariableDebt,

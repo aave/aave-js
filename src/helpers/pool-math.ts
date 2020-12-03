@@ -8,7 +8,7 @@ import {
 import * as RayMath from './ray-math';
 
 const SECONDS_PER_YEAR = valueToBigNumber('31536000');
-export const LTV_PRECISION = 10 ** 4;
+export const LTV_PRECISION = 4;
 
 export function normalize(n: BigNumberValue, decimals: number): string {
   return new BigNumber(n)
@@ -86,7 +86,7 @@ export function calculateHealthFactorFromBalances(
   }
   return valueToBigNumber(collateralBalanceETH)
     .multipliedBy(currentLiquidationThreshold)
-    .dividedBy(LTV_PRECISION)
+    .dividedBy(10 ** LTV_PRECISION)
     .div(borrowBalanceETH);
 }
 
@@ -99,7 +99,7 @@ export function calculateHealthFactorFromBalancesBigUnits(
     collateralBalanceETH,
     borrowBalanceETH,
     new BigNumber(currentLiquidationThreshold)
-      .multipliedBy(LTV_PRECISION)
+      .multipliedBy(10 ** LTV_PRECISION)
       .decimalPlaces(0, BigNumber.ROUND_DOWN)
   );
 }
@@ -114,7 +114,7 @@ export function calculateAvailableBorrowsETH(
   }
   const availableBorrowsETH = valueToZDBigNumber(collateralBalanceETH)
     .multipliedBy(currentLtv)
-    .dividedBy(LTV_PRECISION)
+    .dividedBy(10 ** LTV_PRECISION)
     .minus(borrowBalanceETH);
   return availableBorrowsETH.gt('0')
     ? availableBorrowsETH

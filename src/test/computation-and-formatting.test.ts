@@ -2,44 +2,45 @@ import { ReserveData } from '../types';
 import { formatReserves } from '../computations-and-formatting';
 
 const mockReserve: ReserveData = {
-  averageStableRate: '10000000000000000000000000',
-  stableDebtTokenAddress: '0x4da9b813057d04baef4e5800e36083717b4a0341',
-  stableDebtLastUpdateTimestamp: '1606926715',
-  totalPrincipalStableDebt: '6621866123278403767271000',
-  variableDebtTokenAddress: '0x4da9b813057d04baef4e5800e36083717b4a0341',
-  totalScaledVariableDebt: '6621866123278403767271000',
-  reserveFactor: '3',
-  aTokenAddress: '0x4da9b813057d04baef4e5800e36083717b4a0341',
-  availableLiquidity: '66218661232784037672718264',
-  baseLTVasCollateral: '75',
-  baseVariableBorrowRate: '10000000000000000000000000',
-  borrowingEnabled: true,
+  underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
+  name: '',
+  symbol: 'DAI',
   decimals: 18,
-  id:
-    '0x0000000000085d4780b73119b644ae5ecd22b3760x24a42fd28c976a61df5d00d0599c34c4f90748c8',
-  isActive: true,
-  lastUpdateTimestamp: 1606926715,
-  liquidityIndex: '1021198007172229931360360630',
-  liquidityRate: '13621270986157659887198761',
-  name: 'TrueUSD',
-  optimalUtilisationRate: '800000000000000000000000000',
-  price: {
-    priceInEth: '1700010000000000',
-  },
-  reserveLiquidationBonus: '105',
-  reserveLiquidationThreshold: '80',
-  stableBorrowRate: '110472374939115775433749575',
-  stableBorrowRateEnabled: false,
-  stableRateSlope1: '140000000000000000000000000',
-  stableRateSlope2: '600000000000000000000000000',
-  symbol: 'TUSD',
-  underlyingAsset: '0x0000000000085d4780b73119b644ae5ecd22b376',
+  baseLTVasCollateral: '7500',
+  reserveLiquidationThreshold: '8000',
+  reserveLiquidationBonus: '10500',
+  reserveFactor: '1000',
   usageAsCollateralEnabled: true,
-  variableBorrowIndex: '1034187289519163852355447269',
-  variableBorrowRate: '31563535696890221552499878',
-  variableRateSlope1: '40000000000000000000000000',
-  variableRateSlope2: '1500000000000000000000000000',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: true,
+  isActive: true,
   isFrozen: false,
+  liquidityIndex: '1000164447379610590574518134',
+  variableBorrowIndex: '1000232854433711209646283880',
+  liquidityRate: '26776200735312093055313462',
+  variableBorrowRate: '38568743388028395681971229',
+  stableBorrowRate: '109284371694014197840985614',
+  lastUpdateTimestamp: 1606992400,
+  aTokenAddress: '0xdCf0aF9e59C002FA3AA091a46196b37530FD48a8',
+  stableDebtTokenAddress: '0x3B91257Fe5CA63b4114ac41A0d467D25E2F747F3',
+  variableDebtTokenAddress: '0xEAbBDBe7aaD7d5A278da40967E62C8c8Fe5fAec8',
+  // interestRateStrategyAddress: '0x1c4c4dD7F19738Fd7C21Fa7CbF9667710ff3Ba4c',
+  availableLiquidity: '43133641118657852003256',
+  totalPrincipalStableDebt: '1000000000000000000',
+  averageStableRate: '109284236984257451326752610',
+  stableDebtLastUpdateTimestamp: '1606992400',
+  totalScaledVariableDebt: '145496831599325217573288',
+  // priceInEth: '1634050000000000',
+  variableRateSlope1: '40000000000000000000000000',
+  variableRateSlope2: '750000000000000000000000000',
+  stableRateSlope1: '20000000000000000000000000',
+  stableRateSlope2: '750000000000000000000000000',
+  id:
+    '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
+  price: { priceInEth: '1634050000000000' },
+  // fake data
+  optimalUtilisationRate: '109284236984257451326752610',
+  baseVariableBorrowRate: '109284236984257451326752610',
 };
 
 describe('computations and formattings', () => {
@@ -49,6 +50,7 @@ describe('computations and formattings', () => {
         [mockReserve],
         mockReserve.lastUpdateTimestamp + 2000
       )[0];
+      expect(formattedMockReserve.baseLTVasCollateral).toBe('0.75');
       expect(formattedMockReserve).toMatchSnapshot();
     });
 
