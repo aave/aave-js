@@ -1,5 +1,8 @@
-import { ReserveData } from '../types';
-import { formatReserves } from '../computations-and-formatting';
+import { ReserveData, UserReserveData } from '../types';
+import {
+  formatReserves,
+  formatUserSummaryData,
+} from '../computations-and-formatting';
 
 const mockReserve: ReserveData = {
   underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
@@ -43,7 +46,44 @@ const mockReserve: ReserveData = {
   baseVariableBorrowRate: '109284236984257451326752610',
 };
 
+const mockUserReserve: UserReserveData = {
+  // underlyingAsset: '0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD',
+  scaledATokenBalance: '0',
+  usageAsCollateralEnabledOnUser: false,
+  stableBorrowRate: '0',
+  scaledVariableDebt: '137602026075945229933190',
+  principalStableDebt: '0',
+  stableBorrowLastUpdateTimestamp: 0,
+  variableBorrowIndex: '0',
+  //id:0cd96fb5ee9616f64d892644f53f35be4f90xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
+  reserve: {
+    id:
+      '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
+    underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
+    name: '',
+    symbol: 'DAI',
+    decimals: 18,
+    liquidityRate: '27070210296933117164358651',
+    reserveLiquidationBonus: '10500',
+    lastUpdateTimestamp: 1607000068,
+  },
+};
+
 describe('computations and formattings', () => {
+  describe('formatUserSummaryData', () => {
+    const formattedMockReserve = formatUserSummaryData(
+      [mockReserve],
+      [mockUserReserve],
+      '0cd96fb5ee9616f64d892644f53f35be4f90xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
+      '0',
+      mockUserReserve.reserve.lastUpdateTimestamp + 2000
+    );
+    expect(
+      formattedMockReserve.reservesData[0].reserve.reserveLiquidationBonus
+    ).toBe('0.05');
+    expect(formattedMockReserve).toMatchSnapshot();
+  });
+
   describe('formatReserves', () => {
     it('should return plausible results', () => {
       const formattedMockReserve = formatReserves(

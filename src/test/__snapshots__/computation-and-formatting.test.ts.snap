@@ -1,5 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[` 1`] = `
+Object {
+  "availableBorrowsETH": "0",
+  "currentLiquidationThreshold": "0",
+  "currentLoanToValue": "0",
+  "healthFactor": "0",
+  "id": "0cd96fb5ee9616f64d892644f53f35be4f90xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349",
+  "reservesData": Array [
+    Object {
+      "principalStableDebt": "0",
+      "reserve": Object {
+        "decimals": 18,
+        "id": "0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349",
+        "lastUpdateTimestamp": 1607000068,
+        "liquidityRate": "0.02707021029693311716",
+        "name": "",
+        "reserveLiquidationBonus": "0.05",
+        "symbol": "DAI",
+        "underlyingAsset": "0xff795577d9ac8bd7d90ee22b6c1703490b6512fd",
+      },
+      "scaledATokenBalance": "0",
+      "scaledVariableDebt": "137602026075945229933190",
+      "stableBorrowLastUpdateTimestamp": 0,
+      "stableBorrowRate": "0",
+      "stableBorrows": "0",
+      "stableBorrowsETH": "0",
+      "stableBorrowsUSD": "NaN",
+      "totalBorrows": "137635.694716770184532442",
+      "totalBorrowsETH": "224.903606951938320035",
+      "totalBorrowsUSD": "NaN",
+      "underlyingBalance": "0",
+      "underlyingBalanceETH": "0",
+      "underlyingBalanceUSD": "NaN",
+      "usageAsCollateralEnabledOnUser": false,
+      "variableBorrowIndex": "0",
+      "variableBorrows": "137635.694716770184532442",
+      "variableBorrowsETH": "224.903606951938320035",
+      "variableBorrowsUSD": "Infinity",
+    },
+  ],
+  "totalBorrowsETH": "224.903606951938320035",
+  "totalBorrowsUSD": "Infinity",
+  "totalCollateralETH": "0",
+  "totalCollateralUSD": "NaN",
+  "totalLiquidityETH": "0",
+  "totalLiquidityUSD": "NaN",
+}
+`;
+
 exports[`computations and formattings formatReserves should return plausible results 1`] = `
 Object {
   "aTokenAddress": "0xdCf0aF9e59C002FA3AA091a46196b37530FD48a8",
@@ -23,7 +72,7 @@ Object {
     "priceInEth": "0.00163405",
   },
   "reserveFactor": "0.1",
-  "reserveLiquidationBonus": "1.0496",
+  "reserveLiquidationBonus": "0.05",
   "reserveLiquidationThreshold": "0.8",
   "stableBorrowRate": "0.10928437169401419784",
   "stableBorrowRateEnabled": true,

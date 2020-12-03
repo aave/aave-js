@@ -263,7 +263,7 @@ export function formatUserSummaryData(
           ...reserve,
           reserveLiquidationBonus: normalize(
             valueToBigNumber(reserve.reserveLiquidationBonus).minus(
-              LTV_PRECISION
+              10 ** LTV_PRECISION
             ),
             4
           ),
@@ -411,7 +411,9 @@ export function formatReserves(
         4
       ),
       reserveLiquidationBonus: normalize(
-        valueToBigNumber(reserve.reserveLiquidationBonus).minus(LTV_PRECISION),
+        valueToBigNumber(reserve.reserveLiquidationBonus).minus(
+          10 ** LTV_PRECISION
+        ),
         4
       ),
       totalScaledVariableDebt: normalize(
