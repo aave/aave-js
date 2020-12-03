@@ -75,7 +75,7 @@ describe('computations and formattings', () => {
       [mockReserve],
       [mockUserReserve],
       '0cd96fb5ee9616f64d892644f53f35be4f90xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
-      '0',
+      '100',
       mockUserReserve.reserve.lastUpdateTimestamp + 2000
     );
     expect(
