@@ -37,7 +37,8 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build && cp -R ./{src,dist}/graphql",
-    "test": "tsdx src/test",
+    "test": "tsdx test",
+    "test:watch": "tsdx test --watch",
     "lint": "tsdx lint",
     "prepare": "npm run build"
   },
