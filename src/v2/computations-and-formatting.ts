@@ -4,7 +4,7 @@ import {
   BigNumberValue,
   valueToBigNumber,
   valueToZDBigNumber,
-} from './helpers/bignumber';
+} from '../helpers/bignumber';
 import {
   calculateAvailableBorrowsETH,
   calculateHealthFactorFromBalances,
@@ -14,8 +14,8 @@ import {
   calculateAverageRate,
   LTV_PRECISION,
   calculateCompoundedInterest,
-} from './helpers/pool-math';
-import { rayMul } from './helpers/ray-math';
+} from '../helpers/pool-math';
+import { rayMul } from '../helpers/ray-math';
 import {
   ComputedUserReserve,
   ReserveData,

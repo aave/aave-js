@@ -1,0 +1,5 @@
+mutation Repay($data: TransferFromInput!) {
+    repay(data: $data) {
+        ...EthTransaction
+    }
+}

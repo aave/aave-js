@@ -1,8 +1,8 @@
-import { ReserveData, UserReserveData } from '../types';
+import { ReserveData, UserReserveData } from '../../v2/types';
 import {
   formatReserves,
   formatUserSummaryData,
-} from '../computations-and-formatting';
+} from '../../v2/computations-and-formatting';
 
 const mockReserve: ReserveData = {
   underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
