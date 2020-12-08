@@ -209,6 +209,52 @@ function calculateCurrentUnderlyingBalance(
   ).minus(userReserve.redirectedBalance);
 }
 
+function computeUserReserveDataEth(
+  poolReserve: ReserveData,
+  userReserve: UserReserveData,
+  currentTimestamp: number
+) {
+  const {
+    price: { priceInEth },
+    decimals,
+  } = poolReserve;
+  const currentUnderlyingBalance = calculateCurrentUnderlyingBalance(
+    userReserve,
+    poolReserve,
+    currentTimestamp
+  );
+  const currentUnderlyingBalanceETH = currentUnderlyingBalance
+    .multipliedBy(priceInEth)
+    .dividedBy(10 ** decimals);
+
+  const principalBorrowsETH = valueToZDBigNumber(userReserve.principalBorrows)
+    .multipliedBy(priceInEth)
+    .dividedBy(10 ** decimals);
+
+  const currentBorrows = getCompoundedBorrowBalance(
+    poolReserve,
+    userReserve,
+    currentTimestamp
+  );
+  const currentBorrowsETH = currentBorrows
+    .multipliedBy(priceInEth)
+    .dividedBy(10 ** decimals);
+
+  const originationFeeETH = valueToZDBigNumber(userReserve.originationFee)
+    .multipliedBy(priceInEth)
+    .dividedBy(10 ** decimals);
+
+  return {
+    ...userReserve,
+    originationFeeETH: originationFeeETH.toString(),
+    currentBorrows: currentBorrows.toString(),
+    currentBorrowsETH: currentBorrowsETH.toString(),
+    principalBorrowsETH: principalBorrowsETH.toString(),
+    currentUnderlyingBalance: currentUnderlyingBalance.toFixed(),
+    currentUnderlyingBalanceETH: currentUnderlyingBalanceETH.toFixed(),
+  };
+}
+
 function computeUserReserveData(
   poolReserve: ReserveData,
   userReserve: UserReserveData,
@@ -274,6 +320,71 @@ function computeUserReserveData(
     currentUnderlyingBalance: currentUnderlyingBalance.toFixed(),
     currentUnderlyingBalanceETH: currentUnderlyingBalanceETH.toFixed(),
   };
+}
+
+export function calculateHealthFactorFromReserves(
+  poolReservesData: ReserveData[],
+  rawUserReserves: UserReserveData[],
+  currentTimestamp: number
+) {
+  let totalLiquidityETH = valueToZDBigNumber('0');
+  let totalCollateralETH = valueToZDBigNumber('0');
+  let totalBorrowsETH = valueToZDBigNumber('0');
+  let totalFeesETH = valueToZDBigNumber('0');
+  let currentLiquidationThreshold = valueToBigNumber('0');
+
+  rawUserReserves.map(userReserve => {
+    const poolReserve = poolReservesData.find(
+      reserve => reserve.id === userReserve.reserve.id
+    );
+    if (!poolReserve) {
+      throw new Error(
+        'Reserve is not registered on platform, please contact support'
+      );
+    }
+    const computedUserReserve = computeUserReserveDataEth(
+      poolReserve,
+      userReserve,
+      currentTimestamp
+    );
+    totalLiquidityETH = totalLiquidityETH.plus(
+      computedUserReserve.currentUnderlyingBalanceETH
+    );
+    totalBorrowsETH = totalBorrowsETH.plus(
+      computedUserReserve.currentBorrowsETH
+    );
+    totalFeesETH = totalFeesETH.plus(computedUserReserve.originationFeeETH);
+
+    // asset enabled as collateral
+    if (
+      poolReserve.usageAsCollateralEnabled &&
+      userReserve.usageAsCollateralEnabledOnUser
+    ) {
+      totalCollateralETH = totalCollateralETH.plus(
+        computedUserReserve.currentUnderlyingBalanceETH
+      );
+      currentLiquidationThreshold = currentLiquidationThreshold.plus(
+        valueToBigNumber(
+          computedUserReserve.currentUnderlyingBalanceETH
+        ).multipliedBy(poolReserve.reserveLiquidationThreshold)
+      );
+    }
+    return computedUserReserve;
+  });
+  if (currentLiquidationThreshold.gt(0)) {
+    currentLiquidationThreshold = currentLiquidationThreshold
+      .div(totalCollateralETH)
+      .decimalPlaces(0, BigNumber.ROUND_DOWN);
+  }
+
+  const healthFactor = calculateHealthFactorFromBalances(
+    totalCollateralETH,
+    totalBorrowsETH,
+    totalFeesETH,
+    currentLiquidationThreshold
+  );
+
+  return healthFactor.toString();
 }
 
 export function computeRawUserSummaryData(
