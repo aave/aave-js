@@ -559,7 +559,7 @@ export function formatReserves(
   return reserves.map(reserve => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
       res => res.id === reserve.id
-    )?.paramsHistory[0];
+    )?.paramsHistory?.[0];
 
     return {
       ...reserve,
