@@ -24,10 +24,7 @@ import {
   ReserveRatesData,
   ComputedReserveData,
 } from './types';
-
-const ETH_DECIMALS = 18;
-const USD_DECIMALS = 10;
-const RAY_DECIMALS = 27;
+import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
 
 function getEthAndUsdBalance(
   balance: BigNumberValue,

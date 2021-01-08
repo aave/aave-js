@@ -6,8 +6,8 @@ import {
   valueToZDBigNumber,
 } from './bignumber';
 import * as RayMath from './ray-math';
+import { SECONDS_PER_YEAR } from './constants';
 
-const SECONDS_PER_YEAR = valueToBigNumber('31536000');
 export const LTV_PRECISION = 4;
 
 export function normalize(n: BigNumberValue, decimals: number): string {

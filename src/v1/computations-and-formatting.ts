@@ -13,17 +13,13 @@ import {
   valueToBigNumber,
   valueToZDBigNumber,
 } from '../helpers/bignumber';
-
-export function normalize(n: BigNumberValue, decimals: number): string {
-  return new BigNumber(n)
-    .dividedBy(new BigNumber('10').pow(decimals))
-    .toString();
-}
-
-const SECONDS_PER_YEAR = valueToBigNumber('31536000');
-const ETH_DECIMALS = 18;
-const USD_DECIMALS = 10;
-const RAY_DECIMALS = 27;
+import { normalize } from '../helpers/pool-math';
+import {
+  ETH_DECIMALS,
+  RAY_DECIMALS,
+  SECONDS_PER_YEAR,
+  USD_DECIMALS,
+} from '../helpers/constants';
 
 function getCompoundedBorrowBalance(
   reserve: ReserveData,
