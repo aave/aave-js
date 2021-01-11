@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`computations and formattings formatReserves should return plausible results 1`] = `
+Object {
+  "aToken": Object {
+    "id": "0x0",
+  },
+  "availableLiquidity": "43133.641118657852003256",
+  "averageStableBorrowRate": "0",
+  "avg30DaysLiquidityRate": undefined,
+  "avg30DaysVariableBorrowRate": undefined,
+  "baseLTVasCollateral": "75",
+  "baseVariableBorrowRate": "109284236984257451326752610",
+  "borrowingEnabled": true,
+  "decimals": 18,
+  "id": "0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349",
+  "isActive": true,
+  "isFreezed": true,
+  "lastUpdateTimestamp": 1606992400,
+  "liquidityIndex": "1.00016444737961059057",
+  "liquidityRate": "0.02677620073531209306",
+  "name": "",
+  "optimalUtilisationRate": "109284236984257451326752610",
+  "price": Object {
+    "priceInEth": "0.00163405",
+  },
+  "reserveLiquidationBonus": "104",
+  "reserveLiquidationThreshold": "80",
+  "stableBorrowRate": "0.10928437169401419784",
+  "stableBorrowRateEnabled": true,
+  "stableRateSlope1": "20000000000000000000000000",
+  "stableRateSlope2": "750000000000000000000000000",
+  "symbol": "DAI",
+  "totalBorrows": "0",
+  "totalBorrowsStable": "0",
+  "totalBorrowsVariable": "0",
+  "totalLiquidity": "0",
+  "underlyingAsset": "0xff795577d9ac8bd7d90ee22b6c1703490b6512fd",
+  "usageAsCollateralEnabled": true,
+  "utilizationRate": "0",
+  "variableBorrowIndex": "1.00023285443371120965",
+  "variableBorrowRate": "0.03856874338802839568",
+  "variableRateSlope1": "40000000000000000000000000",
+  "variableRateSlope2": "750000000000000000000000000",
+}
+`;

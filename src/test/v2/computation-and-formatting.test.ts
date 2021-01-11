@@ -94,6 +94,21 @@ describe('computations and formattings', () => {
       expect(formattedMockReserve).toMatchSnapshot();
     });
 
+    /**
+     * Whenever we add a new asset there#s a chance that an asset has no paramsHistory from 30days ago
+     * We should not throw if that's the case, but just ignore it
+     */
+    it("should not error When 30dago reserves doesn't contain paramsHistory", () => {
+      formatReserves([mockReserve], mockReserve.lastUpdateTimestamp + 2000, [
+        mockReserve as any,
+      ]);
+      formatReserves([mockReserve], mockReserve.lastUpdateTimestamp + 2000, [
+        { ...mockReserve, paramsHistory: [] } as any,
+      ]);
+      // would be wrong if any of the above threw
+      expect(true).toBe(true);
+    });
+
     it('should return proper values for new reserves', () => {
       const newReserve: Partial<ReserveData> = {
         availableLiquidity: '0',
