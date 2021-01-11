@@ -17,9 +17,11 @@ fragment ReserveData on Reserve {
   baseVariableBorrowRate
   variableRateSlope1
   variableRateSlope2
+  variableBorrowIndex
+  variableBorrowRate
+  totalScaledVariableDebt
   liquidityIndex
   reserveLiquidationThreshold
-  variableBorrowIndex
   aToken {
     id
   }
@@ -27,17 +29,15 @@ fragment ReserveData on Reserve {
     id
   }
   sToken {
-    id 
+    id
   }
   availableLiquidity
   stableBorrowRate
   liquidityRate
   totalPrincipalStableDebt
-  totalScaledVariableDebt
   totalLiquidity
   utilizationRate
   reserveLiquidationBonus
-  variableBorrowRate
   price {
     priceInEth
   }
