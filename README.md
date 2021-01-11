@@ -23,7 +23,6 @@ yarn add @aave/protocol-js
 Here is a quick example to get you started:
 
 ```js
-// there's a named version export per version
 import { v1, v2 } from '@aave/protocol-js';
 
 // returns user summary data in big units.
@@ -48,12 +47,30 @@ v1.computeRawUserSummaryData(
 v2.formatReserves(reserves, currentTimestamp);
 ```
 
+If you want to use the built-in graphql queries & subscriptions you can find them in `dist/v<1|2>/graphql`.
+
 ## Braking changes in v1
 
 - Endpoint addresses should be changed (addresses above)
 - Graphql documents should be "recompiled"
 - Reserve id not underlying asset address anymore, it's not unique enough because same asset can be in 2 or more pools.
 - But reserve has underlyingAssetAddress field
+
+## Braking changes in v2
+
+- the main entry-point exports v2 methods & graphql queries
+
+```js
+// before
+import { formatUserSummaryData } from '@aave/protocol-js';
+
+formatUserSummaryData();
+
+// after
+import { v1 } from '@aave/protocol-js';
+
+v1.formatUserSummaryData();
+```
 
 ## TODO
 
