@@ -1,0 +1,10 @@
+fragment EthTransaction on EthereumTransactionModelExtended {
+  tx {
+    from
+    to
+    gas
+    data
+    value
+  }
+  txType
+}

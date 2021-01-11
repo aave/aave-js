@@ -4,7 +4,7 @@ import {
   BigNumberValue,
   valueToBigNumber,
   valueToZDBigNumber,
-} from './helpers/bignumber';
+} from '../helpers/bignumber';
 import {
   calculateAvailableBorrowsETH,
   calculateHealthFactorFromBalances,
@@ -14,8 +14,8 @@ import {
   calculateAverageRate,
   LTV_PRECISION,
   calculateCompoundedInterest,
-} from './helpers/pool-math';
-import { rayMul } from './helpers/ray-math';
+} from '../helpers/pool-math';
+import { rayMul } from '../helpers/ray-math';
 import {
   ComputedUserReserve,
   ReserveData,
@@ -24,10 +24,7 @@ import {
   ReserveRatesData,
   ComputedReserveData,
 } from './types';
-
-const ETH_DECIMALS = 18;
-const USD_DECIMALS = 10;
-const RAY_DECIMALS = 27;
+import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
 
 function getEthAndUsdBalance(
   balance: BigNumberValue,
@@ -338,7 +335,7 @@ export function formatReserves(
   return reserves.map(reserve => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
       res => res.id === reserve.id
-    )?.paramsHistory[0];
+    )?.paramsHistory?.[0];
 
     const availableLiquidity = normalize(
       reserve.availableLiquidity,
