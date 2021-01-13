@@ -26,7 +26,7 @@ import {
 } from './types';
 import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
 
-function getEthAndUsdBalance(
+export function getEthAndUsdBalance(
   balance: BigNumberValue,
   priceInEth: BigNumberValue,
   decimals: number,
@@ -42,7 +42,29 @@ function getEthAndUsdBalance(
   return [balanceInEth.toString(), balanceInUsd];
 }
 
-function computeUserReserveData(
+/*
+type ComputeUserReserveDataPoolReserve = Pick<
+  ReserveData,
+  | 'price'
+  | 'decimals'
+  | 'liquidityIndex'
+  | 'liquidityRate'
+  | 'lastUpdateTimestamp'
+  | 'variableBorrowIndex'
+  | 'variableBorrowRate'
+>;
+
+type ComputeUserReserveDataUserReserve = Pick<
+  UserReserveData,
+  | 'scaledATokenBalance'
+  | 'scaledVariableDebt'
+  | 'principalStableDebt'
+  | 'stableBorrowRate'
+  | 'stableBorrowLastUpdateTimestamp'
+>;
+*/
+
+export function computeUserReserveData(
   poolReserve: ReserveData,
   userReserve: UserReserveData,
   usdPriceEth: BigNumberValue,
