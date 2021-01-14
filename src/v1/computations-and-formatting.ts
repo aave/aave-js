@@ -21,11 +21,11 @@ import {
   USD_DECIMALS,
 } from '../helpers/constants';
 
-type GetCompoundedBorrowBalanceParamsReserve = Pick<
+export type GetCompoundedBorrowBalanceParamsReserve = Pick<
   ReserveData,
   'variableBorrowRate' | 'lastUpdateTimestamp' | 'variableBorrowIndex'
 >;
-type GetCompoundedBorrowBalanceParamsUserReserve = Pick<
+export type GetCompoundedBorrowBalanceParamsUserReserve = Pick<
   UserReserveData,
   | 'principalBorrows'
   | 'borrowRateMode'
@@ -148,7 +148,7 @@ export function calculateAvailableBorrowsETH(
   return availableBorrowsETH.minus(borrowFee);
 }
 
-type GetReserveNormalizedIncomeReserve = Pick<
+export type GetReserveNormalizedIncomeReserve = Pick<
   ReserveData,
   'liquidityRate' | 'liquidityIndex' | 'lastUpdateTimestamp'
 >;
@@ -171,8 +171,8 @@ export function getReserveNormalizedIncome(
   return RayMath.rayMul(cumulatedInterest, liquidityIndex);
 }
 
-type CalculateCumulatedBalancePoolReserve = GetReserveNormalizedIncomeReserve;
-type CalculateCumulatedBalanceUserReserve = Pick<
+export type CalculateCumulatedBalancePoolReserve = GetReserveNormalizedIncomeReserve;
+export type CalculateCumulatedBalanceUserReserve = Pick<
   UserReserveData,
   'userBalanceIndex'
 >;
@@ -194,8 +194,8 @@ export function calculateCumulatedBalance(
   );
 }
 
-type CalculateCurrentUnderlyingBalancePoolReserve = CalculateCumulatedBalancePoolReserve;
-type CalculateCurrentUnderlyingBalanceUserReserve = CalculateCumulatedBalanceUserReserve &
+export type CalculateCurrentUnderlyingBalancePoolReserve = CalculateCumulatedBalancePoolReserve;
+export type CalculateCurrentUnderlyingBalanceUserReserve = CalculateCumulatedBalanceUserReserve &
   Pick<
     UserReserveData,
     | 'principalATokenBalance'
