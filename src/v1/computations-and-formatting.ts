@@ -21,9 +21,22 @@ import {
   USD_DECIMALS,
 } from '../helpers/constants';
 
-function getCompoundedBorrowBalance(
-  reserve: ReserveData,
-  userReserve: UserReserveData,
+export type GetCompoundedBorrowBalanceParamsReserve = Pick<
+  ReserveData,
+  'variableBorrowRate' | 'lastUpdateTimestamp' | 'variableBorrowIndex'
+>;
+export type GetCompoundedBorrowBalanceParamsUserReserve = Pick<
+  UserReserveData,
+  | 'principalBorrows'
+  | 'borrowRateMode'
+  | 'variableBorrowIndex'
+  | 'borrowRate'
+  | 'lastUpdateTimestamp'
+>;
+
+export function getCompoundedBorrowBalance(
+  reserve: GetCompoundedBorrowBalanceParamsReserve,
+  userReserve: GetCompoundedBorrowBalanceParamsUserReserve,
   currentTimestamp: number
 ): BigNumber {
   const principalBorrows = valueToZDBigNumber(userReserve.principalBorrows);
@@ -57,7 +70,7 @@ function getCompoundedBorrowBalance(
   return RayMath.rayToWad(RayMath.rayMul(borrowBalanceRay, cumulatedInterest));
 }
 
-const calculateCompoundedInterest = (
+export const calculateCompoundedInterest = (
   rate: BigNumberValue,
   currentTimestamp: number,
   lastUpdateTimestamp: number
@@ -67,7 +80,7 @@ const calculateCompoundedInterest = (
   return RayMath.rayPow(ratePerSecond.plus(RayMath.RAY), timeDelta);
 };
 
-const calculateLinearInterest = (
+export const calculateLinearInterest = (
   rate: BigNumberValue,
   currentTimestamp: number,
   lastUpdateTimestamp: number
@@ -113,7 +126,7 @@ export function calculateHealthFactorFromBalancesBigUnits(
   );
 }
 
-function calculateAvailableBorrowsETH(
+export function calculateAvailableBorrowsETH(
   collateralBalanceETH: BigNumberValue,
   borrowBalanceETH: BigNumberValue,
   totalFeesETH: BigNumberValue,
@@ -135,8 +148,13 @@ function calculateAvailableBorrowsETH(
   return availableBorrowsETH.minus(borrowFee);
 }
 
-function getReserveNormalizedIncome(
-  reserve: ReserveData,
+export type GetReserveNormalizedIncomeReserve = Pick<
+  ReserveData,
+  'liquidityRate' | 'liquidityIndex' | 'lastUpdateTimestamp'
+>;
+
+export function getReserveNormalizedIncome(
+  reserve: GetReserveNormalizedIncomeReserve,
   currentTimestamp: number
 ): BigNumber {
   const { liquidityRate, liquidityIndex, lastUpdateTimestamp } = reserve;
@@ -153,10 +171,16 @@ function getReserveNormalizedIncome(
   return RayMath.rayMul(cumulatedInterest, liquidityIndex);
 }
 
-function calculateCumulatedBalance(
+export type CalculateCumulatedBalancePoolReserve = GetReserveNormalizedIncomeReserve;
+export type CalculateCumulatedBalanceUserReserve = Pick<
+  UserReserveData,
+  'userBalanceIndex'
+>;
+
+export function calculateCumulatedBalance(
   balance: BigNumberValue,
-  userReserve: UserReserveData,
-  poolReserve: ReserveData,
+  userReserve: CalculateCumulatedBalanceUserReserve,
+  poolReserve: CalculateCumulatedBalancePoolReserve,
   currentTimestamp: number
 ): BigNumber {
   return RayMath.rayToWad(
@@ -170,9 +194,18 @@ function calculateCumulatedBalance(
   );
 }
 
-function calculateCurrentUnderlyingBalance(
-  userReserve: UserReserveData,
-  poolReserve: ReserveData,
+export type CalculateCurrentUnderlyingBalancePoolReserve = CalculateCumulatedBalancePoolReserve;
+export type CalculateCurrentUnderlyingBalanceUserReserve = CalculateCumulatedBalanceUserReserve &
+  Pick<
+    UserReserveData,
+    | 'principalATokenBalance'
+    | 'redirectedBalance'
+    | 'interestRedirectionAddress'
+  >;
+
+export function calculateCurrentUnderlyingBalance(
+  userReserve: CalculateCurrentUnderlyingBalanceUserReserve,
+  poolReserve: CalculateCurrentUnderlyingBalancePoolReserve,
   currentTimestamp: number
 ): BigNumber {
   if (
