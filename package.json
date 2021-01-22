@@ -22,6 +22,14 @@
     {
       "name": "Emilio Frangella",
       "email": "emilio@aave.com"
+    },
+    {
+      "name": "Pol Sendra",
+      "email": "pol@aave.com"
+    },
+    {
+      "name": "Lukas Strassel",
+      "email": "lukas@aave.com"
     }
   ],
   "repository": {
@@ -36,23 +44,46 @@
   ],
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build && cp -R ./src/v2/graphql ./dist/graphql && cp -R ./{src,dist}/v1/graphql && cp -R ./{src,dist}/v2/graphql",
+    "build": "tsdx build && cp -R ./src/v2/graphql ./dist/graphql && cp -R ./src/v1/graphql ./dist/v1/graphql && cp -R ./src/v2/graphql ./dist/v2/graphql",
     "test": "tsdx test",
     "test:watch": "tsdx test --watch",
     "lint": "tsdx lint",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "compile": "SKIP_LOAD=true hardhat compile"
   },
   "devDependencies": {
+    "@typechain/ethers-v5": "^4.0.0",
+    "@types/bs58": "^4.0.1",
     "@types/jest": "^26.0.14",
+    "@types/node": "^12.7.5",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
+    "env-cmd": "^10.1.0",
+    "eslint-config-airbnb-typescript": "^9.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "ethers": "5.0.24",
+    "hardhat": "^2.0.3",
+    "hardhat-typechain": "^0.3.3",
     "husky": "^4.3.0",
+    "jest": "^26.1.0",
+    "prettier": "^1.18.2",
+    "ts-generator": "^0.1.1",
+    "ts-node": "^9.0.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",
+    "typechain": "^4.0.0",
     "typescript": "^4.1.2"
   },
   "dependencies": {
-    "bignumber.js": "^9.0.1"
+    "axios": "^0.21.0",
+    "bignumber.js": "^9.0.1",
+    "bs58": "^4.0.1",
+    "reflect-metadata": "^0.1.13"
+  },
+  "peerDependencies": {
+    "ethers": "^5.0.24"
   },
   "husky": {
     "hooks": {

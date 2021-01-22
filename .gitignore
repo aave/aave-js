@@ -7,3 +7,5 @@ dist
 .vscode
 .graphqlconfig
 schema.graphql
+artifacts
+cache
