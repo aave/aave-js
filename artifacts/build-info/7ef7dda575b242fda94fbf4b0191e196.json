@@ -1,0 +1,597 @@
+{
+  "id": "7ef7dda575b242fda94fbf4b0191e196",
+  "_format": "hh-sol-build-info-1",
+  "solcVersion": "0.6.8",
+  "solcLongVersion": "0.6.8+commit.0bbfe453",
+  "input": {
+    "language": "Solidity",
+    "sources": {
+      "contracts/ISwapCollateral.sol": {
+        "content": "// SPDX-License-Identifier: agpl-3.0\npragma solidity ^0.6.8;\npragma experimental ABIEncoderV2;\n\ninterface ISwapCollateral {\n  struct PermitSignature {\n    uint256 amount;\n    uint256 deadline;\n    uint8 v;\n    bytes32 r;\n    bytes32 s;\n  }\n\n  function swapAndDeposit(\n    address[] calldata assetToSwapFromList,\n    address[] calldata assetToSwapToList,\n    uint256[] calldata amountToSwapList,\n    uint256[] calldata minAmountsToReceive,\n    PermitSignature[] calldata permitParams,\n    bool[] calldata useEthPath\n  ) external;\n}"
+      }
+    },
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "evmVersion": "istanbul",
+      "outputSelection": {
+        "*": {
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers"
+          ],
+          "": [
+            "ast"
+          ]
+        }
+      }
+    }
+  },
+  "output": {
+    "contracts": {
+      "contracts/ISwapCollateral.sol": {
+        "ISwapCollateral": {
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address[]",
+                  "name": "assetToSwapFromList",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "assetToSwapToList",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "amountToSwapList",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "minAmountsToReceive",
+                  "type": "uint256[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "deadline",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint8",
+                      "name": "v",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "r",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "s",
+                      "type": "bytes32"
+                    }
+                  ],
+                  "internalType": "struct ISwapCollateral.PermitSignature[]",
+                  "name": "permitParams",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "bool[]",
+                  "name": "useEthPath",
+                  "type": "bool[]"
+                }
+              ],
+              "name": "swapAndDeposit",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ],
+          "evm": {
+            "bytecode": {
+              "linkReferences": {},
+              "object": "",
+              "opcodes": "",
+              "sourceMap": ""
+            },
+            "deployedBytecode": {
+              "immutableReferences": {},
+              "linkReferences": {},
+              "object": "",
+              "opcodes": "",
+              "sourceMap": ""
+            },
+            "methodIdentifiers": {
+              "swapAndDeposit(address[],address[],uint256[],uint256[],(uint256,uint256,uint8,bytes32,bytes32)[],bool[])": "d51c9ed7"
+            }
+          }
+        }
+      }
+    },
+    "sources": {
+      "contracts/ISwapCollateral.sol": {
+        "ast": {
+          "absolutePath": "contracts/ISwapCollateral.sol",
+          "exportedSymbols": {
+            "ISwapCollateral": [
+              35
+            ]
+          },
+          "id": 36,
+          "license": "agpl-3.0",
+          "nodeType": "SourceUnit",
+          "nodes": [
+            {
+              "id": 1,
+              "literals": [
+                "solidity",
+                "^",
+                "0.6",
+                ".8"
+              ],
+              "nodeType": "PragmaDirective",
+              "src": "37:23:0"
+            },
+            {
+              "id": 2,
+              "literals": [
+                "experimental",
+                "ABIEncoderV2"
+              ],
+              "nodeType": "PragmaDirective",
+              "src": "61:33:0"
+            },
+            {
+              "abstract": false,
+              "baseContracts": [],
+              "contractDependencies": [],
+              "contractKind": "interface",
+              "documentation": null,
+              "fullyImplemented": false,
+              "id": 35,
+              "linearizedBaseContracts": [
+                35
+              ],
+              "name": "ISwapCollateral",
+              "nodeType": "ContractDefinition",
+              "nodes": [
+                {
+                  "canonicalName": "ISwapCollateral.PermitSignature",
+                  "id": 13,
+                  "members": [
+                    {
+                      "constant": false,
+                      "id": 4,
+                      "mutability": "mutable",
+                      "name": "amount",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 13,
+                      "src": "155:14:0",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 3,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "155:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    {
+                      "constant": false,
+                      "id": 6,
+                      "mutability": "mutable",
+                      "name": "deadline",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 13,
+                      "src": "175:16:0",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 5,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "175:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    {
+                      "constant": false,
+                      "id": 8,
+                      "mutability": "mutable",
+                      "name": "v",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 13,
+                      "src": "197:7:0",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint8",
+                        "typeString": "uint8"
+                      },
+                      "typeName": {
+                        "id": 7,
+                        "name": "uint8",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "197:5:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint8",
+                          "typeString": "uint8"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    {
+                      "constant": false,
+                      "id": 10,
+                      "mutability": "mutable",
+                      "name": "r",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 13,
+                      "src": "210:9:0",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      },
+                      "typeName": {
+                        "id": 9,
+                        "name": "bytes32",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "210:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    {
+                      "constant": false,
+                      "id": 12,
+                      "mutability": "mutable",
+                      "name": "s",
+                      "nodeType": "VariableDeclaration",
+                      "overrides": null,
+                      "scope": 13,
+                      "src": "225:9:0",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      },
+                      "typeName": {
+                        "id": 11,
+                        "name": "bytes32",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "225:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "name": "PermitSignature",
+                  "nodeType": "StructDefinition",
+                  "scope": 35,
+                  "src": "126:113:0",
+                  "visibility": "public"
+                },
+                {
+                  "body": null,
+                  "documentation": null,
+                  "functionSelector": "d51c9ed7",
+                  "id": 34,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "swapAndDeposit",
+                  "nodeType": "FunctionDefinition",
+                  "overrides": null,
+                  "parameters": {
+                    "id": 32,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 16,
+                        "mutability": "mutable",
+                        "name": "assetToSwapFromList",
+                        "nodeType": "VariableDeclaration",
+                        "overrides": null,
+                        "scope": 34,
+                        "src": "272:38:0",
+                        "stateVariable": false,
+                        "storageLocation": "calldata",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_address_$dyn_calldata_ptr",
+                          "typeString": "address[]"
+                        },
+                        "typeName": {
+                          "baseType": {
+                            "id": 14,
+                            "name": "address",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "272:7:0",
+                            "stateMutability": "nonpayable",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          "id": 15,
+                          "length": null,
+                          "nodeType": "ArrayTypeName",
+                          "src": "272:9:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                            "typeString": "address[]"
+                          }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 19,
+                        "mutability": "mutable",
+                        "name": "assetToSwapToList",
+                        "nodeType": "VariableDeclaration",
+                        "overrides": null,
+                        "scope": 34,
+                        "src": "316:36:0",
+                        "stateVariable": false,
+                        "storageLocation": "calldata",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_address_$dyn_calldata_ptr",
+                          "typeString": "address[]"
+                        },
+                        "typeName": {
+                          "baseType": {
+                            "id": 17,
+                            "name": "address",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "316:7:0",
+                            "stateMutability": "nonpayable",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_address",
+                              "typeString": "address"
+                            }
+                          },
+                          "id": 18,
+                          "length": null,
+                          "nodeType": "ArrayTypeName",
+                          "src": "316:9:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                            "typeString": "address[]"
+                          }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 22,
+                        "mutability": "mutable",
+                        "name": "amountToSwapList",
+                        "nodeType": "VariableDeclaration",
+                        "overrides": null,
+                        "scope": 34,
+                        "src": "358:35:0",
+                        "stateVariable": false,
+                        "storageLocation": "calldata",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                          "typeString": "uint256[]"
+                        },
+                        "typeName": {
+                          "baseType": {
+                            "id": 20,
+                            "name": "uint256",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "358:7:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "id": 21,
+                          "length": null,
+                          "nodeType": "ArrayTypeName",
+                          "src": "358:9:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                            "typeString": "uint256[]"
+                          }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 25,
+                        "mutability": "mutable",
+                        "name": "minAmountsToReceive",
+                        "nodeType": "VariableDeclaration",
+                        "overrides": null,
+                        "scope": 34,
+                        "src": "399:38:0",
+                        "stateVariable": false,
+                        "storageLocation": "calldata",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                          "typeString": "uint256[]"
+                        },
+                        "typeName": {
+                          "baseType": {
+                            "id": 23,
+                            "name": "uint256",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "399:7:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "id": 24,
+                          "length": null,
+                          "nodeType": "ArrayTypeName",
+                          "src": "399:9:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                            "typeString": "uint256[]"
+                          }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 28,
+                        "mutability": "mutable",
+                        "name": "permitParams",
+                        "nodeType": "VariableDeclaration",
+                        "overrides": null,
+                        "scope": 34,
+                        "src": "443:39:0",
+                        "stateVariable": false,
+                        "storageLocation": "calldata",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_struct$_PermitSignature_$13_calldata_ptr_$dyn_calldata_ptr",
+                          "typeString": "struct ISwapCollateral.PermitSignature[]"
+                        },
+                        "typeName": {
+                          "baseType": {
+                            "contractScope": null,
+                            "id": 26,
+                            "name": "PermitSignature",
+                            "nodeType": "UserDefinedTypeName",
+                            "referencedDeclaration": 13,
+                            "src": "443:15:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_struct$_PermitSignature_$13_storage_ptr",
+                              "typeString": "struct ISwapCollateral.PermitSignature"
+                            }
+                          },
+                          "id": 27,
+                          "length": null,
+                          "nodeType": "ArrayTypeName",
+                          "src": "443:17:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_struct$_PermitSignature_$13_storage_$dyn_storage_ptr",
+                            "typeString": "struct ISwapCollateral.PermitSignature[]"
+                          }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 31,
+                        "mutability": "mutable",
+                        "name": "useEthPath",
+                        "nodeType": "VariableDeclaration",
+                        "overrides": null,
+                        "scope": 34,
+                        "src": "488:26:0",
+                        "stateVariable": false,
+                        "storageLocation": "calldata",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_bool_$dyn_calldata_ptr",
+                          "typeString": "bool[]"
+                        },
+                        "typeName": {
+                          "baseType": {
+                            "id": 29,
+                            "name": "bool",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "488:4:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bool",
+                              "typeString": "bool"
+                            }
+                          },
+                          "id": 30,
+                          "length": null,
+                          "nodeType": "ArrayTypeName",
+                          "src": "488:6:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_array$_t_bool_$dyn_storage_ptr",
+                            "typeString": "bool[]"
+                          }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "266:252:0"
+                  },
+                  "returnParameters": {
+                    "id": 33,
+                    "nodeType": "ParameterList",
+                    "parameters": [],
+                    "src": "527:0:0"
+                  },
+                  "scope": 35,
+                  "src": "243:285:0",
+                  "stateMutability": "nonpayable",
+                  "virtual": false,
+                  "visibility": "external"
+                }
+              ],
+              "scope": 36,
+              "src": "96:434:0"
+            }
+          ],
+          "src": "37:493:0"
+        },
+        "id": 0
+      }
+    }
+  }
+}

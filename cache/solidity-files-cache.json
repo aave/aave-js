@@ -1,0 +1,679 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/sendrax/aave/aave-js/contracts/IAaveProtoGovernance.sol": {
+      "lastModificationDate": 1611329083794,
+      "contentHash": "429af40937517ad1a0de943100a5997a",
+      "sourceName": "contracts/IAaveProtoGovernance.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IAaveProtoGovernance"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IAaveStakingHelper.sol": {
+      "lastModificationDate": 1611329083794,
+      "contentHash": "e70387447abcab50eac25e0ace83b4b3",
+      "sourceName": "contracts/IAaveStakingHelper.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IAaveStakingHelper"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IDebtTokenBase.sol": {
+      "lastModificationDate": 1611329083794,
+      "contentHash": "4ccecceb151e8d39ad0cc6414cad2906",
+      "sourceName": "contracts/IDebtTokenBase.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IDebtTokenBase"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IERC20Detailed.sol": {
+      "lastModificationDate": 1611329083794,
+      "contentHash": "bd34ca0539ab64d863d066d0cc5d8adb",
+      "sourceName": "contracts/IERC20Detailed.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IERC20Detailed"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IFaucet.sol": {
+      "lastModificationDate": 1611329083794,
+      "contentHash": "cd6533561fe2f9c93106e65824352468",
+      "sourceName": "contracts/IFaucet.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IFaucet"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/ILendingPool.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "015937a7d38f7372b55dae28ac1d71ea",
+      "sourceName": "contracts/ILendingPool.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "ILendingPool"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/ILendToAaveMigrator.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "ec9f08d00d87178883fd28bf202d0061",
+      "sourceName": "contracts/ILendToAaveMigrator.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "ILendToAaveMigrator"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IMinter.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "0bfb5ceac30ca220866e87896b4a4682",
+      "sourceName": "contracts/IMinter.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IMinter"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IRepayWithCollateral.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "0c36b6ddeec03d08a218648d39337b7f",
+      "sourceName": "contracts/IRepayWithCollateral.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IRepayWithCollateral"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IStakedToken.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "e992c11c318f05dcda348f1d416ecc3b",
+      "sourceName": "contracts/IStakedToken.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IStakedToken"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/ISwapCollateral.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "81ba43f32d49d96d3a933bff067fe82b",
+      "sourceName": "contracts/ISwapCollateral.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "ISwapCollateral"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/ISynthetix.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "85d35d36c6eac91b3df9d414aa0d8a01",
+      "sourceName": "contracts/ISynthetix.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "ISynthetix"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IWETHGateway.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "565a16f06d1b10868e7be62aca0f0789",
+      "sourceName": "contracts/IWETHGateway.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "IWETHGateway"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IAaveGovernanceV2.sol": {
+      "lastModificationDate": 1611329083794,
+      "contentHash": "42957c095b64103806fe228299f25638",
+      "sourceName": "contracts/IAaveGovernanceV2.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IExecutorWithTimelock.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IAaveGovernanceV2"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IExecutorWithTimelock.sol": {
+      "lastModificationDate": 1611329083794,
+      "contentHash": "60ac5ebeb5ab8ba0516aaa3621728391",
+      "sourceName": "contracts/IExecutorWithTimelock.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IAaveGovernanceV2.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IExecutorWithTimelock"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IProposalValidator.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "2475b8a67a3e33bac3001bbd020d5195",
+      "sourceName": "contracts/IProposalValidator.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IAaveGovernanceV2.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IProposalValidator"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IGovernanceV2Helper.sol": {
+      "lastModificationDate": 1611333104431,
+      "contentHash": "bc11d1f99d42c95f41db23109ea29b8e",
+      "sourceName": "contracts/IGovernanceV2Helper.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IAaveGovernanceV2.sol",
+        "./IExecutorWithTimelock.sol"
+      ],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IGovernanceV2Helper"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IGovernancePowerDelegationToken.sol": {
+      "lastModificationDate": 1611329083798,
+      "contentHash": "d7fe34a620d9f87bc621a12dad018ecd",
+      "sourceName": "contracts/IGovernancePowerDelegationToken.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IGovernancePowerDelegationToken"
+      ]
+    },
+    "/home/sendrax/aave/aave-js/contracts/IGovernanceStrategy.sol": {
+      "lastModificationDate": 1611329083802,
+      "contentHash": "6d4c911233d3dc170d3fd3a88f35bfb6",
+      "sourceName": "contracts/IGovernanceStrategy.sol",
+      "solcConfig": {
+        "version": "0.7.5",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "istanbul",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.7.5"
+      ],
+      "artifacts": [
+        "IGovernanceStrategy"
+      ]
+    }
+  }
+}

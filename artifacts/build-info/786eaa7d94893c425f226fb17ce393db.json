@@ -1,0 +1,1793 @@
+{
+  "id": "786eaa7d94893c425f226fb17ce393db",
+  "_format": "hh-sol-build-info-1",
+  "solcVersion": "0.7.5",
+  "solcLongVersion": "0.7.5+commit.eb77ed08",
+  "input": {
+    "language": "Solidity",
+    "sources": {
+      "contracts/IGovernancePowerDelegationToken.sol": {
+        "content": "// SPDX-License-Identifier: agpl-3.0\npragma solidity 0.7.5;\n\ninterface IGovernancePowerDelegationToken {\n    enum DelegationType {VOTING_POWER, PROPOSITION_POWER}\n\n    /**\n     * @dev emitted when a user delegates to another\n     * @param delegator the delegator\n     * @param delegatee the delegatee\n     * @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)\n     **/\n    event DelegateChanged(\n        address indexed delegator,\n        address indexed delegatee,\n        DelegationType delegationType\n    );\n\n    /**\n     * @dev emitted when an action changes the delegated power of a user\n     * @param user the user which delegated power has changed\n     * @param amount the amount of delegated power for the user\n     * @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)\n     **/\n    event DelegatedPowerChanged(\n        address indexed user,\n        uint256 amount,\n        DelegationType delegationType\n    );\n\n    /**\n     * @dev delegates the specific power to a delegatee\n     * @param delegatee the user which delegated power has changed\n     * @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)\n     **/\n    function delegateByType(address delegatee, DelegationType delegationType)\n        external\n        virtual;\n\n    /**\n     * @dev delegates all the powers to a specific user\n     * @param delegatee the user to which the power will be delegated\n     **/\n    function delegate(address delegatee) external virtual;\n\n    /**\n     * @dev returns the delegatee of an user\n     * @param delegator the address of the delegator\n     **/\n    function getDelegateeByType(\n        address delegator,\n        DelegationType delegationType\n    ) external virtual view returns (address);\n\n    /**\n     * @dev returns the current delegated power of a user. The current power is the\n     * power delegated at the time of the last snapshot\n     * @param user the user\n     **/\n    function getPowerCurrent(address user, DelegationType delegationType)\n        external\n        virtual\n        view\n        returns (uint256);\n\n    /**\n     * @dev returns the delegated power of a user at a certain block\n     * @param user the user\n     **/\n    function getPowerAtBlock(\n        address user,\n        uint256 blockNumber,\n        DelegationType delegationType\n    ) external virtual view returns (uint256);\n\n    /**\n     * @dev returns the total supply at a certain block number\n     **/\n    function totalSupplyAt(uint256 blockNumber)\n        external\n        virtual\n        view\n        returns (uint256);\n\n    /**\n     * @dev Delegates power from signatory to `delegatee`\n     * @param delegatee The address to delegate votes to\n     * @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)\n     * @param nonce The contract state required to match the signature\n     * @param expiry The time at which to expire the signature\n     * @param v The recovery byte of the signature\n     * @param r Half of the ECDSA signature pair\n     * @param s Half of the ECDSA signature pair\n     */\n    function delegateByTypeBySig(\n        address delegatee,\n        DelegationType delegationType,\n        uint256 nonce,\n        uint256 expiry,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) external;\n\n    /**\n     * @dev Delegates power from signatory to `delegatee`\n     * @param delegatee The address to delegate votes to\n     * @param nonce The contract state required to match the signature\n     * @param expiry The time at which to expire the signature\n     * @param v The recovery byte of the signature\n     * @param r Half of the ECDSA signature pair\n     * @param s Half of the ECDSA signature pair\n     */\n    function delegateBySig(\n        address delegatee,\n        uint256 nonce,\n        uint256 expiry,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) external;\n\n    function _nonces(address) external view returns (uint256);\n}\n"
+      }
+    },
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "evmVersion": "istanbul",
+      "outputSelection": {
+        "*": {
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers"
+          ],
+          "": [
+            "ast"
+          ]
+        }
+      }
+    }
+  },
+  "output": {
+    "contracts": {
+      "contracts/IGovernancePowerDelegationToken.sol": {
+        "IGovernancePowerDelegationToken": {
+          "abi": [
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "delegator",
+                  "type": "address"
+                },
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "delegatee",
+                  "type": "address"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+                  "name": "delegationType",
+                  "type": "uint8"
+                }
+              ],
+              "name": "DelegateChanged",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+                  "name": "delegationType",
+                  "type": "uint8"
+                }
+              ],
+              "name": "DelegatedPowerChanged",
+              "type": "event"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "name": "_nonces",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "delegatee",
+                  "type": "address"
+                }
+              ],
+              "name": "delegate",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "delegatee",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiry",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "delegateBySig",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "delegatee",
+                  "type": "address"
+                },
+                {
+                  "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+                  "name": "delegationType",
+                  "type": "uint8"
+                }
+              ],
+              "name": "delegateByType",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "delegatee",
+                  "type": "address"
+                },
+                {
+                  "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+                  "name": "delegationType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiry",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "delegateByTypeBySig",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "delegator",
+                  "type": "address"
+                },
+                {
+                  "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+                  "name": "delegationType",
+                  "type": "uint8"
+                }
+              ],
+              "name": "getDelegateeByType",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "blockNumber",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+                  "name": "delegationType",
+                  "type": "uint8"
+                }
+              ],
+              "name": "getPowerAtBlock",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "user",
+                  "type": "address"
+                },
+                {
+                  "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+                  "name": "delegationType",
+                  "type": "uint8"
+                }
+              ],
+              "name": "getPowerCurrent",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "blockNumber",
+                  "type": "uint256"
+                }
+              ],
+              "name": "totalSupplyAt",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ],
+          "evm": {
+            "bytecode": {
+              "generatedSources": [],
+              "linkReferences": {},
+              "object": "",
+              "opcodes": "",
+              "sourceMap": ""
+            },
+            "deployedBytecode": {
+              "generatedSources": [],
+              "immutableReferences": {},
+              "linkReferences": {},
+              "object": "",
+              "opcodes": "",
+              "sourceMap": ""
+            },
+            "methodIdentifiers": {
+              "_nonces(address)": "b9844d8d",
+              "delegate(address)": "5c19a95c",
+              "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": "c3cda520",
+              "delegateByType(address,uint8)": "dc937e1c",
+              "delegateByTypeBySig(address,uint8,uint256,uint256,uint8,bytes32,bytes32)": "f713d8a8",
+              "getDelegateeByType(address,uint8)": "6f50458d",
+              "getPowerAtBlock(address,uint256,uint8)": "c2ffbb91",
+              "getPowerCurrent(address,uint8)": "b2f4201d",
+              "totalSupplyAt(uint256)": "981b24d0"
+            }
+          }
+        }
+      }
+    },
+    "errors": [
+      {
+        "component": "general",
+        "errorCode": "5815",
+        "formattedMessage": "contracts/IGovernancePowerDelegationToken.sol:36:5: Warning: Interface functions are implicitly \"virtual\"\n    function delegateByType(address delegatee, DelegationType delegationType)\n    ^ (Relevant source part starts here and spans across multiple lines).\n",
+        "message": "Interface functions are implicitly \"virtual\"",
+        "severity": "warning",
+        "sourceLocation": {
+          "end": 1311,
+          "file": "contracts/IGovernancePowerDelegationToken.sol",
+          "start": 1204
+        },
+        "type": "Warning"
+      },
+      {
+        "component": "general",
+        "errorCode": "5815",
+        "formattedMessage": "contracts/IGovernancePowerDelegationToken.sol:44:5: Warning: Interface functions are implicitly \"virtual\"\n    function delegate(address delegatee) external virtual;\n    ^----------------------------------------------------^\n",
+        "message": "Interface functions are implicitly \"virtual\"",
+        "severity": "warning",
+        "sourceLocation": {
+          "end": 1514,
+          "file": "contracts/IGovernancePowerDelegationToken.sol",
+          "start": 1460
+        },
+        "type": "Warning"
+      },
+      {
+        "component": "general",
+        "errorCode": "5815",
+        "formattedMessage": "contracts/IGovernancePowerDelegationToken.sol:50:5: Warning: Interface functions are implicitly \"virtual\"\n    function getDelegateeByType(\n    ^ (Relevant source part starts here and spans across multiple lines).\n",
+        "message": "Interface functions are implicitly \"virtual\"",
+        "severity": "warning",
+        "sourceLocation": {
+          "end": 1775,
+          "file": "contracts/IGovernancePowerDelegationToken.sol",
+          "start": 1635
+        },
+        "type": "Warning"
+      },
+      {
+        "component": "general",
+        "errorCode": "5815",
+        "formattedMessage": "contracts/IGovernancePowerDelegationToken.sol:60:5: Warning: Interface functions are implicitly \"virtual\"\n    function getPowerCurrent(address user, DelegationType delegationType)\n    ^ (Relevant source part starts here and spans across multiple lines).\n",
+        "message": "Interface functions are implicitly \"virtual\"",
+        "severity": "warning",
+        "sourceLocation": {
+          "end": 2108,
+          "file": "contracts/IGovernancePowerDelegationToken.sol",
+          "start": 1966
+        },
+        "type": "Warning"
+      },
+      {
+        "component": "general",
+        "errorCode": "5815",
+        "formattedMessage": "contracts/IGovernancePowerDelegationToken.sol:70:5: Warning: Interface functions are implicitly \"virtual\"\n    function getPowerAtBlock(\n    ^ (Relevant source part starts here and spans across multiple lines).\n",
+        "message": "Interface functions are implicitly \"virtual\"",
+        "severity": "warning",
+        "sourceLocation": {
+          "end": 2389,
+          "file": "contracts/IGovernancePowerDelegationToken.sol",
+          "start": 2228
+        },
+        "type": "Warning"
+      },
+      {
+        "component": "general",
+        "errorCode": "5815",
+        "formattedMessage": "contracts/IGovernancePowerDelegationToken.sol:79:5: Warning: Interface functions are implicitly \"virtual\"\n    function totalSupplyAt(uint256 blockNumber)\n    ^ (Relevant source part starts here and spans across multiple lines).\n",
+        "message": "Interface functions are implicitly \"virtual\"",
+        "severity": "warning",
+        "sourceLocation": {
+          "end": 2591,
+          "file": "contracts/IGovernancePowerDelegationToken.sol",
+          "start": 2475
+        },
+        "type": "Warning"
+      }
+    ],
+    "sources": {
+      "contracts/IGovernancePowerDelegationToken.sol": {
+        "ast": {
+          "absolutePath": "contracts/IGovernancePowerDelegationToken.sol",
+          "exportedSymbols": {
+            "IGovernancePowerDelegationToken": [
+              118
+            ]
+          },
+          "id": 119,
+          "license": "agpl-3.0",
+          "nodeType": "SourceUnit",
+          "nodes": [
+            {
+              "id": 1,
+              "literals": [
+                "solidity",
+                "0.7",
+                ".5"
+              ],
+              "nodeType": "PragmaDirective",
+              "src": "37:22:0"
+            },
+            {
+              "abstract": false,
+              "baseContracts": [],
+              "contractDependencies": [],
+              "contractKind": "interface",
+              "fullyImplemented": false,
+              "id": 118,
+              "linearizedBaseContracts": [
+                118
+              ],
+              "name": "IGovernancePowerDelegationToken",
+              "nodeType": "ContractDefinition",
+              "nodes": [
+                {
+                  "canonicalName": "IGovernancePowerDelegationToken.DelegationType",
+                  "id": 4,
+                  "members": [
+                    {
+                      "id": 2,
+                      "name": "VOTING_POWER",
+                      "nodeType": "EnumValue",
+                      "src": "130:12:0"
+                    },
+                    {
+                      "id": 3,
+                      "name": "PROPOSITION_POWER",
+                      "nodeType": "EnumValue",
+                      "src": "144:17:0"
+                    }
+                  ],
+                  "name": "DelegationType",
+                  "nodeType": "EnumDefinition",
+                  "src": "109:53:0"
+                },
+                {
+                  "anonymous": false,
+                  "documentation": {
+                    "id": 5,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "168:227:0",
+                    "text": " @dev emitted when a user delegates to another\n @param delegator the delegator\n @param delegatee the delegatee\n @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)*"
+                  },
+                  "id": 13,
+                  "name": "DelegateChanged",
+                  "nodeType": "EventDefinition",
+                  "parameters": {
+                    "id": 12,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 7,
+                        "indexed": true,
+                        "mutability": "mutable",
+                        "name": "delegator",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 13,
+                        "src": "431:25:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 6,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "431:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 9,
+                        "indexed": true,
+                        "mutability": "mutable",
+                        "name": "delegatee",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 13,
+                        "src": "466:25:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 8,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "466:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 11,
+                        "indexed": false,
+                        "mutability": "mutable",
+                        "name": "delegationType",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 13,
+                        "src": "501:29:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_DelegationType_$4",
+                          "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                        },
+                        "typeName": {
+                          "id": 10,
+                          "name": "DelegationType",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 4,
+                          "src": "501:14:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DelegationType_$4",
+                            "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "421:115:0"
+                  },
+                  "src": "400:137:0"
+                },
+                {
+                  "anonymous": false,
+                  "documentation": {
+                    "id": 14,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "543:297:0",
+                    "text": " @dev emitted when an action changes the delegated power of a user\n @param user the user which delegated power has changed\n @param amount the amount of delegated power for the user\n @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)*"
+                  },
+                  "id": 22,
+                  "name": "DelegatedPowerChanged",
+                  "nodeType": "EventDefinition",
+                  "parameters": {
+                    "id": 21,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 16,
+                        "indexed": true,
+                        "mutability": "mutable",
+                        "name": "user",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 22,
+                        "src": "882:20:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 15,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "882:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 18,
+                        "indexed": false,
+                        "mutability": "mutable",
+                        "name": "amount",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 22,
+                        "src": "912:14:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 17,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "912:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 20,
+                        "indexed": false,
+                        "mutability": "mutable",
+                        "name": "delegationType",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 22,
+                        "src": "936:29:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_DelegationType_$4",
+                          "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                        },
+                        "typeName": {
+                          "id": 19,
+                          "name": "DelegationType",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 4,
+                          "src": "936:14:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DelegationType_$4",
+                            "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "872:99:0"
+                  },
+                  "src": "845:127:0"
+                },
+                {
+                  "documentation": {
+                    "id": 23,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "978:221:0",
+                    "text": " @dev delegates the specific power to a delegatee\n @param delegatee the user which delegated power has changed\n @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)*"
+                  },
+                  "functionSelector": "dc937e1c",
+                  "id": 30,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "delegateByType",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 28,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 25,
+                        "mutability": "mutable",
+                        "name": "delegatee",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 30,
+                        "src": "1228:17:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 24,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1228:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 27,
+                        "mutability": "mutable",
+                        "name": "delegationType",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 30,
+                        "src": "1247:29:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_DelegationType_$4",
+                          "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                        },
+                        "typeName": {
+                          "id": 26,
+                          "name": "DelegationType",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 4,
+                          "src": "1247:14:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DelegationType_$4",
+                            "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "1227:50:0"
+                  },
+                  "returnParameters": {
+                    "id": 29,
+                    "nodeType": "ParameterList",
+                    "parameters": [],
+                    "src": "1310:0:0"
+                  },
+                  "scope": 118,
+                  "src": "1204:107:0",
+                  "stateMutability": "nonpayable",
+                  "virtual": true,
+                  "visibility": "external"
+                },
+                {
+                  "documentation": {
+                    "id": 31,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "1317:138:0",
+                    "text": " @dev delegates all the powers to a specific user\n @param delegatee the user to which the power will be delegated*"
+                  },
+                  "functionSelector": "5c19a95c",
+                  "id": 36,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "delegate",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 34,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 33,
+                        "mutability": "mutable",
+                        "name": "delegatee",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 36,
+                        "src": "1478:17:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 32,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1478:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "1477:19:0"
+                  },
+                  "returnParameters": {
+                    "id": 35,
+                    "nodeType": "ParameterList",
+                    "parameters": [],
+                    "src": "1513:0:0"
+                  },
+                  "scope": 118,
+                  "src": "1460:54:0",
+                  "stateMutability": "nonpayable",
+                  "virtual": true,
+                  "visibility": "external"
+                },
+                {
+                  "documentation": {
+                    "id": 37,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "1520:110:0",
+                    "text": " @dev returns the delegatee of an user\n @param delegator the address of the delegator*"
+                  },
+                  "functionSelector": "6f50458d",
+                  "id": 46,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "getDelegateeByType",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 42,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 39,
+                        "mutability": "mutable",
+                        "name": "delegator",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 46,
+                        "src": "1672:17:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 38,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1672:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 41,
+                        "mutability": "mutable",
+                        "name": "delegationType",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 46,
+                        "src": "1699:29:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_DelegationType_$4",
+                          "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                        },
+                        "typeName": {
+                          "id": 40,
+                          "name": "DelegationType",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 4,
+                          "src": "1699:14:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DelegationType_$4",
+                            "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "1662:72:0"
+                  },
+                  "returnParameters": {
+                    "id": 45,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 44,
+                        "mutability": "mutable",
+                        "name": "",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 46,
+                        "src": "1766:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 43,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1766:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "1765:9:0"
+                  },
+                  "scope": 118,
+                  "src": "1635:140:0",
+                  "stateMutability": "view",
+                  "virtual": true,
+                  "visibility": "external"
+                },
+                {
+                  "documentation": {
+                    "id": 47,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "1781:180:0",
+                    "text": " @dev returns the current delegated power of a user. The current power is the\n power delegated at the time of the last snapshot\n @param user the user*"
+                  },
+                  "functionSelector": "b2f4201d",
+                  "id": 56,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "getPowerCurrent",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 52,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 49,
+                        "mutability": "mutable",
+                        "name": "user",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 56,
+                        "src": "1991:12:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 48,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1991:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 51,
+                        "mutability": "mutable",
+                        "name": "delegationType",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 56,
+                        "src": "2005:29:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_DelegationType_$4",
+                          "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                        },
+                        "typeName": {
+                          "id": 50,
+                          "name": "DelegationType",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 4,
+                          "src": "2005:14:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DelegationType_$4",
+                            "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "1990:45:0"
+                  },
+                  "returnParameters": {
+                    "id": 55,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 54,
+                        "mutability": "mutable",
+                        "name": "",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 56,
+                        "src": "2099:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 53,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "2099:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "2098:9:0"
+                  },
+                  "scope": 118,
+                  "src": "1966:142:0",
+                  "stateMutability": "view",
+                  "virtual": true,
+                  "visibility": "external"
+                },
+                {
+                  "documentation": {
+                    "id": 57,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "2114:109:0",
+                    "text": " @dev returns the delegated power of a user at a certain block\n @param user the user*"
+                  },
+                  "functionSelector": "c2ffbb91",
+                  "id": 68,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "getPowerAtBlock",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 64,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 59,
+                        "mutability": "mutable",
+                        "name": "user",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 68,
+                        "src": "2262:12:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 58,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "2262:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 61,
+                        "mutability": "mutable",
+                        "name": "blockNumber",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 68,
+                        "src": "2284:19:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 60,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "2284:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 63,
+                        "mutability": "mutable",
+                        "name": "delegationType",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 68,
+                        "src": "2313:29:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_DelegationType_$4",
+                          "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                        },
+                        "typeName": {
+                          "id": 62,
+                          "name": "DelegationType",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 4,
+                          "src": "2313:14:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DelegationType_$4",
+                            "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "2252:96:0"
+                  },
+                  "returnParameters": {
+                    "id": 67,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 66,
+                        "mutability": "mutable",
+                        "name": "",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 68,
+                        "src": "2380:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 65,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "2380:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "2379:9:0"
+                  },
+                  "scope": 118,
+                  "src": "2228:161:0",
+                  "stateMutability": "view",
+                  "virtual": true,
+                  "visibility": "external"
+                },
+                {
+                  "documentation": {
+                    "id": 69,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "2395:75:0",
+                    "text": " @dev returns the total supply at a certain block number*"
+                  },
+                  "functionSelector": "981b24d0",
+                  "id": 76,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "totalSupplyAt",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 72,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 71,
+                        "mutability": "mutable",
+                        "name": "blockNumber",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 76,
+                        "src": "2498:19:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 70,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "2498:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "2497:21:0"
+                  },
+                  "returnParameters": {
+                    "id": 75,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 74,
+                        "mutability": "mutable",
+                        "name": "",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 76,
+                        "src": "2582:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 73,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "2582:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "2581:9:0"
+                  },
+                  "scope": 118,
+                  "src": "2475:116:0",
+                  "stateMutability": "view",
+                  "virtual": true,
+                  "visibility": "external"
+                },
+                {
+                  "documentation": {
+                    "id": 77,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "2597:495:0",
+                    "text": " @dev Delegates power from signatory to `delegatee`\n @param delegatee The address to delegate votes to\n @param delegationType the type of delegation (VOTING_POWER, PROPOSITION_POWER)\n @param nonce The contract state required to match the signature\n @param expiry The time at which to expire the signature\n @param v The recovery byte of the signature\n @param r Half of the ECDSA signature pair\n @param s Half of the ECDSA signature pair"
+                  },
+                  "functionSelector": "f713d8a8",
+                  "id": 94,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "delegateByTypeBySig",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 92,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 79,
+                        "mutability": "mutable",
+                        "name": "delegatee",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 94,
+                        "src": "3135:17:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 78,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3135:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 81,
+                        "mutability": "mutable",
+                        "name": "delegationType",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 94,
+                        "src": "3162:29:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_enum$_DelegationType_$4",
+                          "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                        },
+                        "typeName": {
+                          "id": 80,
+                          "name": "DelegationType",
+                          "nodeType": "UserDefinedTypeName",
+                          "referencedDeclaration": 4,
+                          "src": "3162:14:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_DelegationType_$4",
+                            "typeString": "enum IGovernancePowerDelegationToken.DelegationType"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 83,
+                        "mutability": "mutable",
+                        "name": "nonce",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 94,
+                        "src": "3201:13:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 82,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3201:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 85,
+                        "mutability": "mutable",
+                        "name": "expiry",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 94,
+                        "src": "3224:14:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 84,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3224:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 87,
+                        "mutability": "mutable",
+                        "name": "v",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 94,
+                        "src": "3248:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint8",
+                          "typeString": "uint8"
+                        },
+                        "typeName": {
+                          "id": 86,
+                          "name": "uint8",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3248:5:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint8",
+                            "typeString": "uint8"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 89,
+                        "mutability": "mutable",
+                        "name": "r",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 94,
+                        "src": "3265:9:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        },
+                        "typeName": {
+                          "id": 88,
+                          "name": "bytes32",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3265:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 91,
+                        "mutability": "mutable",
+                        "name": "s",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 94,
+                        "src": "3284:9:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        },
+                        "typeName": {
+                          "id": 90,
+                          "name": "bytes32",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3284:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "3125:174:0"
+                  },
+                  "returnParameters": {
+                    "id": 93,
+                    "nodeType": "ParameterList",
+                    "parameters": [],
+                    "src": "3308:0:0"
+                  },
+                  "scope": 118,
+                  "src": "3097:212:0",
+                  "stateMutability": "nonpayable",
+                  "virtual": false,
+                  "visibility": "external"
+                },
+                {
+                  "documentation": {
+                    "id": 95,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "3315:409:0",
+                    "text": " @dev Delegates power from signatory to `delegatee`\n @param delegatee The address to delegate votes to\n @param nonce The contract state required to match the signature\n @param expiry The time at which to expire the signature\n @param v The recovery byte of the signature\n @param r Half of the ECDSA signature pair\n @param s Half of the ECDSA signature pair"
+                  },
+                  "functionSelector": "c3cda520",
+                  "id": 110,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "delegateBySig",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 108,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 97,
+                        "mutability": "mutable",
+                        "name": "delegatee",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 110,
+                        "src": "3761:17:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 96,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3761:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 99,
+                        "mutability": "mutable",
+                        "name": "nonce",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 110,
+                        "src": "3788:13:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 98,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3788:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 101,
+                        "mutability": "mutable",
+                        "name": "expiry",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 110,
+                        "src": "3811:14:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 100,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3811:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 103,
+                        "mutability": "mutable",
+                        "name": "v",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 110,
+                        "src": "3835:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint8",
+                          "typeString": "uint8"
+                        },
+                        "typeName": {
+                          "id": 102,
+                          "name": "uint8",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3835:5:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint8",
+                            "typeString": "uint8"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 105,
+                        "mutability": "mutable",
+                        "name": "r",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 110,
+                        "src": "3852:9:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        },
+                        "typeName": {
+                          "id": 104,
+                          "name": "bytes32",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3852:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        "visibility": "internal"
+                      },
+                      {
+                        "constant": false,
+                        "id": 107,
+                        "mutability": "mutable",
+                        "name": "s",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 110,
+                        "src": "3871:9:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        },
+                        "typeName": {
+                          "id": 106,
+                          "name": "bytes32",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3871:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "3751:135:0"
+                  },
+                  "returnParameters": {
+                    "id": 109,
+                    "nodeType": "ParameterList",
+                    "parameters": [],
+                    "src": "3895:0:0"
+                  },
+                  "scope": 118,
+                  "src": "3729:167:0",
+                  "stateMutability": "nonpayable",
+                  "virtual": false,
+                  "visibility": "external"
+                },
+                {
+                  "functionSelector": "b9844d8d",
+                  "id": 117,
+                  "implemented": false,
+                  "kind": "function",
+                  "modifiers": [],
+                  "name": "_nonces",
+                  "nodeType": "FunctionDefinition",
+                  "parameters": {
+                    "id": 113,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 112,
+                        "mutability": "mutable",
+                        "name": "",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 117,
+                        "src": "3919:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "typeName": {
+                          "id": 111,
+                          "name": "address",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3919:7:0",
+                          "stateMutability": "nonpayable",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "3918:9:0"
+                  },
+                  "returnParameters": {
+                    "id": 116,
+                    "nodeType": "ParameterList",
+                    "parameters": [
+                      {
+                        "constant": false,
+                        "id": 115,
+                        "mutability": "mutable",
+                        "name": "",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 117,
+                        "src": "3951:7:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 114,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "3951:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "src": "3950:9:0"
+                  },
+                  "scope": 118,
+                  "src": "3902:58:0",
+                  "stateMutability": "view",
+                  "virtual": false,
+                  "visibility": "external"
+                }
+              ],
+              "scope": 119,
+              "src": "61:3901:0"
+            }
+          ],
+          "src": "37:3926:0"
+        },
+        "id": 0
+      }
+    }
+  }
+}
