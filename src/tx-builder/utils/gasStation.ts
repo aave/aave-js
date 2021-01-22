@@ -1,6 +1,5 @@
 import { BigNumber } from 'ethers';
 import { transactionType, Configuration } from '../types';
-import { DEFAULT_MAX_GAS_REQUIRED } from '../config';
 
 // eslint-disable-next-line import/prefer-default-export
 export const estimateGas = async (

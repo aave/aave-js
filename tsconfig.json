@@ -1,7 +1,7 @@
 {
   "include": ["src", "types"],
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es5",
     "module": "esnext",
     "lib": ["es2017", "esnext.asynciterable", "es2019"],
     "importHelpers": true,
