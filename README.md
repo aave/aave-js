@@ -123,7 +123,7 @@ This package uses [ethers v5](https://github.com/ethers-io/ethers.js#readme) as 
 ## Installing
 
 ```
-npm install --save @aave/light-client
+npm install --save @aave/protocol-js
 ```
 
 ## Markets and Networks
@@ -131,13 +131,13 @@ npm install --save @aave/light-client
 The library exports the enabled networks and markets in the Aave protocol as the enums `Network` and `Market`
 
 ```
-import { Network, Market } from '@aave/light-client';
+import { Network, Market } from '@aave/protocol-js';
 ```
 
 ## Usage
 
 ```
-import { TxBuilderV2, Network, Market } from '@aave/light-client
+import { TxBuilderV2, Network, Market } from '@aave/protocol-js'
 
 const httpProvider = new Web3.providers.HttpProvider(
     process.env.ETHEREUM_URL ||
@@ -576,7 +576,7 @@ powerDelegation.delegateByType({
 To use the testnet faucets which are compatible with Aave:
 
 ```
-import { TxBuilderV2, Network, Market } from '@aave/light-client
+import { TxBuilderV2, Network, Market } from '@aave/protocol-js'
 
 const httpProvider = new Web3.providers.HttpProvider(
     process.env.ETHEREUM_URL ||
