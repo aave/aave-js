@@ -9,6 +9,7 @@
     "lending",
     "defi"
   ],
+  "sideEffects": false,
   "author": "Aave <tech@aave.com>",
   "contributors": [
     {
