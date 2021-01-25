@@ -39,13 +39,11 @@ export default class FaucetService extends BaseService<IMinter>
     this.faucetAddress = FAUCET;
 
     if (enabledNetworksByService.faucet.indexOf(network) > -1) {
-      this.faucetAddress =
-        commonContractAddressBetweenMarketsV2['kovan'].FAUCET;
+      this.faucetContract = IFaucet__factory.connect(
+        this.faucetAddress,
+        provider
+      );
     }
-    this.faucetContract = IFaucet__factory.connect(
-      this.faucetAddress,
-      provider
-    );
   }
 
   @FaucetValidator
