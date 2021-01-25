@@ -1,0 +1,44 @@
+name: ci
+
+on:
+  push:
+jobs:
+  release:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: info
+        id: info
+        shell: bash
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
+
+      - name: install
+        id: install
+        run: |
+          yarn install --frozen-lockfile
+
+      - id: test
+        name: test
+        run: |
+          yarn test
+
+      - id: build
+        name: build
+        run: |
+          yarn build
+
+      - id: release
+        name: release
+        run: |
+          git config user.name "GitHub Actions Build"
+          git config user.email "developers@aave.com"
+          if [[ "${{ steps.info.outputs.branch }}" != "master" ]]
+          then
+            yarn release  --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
+            yarn publish
+          else
+            yarn release --message "chore(release): Release v%s :tada: [ci skip]"
+            git push --follow-tags origin master && yarn publish
+          fi

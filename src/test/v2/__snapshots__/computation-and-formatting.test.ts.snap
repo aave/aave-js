@@ -76,7 +76,7 @@ Object {
   "reserveLiquidationThreshold": "0.8",
   "stableBorrowRate": "0.10928437169401419784",
   "stableBorrowRateEnabled": true,
-  "stableDebtLastUpdateTimestamp": "1606992400",
+  "stableDebtLastUpdateTimestamp": 1606992400,
   "stableDebtTokenAddress": "0x3B91257Fe5CA63b4114ac41A0d467D25E2F747F3",
   "stableRateSlope1": "20000000000000000000000000",
   "stableRateSlope2": "750000000000000000000000000",
