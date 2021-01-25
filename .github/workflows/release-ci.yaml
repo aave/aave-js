@@ -34,14 +34,14 @@ jobs:
 
       - id: prerelease
         name: prerelease
-        if: { { github.ref != 'ref/head/master' } }
+        if: ${{ github.ref != 'ref/head/master' }}
         run: |
           yarn release  --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
           yarn publish
 
       - id: release
         name: release
-        if: { { github.ref == 'ref/head/master' } }
+        if: ${{ github.ref == 'ref/head/master' }}
         run: |
           yarn release --message "chore(release): Release v%s :tada: [ci skip]"
           git push --follow-tags origin master && yarn publish
