@@ -51,7 +51,8 @@
     "lint": "tsdx lint",
     "prepare": "npm run build",
     "compile": "SKIP_LOAD=true hardhat compile",
-    "release": "standard-version"
+    "release": "standard-version",
+    "release:prod": "yarn release --message \"chore(release): Release v%s :tada:\" --skip.tag"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^4.0.0",
