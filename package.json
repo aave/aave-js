@@ -50,7 +50,8 @@
     "test:watch": "tsdx test --watch",
     "lint": "tsdx lint",
     "prepare": "npm run build",
-    "compile": "SKIP_LOAD=true hardhat compile"
+    "compile": "SKIP_LOAD=true hardhat compile",
+    "release": "standard-version"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^4.0.0",
@@ -81,7 +82,8 @@
     "axios": "^0.21.0",
     "bignumber.js": "^9.0.1",
     "bs58": "^4.0.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "standard-version": "^9.1.0"
   },
   "peerDependencies": {
     "ethers": "^5.0.24"

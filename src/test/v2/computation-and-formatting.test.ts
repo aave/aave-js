@@ -31,7 +31,7 @@ const mockReserve: ReserveData = {
   availableLiquidity: '43133641118657852003256',
   totalPrincipalStableDebt: '1000000000000000000',
   averageStableRate: '109284236984257451326752610',
-  stableDebtLastUpdateTimestamp: '1606992400',
+  stableDebtLastUpdateTimestamp: 1606992400,
   totalScaledVariableDebt: '145496831599325217573288',
   // priceInEth: '1634050000000000',
   variableRateSlope1: '40000000000000000000000000',
