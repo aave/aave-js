@@ -165,7 +165,7 @@ Object that contains all the necessary methods to create Aave lending pool trans
 The return object will be a Promise array of objects of type:
 
 ```
-import { EthereumTransactionTypeExtended } from '@aave-tech/light-client
+import { EthereumTransactionTypeExtended } from '@aave/protocol-js'
 ```
 
 having {tx, txType}
@@ -432,7 +432,7 @@ import {
   TxBuilderV2,
   AaveGovernanceV2Interface,
   GovernanceDelegationTokenInterface,
-} from '@aave-tech/light-client';
+} from '@aave/protocol-js';
 
 const httpProvider = new Web3.providers.HttpProvider(
    process.env.ETHEREUM_URL ||
