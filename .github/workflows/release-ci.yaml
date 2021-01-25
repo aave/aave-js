@@ -9,10 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: info
-        id: info
+      - name: prepare
+        id: prepare
         shell: bash
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
+          git config user.name "GitHub Actions Build"
+          git config user.email "developers@aave.com"
 
       - name: install
         id: install
@@ -29,16 +32,16 @@ jobs:
         run: |
           yarn build
 
+      - id: prerelease
+        name: prerelease
+        if: ${{ github.ref != 'ref/head/master' }}
+        run: |
+          yarn release  --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
+          yarn publish
+
       - id: release
         name: release
+        if: ${{ github.ref == 'ref/head/master' }}
         run: |
-          git config user.name "GitHub Actions Build"
-          git config user.email "developers@aave.com"
-          if [[ "${{ steps.info.outputs.branch }}" != "master" ]]
-          then
-            yarn release  --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
-            yarn publish
-          else
-            yarn release --message "chore(release): Release v%s :tada: [ci skip]"
-            git push --follow-tags origin master && yarn publish
-          fi
+          yarn release --message "chore(release): Release v%s :tada: [ci skip]"
+          git push --follow-tags origin master && yarn publish
