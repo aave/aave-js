@@ -69,16 +69,11 @@ export default class StakingService extends BaseService<IStakedToken>
     this.canUsePermit = canUsePermit;
 
     if (this.canUsePermit) {
-      this.stakingHelperContractAddress =
-        distinctStakingAddressesBetweenTokens[this.tokenStake][
-          'kovan'
-        ].STAKING_HELPER_ADDRESS;
+      this.stakingHelperContract = IAaveStakingHelper__factory.connect(
+        STAKING_HELPER_ADDRESS,
+        provider
+      );
     }
-
-    this.stakingHelperContract = IAaveStakingHelper__factory.connect(
-      this.stakingHelperContractAddress,
-      provider
-    );
   }
 
   @StakingValidator
