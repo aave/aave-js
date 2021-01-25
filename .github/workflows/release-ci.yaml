@@ -32,16 +32,16 @@ jobs:
         run: |
           yarn build
 
-      - id: prerelease
-        name: prerelease
-        if: github.ref != 'refs/heads/master'
-        run: |
-          yarn release  --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
-          yarn publish
+#      - id: prerelease
+#        name: prerelease
+#        if: github.ref != 'refs/heads/master'
+#        run: |
+#          yarn release  --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
+#          yarn publish
 
-      - id: release
-        name: release
-        if: github.ref == 'refs/heads/master'
-        run: |
-          yarn release --message "chore(release): Release v%s :tada: [ci skip]"
-          git push --follow-tags origin master && yarn publish
+#      - id: release
+#        name: release
+#        if: github.ref == 'refs/heads/master'
+#        run: |
+#          yarn release --message "chore(release): Release v%s :tada: [ci skip]"
+#          git push --follow-tags origin master && yarn publish
