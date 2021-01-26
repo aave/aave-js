@@ -2176,10 +2176,10 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.11.1.tgz#fa840af64840c930f24a9c82c08d4a092a068add"
   integrity sha512-H8BSBoKE8EubJa0ONqecA2TviT3TnHeC4NpgnAHSUiuhZoQBfPB4L2P9bs8R6AoTW10Endvh3vc+fomVMIDIYQ==
 
-"@typechain/ethers-v5@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@typechain/ethers-v5/-/ethers-v5-4.0.0.tgz#2a8be5e108d23f3b8e6354d1618fdc2abcb00b07"
-  integrity sha512-Rw4WHPIuwTXWcHfmn9ICQISQhmJa6Ug5IjqPYLpsKqlED2L4W2JgQ6S9hYt4IKVmT//1yxIxD+iaa5tSQEEx1A==
+"@typechain/ethers-v5@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@typechain/ethers-v5/-/ethers-v5-5.0.0.tgz#6c91766b76c19886cf2c4833ded09611e117f92c"
+  integrity sha512-SnLnq6BCq2NBgm5xsQP8kRIawJ7gppLux8EOMb2ceoB5EuoW87AOyi6r1J5LTYe65/J59HjOVtaGCqsO+38Xrw==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
