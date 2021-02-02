@@ -19,6 +19,11 @@ const bn10 = new BigNumber(10);
 
 const bn10PowLookup: { [key: number]: BigNumberValue } = {};
 
+/**
+ * It's a performance optimized version of 10 ** x, which essentially memoizes previously used pows and resolves them as lookup.
+ * @param decimals
+ * @returns 10 ** decimals
+ */
 export function pow10(decimals: number) {
   if (!bn10PowLookup[decimals]) bn10PowLookup[decimals] = bn10.pow(decimals);
   return bn10PowLookup[decimals];
