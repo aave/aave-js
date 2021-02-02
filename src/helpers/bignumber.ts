@@ -19,7 +19,7 @@ const bn10 = new BigNumber(10);
 
 const bn10PowLookup: { [key: number]: BigNumberValue } = {};
 
-function pow10(decimals: number) {
+export function pow10(decimals: number) {
   if (!bn10PowLookup[decimals]) bn10PowLookup[decimals] = bn10.pow(decimals);
   return bn10PowLookup[decimals];
 }

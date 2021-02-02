@@ -5,6 +5,7 @@ import {
   valueToBigNumber,
   valueToZDBigNumber,
   normalize,
+  pow10,
 } from '../helpers/bignumber';
 import {
   calculateAvailableBorrowsETH,
@@ -34,9 +35,9 @@ export function getEthAndUsdBalance(
 ): [string, string] {
   const balanceInEth = valueToZDBigNumber(balance)
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const balanceInUsd = balanceInEth
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
   return [balanceInEth.toString(), balanceInUsd];
@@ -223,17 +224,17 @@ export function computeRawUserSummaryData(
   );
 
   const totalCollateralUSD = totalCollateralETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalLiquidityUSD = totalLiquidityETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalBorrowsUSD = totalBorrowsETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
@@ -282,7 +283,7 @@ export function formatUserSummaryData(
           ...reserve,
           reserveLiquidationBonus: normalize(
             valueToBigNumber(reserve.reserveLiquidationBonus).minus(
-              10 ** LTV_PRECISION
+              pow10(LTV_PRECISION)
             ),
             4
           ),
