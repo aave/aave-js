@@ -1,7 +1,11 @@
-name: ci
+name: release-ci
 
 on:
   push:
+    branches:
+      - master
+  pull_request:
+
 jobs:
   release:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
@@ -34,14 +38,17 @@ jobs:
 
       - id: prerelease
         name: prerelease
-        if: ${{ github.ref != 'ref/head/master' }}
+        if: github.ref != 'refs/heads/master'
         run: |
-          yarn release  --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
-          yarn publish
+          yarn release --message "chore(release): Release v%s :tada: [ci skip]" --prerelease ${{ github.sha }}
+          yarn publish --tag canary
 
       - id: release
         name: release
-        if: ${{ github.ref == 'ref/head/master' }}
+        if: |
+          contains(github.event.head_commit.message, 'chore(release)') &&
+          github.ref == 'refs/heads/master'
         run: |
-          yarn release --message "chore(release): Release v%s :tada: [ci skip]"
-          git push --follow-tags origin master && yarn publish
+          git tag v$(cat package.json | jq --raw-output '.version')
+          git push --follow-tags origin master
+          yarn publish

@@ -25,3 +25,14 @@ which might potentially be breaking" # will result in a major x.0.0
 git commit -m "fix!: <function> types now reflect the actual output" # will result in a major x.0.0
 
 ```
+
+## Release process
+
+To propose a new release you have to create a branch, run `yarn release:prod` and create a pr for that branch.
+Once the branch is merged to master a npm release will be published automatically.
+
+```bash
+git checkout -b <branch>
+yarn release:prod
+git push origin <branch>
+```
