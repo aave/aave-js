@@ -1,28 +1,16 @@
 import { BigNumber, constants } from 'ethers';
 import {
   EnabledNetworksType,
+  GasRecommendationType,
   Market,
   Network,
+  ProtocolAction,
   Stake,
   StakingConfigType,
 } from '../types';
 
-export const DEFAULT_MAX_GAS_REQUIRED = 1100000;
 export const DEFAULT_NULL_VALUE_ON_TX = BigNumber.from(0).toHexString();
 export const DEFAULT_APPROVE_AMOUNT = constants.MaxUint256.toString();
-// export const DEFAULT_APPROVE_AMOUNT = BigNumber.from('1000000000')
-//   .mul(BigNumber.from(Math.pow(10, 18).toString()))
-//   .toString(); // 1 billion
-export const FIRST_TX_GASLIMIT_DEPOSIT = '400000';
-export const DEFAULT_MAX_SWAP_COLLATERAL_GASS = '3000000';
-export const DEFAULT_MAX_REPAY_WITH_COLLATERAL_GASS = '3000000';
-export const FIRST_TX_GASLIMIT_REPAY = '900000';
-export const FIRST_TX_GASLIMIT_LIQUIDATION = '1500000';
-export const FIRST_TX_GASLIMIT_LIQUIDATION_SNX = '2500000';
-export const FIRST_TX_GASLIMIT_STAKE = '900000';
-export const FIRST_TX_GASLIMIT_MIGRATION = '400000';
-export const MIGRATION_TX_LIMIT = '400000';
-export const STAKING_TX_GASLIMIT = '400000';
 export const MAX_UINT_AMOUNT =
   '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 export const SUPER_BIG_ALLOWANCE_NUMBER =
@@ -31,6 +19,13 @@ export const API_ETH_MOCK_ADDRESS =
   '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 export const uniswapEthAmount = '0.1'; // ETH, with the token amount calculated in the uniswap side
 export const SURPLUS = '0.05';
+
+export const gasLimitRecommendations: GasRecommendationType = {
+  [ProtocolAction.withdraw]: {
+    limit: '230000',
+    recommended: '300000',
+  },
+};
 
 export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
   [Stake.Aave]: {

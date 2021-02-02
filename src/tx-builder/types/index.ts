@@ -39,6 +39,11 @@ export enum eEthereumTxType {
   FAUCET_MINT = 'FAUCET_MINT',
 }
 
+export enum ProtocolAction {
+  withdraw = 'withdraw',
+  deposit = 'deposit',
+}
+
 export enum GovernanceVote {
   Abstain = 0,
   Yes = 1,
@@ -49,6 +54,13 @@ export enum Stake {
   Aave = 'Aave',
   Balancer = 'Balancer',
 }
+
+export type GasRecommendationType = {
+  [action: string]: {
+    limit: string;
+    recommended: string;
+  };
+};
 
 export type transactionType = {
   value?: string;
@@ -137,6 +149,7 @@ export type TransactionGenerationMethod = {
   from: tEthereumAddress;
   value?: string;
   gasSurplus?: number;
+  action?: ProtocolAction;
 };
 
 export type TokenMetadataType = {

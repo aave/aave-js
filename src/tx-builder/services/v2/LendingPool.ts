@@ -16,6 +16,7 @@ import {
   EthereumTransactionTypeExtended,
   InterestRate,
   Market,
+  ProtocolAction,
   TokenMetadataType,
   transactionType,
   tStringDecimalUnits,
@@ -203,6 +204,7 @@ export default class LendingPool extends BaseService<ILendingPool>
           onBehalfOf || user
         ),
       from: user,
+      action: ProtocolAction.withdraw,
     });
 
     return [
