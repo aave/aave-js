@@ -1,4 +1,4 @@
-import { Contract, PopulatedTransaction } from 'ethers';
+import { BigNumber, Contract, PopulatedTransaction } from 'ethers';
 import {
   Configuration,
   tEthereumAddress,
@@ -7,7 +7,7 @@ import {
 } from '../types';
 import { ContractsFactory } from '../interfaces/ContractsFactory';
 import { estimateGas } from '../utils/gasStation';
-import { DEFAULT_NULL_VALUE_ON_TX } from '../config';
+import { DEFAULT_NULL_VALUE_ON_TX, gasLimitRecommendations } from '../config';
 
 export default class BaseService<T extends Contract> {
   readonly contractInstances: { [address: string]: T };
@@ -39,6 +39,7 @@ export default class BaseService<T extends Contract> {
     from,
     value,
     gasSurplus,
+    action,
   }: TransactionGenerationMethod): (() => Promise<
     transactionType
   >) => async () => {
@@ -51,6 +52,14 @@ export default class BaseService<T extends Contract> {
     };
 
     tx.gasLimit = await estimateGas(tx, this.config, gasSurplus);
+
+    if (
+      action &&
+      gasLimitRecommendations[action] &&
+      tx.gasLimit.lte(BigNumber.from(gasLimitRecommendations[action].limit))
+    ) {
+      tx.gasLimit = BigNumber.from(gasLimitRecommendations[action].recommended);
+    }
 
     return tx;
   };
