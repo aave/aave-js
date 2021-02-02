@@ -12,8 +12,8 @@ import {
   BigNumberValue,
   valueToBigNumber,
   valueToZDBigNumber,
+  normalize,
 } from '../helpers/bignumber';
-import { normalize } from '../helpers/pool-math';
 import {
   ETH_DECIMALS,
   RAY_DECIMALS,

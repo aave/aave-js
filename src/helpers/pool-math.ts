@@ -10,12 +10,6 @@ import { SECONDS_PER_YEAR } from './constants';
 
 export const LTV_PRECISION = 4;
 
-export function normalize(n: BigNumberValue, decimals: number): string {
-  return new BigNumber(n)
-    .dividedBy(new BigNumber('10').pow(decimals))
-    .toString(10);
-}
-
 export function calculateCompoundedInterest(
   rate: BigNumberValue,
   currentTimestamp: BigNumberValue,

@@ -4,13 +4,13 @@ import {
   BigNumberValue,
   valueToBigNumber,
   valueToZDBigNumber,
+  normalize,
 } from '../helpers/bignumber';
 import {
   calculateAvailableBorrowsETH,
   calculateHealthFactorFromBalances,
   getCompoundedBalance,
   getCompoundedStableBalance,
-  normalize,
   calculateAverageRate,
   LTV_PRECISION,
   calculateCompoundedInterest,
