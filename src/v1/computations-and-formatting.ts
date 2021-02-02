@@ -13,6 +13,7 @@ import {
   valueToBigNumber,
   valueToZDBigNumber,
   normalize,
+  pow10,
 } from '../helpers/bignumber';
 import {
   ETH_DECIMALS,
@@ -254,17 +255,17 @@ function computeUserReserveData(
   );
   const currentUnderlyingBalanceETH = currentUnderlyingBalance
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const currentUnderlyingBalanceUSD = currentUnderlyingBalanceETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
   const principalBorrowsETH = valueToZDBigNumber(userReserve.principalBorrows)
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const principalBorrowsUSD = principalBorrowsETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
@@ -275,17 +276,17 @@ function computeUserReserveData(
   );
   const currentBorrowsETH = currentBorrows
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const currentBorrowsUSD = currentBorrowsETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
   const originationFeeETH = valueToZDBigNumber(userReserve.originationFee)
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const originationFeeUSD = originationFeeETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
@@ -390,22 +391,22 @@ export function computeRawUserSummaryData(
   );
 
   const totalCollateralUSD = totalCollateralETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalLiquidityUSD = totalLiquidityETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalBorrowsUSD = totalBorrowsETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalFeesUSD = totalFeesETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth);
 
   const totalBorrowsWithFeesETH = totalFeesETH.plus(totalBorrowsETH);
