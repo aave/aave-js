@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/aave/aave-js/compare/v2.3.1...v2.4.0) (2021-02-03)
+
+
+### Features
+
+* added capability to use recommended gas limits for protocol actions if needed ([#52](https://github.com/aave/aave-js/issues/52)) ([26bec1f](https://github.com/aave/aave-js/commit/26bec1f0f3696c270d6b3e0cfae452238afc86a1))
+
+
+### Bug Fixes
+
+* skip prereleaes for release ([#55](https://github.com/aave/aave-js/issues/55)) ([dec1284](https://github.com/aave/aave-js/commit/dec128417d26e0dcf59725c0cd5be52ab9c5730c))
+
 ### [2.3.1](https://github.com/aave/aave-js/compare/v2.3.0...v2.3.1) (2021-01-26)
 
 
