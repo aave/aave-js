@@ -91,7 +91,7 @@ export default class LendingPool extends BaseService<ILendingPool>
     @IsPositiveAmount('amount')
     @IsEthAddress('onBehalfOf')
     { user, reserve, amount, onBehalfOf, referralCode }: LPDepositParamsType
-  ): EthereumTransactionTypeExtended[] {
+  ): Promise<EthereumTransactionTypeExtended[]> {
     if (reserve.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()) {
       return this.wethGatewayService.depositETH({
         user,

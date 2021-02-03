@@ -27,7 +27,7 @@ import {
 import { parseNumber } from '../../utils/parsings';
 import { Liquidation } from '../../types/FlashLiquidationAdapter';
 import FlashLiquidationAdapterInterface from '../../interfaces/v2/FlashLiquidationAdapter';
-import ERC20Service from '../ERC20';
+import IERC20ServiceInterface from '../../interfaces/ERC20';
 import BaseService from '../BaseService';
 
 export default class FlashLiquidationAdapterService
@@ -37,12 +37,12 @@ export default class FlashLiquidationAdapterService
   readonly lendingPoolAddress: string;
   readonly market: Market;
   readonly flashLiquidationContract: IFlashLiquidationAdapter;
-  readonly erc20Service: ERC20Service;
+  readonly erc20Service: IERC20ServiceInterface;
 
   constructor(
     config: Configuration,
     market: Market,
-    erc20Service: ERC20Service
+    erc20Service: IERC20ServiceInterface
   ) {
     super(config, ILendingPool__factory);
     this.market = market;
