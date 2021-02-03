@@ -1,4 +1,4 @@
-import { utils } from 'ethers';
+import { utils, constants } from 'ethers';
 
 import {
   commonContractAddressBetweenMarketsV2,
@@ -68,17 +68,24 @@ export default class FlashLiquidationAdapterService
     @IsEthAddress('collateralAsset')
     @IsEthAddress('borrowedAsset')
     @IsPositiveAmount('debtTokenCover')
-    @IsPositiveAmount('premium')
-    @IsEthAddress('onBehalfOf')
+    @IsEthAddress('initiator')
     {
       user,
       collateralAsset,
       borrowedAsset,
       debtTokenCover,
-      onBehalfOf,
+      liquidateAll,
+      initiator,
       useEthPath,
     }: Liquidation
   ): Promise<EthereumTransactionTypeExtended[]> {
+    const addSurplus = (amount: string): string => {
+      return (
+        Number(amount) +
+        (Number(amount) * Number(amount)) / 100
+      ).toString();
+    };
+
     const txs: EthereumTransactionTypeExtended[] = [];
 
     const lendingPoolContract: ILendingPool = this.getContractInstance(
@@ -89,10 +96,15 @@ export default class FlashLiquidationAdapterService
       borrowedAsset
     );
 
-    const convertedDebtTokenCover: string = parseNumber(
-      debtTokenCover,
-      tokenDecimals
-    );
+    const convertedDebt = parseNumber(debtTokenCover, tokenDecimals);
+
+    const convertedDebtTokenCover: string = liquidateAll
+      ? constants.MaxUint256.toString()
+      : convertedDebt;
+
+    const flashBorrowAmount = liquidateAll
+      ? parseNumber(addSurplus(debtTokenCover), tokenDecimals)
+      : convertedDebt;
 
     const params: string = utils.defaultAbiCoder.encode(
       ['address', 'address', 'address', 'uint256', 'bool[]'],
@@ -109,9 +121,9 @@ export default class FlashLiquidationAdapterService
         lendingPoolContract.populateTransaction.flashLoan(
           this.flashLiquidation,
           [borrowedAsset],
-          [convertedDebtTokenCover],
+          [flashBorrowAmount],
           [0],
-          onBehalfOf,
+          initiator,
           params,
           '0'
         ),

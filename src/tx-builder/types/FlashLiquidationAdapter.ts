@@ -5,6 +5,7 @@ export type Liquidation = {
   collateralAsset: tEthereumAddress;
   borrowedAsset: tEthereumAddress;
   debtTokenCover: string;
-  onBehalfOf: tEthereumAddress;
+  liquidateAll: boolean;
+  initiator: tEthereumAddress;
   useEthPath: boolean;
 };
