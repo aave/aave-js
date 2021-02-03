@@ -1,4 +1,4 @@
-import { utils, parseNumber } from 'ethers';
+import { utils } from 'ethers';
 
 import {
   commonContractAddressBetweenMarketsV2,
@@ -24,7 +24,7 @@ import {
   Market,
   transactionType,
 } from '../../types';
-
+import { parseNumber } from '../../utils/parsings';
 import { Liquidation } from '../../types/FlashLiquidationAdapter';
 import FlashLiquidationAdapterInterface from '../../interfaces/v2/FlashLiquidationAdapter';
 import ERC20Service from '../ERC20';
