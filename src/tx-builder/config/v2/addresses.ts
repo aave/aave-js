@@ -15,6 +15,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
     SWAP_COLLATERAL_ADAPTER: '0xC18451d36aA370fDACe8d45839bF975F48f7AEa1',
     REPAY_WITH_COLLATERAL_ADAPTER: '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
+    FLASHLIQUIDATION: '0x79E655cB36f5aB0f9f6C9C9B2ac509ca96d23415',
   },
   [Network.ropsten]: {
     SYNTHETIX_PROXY_ADDRESS: '',
@@ -24,6 +25,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     FAUCET: '0xcCB8f5183065AF6C40d3A13ae669FB8F92A11C05',
     SWAP_COLLATERAL_ADAPTER: '',
     REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
   },
   [Network.mainnet]: {
     SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
@@ -33,6 +35,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     FAUCET: '',
     SWAP_COLLATERAL_ADAPTER: '0x63a3f444e97d14e671e7ee323c4234c8095e3516',
     REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
+    FLASHLIQUIDATION: '',
   },
 };
 

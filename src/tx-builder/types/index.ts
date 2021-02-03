@@ -88,6 +88,7 @@ export type AddressModel = {
   AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: tEthereumAddress;
   AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
+  FLASHLIQUIDATION: tEthereumAddress;
 };
 
 export type tCommonContractAddressBetweenMarkets = Pick<
@@ -99,6 +100,7 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'FAUCET'
   | 'SWAP_COLLATERAL_ADAPTER'
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
+  | 'FLASHLIQUIDATION'
 >;
 
 export type tDistinctContractAddressBetweenMarkets = Pick<
