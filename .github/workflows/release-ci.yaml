@@ -52,5 +52,5 @@ jobs:
           github.ref == 'refs/heads/master'
         run: |
           git tag v$(cat package.json | jq --raw-output '.version')
-          git push --follow-tags origin master
+          git push origin v$(cat package.json | jq --raw-output '.version')
           yarn publish
