@@ -1,5 +1,5 @@
 {
-  "version": "2.3.1",
+  "version": "2.4.0",
   "license": "MIT",
   "name": "@aave/protocol-js",
   "description": "Aave protocol data aggregation tool",
@@ -53,7 +53,6 @@
     "test": "tsdx test",
     "test:watch": "tsdx test --watch",
     "lint": "tsdx lint",
-    "prepare": "npm run build",
     "compile": "SKIP_LOAD=true hardhat compile",
     "release": "standard-version",
     "release:prod": "yarn release --message \"chore(release): Release v%s :tada:\" --skip.tag"
