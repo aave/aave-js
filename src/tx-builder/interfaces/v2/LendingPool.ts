@@ -9,6 +9,7 @@ import {
   LPSwapBorrowRateMode,
   LPSwapCollateral,
   LPWithdrawParamsType,
+  LPFlashLiquidation,
 } from '../../types/LendingPoolMethodTypes';
 
 export default interface LendingPoolInterface {
@@ -49,4 +50,7 @@ export default interface LendingPoolInterface {
   repayWithCollateral: (
     args: LPRepayWithCollateral
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  flashLiquidation(
+    args: LPFlashLiquidation
+  ): Promise<EthereumTransactionTypeExtended[]>;
 }

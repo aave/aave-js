@@ -6,7 +6,6 @@ import StakingInterface from './tx-builder/interfaces/Staking';
 import SynthetixInterface from './tx-builder/interfaces/Synthetix';
 import AaveGovernanceV2Interface from './tx-builder/interfaces/v2/AaveGovernanceV2';
 import GovernanceDelegationTokenInterface from './tx-builder/interfaces/v2/GovernanceDelegationToken';
-import FlashLiquidationAdapterInterface from './tx-builder/interfaces/v2/FlashLiquidationAdapter';
 
 // math imports
 import * as v1 from './v1';
@@ -47,5 +46,4 @@ export {
   FaucetInterface,
   AaveGovernanceV2Interface,
   GovernanceDelegationTokenInterface,
-  FlashLiquidationAdapterInterface,
 };

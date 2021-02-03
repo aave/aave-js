@@ -16,8 +16,6 @@ import AaveGovernanceV2Interface from './interfaces/v2/AaveGovernanceV2';
 import GovernanceDelegationTokenInterface from './interfaces/v2/GovernanceDelegationToken';
 import AaveGovernanceV2Service from './services/v2/AaveGovernanceV2';
 import GovernanceDelegationTokenService from './services/v2/GovernanceDelegationTokenService';
-import FlashLiquidationAdapterInterface from './interfaces/v2/FlashLiquidationAdapter';
-import FlashLiquidationAdapterService from './services/v2/FlashLiquidationAdapter';
 
 export default class TxBuilder extends BaseTxBuilder
   implements TxBuilderInterface {
@@ -36,8 +34,6 @@ export default class TxBuilder extends BaseTxBuilder
   public governanceDelegationTokenService: GovernanceDelegationTokenInterface;
 
   public wethGatewayService: WETHGatewayInterface;
-
-  public flashLiquidationService: FlashLiquidationAdapterInterface;
 
   constructor(
     network: Network = Network.mainnet,
@@ -88,19 +84,5 @@ export default class TxBuilder extends BaseTxBuilder
     }
 
     return this.lendingPools[market];
-  };
-
-  public getFlashLiquidation = (
-    market: Market
-  ): FlashLiquidationAdapterInterface => {
-    if (!this.flashLiquidationService) {
-      this.flashLiquidationService = new FlashLiquidationAdapterService(
-        this.configuration,
-        market,
-        this.erc20Service
-      );
-    }
-
-    return this.flashLiquidationService;
   };
 }
