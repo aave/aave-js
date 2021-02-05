@@ -6,6 +6,7 @@ import {
   rayMul,
   rayPow,
   binomialApproximatedRayPow,
+  rayDiv,
 } from '../helpers/ray-math';
 import { calculateCompoundedInterest, normalize } from '../helpers/pool-math';
 
@@ -48,36 +49,58 @@ describe('rayPow and binomialApproximatedRayPow', () => {
     expect(result.substring(0, 8)).toEqual(approx.substring(0, 8));
   });
 
-  it('should not be far off for big amounts and time spans', () => {
-    /**
-     * We calculate the balance based on the last user interaction.
-     * This means, while it's very unlikely if someone deposited 100M and didn't touch it for 5years with and interest of 10% the error should be small.
-     */
-    const rate = valueToZDBigNumber('10000000000000000000000000'); // 10%
-    const balance = '100000000000000000000000000'; // 100M ETH
-    const accurateInterest = legacyCalculateCompoundedInterest(
-      rate,
-      60 * 60 * 24 * 365 * 5,
-      0
-    ).toString();
-    const approximatedInterest = calculateCompoundedInterest(
-      rate,
-      valueToZDBigNumber(60 * 60 * 24 * 365 * 5),
-      valueToZDBigNumber(0)
-    ).toString();
-    expect(accurateInterest.substr(0, 5)).toEqual(
-      approximatedInterest.substr(0, 5)
-    );
-    const accurateBalance = normalize(rayMul(accurateInterest, balance), 18);
-    const approximatedBalance = normalize(
-      rayMul(approximatedInterest, balance),
-      18
-    );
-    expect(
-      Math.abs(
-        Number.parseFloat(accurateBalance) -
-          Number.parseFloat(approximatedBalance)
-      )
-    ).toBeLessThan(10000);
-  });
+  it.each`
+    year | interest | errorLte
+    ${1} | ${3}     | ${1}
+    ${1} | ${5}     | ${1}
+    ${1} | ${10}    | ${1}
+    ${3} | ${3}     | ${3}
+    ${3} | ${5}     | ${3}
+    ${3} | ${10}    | ${3}
+    ${5} | ${3}     | ${5}
+    ${5} | ${5}     | ${5}
+    ${5} | ${10}    | ${5}
+  `(
+    'should not be far off for big amounts and time spans',
+    ({ year, interest, errorLte }) => {
+      /**
+       * We calculate the balance based on the last user interaction with that reserve.
+       * For most users this happens multiple times a year, but for long holders we have to ensure the abbreviation is somewhat close.
+       * This test showcases that it's:
+       * < 0.00005% error in one year
+       * < 0.0005% in 3 years
+       * < 0.005% in 5 years
+       */
+      const rate = valueToZDBigNumber(
+        Number.parseInt(interest) * 1000000000000000000000000
+      );
+      const balance = '100000000000000000000000000'; // 100M ETH
+      const accurateInterest = legacyCalculateCompoundedInterest(
+        rate,
+        60 * 60 * 24 * 365 * Number.parseInt(year),
+        0
+      );
+      const approximatedInterest = calculateCompoundedInterest(
+        rate,
+        valueToZDBigNumber(60 * 60 * 24 * 365 * Number.parseInt(year)),
+        valueToZDBigNumber(0)
+      );
+
+      const accurateBalanceI = accurateInterest
+        .multipliedBy(balance)
+        .minus(balance);
+      const approximatedBalanceI = approximatedInterest
+        .multipliedBy(balance)
+        .minus(balance);
+
+      const diffPercentage = normalize(
+        rayDiv(
+          accurateBalanceI.minus(approximatedBalanceI),
+          accurateBalanceI.multipliedBy(100)
+        ),
+        18
+      );
+      expect(Number.parseFloat(diffPercentage)).toBeLessThan(errorLte);
+    }
+  );
 });
