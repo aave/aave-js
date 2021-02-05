@@ -77,7 +77,7 @@ export const calculateCompoundedInterest = (
 ): BigNumber => {
   const timeDelta = valueToZDBigNumber(currentTimestamp - lastUpdateTimestamp);
   const ratePerSecond = valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR);
-  return RayMath.rayPow(ratePerSecond.plus(RayMath.RAY), timeDelta);
+  return RayMath.binomialApproximatedRayPow(ratePerSecond, timeDelta);
 };
 
 export const calculateLinearInterest = (
