@@ -72,6 +72,8 @@ export function binomialApproximatedRayPow(
   const basePowerTwo = rayMul(base, base);
   const basePowerThree = rayMul(basePowerTwo, base);
 
+  const firstTerm = exp.multipliedBy(base);
+
   const secondTerm = exp
     .multipliedBy(expMinusOne)
     .multipliedBy(basePowerTwo)
@@ -82,7 +84,7 @@ export function binomialApproximatedRayPow(
     .multipliedBy(basePowerThree)
     .div(6);
 
-  return RAY.plus(base.multipliedBy(exp))
+  return RAY.plus(firstTerm)
     .plus(secondTerm)
     .plus(thirdTerm);
 }

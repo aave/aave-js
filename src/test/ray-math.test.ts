@@ -71,19 +71,20 @@ describe('rayPow and binomialApproximatedRayPow', () => {
        * < 0.0005% in 3 years
        * < 0.005% in 5 years
        */
+      const timespan = 60 * 60 * 24 * 365 * Number.parseInt(year);
       const rate = valueToZDBigNumber(
-        Number.parseInt(interest) * 1000000000000000000000000
+        Number.parseFloat(interest) * 1000000000000000000000000
       );
       const balance = '100000000000000000000000000'; // 100M ETH
       const accurateInterest = legacyCalculateCompoundedInterest(
         rate,
-        60 * 60 * 24 * 365 * Number.parseInt(year),
+        timespan,
         0
       );
       const approximatedInterest = calculateCompoundedInterest(
         rate,
-        valueToZDBigNumber(60 * 60 * 24 * 365 * Number.parseInt(year)),
-        valueToZDBigNumber(0)
+        timespan,
+        0
       );
 
       const accurateBalanceI = accurateInterest
@@ -100,7 +101,7 @@ describe('rayPow and binomialApproximatedRayPow', () => {
         ),
         18
       );
-      expect(Number.parseFloat(diffPercentage)).toBeLessThan(errorLte);
+      expect(Number.parseFloat(diffPercentage)).toBe('0' || errorLte);
     }
   );
 });
