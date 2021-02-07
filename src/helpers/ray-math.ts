@@ -67,7 +67,7 @@ export function binomialApproximatedRayPow(
   const base = valueToZDBigNumber(a);
   const exp = valueToZDBigNumber(p);
   const expMinusOne = exp.minus(1);
-  const expMinusTwo = exp.lt(2) ? exp.minus(2) : 0;
+  const expMinusTwo = exp.gt(2) ? exp.minus(2) : 0;
 
   const basePowerTwo = rayMul(base, base);
   const basePowerThree = rayMul(basePowerTwo, base);
