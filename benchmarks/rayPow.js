@@ -1,7 +1,7 @@
 const {
   rayPow,
   binomialApproximatedRayPow,
-  valueToBigNumber,
+  valueToZDBigNumber,
   RAY,
   SECONDS_PER_YEAR,
 } = require('../dist');
@@ -12,11 +12,11 @@ const PRECISION = 2;
 const results = [];
 const suite = new Benchmark.Suite();
 
-const timeDelta = valueToBigNumber(60 * 60 * 24);
-const rayPowIn = valueToBigNumber('323788616402133497883602337')
+const timeDelta = valueToZDBigNumber(60 * 60 * 24);
+const rayPowIn = valueToZDBigNumber('323788616402133497883602337')
   .dividedBy(SECONDS_PER_YEAR)
   .plus(RAY);
-const binomialApproximatedRayPowIn = valueToBigNumber(
+const binomialApproximatedRayPowIn = valueToZDBigNumber(
   '323788616402133497883602337'
 ).dividedBy(SECONDS_PER_YEAR);
 
