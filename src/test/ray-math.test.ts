@@ -11,7 +11,7 @@ import {
 import { calculateCompoundedInterest, normalize } from '../helpers/pool-math';
 
 describe('wadMul should', () => {
-  it('works correct', () => {
+  it('work correctly', () => {
     expect(rayMul(RAY, RAY).toString()).toEqual(RAY.toString());
   });
   it('not return decimal places', () => {
@@ -48,6 +48,43 @@ describe('rayPow and binomialApproximatedRayPow', () => {
     ).toString();
     expect(result.substring(0, 8)).toEqual(approx.substring(0, 8));
   });
+
+  it.each`
+    exponents                 | errorLte
+    ${60}                     | ${0.0001}
+    ${60 * 60}                | ${0.0001}
+    ${60 * 60 * 24}           | ${0.0001}
+    ${60 * 60 * 24 * 31}      | ${0.001}
+    ${60 * 60 * 24 * 365}     | ${0.001}
+    ${60 * 60 * 24 * 365 * 2} | ${0.001}
+    ${60 * 60 * 24 * 365 * 5} | ${0.001}
+  `(
+    'should have close results for varying exponents',
+    ({ exponents, errorLte }) => {
+      const result = rayPow(
+        valueToZDBigNumber('10000000000000000000000000')
+          .dividedBy(SECONDS_PER_YEAR)
+          .plus(RAY),
+        valueToZDBigNumber(exponents)
+      );
+      const approx = binomialApproximatedRayPow(
+        valueToZDBigNumber('10000000000000000000000000').dividedBy(
+          SECONDS_PER_YEAR
+        ),
+        valueToZDBigNumber(exponents)
+      );
+
+      const diff = result.minus(approx);
+      const diffPercentage = normalize(
+        rayDiv(diff, result.multipliedBy(100)),
+        18
+      );
+
+      expect(Math.abs(Number.parseFloat(diffPercentage))).toBeLessThanOrEqual(
+        errorLte
+      );
+    }
+  );
 
   it.each`
     years | interest | errorLte
