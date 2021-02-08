@@ -51,6 +51,7 @@ describe('rayPow and binomialApproximatedRayPow', () => {
 
   it.each`
     exponents                 | errorLte
+    ${0}                      | ${0}
     ${60}                     | ${0.00001}
     ${60 * 60}                | ${0.00001}
     ${60 * 60 * 24}           | ${0.00001}
