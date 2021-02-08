@@ -51,13 +51,13 @@ describe('rayPow and binomialApproximatedRayPow', () => {
 
   it.each`
     exponents                 | errorLte
-    ${60}                     | ${0.0001}
-    ${60 * 60}                | ${0.0001}
-    ${60 * 60 * 24}           | ${0.0001}
-    ${60 * 60 * 24 * 31}      | ${0.001}
-    ${60 * 60 * 24 * 365}     | ${0.001}
-    ${60 * 60 * 24 * 365 * 2} | ${0.001}
-    ${60 * 60 * 24 * 365 * 5} | ${0.001}
+    ${60}                     | ${0.00001}
+    ${60 * 60}                | ${0.00001}
+    ${60 * 60 * 24}           | ${0.00001}
+    ${60 * 60 * 24 * 31}      | ${0.00001}
+    ${60 * 60 * 24 * 365}     | ${0.00001}
+    ${60 * 60 * 24 * 365 * 2} | ${0.00002}
+    ${60 * 60 * 24 * 365 * 5} | ${0.0003}
   `(
     'should have close results for varying exponents',
     ({ exponents, errorLte }) => {
@@ -74,12 +74,13 @@ describe('rayPow and binomialApproximatedRayPow', () => {
         valueToZDBigNumber(exponents)
       );
 
-      const diff = result.minus(approx);
+      const diff = result.gt(approx)
+        ? result.minus(approx)
+        : approx.minus(result);
       const diffPercentage = normalize(
         rayDiv(diff, result.multipliedBy(100)),
-        18
-      );
-
+        24
+      ).toString();
       expect(Math.abs(Number.parseFloat(diffPercentage))).toBeLessThanOrEqual(
         errorLte
       );
@@ -88,15 +89,15 @@ describe('rayPow and binomialApproximatedRayPow', () => {
 
   it.each`
     years | interest | errorLte
-    ${1}  | ${3}     | ${0.001}
-    ${1}  | ${5}     | ${0.001}
-    ${1}  | ${10}    | ${0.001}
-    ${3}  | ${3}     | ${0.001}
-    ${3}  | ${5}     | ${0.001}
-    ${3}  | ${10}    | ${0.001}
-    ${5}  | ${3}     | ${0.001}
-    ${5}  | ${5}     | ${0.001}
-    ${5}  | ${10}    | ${0.001}
+    ${1}  | ${3}     | ${0.00001}
+    ${1}  | ${5}     | ${0.00001}
+    ${1}  | ${10}    | ${0.00001}
+    ${3}  | ${3}     | ${0.00001}
+    ${3}  | ${5}     | ${0.00001}
+    ${3}  | ${10}    | ${0.00005}
+    ${5}  | ${3}     | ${0.00001}
+    ${5}  | ${5}     | ${0.00003}
+    ${5}  | ${10}    | ${0.0003}
   `(
     'should not be far off for big amounts and time spans',
     ({ years, interest, errorLte }) => {
@@ -134,9 +135,8 @@ describe('rayPow and binomialApproximatedRayPow', () => {
       const diff = accurateBalanceI.minus(approximatedBalanceI);
       const diffPercentage = normalize(
         rayDiv(diff, accurateBalanceI.multipliedBy(100)),
-        18
+        24
       );
-
       expect(Math.abs(Number.parseFloat(diffPercentage))).toBeLessThanOrEqual(
         errorLte
       );
