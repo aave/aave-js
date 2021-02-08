@@ -66,6 +66,7 @@ export function binomialApproximatedRayPow(
 ): BigNumber {
   const base = valueToZDBigNumber(a);
   const exp = valueToZDBigNumber(p);
+  if (exp.eq(0)) return RAY;
   const expMinusOne = exp.minus(1);
   const expMinusTwo = exp.gt(2) ? exp.minus(2) : 0;
   const expMinusThree = exp.gt(3) ? exp.minus(3) : 0;
