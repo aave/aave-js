@@ -69,11 +69,9 @@ export function binomialApproximatedRayPow(
   if (exp.eq(0)) return RAY;
   const expMinusOne = exp.minus(1);
   const expMinusTwo = exp.gt(2) ? exp.minus(2) : 0;
-  const expMinusThree = exp.gt(3) ? exp.minus(3) : 0;
 
   const basePowerTwo = rayMul(base, base);
   const basePowerThree = rayMul(basePowerTwo, base);
-  const basePowerFour = rayMul(basePowerThree, base);
 
   const firstTerm = exp.multipliedBy(base);
   const secondTerm = exp
@@ -85,17 +83,10 @@ export function binomialApproximatedRayPow(
     .multipliedBy(expMinusTwo)
     .multipliedBy(basePowerThree)
     .div(6);
-  const fourthTerm = exp
-    .multipliedBy(expMinusOne)
-    .multipliedBy(expMinusTwo)
-    .multipliedBy(expMinusThree)
-    .multipliedBy(basePowerFour)
-    .div(24);
 
   return RAY.plus(firstTerm)
     .plus(secondTerm)
-    .plus(thirdTerm)
-    .plus(fourthTerm);
+    .plus(thirdTerm);
 }
 
 export function rayToDecimal(a: BigNumberValue): BigNumber {
