@@ -872,7 +872,7 @@ export default class LendingPool extends BaseService<ILendingPool>
           params,
           '0'
         ),
-      from: user,
+      from: initiator,
     });
 
     txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
