@@ -852,6 +852,19 @@ export default class LendingPool extends BaseService<ILendingPool>
       ]
     );
     console.log(
+      'PARAMS : ',
+      '- collateralAsset:',
+      collateralAsset,
+      '- borrowedAsset:',
+      borrowedAsset,
+      '- user:',
+      user,
+      '- convertedDebtTokenCover:',
+      convertedDebtTokenCover,
+      '- useEthPath:',
+      useEthPath || false
+    );
+    console.log(
       '@@ FLASH LIQUIDATION : ',
       FLASHLIQUIDATION,
       [borrowedAsset],
