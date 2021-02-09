@@ -1,6 +1,10 @@
 import BigNumber from 'bignumber.js';
 import { SECONDS_PER_YEAR } from '../helpers/constants';
-import { BigNumberValue, valueToZDBigNumber } from '../helpers/bignumber';
+import {
+  BigNumberValue,
+  valueToZDBigNumber,
+  normalize,
+} from '../helpers/bignumber';
 import {
   RAY,
   rayMul,
@@ -8,7 +12,7 @@ import {
   binomialApproximatedRayPow,
   rayDiv,
 } from '../helpers/ray-math';
-import { calculateCompoundedInterest, normalize } from '../helpers/pool-math';
+import { calculateCompoundedInterest } from '../helpers/pool-math';
 
 describe('wadMul should', () => {
   it('work correctly', () => {

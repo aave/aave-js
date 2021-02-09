@@ -4,17 +4,12 @@ import {
   BigNumberValue,
   valueToBigNumber,
   valueToZDBigNumber,
+  pow10,
 } from './bignumber';
 import * as RayMath from './ray-math';
 import { SECONDS_PER_YEAR } from './constants';
 
 export const LTV_PRECISION = 4;
-
-export function normalize(n: BigNumberValue, decimals: number): string {
-  return new BigNumber(n)
-    .dividedBy(new BigNumber('10').pow(decimals))
-    .toString(10);
-}
 
 export function calculateCompoundedInterest(
   rate: BigNumberValue,
@@ -86,7 +81,7 @@ export function calculateHealthFactorFromBalances(
   }
   return valueToBigNumber(collateralBalanceETH)
     .multipliedBy(currentLiquidationThreshold)
-    .dividedBy(10 ** LTV_PRECISION)
+    .dividedBy(pow10(LTV_PRECISION))
     .div(borrowBalanceETH);
 }
 
@@ -99,7 +94,7 @@ export function calculateHealthFactorFromBalancesBigUnits(
     collateralBalanceETH,
     borrowBalanceETH,
     new BigNumber(currentLiquidationThreshold)
-      .multipliedBy(10 ** LTV_PRECISION)
+      .multipliedBy(pow10(LTV_PRECISION))
       .decimalPlaces(0, BigNumber.ROUND_DOWN)
   );
 }
@@ -114,7 +109,7 @@ export function calculateAvailableBorrowsETH(
   }
   const availableBorrowsETH = valueToZDBigNumber(collateralBalanceETH)
     .multipliedBy(currentLtv)
-    .dividedBy(10 ** LTV_PRECISION)
+    .dividedBy(pow10(LTV_PRECISION))
     .minus(borrowBalanceETH);
   return availableBorrowsETH.gt('0')
     ? availableBorrowsETH
