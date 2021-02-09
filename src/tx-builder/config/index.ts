@@ -17,7 +17,7 @@ export const SUPER_BIG_ALLOWANCE_NUMBER =
   '11579208923731619542357098500868790785326998466564056403945758400791';
 export const API_ETH_MOCK_ADDRESS =
   '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
-export const uniswapEthAmount = '0.1'; // ETH, with the token amount calculated in the uniswap side
+export const uniswapEthAmount = '0.1';
 export const SURPLUS = '0.05';
 
 export const gasLimitRecommendations: GasRecommendationType = {
