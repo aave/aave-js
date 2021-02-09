@@ -33,7 +33,8 @@ import {
 } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
-export default class StakingService extends BaseService<IStakedToken>
+export default class StakingService
+  extends BaseService<IStakedToken>
   implements StakingInterface {
   readonly stakingHelperContract: IAaveStakingHelper;
 

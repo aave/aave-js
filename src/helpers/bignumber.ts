@@ -30,7 +30,5 @@ export function pow10(decimals: number): BigNumber {
 }
 
 export function normalize(n: BigNumberValue, decimals: number): string {
-  return valueToBigNumber(n)
-    .dividedBy(pow10(decimals))
-    .toString(10);
+  return valueToBigNumber(n).dividedBy(pow10(decimals)).toString(10);
 }

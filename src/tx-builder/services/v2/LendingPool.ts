@@ -44,7 +44,8 @@ import LiquiditySwapAdapterInterface from '../../interfaces/LiquiditySwapAdapter
 import RepayWithCollateralAdapterInterface from '../../interfaces/RepayWithCollateralAdapter';
 import BaseService from '../BaseService';
 
-export default class LendingPool extends BaseService<ILendingPool>
+export default class LendingPool
+  extends BaseService<ILendingPool>
   implements LendingPoolInterface {
   readonly market: Market;
 
@@ -606,21 +607,21 @@ export default class LendingPool extends BaseService<ILendingPool>
         ]
       );
 
-      const txCallback: () => Promise<
-        transactionType
-      > = this.generateTxCallback({
-        rawTxMethod: () =>
-          lendingPoolContract.populateTransaction.flashLoan(
-            SWAP_COLLATERAL_ADAPTER,
-            [fromAsset],
-            swapAll ? [convertedAmountWithSurplus] : [convertedAmountNoFees],
-            [0], // interest rate mode to NONE for flashloan to not open debt
-            onBehalfOf || user,
-            params,
-            referralCode || '0'
-          ),
-        from: user,
-      });
+      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
+        {
+          rawTxMethod: () =>
+            lendingPoolContract.populateTransaction.flashLoan(
+              SWAP_COLLATERAL_ADAPTER,
+              [fromAsset],
+              swapAll ? [convertedAmountWithSurplus] : [convertedAmountNoFees],
+              [0], // interest rate mode to NONE for flashloan to not open debt
+              onBehalfOf || user,
+              params,
+              referralCode || '0'
+            ),
+          from: user,
+        }
+      );
 
       txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
       return txs;
@@ -753,21 +754,21 @@ export default class LendingPool extends BaseService<ILendingPool>
         this.lendingPoolAddress
       );
 
-      const txCallback: () => Promise<
-        transactionType
-      > = this.generateTxCallback({
-        rawTxMethod: () =>
-          lendingPoolContract.populateTransaction.flashLoan(
-            REPAY_WITH_COLLATERAL_ADAPTER,
-            [assetToRepay],
-            [convertedRepayAmount],
-            [0], // interest rate mode to NONE for flashloan to not open debt
-            onBehalfOf || user,
-            params,
-            referralCode || '0'
-          ),
-        from: user,
-      });
+      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
+        {
+          rawTxMethod: () =>
+            lendingPoolContract.populateTransaction.flashLoan(
+              REPAY_WITH_COLLATERAL_ADAPTER,
+              [assetToRepay],
+              [convertedRepayAmount],
+              [0], // interest rate mode to NONE for flashloan to not open debt
+              onBehalfOf || user,
+              params,
+              referralCode || '0'
+            ),
+          from: user,
+        }
+      );
 
       txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
 
