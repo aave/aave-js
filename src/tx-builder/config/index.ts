@@ -58,7 +58,7 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
     },
     [Network.mainnet]: {
       canUsePermit: false,
-      TOKEN_STAKING_ADDRESS: '',
+      TOKEN_STAKING_ADDRESS: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
       STAKING_HELPER_ADDRESS: '',
     },
   },
@@ -66,7 +66,7 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
 
 export const enabledNetworksByService: EnabledNetworksType = {
   staking: {
-    [Stake.Balancer]: [Network.kovan],
+    [Stake.Balancer]: [Network.kovan, Network.mainnet],
     [Stake.Aave]: [Network.kovan, Network.mainnet],
   },
   lendingPool: {
