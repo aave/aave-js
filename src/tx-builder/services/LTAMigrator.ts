@@ -20,7 +20,8 @@ import {
 import { parseNumber } from '../utils/parsings';
 import BaseService from './BaseService';
 
-export default class LTAMigratorService extends BaseService<ILendToAaveMigrator>
+export default class LTAMigratorService
+  extends BaseService<ILendToAaveMigrator>
   implements LTAMigratorInterface {
   readonly erc20Service: IERC20ServiceInterface;
 

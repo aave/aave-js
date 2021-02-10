@@ -40,9 +40,7 @@ export default class BaseService<T extends Contract> {
     value,
     gasSurplus,
     action,
-  }: TransactionGenerationMethod): (() => Promise<
-    transactionType
-  >) => async () => {
+  }: TransactionGenerationMethod): (() => Promise<transactionType>) => async () => {
     const txRaw: PopulatedTransaction = await rawTxMethod();
 
     const tx: transactionType = {
