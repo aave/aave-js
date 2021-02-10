@@ -851,29 +851,7 @@ export default class LendingPool extends BaseService<ILendingPool>
         useEthPath || false,
       ]
     );
-    console.log(
-      'PARAMS : ',
-      '- collateralAsset:',
-      collateralAsset,
-      '- borrowedAsset:',
-      borrowedAsset,
-      '- user:',
-      user,
-      '- convertedDebtTokenCover:',
-      convertedDebtTokenCover,
-      '- useEthPath:',
-      useEthPath || false
-    );
-    console.log(
-      '@@ FLASH LIQUIDATION : ',
-      FLASHLIQUIDATION,
-      [borrowedAsset],
-      [flashBorrowAmount],
-      [0],
-      initiator,
-      params,
-      '0'
-    );
+
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         lendingPoolContract.populateTransaction.flashLoan(
