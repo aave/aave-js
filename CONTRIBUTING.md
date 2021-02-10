@@ -32,7 +32,7 @@ To propose a new release you have to create a branch, run `yarn release:prod` an
 Once the branch is merged to master a npm release will be published automatically.
 
 ```bash
-// make sure you're on latest master before doing this
+# make sure you're on latest master before doing this
 git checkout -b <branch>
 yarn release:prod
 git push origin <branch>
