@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/aave/aave-js/compare/v2.4.0...v2.4.1) (2021-02-10)
+
+
+### Bug Fixes
+
+* explicitly push tag ([#57](https://github.com/aave/aave-js/issues/57)) ([3b2a65d](https://github.com/aave/aave-js/commit/3b2a65df7e3f8d2b6f2de09d9f56311ef688c2c1))
+
 ## [2.4.0](https://github.com/aave/aave-js/compare/v2.3.1...v2.4.0) (2021-02-03)
 
 
