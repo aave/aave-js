@@ -42,9 +42,7 @@ export default class BaseService<T extends Contract> {
     value,
     gasSurplus,
     action,
-  }: TransactionGenerationMethod): (() => Promise<
-    transactionType
-  >) => async () => {
+  }: TransactionGenerationMethod): (() => Promise<transactionType>) => async () => {
     const txRaw: PopulatedTransaction = await rawTxMethod();
 
     const tx: transactionType = {
@@ -69,7 +67,7 @@ export default class BaseService<T extends Contract> {
   readonly generateTxPriceEstimation = (
     txCallback: () => Promise<transactionType>,
     action: string = ProtocolAction.default
-  ): GasResponse => async skipCalculation => {
+  ): GasResponse => async (skipCalculation) => {
     try {
       const gasPrice = await getGasPrice(this.config);
 

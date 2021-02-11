@@ -36,9 +36,7 @@ export function rayToWad(a: BigNumberValue): BigNumber {
 }
 
 export function wadToRay(a: BigNumberValue): BigNumber {
-  return valueToZDBigNumber(a)
-    .multipliedBy(WAD_RAY_RATIO)
-    .decimalPlaces(0);
+  return valueToZDBigNumber(a).multipliedBy(WAD_RAY_RATIO).decimalPlaces(0);
 }
 
 export function rayPow(a: BigNumberValue, p: BigNumberValue): BigNumber {
@@ -84,9 +82,7 @@ export function binomialApproximatedRayPow(
     .multipliedBy(basePowerThree)
     .div(6);
 
-  return RAY.plus(firstTerm)
-    .plus(secondTerm)
-    .plus(thirdTerm);
+  return RAY.plus(firstTerm).plus(secondTerm).plus(thirdTerm);
 }
 
 export function rayToDecimal(a: BigNumberValue): BigNumber {

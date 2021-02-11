@@ -27,7 +27,8 @@ import {
 } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
-export default class WETHGatewayService extends BaseService<IWETHGateway>
+export default class WETHGatewayService
+  extends BaseService<IWETHGateway>
   implements WETHGatewayInterface {
   readonly wethGatewayAddress: string;
 

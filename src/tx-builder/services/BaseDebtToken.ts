@@ -14,7 +14,8 @@ import {
 import { parseNumber } from '../utils/parsings';
 import BaseService from './BaseService';
 
-export default class BaseDebtToken extends BaseService<IDebtTokenBase>
+export default class BaseDebtToken
+  extends BaseService<IDebtTokenBase>
   implements BaseDebtTokenInterface {
   readonly erc20Service: IERC20ServiceInterface;
 
