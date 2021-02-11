@@ -15,8 +15,7 @@ import { IERC20Detailed, IERC20Detailed__factory } from '../contract-types';
 import BaseService from './BaseService';
 import { parseNumber } from '../utils/parsings';
 
-export default class ERC20Service
-  extends BaseService<IERC20Detailed>
+export default class ERC20Service extends BaseService<IERC20Detailed>
   implements IERC20ServiceInterface {
   readonly tokenDecimals: { [address: string]: number };
 
@@ -42,6 +41,7 @@ export default class ERC20Service
     return {
       tx: txCallback,
       txType: eEthereumTxType.ERC20_APPROVAL,
+      gas: this.generateTxPriceEstimation(txCallback),
     };
   };
 

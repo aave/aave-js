@@ -10,3 +10,10 @@ export const estimateGas = async (
   const estimatedGas = await config.provider.estimateGas(tx);
   return estimatedGas.add(estimatedGas.mul(gasSurplus || 10).div(100));
 };
+
+export const getGasPrice = async (
+  config: Configuration
+): Promise<BigNumber> => {
+  const gasPrice = await config.provider.getGasPrice();
+  return gasPrice;
+};

@@ -17,7 +17,7 @@ export type paramsType = {
 
 // tslint:disable-next-line: function-name
 export function IsEthAddress(field?: string) {
-  return function (
+  return function(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     target: any,
     propertyKey: string | symbol,
@@ -42,7 +42,7 @@ export function IsEthAddress(field?: string) {
 }
 
 export function IsEthAddressOrENS(field?: string) {
-  return function (
+  return function(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     target: any,
     propertyKey: string | symbol,
@@ -70,7 +70,7 @@ export function IsEthAddressOrENS(field?: string) {
 }
 
 export function IsPositiveAmount(field?: string) {
-  return function (
+  return function(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     target: any,
     propertyKey: string | symbol,
@@ -86,7 +86,7 @@ export function IsPositiveAmount(field?: string) {
 }
 
 export function Is0OrPositiveAmount(field?: string) {
-  return function (
+  return function(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     target: any,
     propertyKey: string | symbol,
@@ -108,7 +108,7 @@ export function Is0OrPositiveAmount(field?: string) {
 }
 
 export function IsPositiveOrMinusOneAmount(field?: string) {
-  return function (
+  return function(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     target: any,
     propertyKey: string | symbol,

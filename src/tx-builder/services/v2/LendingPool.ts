@@ -44,8 +44,7 @@ import LiquiditySwapAdapterInterface from '../../interfaces/LiquiditySwapAdapter
 import RepayWithCollateralAdapterInterface from '../../interfaces/RepayWithCollateralAdapter';
 import BaseService from '../BaseService';
 
-export default class LendingPool
-  extends BaseService<ILendingPool>
+export default class LendingPool extends BaseService<ILendingPool>
   implements LendingPoolInterface {
   readonly market: Market;
 
@@ -157,6 +156,7 @@ export default class LendingPool
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;
@@ -212,6 +212,7 @@ export default class LendingPool
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }
@@ -272,7 +273,13 @@ export default class LendingPool
       from: user,
     });
 
-    return [{ tx: txCallback, txType: eEthereumTxType.DLP_ACTION }];
+    return [
+      {
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
+      },
+    ];
   }
 
   @LPValidator
@@ -353,6 +360,7 @@ export default class LendingPool
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;
@@ -382,6 +390,7 @@ export default class LendingPool
       {
         txType: eEthereumTxType.DLP_ACTION,
         tx: txCallback,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }
@@ -405,7 +414,13 @@ export default class LendingPool
       from: user,
     });
 
-    return [{ tx: txCallback, txType: eEthereumTxType.DLP_ACTION }];
+    return [
+      {
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
+      },
+    ];
   }
 
   @LPValidator
@@ -480,6 +495,7 @@ export default class LendingPool
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;
@@ -607,23 +623,27 @@ export default class LendingPool
         ]
       );
 
-      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
-        {
-          rawTxMethod: () =>
-            lendingPoolContract.populateTransaction.flashLoan(
-              SWAP_COLLATERAL_ADAPTER,
-              [fromAsset],
-              swapAll ? [convertedAmountWithSurplus] : [convertedAmountNoFees],
-              [0], // interest rate mode to NONE for flashloan to not open debt
-              onBehalfOf || user,
-              params,
-              referralCode || '0'
-            ),
-          from: user,
-        }
-      );
+      const txCallback: () => Promise<
+        transactionType
+      > = this.generateTxCallback({
+        rawTxMethod: () =>
+          lendingPoolContract.populateTransaction.flashLoan(
+            SWAP_COLLATERAL_ADAPTER,
+            [fromAsset],
+            swapAll ? [convertedAmountWithSurplus] : [convertedAmountNoFees],
+            [0], // interest rate mode to NONE for flashloan to not open debt
+            onBehalfOf || user,
+            params,
+            referralCode || '0'
+          ),
+        from: user,
+      });
 
-      txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
+      txs.push({
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
+      });
       return txs;
     }
 
@@ -754,23 +774,27 @@ export default class LendingPool
         this.lendingPoolAddress
       );
 
-      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
-        {
-          rawTxMethod: () =>
-            lendingPoolContract.populateTransaction.flashLoan(
-              REPAY_WITH_COLLATERAL_ADAPTER,
-              [assetToRepay],
-              [convertedRepayAmount],
-              [0], // interest rate mode to NONE for flashloan to not open debt
-              onBehalfOf || user,
-              params,
-              referralCode || '0'
-            ),
-          from: user,
-        }
-      );
+      const txCallback: () => Promise<
+        transactionType
+      > = this.generateTxCallback({
+        rawTxMethod: () =>
+          lendingPoolContract.populateTransaction.flashLoan(
+            REPAY_WITH_COLLATERAL_ADAPTER,
+            [assetToRepay],
+            [convertedRepayAmount],
+            [0], // interest rate mode to NONE for flashloan to not open debt
+            onBehalfOf || user,
+            params,
+            referralCode || '0'
+          ),
+        from: user,
+      });
 
-      txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
+      txs.push({
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
+      });
 
       return txs;
     }

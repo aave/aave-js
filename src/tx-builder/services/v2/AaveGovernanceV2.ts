@@ -171,6 +171,7 @@ export default class AaveGovernanceV2Service
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOVERNANCE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
     return txs;
   }
@@ -194,6 +195,7 @@ export default class AaveGovernanceV2Service
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOVERNANCE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
     return txs;
   }
@@ -217,6 +219,7 @@ export default class AaveGovernanceV2Service
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOVERNANCE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
     return txs;
   }
@@ -240,6 +243,7 @@ export default class AaveGovernanceV2Service
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOVERNANCE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
     return txs;
   }
@@ -264,6 +268,7 @@ export default class AaveGovernanceV2Service
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOVERNANCE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
     return txs;
   }
@@ -328,6 +333,7 @@ export default class AaveGovernanceV2Service
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOVERNANCE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
     return txs;
   }

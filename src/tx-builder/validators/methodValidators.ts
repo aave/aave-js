@@ -19,7 +19,7 @@ export function LPValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
       enabledNetworksByService.lendingPool[this.market];
@@ -45,7 +45,7 @@ export function LiquiditySwapValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
       enabledNetworksByService.liquiditySwapAdapter;
@@ -71,7 +71,7 @@ export function RepayWithCollateralValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
       enabledNetworksByService.repayWithCollateralAdapter;
@@ -97,7 +97,7 @@ export function StakingValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
       enabledNetworksByService.staking[this.tokenStake];
@@ -123,7 +123,7 @@ export function FaucetValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] = enabledNetworksByService.faucet;
     if (acceptedNetworks.indexOf(currentNetwork) === -1) {
@@ -148,7 +148,7 @@ export function WETHValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] = enabledNetworksByService.wethGateway;
     if (acceptedNetworks.indexOf(currentNetwork) === -1) {
@@ -173,7 +173,7 @@ export function GovValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
       enabledNetworksByService.aaveGovernanceV2;
@@ -197,7 +197,7 @@ export function GovDelegationValidator(
 ): any {
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
-  descriptor.value = function () {
+  descriptor.value = function() {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
       enabledNetworksByService.aaveGovernanceV2;

@@ -155,9 +155,9 @@ export function computeRawUserSummaryData(
   let currentLiquidationThreshold = valueToBigNumber('0');
 
   const userReservesData = rawUserReserves
-    .map((userReserve) => {
+    .map(userReserve => {
       const poolReserve = poolReservesData.find(
-        (reserve) => reserve.id === userReserve.reserve.id
+        reserve => reserve.id === userReserve.reserve.id
       );
       if (!poolReserve) {
         throw new Error(
@@ -355,9 +355,9 @@ export function formatReserves(
   currentTimestamp: number,
   reserveIndexes30DaysAgo?: ReserveRatesData[]
 ): ComputedReserveData[] {
-  return reserves.map((reserve) => {
+  return reserves.map(reserve => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
-      (res) => res.id === reserve.id
+      res => res.id === reserve.id
     )?.paramsHistory?.[0];
 
     const availableLiquidity = normalize(

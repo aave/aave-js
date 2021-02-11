@@ -20,8 +20,7 @@ import {
 import { parseNumber } from '../utils/parsings';
 import BaseService from './BaseService';
 
-export default class LTAMigratorService
-  extends BaseService<ILendToAaveMigrator>
+export default class LTAMigratorService extends BaseService<ILendToAaveMigrator>
   implements LTAMigratorInterface {
   readonly erc20Service: IERC20ServiceInterface;
 
@@ -78,6 +77,7 @@ export default class LTAMigratorService
     txs.push({
       txType: eEthereumTxType.MIGRATION_LEND_AAVE,
       tx: txCallback,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;

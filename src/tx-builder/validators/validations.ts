@@ -49,7 +49,7 @@ export function isEthAddressValidator(
   );
 
   if (addressParameters) {
-    addressParameters.forEach((storedParams) => {
+    addressParameters.forEach(storedParams => {
       if (storedParams.field) {
         if (
           methodArguments[0][storedParams.field] &&
@@ -93,7 +93,7 @@ export function isEthAddressOrEnsValidator(
   );
 
   if (addressParameters) {
-    addressParameters.forEach((storedParams) => {
+    addressParameters.forEach(storedParams => {
       if (storedParams.field) {
         if (
           methodArguments[0][storedParams.field] &&
@@ -141,7 +141,7 @@ export function amountGtThan0Validator(
   );
 
   if (amountParameters) {
-    amountParameters.forEach((storedParams) => {
+    amountParameters.forEach(storedParams => {
       if (storedParams.field) {
         if (
           methodArguments[0][storedParams.field] &&
@@ -181,7 +181,7 @@ export function amount0OrPositiveValidator(
   );
 
   if (amountParameters) {
-    amountParameters.forEach((storedParams) => {
+    amountParameters.forEach(storedParams => {
       if (storedParams.field) {
         if (
           methodArguments[0][storedParams.field] &&
@@ -224,7 +224,7 @@ export function amountGtThan0OrMinus1(
   );
 
   if (amountMinusOneParameters) {
-    amountMinusOneParameters.forEach((storedParams) => {
+    amountMinusOneParameters.forEach(storedParams => {
       if (storedParams.field) {
         if (
           methodArguments[0][storedParams.field] &&

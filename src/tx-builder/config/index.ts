@@ -25,6 +25,10 @@ export const gasLimitRecommendations: GasRecommendationType = {
     limit: '230000',
     recommended: '300000',
   },
+  [ProtocolAction.default]: {
+    limit: '230000',
+    recommended: '210000',
+  },
 };
 
 export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
