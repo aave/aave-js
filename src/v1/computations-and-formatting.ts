@@ -12,8 +12,9 @@ import {
   BigNumberValue,
   valueToBigNumber,
   valueToZDBigNumber,
+  normalize,
+  pow10,
 } from '../helpers/bignumber';
-import { normalize } from '../helpers/pool-math';
 import {
   ETH_DECIMALS,
   RAY_DECIMALS,
@@ -77,7 +78,7 @@ export const calculateCompoundedInterest = (
 ): BigNumber => {
   const timeDelta = valueToZDBigNumber(currentTimestamp - lastUpdateTimestamp);
   const ratePerSecond = valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR);
-  return RayMath.rayPow(ratePerSecond.plus(RayMath.RAY), timeDelta);
+  return RayMath.binomialApproximatedRayPow(ratePerSecond, timeDelta);
 };
 
 export const calculateLinearInterest = (
@@ -254,17 +255,17 @@ function computeUserReserveData(
   );
   const currentUnderlyingBalanceETH = currentUnderlyingBalance
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const currentUnderlyingBalanceUSD = currentUnderlyingBalanceETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
   const principalBorrowsETH = valueToZDBigNumber(userReserve.principalBorrows)
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const principalBorrowsUSD = principalBorrowsETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
@@ -275,17 +276,17 @@ function computeUserReserveData(
   );
   const currentBorrowsETH = currentBorrows
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const currentBorrowsUSD = currentBorrowsETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
   const originationFeeETH = valueToZDBigNumber(userReserve.originationFee)
     .multipliedBy(priceInEth)
-    .dividedBy(10 ** decimals);
+    .dividedBy(pow10(decimals));
   const originationFeeUSD = originationFeeETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toFixed(0);
 
@@ -319,9 +320,9 @@ export function computeRawUserSummaryData(
   let currentLiquidationThreshold = valueToBigNumber('0');
 
   const userReservesData = rawUserReserves
-    .map(userReserve => {
+    .map((userReserve) => {
       const poolReserve = poolReservesData.find(
-        reserve => reserve.id === userReserve.reserve.id
+        (reserve) => reserve.id === userReserve.reserve.id
       );
       if (!poolReserve) {
         throw new Error(
@@ -390,22 +391,22 @@ export function computeRawUserSummaryData(
   );
 
   const totalCollateralUSD = totalCollateralETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalLiquidityUSD = totalLiquidityETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalBorrowsUSD = totalBorrowsETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth)
     .toString();
 
   const totalFeesUSD = totalFeesETH
-    .multipliedBy(10 ** USD_DECIMALS)
+    .multipliedBy(pow10(USD_DECIMALS))
     .dividedBy(usdPriceEth);
 
   const totalBorrowsWithFeesETH = totalFeesETH.plus(totalBorrowsETH);
@@ -585,9 +586,9 @@ export function formatReserves(
   reserves: ReserveData[],
   reserveIndexes30DaysAgo?: ReserveRatesData[]
 ): ReserveData[] {
-  return reserves.map(reserve => {
+  return reserves.map((reserve) => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
-      res => res.id === reserve.id
+      (res) => res.id === reserve.id
     )?.paramsHistory?.[0];
 
     return {

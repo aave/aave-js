@@ -66,6 +66,10 @@ export default class RepayWithCollateralAdapterService
       from: user,
     });
 
-    return { tx: txCallback, txType: eEthereumTxType.DLP_ACTION };
+    return {
+      tx: txCallback,
+      txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
+    };
   }
 }

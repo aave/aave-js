@@ -17,7 +17,8 @@ import GovernanceDelegationTokenInterface from './interfaces/v2/GovernanceDelega
 import AaveGovernanceV2Service from './services/v2/AaveGovernanceV2';
 import GovernanceDelegationTokenService from './services/v2/GovernanceDelegationTokenService';
 
-export default class TxBuilder extends BaseTxBuilder
+export default class TxBuilder
+  extends BaseTxBuilder
   implements TxBuilderInterface {
   readonly lendingPools: {
     [market: string]: LendingPoolInterface;

@@ -17,13 +17,17 @@ export const SUPER_BIG_ALLOWANCE_NUMBER =
   '11579208923731619542357098500868790785326998466564056403945758400791';
 export const API_ETH_MOCK_ADDRESS =
   '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
-export const uniswapEthAmount = '0.1'; // ETH, with the token amount calculated in the uniswap side
+export const uniswapEthAmount = '0.1';
 export const SURPLUS = '0.05';
 
 export const gasLimitRecommendations: GasRecommendationType = {
   [ProtocolAction.withdraw]: {
     limit: '230000',
     recommended: '300000',
+  },
+  [ProtocolAction.default]: {
+    limit: '230000',
+    recommended: '210000',
   },
 };
 
@@ -58,7 +62,7 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
     },
     [Network.mainnet]: {
       canUsePermit: false,
-      TOKEN_STAKING_ADDRESS: '',
+      TOKEN_STAKING_ADDRESS: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
       STAKING_HELPER_ADDRESS: '',
     },
   },
@@ -66,7 +70,7 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
 
 export const enabledNetworksByService: EnabledNetworksType = {
   staking: {
-    [Stake.Balancer]: [Network.kovan],
+    [Stake.Balancer]: [Network.kovan, Network.mainnet],
     [Stake.Aave]: [Network.kovan, Network.mainnet],
   },
   lendingPool: {

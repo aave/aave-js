@@ -4,9 +4,11 @@ import {
   tEthereumAddress,
   TransactionGenerationMethod,
   transactionType,
+  GasResponse,
+  ProtocolAction,
 } from '../types';
 import { ContractsFactory } from '../interfaces/ContractsFactory';
-import { estimateGas } from '../utils/gasStation';
+import { estimateGas, getGasPrice } from '../utils/gasStation';
 import { DEFAULT_NULL_VALUE_ON_TX, gasLimitRecommendations } from '../config';
 
 export default class BaseService<T extends Contract> {
@@ -40,9 +42,7 @@ export default class BaseService<T extends Contract> {
     value,
     gasSurplus,
     action,
-  }: TransactionGenerationMethod): (() => Promise<
-    transactionType
-  >) => async () => {
+  }: TransactionGenerationMethod): (() => Promise<transactionType>) => async () => {
     const txRaw: PopulatedTransaction = await rawTxMethod();
 
     const tx: transactionType = {
@@ -62,5 +62,35 @@ export default class BaseService<T extends Contract> {
     }
 
     return tx;
+  };
+
+  readonly generateTxPriceEstimation = (
+    txCallback: () => Promise<transactionType>,
+    action: string = ProtocolAction.default
+  ): GasResponse => async (skipCalculation) => {
+    try {
+      const gasPrice = await getGasPrice(this.config);
+
+      if (!skipCalculation) {
+        const { gasLimit, gasPrice }: transactionType = await txCallback();
+        if (!gasLimit || !gasPrice) {
+          // If we don't recieve the correct gas we throw a error
+          throw new Error('Transaction calculation error');
+        }
+
+        return {
+          gasLimit: gasLimit.toString(),
+          gasPrice: gasPrice.toString(),
+        };
+      }
+
+      return {
+        gasLimit: gasLimitRecommendations[action].recommended,
+        gasPrice: gasPrice.toString(),
+      };
+    } catch (error) {
+      console.error('Calculate error on calculate estimation gas price.');
+      return null;
+    }
   };
 }

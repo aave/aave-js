@@ -33,7 +33,8 @@ import {
 } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
-export default class StakingService extends BaseService<IStakedToken>
+export default class StakingService
+  extends BaseService<IStakedToken>
   implements StakingInterface {
   readonly stakingHelperContract: IAaveStakingHelper;
 
@@ -163,6 +164,7 @@ export default class StakingService extends BaseService<IStakedToken>
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.STAKE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;
@@ -213,6 +215,7 @@ export default class StakingService extends BaseService<IStakedToken>
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.STAKE_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;
@@ -248,6 +251,7 @@ export default class StakingService extends BaseService<IStakedToken>
       {
         tx: txCallback,
         txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }
@@ -269,6 +273,7 @@ export default class StakingService extends BaseService<IStakedToken>
       {
         tx: txCallback,
         txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }
@@ -302,6 +307,7 @@ export default class StakingService extends BaseService<IStakedToken>
       {
         tx: txCallback,
         txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }

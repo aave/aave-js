@@ -24,7 +24,8 @@ import { FaucetValidator } from '../validators/methodValidators';
 import { IsEthAddress } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
-export default class FaucetService extends BaseService<IMinter>
+export default class FaucetService
+  extends BaseService<IMinter>
   implements FaucetInterface {
   readonly faucetAddress: string;
 
@@ -66,6 +67,7 @@ export default class FaucetService extends BaseService<IMinter>
       {
         tx: txCallback,
         txType: eEthereumTxType.FAUCET_MINT,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }

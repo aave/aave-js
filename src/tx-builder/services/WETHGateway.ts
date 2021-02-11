@@ -27,7 +27,8 @@ import {
 } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
-export default class WETHGatewayService extends BaseService<IWETHGateway>
+export default class WETHGatewayService
+  extends BaseService<IWETHGateway>
   implements WETHGatewayInterface {
   readonly wethGatewayAddress: string;
 
@@ -80,6 +81,7 @@ export default class WETHGatewayService extends BaseService<IWETHGateway>
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }
@@ -135,6 +137,7 @@ export default class WETHGatewayService extends BaseService<IWETHGateway>
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;
@@ -187,6 +190,7 @@ export default class WETHGatewayService extends BaseService<IWETHGateway>
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
     });
 
     return txs;
@@ -220,6 +224,7 @@ export default class WETHGatewayService extends BaseService<IWETHGateway>
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(txCallback),
       },
     ];
   }

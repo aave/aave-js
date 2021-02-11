@@ -5,7 +5,8 @@ import { ISynthetix, ISynthetix__factory } from '../contract-types';
 import SynthetixInterface from '../interfaces/Synthetix';
 import { commonContractAddressBetweenMarketsV2 } from '../config';
 
-export default class SynthetixService extends BaseService<ISynthetix>
+export default class SynthetixService
+  extends BaseService<ISynthetix>
   implements SynthetixInterface {
   constructor(config: Configuration) {
     super(config, ISynthetix__factory);
