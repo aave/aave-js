@@ -72,19 +72,21 @@ export default class BaseService<T extends Contract> {
       const gasPrice = await getGasPrice(this.config);
 
       if (!skipCalculation) {
-        const tx: transactionType = await txCallback();
-        const { gasLimit } = tx;
+        const { gasLimit, gasPrice }: transactionType = await txCallback();
+        if (!gasLimit || !gasPrice) {
+          // If we don't recieve the correct gas we throw a error
+          throw new Error('Transaction calculation error');
+        }
+
         return {
-          limit: gasLimit
-            ? gasLimit.toString()
-            : gasLimitRecommendations[action].recommended,
-          price: gasPrice.toString(),
+          gasLimit: gasLimit.toString(),
+          gasPrice: gasPrice.toString(),
         };
       }
 
       return {
-        limit: gasLimitRecommendations[action].recommended,
-        price: gasPrice.toString(),
+        gasLimit: gasLimitRecommendations[action].recommended,
+        gasPrice: gasPrice.toString(),
       };
     } catch (error) {
       console.error('Calculate error on calculate estimation gas price.');

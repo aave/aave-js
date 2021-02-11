@@ -168,8 +168,8 @@ export type TransactionGasGenerationMethod = {
 };
 
 export type GasType = {
-  limit: string | undefined;
-  price: string;
+  gasLimit: string | undefined;
+  gasPrice: string;
 };
 export type GasResponse = (skipCalculation: boolean) => Promise<GasType | null>;
 

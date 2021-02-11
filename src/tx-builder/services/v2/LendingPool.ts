@@ -213,7 +213,10 @@ export default class LendingPool
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
-        gas: this.generateTxPriceEstimation(txCallback),
+        gas: this.generateTxPriceEstimation(
+          txCallback,
+          ProtocolAction.withdraw
+        ),
       },
     ];
   }
