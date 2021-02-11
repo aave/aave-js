@@ -895,7 +895,11 @@ export default class LendingPool
       from: initiator,
     });
 
-    txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
+    txs.push({
+      tx: txCallback,
+      txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(txCallback),
+    });
     return txs;
   }
 }
