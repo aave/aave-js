@@ -171,7 +171,7 @@ export type GasType = {
   gasLimit: string | undefined;
   gasPrice: string;
 };
-export type GasResponse = (skipCalculation: boolean) => Promise<GasType | null>;
+export type GasResponse = () => Promise<GasType | null>;
 
 export type TokenMetadataType = {
   name: string;

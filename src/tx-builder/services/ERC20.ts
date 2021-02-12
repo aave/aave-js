@@ -42,7 +42,7 @@ export default class ERC20Service
     return {
       tx: txCallback,
       txType: eEthereumTxType.ERC20_APPROVAL,
-      gas: this.generateTxPriceEstimation(txCallback),
+      gas: this.generateTxPriceEstimation([], txCallback),
     };
   };
 
