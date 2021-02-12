@@ -43,6 +43,7 @@ export enum ProtocolAction {
   default = 'default',
   withdraw = 'withdraw',
   deposit = 'deposit',
+  liquidation = 'liquidation',
 }
 
 export enum GovernanceVote {
