@@ -70,17 +70,21 @@ export default class BaseService<T extends Contract> {
   ): GasResponse => async (skipCalculation) => {
     try {
       const gasPrice = await getGasPrice(this.config);
-
       if (!skipCalculation) {
-        const { gasLimit, gasPrice }: transactionType = await txCallback();
-        if (!gasLimit || !gasPrice) {
+        const {
+          gasLimit,
+          gasPrice: gasPriceProv,
+        }: transactionType = await txCallback();
+        if (!gasLimit) {
           // If we don't recieve the correct gas we throw a error
           throw new Error('Transaction calculation error');
         }
 
         return {
           gasLimit: gasLimit.toString(),
-          gasPrice: gasPrice.toString(),
+          gasPrice: gasPriceProv
+            ? gasPriceProv.toString()
+            : gasPrice.toString(),
         };
       }
 
@@ -89,7 +93,10 @@ export default class BaseService<T extends Contract> {
         gasPrice: gasPrice.toString(),
       };
     } catch (error) {
-      console.error('Calculate error on calculate estimation gas price.');
+      console.error(
+        'Calculate error on calculate estimation gas price.',
+        error
+      );
       return null;
     }
   };
