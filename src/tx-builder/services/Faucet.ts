@@ -67,7 +67,7 @@ export default class FaucetService
       {
         tx: txCallback,
         txType: eEthereumTxType.FAUCET_MINT,
-        gas: this.generateTxPriceEstimation(txCallback),
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }

@@ -6,6 +6,8 @@ import {
   transactionType,
   GasResponse,
   ProtocolAction,
+  EthereumTransactionTypeExtended,
+  eEthereumTxType,
 } from '../types';
 import { ContractsFactory } from '../interfaces/ContractsFactory';
 import { estimateGas, getGasPrice } from '../utils/gasStation';
@@ -65,12 +67,16 @@ export default class BaseService<T extends Contract> {
   };
 
   readonly generateTxPriceEstimation = (
+    txs: EthereumTransactionTypeExtended[],
     txCallback: () => Promise<transactionType>,
     action: string = ProtocolAction.default
-  ): GasResponse => async (skipCalculation) => {
+  ): GasResponse => async () => {
     try {
       const gasPrice = await getGasPrice(this.config);
-      if (!skipCalculation) {
+      const hasPendingApprovals = txs.find(
+        (tx) => tx.txType === eEthereumTxType.ERC20_APPROVAL
+      );
+      if (!hasPendingApprovals) {
         const {
           gasLimit,
           gasPrice: gasPriceProv,
@@ -87,7 +93,6 @@ export default class BaseService<T extends Contract> {
             : gasPrice.toString(),
         };
       }
-
       return {
         gasLimit: gasLimitRecommendations[action].recommended,
         gasPrice: gasPrice.toString(),

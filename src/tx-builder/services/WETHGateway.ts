@@ -81,7 +81,7 @@ export default class WETHGatewayService
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
-        gas: this.generateTxPriceEstimation(txCallback),
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }
@@ -137,7 +137,7 @@ export default class WETHGatewayService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
-      gas: this.generateTxPriceEstimation(txCallback),
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;
@@ -190,7 +190,7 @@ export default class WETHGatewayService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
-      gas: this.generateTxPriceEstimation(txCallback),
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;
@@ -224,7 +224,7 @@ export default class WETHGatewayService
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
-        gas: this.generateTxPriceEstimation(txCallback),
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }
