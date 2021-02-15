@@ -13,7 +13,6 @@ import * as v2 from './v2';
 
 // export helpers
 export * from './helpers/bignumber';
-export * from './helpers/constants';
 export * from './helpers/pool-math';
 export * from './helpers/ray-math';
 
