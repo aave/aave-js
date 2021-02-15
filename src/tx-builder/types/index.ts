@@ -43,6 +43,12 @@ export enum ProtocolAction {
   default = 'default',
   withdraw = 'withdraw',
   deposit = 'deposit',
+  liquidation = 'liquidation',
+  repay = 'repay',
+  swapCollateral = 'swapCollateral',
+  repayCollateral = 'repayCollateral',
+  withdrawETH = 'withdrawETH',
+  borrowETH = 'borrwoETH',
 }
 
 export enum GovernanceVote {
