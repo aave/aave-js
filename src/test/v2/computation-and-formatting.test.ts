@@ -3,6 +3,7 @@ import {
   formatReserves,
   formatUserSummaryData,
 } from '../../v2/computations-and-formatting';
+import BigNumber from 'bignumber.js';
 
 const mockReserve: ReserveData = {
   underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
@@ -125,6 +126,24 @@ describe('computations and formattings', () => {
         mockReserve.lastUpdateTimestamp
       )[0];
       expect(formattedMockReserve.utilizationRate).toBe('0');
+    });
+
+    it('should increase over time', () => {
+      /**
+       * tests against a regression which switched two dates
+       */
+      const first = formatReserves(
+        [mockReserve],
+        mockReserve.lastUpdateTimestamp + 1,
+        [mockReserve as any]
+      )[0];
+      const second = formatReserves(
+        [mockReserve],
+        mockReserve.lastUpdateTimestamp + 2,
+        [mockReserve as any]
+      )[0];
+
+      expect(new BigNumber(second.totalDebt).gte(first.totalDebt)).toBe(true);
     });
   });
 });

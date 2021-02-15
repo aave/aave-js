@@ -13,12 +13,10 @@ export const LTV_PRECISION = 4;
 
 export function calculateCompoundedInterest(
   rate: BigNumberValue,
-  currentTimestamp: BigNumberValue,
-  lastUpdateTimestamp: BigNumberValue
+  currentTimestamp: number,
+  lastUpdateTimestamp: number
 ): BigNumber {
-  const timeDelta = valueToZDBigNumber(currentTimestamp).minus(
-    lastUpdateTimestamp
-  );
+  const timeDelta = valueToZDBigNumber(currentTimestamp - lastUpdateTimestamp);
   const ratePerSecond = valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR);
   return RayMath.binomialApproximatedRayPow(ratePerSecond, timeDelta);
 }
@@ -27,7 +25,7 @@ export function getCompoundedBalance(
   _principalBalance: BigNumberValue,
   _reserveIndex: BigNumberValue,
   _reserveRate: BigNumberValue,
-  _lastUpdateTimestamp: BigNumberValue,
+  _lastUpdateTimestamp: number,
   currentTimestamp: number
 ): BigNumber {
   const principalBalance = valueToZDBigNumber(_principalBalance);
@@ -51,7 +49,7 @@ export function getCompoundedBalance(
 export function getCompoundedStableBalance(
   _principalBalance: BigNumberValue,
   _userStableRate: BigNumberValue,
-  _lastUpdateTimestamp: BigNumberValue,
+  _lastUpdateTimestamp: number,
   currentTimestamp: number
 ): BigNumber {
   const principalBalance = valueToZDBigNumber(_principalBalance);
