@@ -33,13 +33,17 @@ export const gasLimitRecommendations: GasRecommendationType = {
     limit: '230000',
     recommended: '300000',
   },
-  [ProtocolAction.liquidation]: {
-    limit: '995000',
+  [ProtocolAction.liquidationCall]: {
+    limit: '230000',
     recommended: '700000',
+  },
+  [ProtocolAction.liquidationFlash]: {
+    limit: '230000',
+    recommended: '995000',
   },
   [ProtocolAction.repay]: {
     limit: '230000',
-    recommended: '250000',
+    recommended: '300000',
   },
   [ProtocolAction.borrowETH]: {
     limit: '230000',
@@ -48,6 +52,14 @@ export const gasLimitRecommendations: GasRecommendationType = {
   [ProtocolAction.withdrawETH]: {
     limit: '230000',
     recommended: '640000',
+  },
+  [ProtocolAction.swapCollateral]: {
+    limit: '230000',
+    recommended: '700000',
+  },
+  [ProtocolAction.repayCollateral]: {
+    limit: '230000',
+    recommended: '700000',
   },
 };
 
