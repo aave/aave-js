@@ -20,7 +20,7 @@ export function calculateCompoundedInterest(
     lastUpdateTimestamp
   );
   const ratePerSecond = valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR);
-  return RayMath.binomialApproximatedRayPow(ratePerSecond, timeDelta);
+  return RayMath.rayPow(ratePerSecond.plus(RayMath.RAY), timeDelta);
 }
 
 export function getCompoundedBalance(
