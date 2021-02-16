@@ -21,9 +21,45 @@ export const uniswapEthAmount = '0.1';
 export const SURPLUS = '0.05';
 
 export const gasLimitRecommendations: GasRecommendationType = {
+  [ProtocolAction.default]: {
+    limit: '210000',
+    recommended: '210000',
+  },
+  [ProtocolAction.deposit]: {
+    limit: '300000',
+    recommended: '300000',
+  },
   [ProtocolAction.withdraw]: {
     limit: '230000',
     recommended: '300000',
+  },
+  [ProtocolAction.liquidationCall]: {
+    limit: '700000',
+    recommended: '700000',
+  },
+  [ProtocolAction.liquidationFlash]: {
+    limit: '995000',
+    recommended: '995000',
+  },
+  [ProtocolAction.repay]: {
+    limit: '300000',
+    recommended: '300000',
+  },
+  [ProtocolAction.borrowETH]: {
+    limit: '450000',
+    recommended: '450000',
+  },
+  [ProtocolAction.withdrawETH]: {
+    limit: '640000',
+    recommended: '640000',
+  },
+  [ProtocolAction.swapCollateral]: {
+    limit: '700000',
+    recommended: '700000',
+  },
+  [ProtocolAction.repayCollateral]: {
+    limit: '700000',
+    recommended: '700000',
   },
 };
 

@@ -78,6 +78,7 @@ export default class LTAMigratorService
     txs.push({
       txType: eEthereumTxType.MIGRATION_LEND_AAVE,
       tx: txCallback,
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;

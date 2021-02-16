@@ -9,6 +9,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   InterestRate,
+  ProtocolAction,
   transactionType,
   tStringDecimalUnits,
 } from '../types';
@@ -81,6 +82,7 @@ export default class WETHGatewayService
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }
@@ -136,6 +138,11 @@ export default class WETHGatewayService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(
+        txs,
+        txCallback,
+        ProtocolAction.borrowETH
+      ),
     });
 
     return txs;
@@ -188,6 +195,11 @@ export default class WETHGatewayService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(
+        txs,
+        txCallback,
+        ProtocolAction.withdrawETH
+      ),
     });
 
     return txs;
@@ -221,6 +233,7 @@ export default class WETHGatewayService
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }

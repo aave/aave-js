@@ -40,8 +40,16 @@ export enum eEthereumTxType {
 }
 
 export enum ProtocolAction {
+  default = 'default',
   withdraw = 'withdraw',
   deposit = 'deposit',
+  liquidationCall = 'liquidationCall',
+  liquidationFlash = 'liquidationFlash',
+  repay = 'repay',
+  swapCollateral = 'swapCollateral',
+  repayCollateral = 'repayCollateral',
+  withdrawETH = 'withdrawETH',
+  borrowETH = 'borrwoETH',
 }
 
 export enum GovernanceVote {
@@ -59,6 +67,14 @@ export type GasRecommendationType = {
   [action: string]: {
     limit: string;
     recommended: string;
+  };
+};
+
+export type GeneratedTx = {
+  tx: transactionType;
+  gas: {
+    price: string;
+    limit: string;
   };
 };
 
@@ -142,6 +158,7 @@ export type Configuration = {
 export type EthereumTransactionTypeExtended = {
   txType: eEthereumTxType;
   tx: () => Promise<transactionType>;
+  gas?: GasResponse;
 };
 
 export type TransactionGenerationMethod = {
@@ -151,6 +168,17 @@ export type TransactionGenerationMethod = {
   gasSurplus?: number;
   action?: ProtocolAction;
 };
+
+export type TransactionGasGenerationMethod = {
+  txCallback: () => Promise<transactionType>;
+  action?: ProtocolAction;
+};
+
+export type GasType = {
+  gasLimit: string | undefined;
+  gasPrice: string;
+};
+export type GasResponse = () => Promise<GasType | null>;
 
 export type TokenMetadataType = {
   name: string;

@@ -4,9 +4,13 @@ import {
   tEthereumAddress,
   TransactionGenerationMethod,
   transactionType,
+  GasResponse,
+  ProtocolAction,
+  EthereumTransactionTypeExtended,
+  eEthereumTxType,
 } from '../types';
 import { ContractsFactory } from '../interfaces/ContractsFactory';
-import { estimateGas } from '../utils/gasStation';
+import { estimateGas, getGasPrice } from '../utils/gasStation';
 import { DEFAULT_NULL_VALUE_ON_TX, gasLimitRecommendations } from '../config';
 
 export default class BaseService<T extends Contract> {
@@ -60,5 +64,45 @@ export default class BaseService<T extends Contract> {
     }
 
     return tx;
+  };
+
+  readonly generateTxPriceEstimation = (
+    txs: EthereumTransactionTypeExtended[],
+    txCallback: () => Promise<transactionType>,
+    action: string = ProtocolAction.default
+  ): GasResponse => async () => {
+    try {
+      const gasPrice = await getGasPrice(this.config);
+      const hasPendingApprovals = txs.find(
+        (tx) => tx.txType === eEthereumTxType.ERC20_APPROVAL
+      );
+      if (!hasPendingApprovals) {
+        const {
+          gasLimit,
+          gasPrice: gasPriceProv,
+        }: transactionType = await txCallback();
+        if (!gasLimit) {
+          // If we don't recieve the correct gas we throw a error
+          throw new Error('Transaction calculation error');
+        }
+
+        return {
+          gasLimit: gasLimit.toString(),
+          gasPrice: gasPriceProv
+            ? gasPriceProv.toString()
+            : gasPrice.toString(),
+        };
+      }
+      return {
+        gasLimit: gasLimitRecommendations[action].recommended,
+        gasPrice: gasPrice.toString(),
+      };
+    } catch (error) {
+      console.error(
+        'Calculate error on calculate estimation gas price.',
+        error
+      );
+      return null;
+    }
   };
 }

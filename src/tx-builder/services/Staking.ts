@@ -164,6 +164,7 @@ export default class StakingService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.STAKE_ACTION,
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;
@@ -214,6 +215,7 @@ export default class StakingService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.STAKE_ACTION,
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;
@@ -249,6 +251,7 @@ export default class StakingService
       {
         tx: txCallback,
         txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }
@@ -270,6 +273,7 @@ export default class StakingService
       {
         tx: txCallback,
         txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }
@@ -303,6 +307,7 @@ export default class StakingService
       {
         tx: txCallback,
         txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }

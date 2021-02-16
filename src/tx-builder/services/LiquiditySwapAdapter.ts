@@ -63,6 +63,7 @@ export default class LiquiditySwapAdapterService
     return {
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation([], txCallback),
     };
   }
 }

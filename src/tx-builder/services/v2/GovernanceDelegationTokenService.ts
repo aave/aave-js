@@ -67,6 +67,7 @@ export default class GovernanceDelegationTokenService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOV_DELEGATION_ACTION,
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;
@@ -98,6 +99,7 @@ export default class GovernanceDelegationTokenService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOV_DELEGATION_ACTION,
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;
@@ -135,6 +137,7 @@ export default class GovernanceDelegationTokenService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOV_DELEGATION_ACTION,
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;
@@ -180,6 +183,7 @@ export default class GovernanceDelegationTokenService
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.GOV_DELEGATION_ACTION,
+      gas: this.generateTxPriceEstimation(txs, txCallback),
     });
 
     return txs;

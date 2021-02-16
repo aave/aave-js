@@ -157,6 +157,11 @@ export default class LendingPool
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(
+        txs,
+        txCallback,
+        ProtocolAction.deposit
+      ),
     });
 
     return txs;
@@ -212,6 +217,11 @@ export default class LendingPool
       {
         tx: txCallback,
         txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(
+          [],
+          txCallback,
+          ProtocolAction.withdraw
+        ),
       },
     ];
   }
@@ -272,7 +282,13 @@ export default class LendingPool
       from: user,
     });
 
-    return [{ tx: txCallback, txType: eEthereumTxType.DLP_ACTION }];
+    return [
+      {
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
+      },
+    ];
   }
 
   @LPValidator
@@ -353,6 +369,11 @@ export default class LendingPool
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(
+        txs,
+        txCallback,
+        ProtocolAction.repay
+      ),
     });
 
     return txs;
@@ -382,6 +403,7 @@ export default class LendingPool
       {
         txType: eEthereumTxType.DLP_ACTION,
         tx: txCallback,
+        gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
   }
@@ -405,7 +427,13 @@ export default class LendingPool
       from: user,
     });
 
-    return [{ tx: txCallback, txType: eEthereumTxType.DLP_ACTION }];
+    return [
+      {
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
+      },
+    ];
   }
 
   @LPValidator
@@ -480,6 +508,11 @@ export default class LendingPool
     txs.push({
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation(
+        txs,
+        txCallback,
+        ProtocolAction.liquidationCall
+      ),
     });
 
     return txs;
@@ -623,7 +656,15 @@ export default class LendingPool
         }
       );
 
-      txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
+      txs.push({
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(
+          txs,
+          txCallback,
+          ProtocolAction.swapCollateral
+        ),
+      });
       return txs;
     }
 
@@ -770,7 +811,15 @@ export default class LendingPool
         }
       );
 
-      txs.push({ tx: txCallback, txType: eEthereumTxType.DLP_ACTION });
+      txs.push({
+        tx: txCallback,
+        txType: eEthereumTxType.DLP_ACTION,
+        gas: this.generateTxPriceEstimation(
+          txs,
+          txCallback,
+          ProtocolAction.repayCollateral
+        ),
+      });
 
       return txs;
     }
