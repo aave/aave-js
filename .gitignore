@@ -9,3 +9,4 @@ dist
 schema.graphql
 artifacts
 cache
+package-lock.json
