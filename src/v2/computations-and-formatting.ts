@@ -374,8 +374,8 @@ export function formatReserves(
         reserve.totalPrincipalStableDebt,
         calculateCompoundedInterest(
           reserve.averageStableRate,
-          reserve.stableDebtLastUpdateTimestamp,
-          currentTimestamp
+          currentTimestamp,
+          reserve.stableDebtLastUpdateTimestamp
         )
       ),
       reserve.decimals
