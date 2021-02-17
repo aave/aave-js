@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/aave/aave-js/compare/v2.4.1...v2.5.0) (2021-02-17)
+
+
+### Features
+
+* add flashliquidation adapter to tx-builder ([#58](https://github.com/aave/aave-js/issues/58)) ([073606e](https://github.com/aave/aave-js/commit/073606e5971754521470ebd8d0e4980caf436bcb))
+* add gas calculations to the response of the tx  ([#76](https://github.com/aave/aave-js/issues/76)) ([3ee1934](https://github.com/aave/aave-js/commit/3ee193459b0fd0811527a870a4d17fb4bd7a5b56))
+* reapply ray pow improvements ([#82](https://github.com/aave/aave-js/issues/82)) ([14986a1](https://github.com/aave/aave-js/commit/14986a152f1d0e5c2565e4d5eafb08be5f42fa53)), closes [#81](https://github.com/aave/aave-js/issues/81)
+
 ### [2.4.1](https://github.com/aave/aave-js/compare/v2.4.0...v2.4.1) (2021-02-10)
 
 
