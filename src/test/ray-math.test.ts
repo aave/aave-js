@@ -147,4 +147,17 @@ describe('rayPow and binomialApproximatedRayPow', () => {
       );
     }
   );
+
+  it('should increase values over time', () => {
+    const rate = valueToZDBigNumber(109284371694014197840985614);
+    const ts1 = 2;
+    const ts2 = 3;
+    const accurateInterest1 = legacyCalculateCompoundedInterest(rate, ts1, 0);
+    const approximatedInterest1 = calculateCompoundedInterest(rate, ts1, 0);
+    const accurateInterest2 = legacyCalculateCompoundedInterest(rate, ts2, 0);
+    const approximatedInterest2 = calculateCompoundedInterest(rate, ts2, 0);
+
+    expect(accurateInterest1.lt(accurateInterest2)).toBe(true);
+    expect(approximatedInterest1.lt(approximatedInterest2)).toBe(true);
+  });
 });
