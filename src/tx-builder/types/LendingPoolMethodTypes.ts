@@ -96,3 +96,13 @@ export type LPFlashLoan = {
   onBehalfOf?: tEthereumAddress;
   referralCode?: string;
 };
+
+export type LPFlashLiquidation = {
+  user: tEthereumAddress;
+  collateralAsset: tEthereumAddress;
+  borrowedAsset: tEthereumAddress;
+  debtTokenCover: string;
+  liquidateAll: boolean;
+  initiator: tEthereumAddress;
+  useEthPath: boolean;
+};
