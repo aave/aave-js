@@ -350,9 +350,43 @@ export function formatUserSummaryData(
   };
 }
 
+/**
+ * Calculates the formatted debt accrued to a given point in time.
+ * @param reserve
+ * @param currentTimestamp unix timestamp which must be higher than reserve.lastUpdateTimestamp
+ */
+export function calculateReserveDebt(
+  reserve: ReserveData,
+  currentTimestamp: number
+) {
+  const totalVariableDebt = normalize(
+    rayMul(
+      rayMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
+      calculateCompoundedInterest(
+        reserve.variableBorrowRate,
+        currentTimestamp,
+        reserve.lastUpdateTimestamp
+      )
+    ),
+    reserve.decimals
+  );
+  const totalStableDebt = normalize(
+    rayMul(
+      reserve.totalPrincipalStableDebt,
+      calculateCompoundedInterest(
+        reserve.averageStableRate,
+        currentTimestamp,
+        reserve.stableDebtLastUpdateTimestamp
+      )
+    ),
+    reserve.decimals
+  );
+  return { totalVariableDebt, totalStableDebt };
+}
+
 export function formatReserves(
   reserves: ReserveData[],
-  currentTimestamp: number,
+  currentTimestamp?: number,
   reserveIndexes30DaysAgo?: ReserveRatesData[]
 ): ComputedReserveData[] {
   return reserves.map((reserve) => {
@@ -365,20 +399,9 @@ export function formatReserves(
       reserve.decimals
     );
 
-    const totalVariableDebt = normalize(
-      rayMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
-      reserve.decimals
-    );
-    const totalStableDebt = normalize(
-      rayMul(
-        reserve.totalPrincipalStableDebt,
-        calculateCompoundedInterest(
-          reserve.averageStableRate,
-          currentTimestamp,
-          reserve.stableDebtLastUpdateTimestamp
-        )
-      ),
-      reserve.decimals
+    const { totalVariableDebt, totalStableDebt } = calculateReserveDebt(
+      reserve,
+      currentTimestamp || reserve.lastUpdateTimestamp
     );
 
     const totalDebt = valueToBigNumber(totalStableDebt).plus(totalVariableDebt);
