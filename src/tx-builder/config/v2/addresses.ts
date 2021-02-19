@@ -51,6 +51,17 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
   },
+  [Market.AMM]: {
+    [Network.kovan]: {
+      LENDINGPOOL_ADDRESS: '',
+    },
+    [Network.ropsten]: {
+      LENDINGPOOL_ADDRESS: '',
+    },
+    [Network.mainnet]: {
+      LENDINGPOOL_ADDRESS: '0xbb4786424e14378f187c48f6050368630f97e1cd',
+    },
+  },
 };
 
 export const aaveGovernanceV2Addresses: GovernanceConfigType = {

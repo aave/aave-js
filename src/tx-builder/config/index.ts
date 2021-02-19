@@ -107,6 +107,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
   },
   lendingPool: {
     [Market.Proto]: [Network.kovan, Network.mainnet],
+    [Market.AMM]: [Network.kovan],
   },
   governance: [Network.kovan, Network.mainnet],
   wethGateway: [Network.kovan, Network.mainnet],
