@@ -53,6 +53,7 @@ export type LPLiquidationCall = {
   collateralReserve: tEthereumAddress;
   purchaseAmount: tStringCurrencyUnits;
   getAToken?: boolean;
+  max?: boolean;
 };
 
 export type LPSwapCollateral = {

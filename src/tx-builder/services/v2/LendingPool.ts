@@ -5,6 +5,7 @@ import {
   DEFAULT_APPROVE_AMOUNT,
   distinctContractAddressBetweenMarketsV2,
   SURPLUS,
+  MAX_UINT_AMOUNT,
 } from '../../config';
 import { ILendingPool, ILendingPool__factory } from '../../contract-types';
 import IERC20ServiceInterface from '../../interfaces/ERC20';
@@ -451,6 +452,7 @@ export default class LendingPool
       collateralReserve,
       purchaseAmount,
       getAToken,
+      max,
     }: LPLiquidationCall
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
@@ -499,11 +501,11 @@ export default class LendingPool
           collateralReserve,
           debtReserve,
           liquidatedUser,
-          convertedAmount,
+          max ? MAX_UINT_AMOUNT : convertedAmount,
           getAToken || false
         ),
       from: liquidator,
-      value: getTxValue(debtReserve, convertedAmount),
+      value: max ? MAX_UINT_AMOUNT : getTxValue(debtReserve, convertedAmount),
     });
 
     txs.push({
