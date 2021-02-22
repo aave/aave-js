@@ -95,6 +95,12 @@ describe('computations and formattings', () => {
       expect(formattedMockReserve).toMatchSnapshot();
     });
 
+    it('should allow omitting timestamp', () => {
+      const formattedMockReserve = formatReserves([mockReserve])[0];
+      expect(formattedMockReserve.baseLTVasCollateral).toBe('0.75');
+      expect(formattedMockReserve).toMatchSnapshot();
+    });
+
     /**
      * Whenever we add a new asset there#s a chance that an asset has no paramsHistory from 30days ago
      * We should not throw if that's the case, but just ignore it
