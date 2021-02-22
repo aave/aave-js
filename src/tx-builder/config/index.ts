@@ -106,10 +106,10 @@ export const enabledNetworksByService: EnabledNetworksType = {
     [Stake.Aave]: [Network.kovan, Network.mainnet],
   },
   lendingPool: {
-    [Market.Proto]: [Network.kovan, Network.mainnet],
+    [Market.Proto]: [Network.kovan, Network.mainnet, Network.matic],
   },
   governance: [Network.kovan, Network.mainnet],
-  wethGateway: [Network.kovan, Network.mainnet],
+  wethGateway: [Network.kovan, Network.mainnet, Network.matic],
   faucet: [Network.kovan],
   liquiditySwapAdapter: [Network.kovan, Network.mainnet],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],

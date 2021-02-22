@@ -37,6 +37,16 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
     FLASHLIQUIDATION: '',
   },
+  [Network.matic]: {
+    SYNTHETIX_PROXY_ADDRESS: '',
+    GOVERNANCE_PROTO_CONTRACT: '',
+    LEND_TO_AAVE_MIGRATOR: '',
+    WETH_GATEWAY: '0x15A46f5073789b7D16F6F46632aE50Bae838d938',
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '',
+    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
+  },
 };
 
 export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
@@ -49,6 +59,9 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     },
     [Network.mainnet]: {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
+    },
+    [Network.matic]: {
+      LENDINGPOOL_ADDRESS: '0x15Ec48a46d2D26cf4ADf5A39123E4c75e6887fE0',
     },
   },
 };

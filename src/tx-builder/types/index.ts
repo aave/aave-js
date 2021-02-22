@@ -21,6 +21,7 @@ export enum Network {
   mainnet = 'mainnet',
   ropsten = 'ropsten',
   kovan = 'kovan',
+  matic = 'matic',
 }
 
 export enum ChainId {
