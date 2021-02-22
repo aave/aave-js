@@ -1,6 +1,7 @@
 import { InterestRate, tEthereumAddress, tStringCurrencyUnits } from '.';
 
 export type WETHDepositParamsType = {
+  lendingPool: tEthereumAddress;
   user: tEthereumAddress;
   amount: tStringCurrencyUnits;
   onBehalfOf?: tEthereumAddress;
@@ -8,6 +9,7 @@ export type WETHDepositParamsType = {
 };
 
 export type WETHWithdrawParamsType = {
+  lendingPool: tEthereumAddress;
   user: tEthereumAddress;
   amount: tStringCurrencyUnits;
   aTokenAddress: tEthereumAddress;
@@ -15,6 +17,7 @@ export type WETHWithdrawParamsType = {
 };
 
 export type WETHRepayParamsType = {
+  lendingPool: tEthereumAddress;
   user: tEthereumAddress;
   amount: tStringCurrencyUnits;
   interestRateMode: InterestRate;
@@ -22,6 +25,7 @@ export type WETHRepayParamsType = {
 };
 
 export type WETHBorrowParamsType = {
+  lendingPool: tEthereumAddress;
   user: tEthereumAddress;
   amount: tStringCurrencyUnits;
   debtTokenAddress: tEthereumAddress;
