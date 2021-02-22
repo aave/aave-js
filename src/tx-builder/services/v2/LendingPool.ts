@@ -96,6 +96,7 @@ export default class LendingPool
   ): Promise<EthereumTransactionTypeExtended[]> {
     if (reserve.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()) {
       return this.wethGatewayService.depositETH({
+        lendingPool: this.lendingPoolAddress,
         user,
         amount,
         onBehalfOf,
@@ -185,6 +186,7 @@ export default class LendingPool
       }
 
       return this.wethGatewayService.withdrawETH({
+        lendingPool: this.lendingPoolAddress,
         user,
         amount,
         onBehalfOf,
@@ -251,6 +253,7 @@ export default class LendingPool
         );
       }
       return this.wethGatewayService.borrowETH({
+        lendingPool: this.lendingPoolAddress,
         user,
         amount,
         debtTokenAddress,
@@ -302,6 +305,7 @@ export default class LendingPool
   ): Promise<EthereumTransactionTypeExtended[]> {
     if (reserve.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()) {
       return this.wethGatewayService.repayETH({
+        lendingPool: this.lendingPoolAddress,
         user,
         amount,
         interestRateMode,
