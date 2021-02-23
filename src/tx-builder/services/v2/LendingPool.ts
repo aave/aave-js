@@ -452,7 +452,7 @@ export default class LendingPool
       collateralReserve,
       purchaseAmount,
       getAToken,
-      max,
+      liquidateAll,
     }: LPLiquidationCall
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
@@ -486,7 +486,7 @@ export default class LendingPool
 
     const reserveDecimals: number = debtReserveInfo.decimals;
 
-    const convertedAmount: tStringDecimalUnits = max
+    const convertedAmount: tStringDecimalUnits = liquidateAll
       ? MAX_UINT_AMOUNT
       : parseNumber(purchaseAmount, reserveDecimals);
 
