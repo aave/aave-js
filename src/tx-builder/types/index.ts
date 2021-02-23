@@ -28,6 +28,7 @@ export enum ChainId {
   mainnet = 1,
   ropsten = 3,
   kovan = 42,
+  matic = 137,
 }
 
 export enum eEthereumTxType {
