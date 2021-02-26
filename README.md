@@ -319,11 +319,10 @@ lendingPool.setUsageAsCollateral({
 Users can invoke this function to liquidate an undercollateralized position.
 
 - @param `liquidator` The ethereum address that will liquidate the position
+- @param `liquidatedUser` The address of the borrower
 - @param `debtReserve` The ethereum address of the principal reserve
 - @param `collateralReserve` The address of the collateral to liquidated
 - @param `purchaseAmount` The amount of principal that the liquidator wants to repay
-- @param `liquidatedUser` The address of the borrower
-- @param `receiveAToken` True if the liquidator wants to receive the aTokens, false if she wants to receive the underlying asset directly
 - @param @optional `getAToken` Boolean to indicate if the user wants to receive the aToken instead of the asset. Defaults to false
 
 ```
