@@ -107,10 +107,10 @@ export const enabledNetworksByService: EnabledNetworksType = {
   },
   lendingPool: {
     [Market.Proto]: [Network.kovan, Network.mainnet],
-    [Market.AMM]: [Network.kovan],
+    [Market.AMM]: [Network.kovan, Network.mainnet],
   },
   governance: [Network.kovan, Network.mainnet],
-  wethGateway: [Network.kovan], // TODO: enable again for mainnet when weth gateway address added
+  wethGateway: [Network.kovan, Network.mainnet],
   faucet: [Network.kovan],
   liquiditySwapAdapter: [Network.kovan, Network.mainnet],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
