@@ -9,7 +9,13 @@ import FaucetService from './services/Faucet';
 import LTAMigratorService from './services/LTAMigrator';
 import StakingService from './services/Staking';
 import SynthetixService from './services/SynthetixService';
-import { Configuration, DefaultProviderKeys, Network, Stake } from './types';
+import {
+  ChainId,
+  Configuration,
+  DefaultProviderKeys,
+  Network,
+  Stake,
+} from './types';
 
 export default class BaseTxBuilder {
   readonly configuration: Configuration;
@@ -38,22 +44,20 @@ export default class BaseTxBuilder {
       | providers.BaseProvider
       | providers.Web3Provider;
 
+    const chainId = ChainId[network];
+
     if (!injectedProvider) {
       if (defaultProviderKeys && Object.keys(defaultProviderKeys).length > 1) {
         provider = ethers.getDefaultProvider(network, defaultProviderKeys);
       } else {
-        provider = ethers.getDefaultProvider(network);
-        console.log(
-          `These API keys are a provided as a community resource by the backend services for low-traffic projects and for early prototyping.
-          It is highly recommended to use own keys: https://docs.ethers.io/v5/api-keys/`
-        );
+        throw new Error('Need to pass a provider for aave-js to work');
       }
     } else if (typeof injectedProvider === 'string') {
-      provider = new providers.JsonRpcProvider(injectedProvider, network);
+      provider = new providers.JsonRpcProvider(injectedProvider, chainId);
     } else if (injectedProvider instanceof providers.Web3Provider) {
       provider = injectedProvider;
     } else {
-      provider = new providers.Web3Provider(injectedProvider, network);
+      provider = new providers.Web3Provider(injectedProvider, chainId);
     }
 
     this.configuration = { network, provider };
