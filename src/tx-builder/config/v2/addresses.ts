@@ -38,13 +38,13 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     FLASHLIQUIDATION: '',
   },
   [Network.mainnet_fork]: {
-    SYNTHETIX_PROXY_ADDRESS: '',
-    GOVERNANCE_PROTO_CONTRACT: '',
-    LEND_TO_AAVE_MIGRATOR: '',
+    SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+    GOVERNANCE_PROTO_CONTRACT: '0x8a2efd9a790199f4c94c6effe210fce0b4724f52',
+    LEND_TO_AAVE_MIGRATOR: '0x317625234562b1526ea2fac4030ea499c5291de4',
     WETH_GATEWAY: '0x723e25Ff8a4A6FB9a4CA2D388Cc5ade0Ad659163',
     FAUCET: '',
-    SWAP_COLLATERAL_ADAPTER: '',
-    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    SWAP_COLLATERAL_ADAPTER: '0x63a3f444e97d14e671e7ee323c4234c8095e3516',
+    REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
     FLASHLIQUIDATION: '',
   },
 };
@@ -61,7 +61,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
     [Network.mainnet_fork]: {
-      LENDINGPOOL_ADDRESS: '',
+      LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
   },
   [Market.AMM]: {
@@ -72,7 +72,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '',
     },
     [Network.mainnet]: {
-      LENDINGPOOL_ADDRESS: '0x21BcFd7D83Ce5f567F53194B4a7c7D1dA8222500',
+      LENDINGPOOL_ADDRESS: '',
     },
     [Network.mainnet_fork]: {
       LENDINGPOOL_ADDRESS: '0x21BcFd7D83Ce5f567F53194B4a7c7D1dA8222500',
