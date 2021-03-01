@@ -3,6 +3,7 @@ import {
   API_ETH_MOCK_ADDRESS,
   commonContractAddressBetweenMarketsV2,
   DEFAULT_APPROVE_AMOUNT,
+  MAX_UINT_AMOUNT,
   distinctContractAddressBetweenMarketsV2,
   SURPLUS,
 } from '../../config';
@@ -455,6 +456,7 @@ export default class LendingPool
       collateralReserve,
       purchaseAmount,
       getAToken,
+      liquidateAll,
     }: LPLiquidationCall
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
@@ -488,10 +490,9 @@ export default class LendingPool
 
     const reserveDecimals: number = debtReserveInfo.decimals;
 
-    const convertedAmount: tStringDecimalUnits = parseNumber(
-      purchaseAmount,
-      reserveDecimals
-    );
+    const convertedAmount: tStringDecimalUnits = liquidateAll
+      ? MAX_UINT_AMOUNT
+      : parseNumber(purchaseAmount, reserveDecimals);
 
     const lendingPoolContract = this.getContractInstance(
       this.lendingPoolAddress
