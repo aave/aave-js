@@ -22,14 +22,12 @@ export enum Network {
   mainnet = 'mainnet',
   ropsten = 'ropsten',
   kovan = 'kovan',
-  fork = 'fork',
 }
 
 export enum ChainId {
   mainnet = 1,
   ropsten = 3,
   kovan = 42,
-  fork = 1,
 }
 
 export enum eEthereumTxType {
