@@ -37,7 +37,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
     FLASHLIQUIDATION: '',
   },
-  [Network.mainnet_fork]: {
+  [Network.fork]: {
     SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     GOVERNANCE_PROTO_CONTRACT: '0x8a2efd9a790199f4c94c6effe210fce0b4724f52',
     LEND_TO_AAVE_MIGRATOR: '0x317625234562b1526ea2fac4030ea499c5291de4',
@@ -60,7 +60,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     [Network.mainnet]: {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
-    [Network.mainnet_fork]: {
+    [Network.fork]: {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
   },
@@ -74,7 +74,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     [Network.mainnet]: {
       LENDINGPOOL_ADDRESS: '',
     },
-    [Network.mainnet_fork]: {
+    [Network.fork]: {
       LENDINGPOOL_ADDRESS: '0x21BcFd7D83Ce5f567F53194B4a7c7D1dA8222500',
     },
   },
