@@ -80,6 +80,11 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       TOKEN_STAKING_ADDRESS: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
       STAKING_HELPER_ADDRESS: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
     },
+    [Network.tenderly_mainnet]: {
+      canUsePermit: true,
+      TOKEN_STAKING_ADDRESS: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
+      STAKING_HELPER_ADDRESS: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
+    },
     [Network.matic_mainnet]: {
       canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
@@ -102,6 +107,11 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       TOKEN_STAKING_ADDRESS: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
       STAKING_HELPER_ADDRESS: '',
     },
+    [Network.tenderly_mainnet]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
+      STAKING_HELPER_ADDRESS: '',
+    },
     [Network.matic_mainnet]: {
       canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
@@ -112,20 +122,32 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
 
 export const enabledNetworksByService: EnabledNetworksType = {
   staking: {
-    [Stake.Balancer]: [Network.kovan, Network.mainnet],
-    [Stake.Aave]: [Network.kovan, Network.mainnet],
+    [Stake.Balancer]: [
+      Network.kovan,
+      Network.mainnet,
+      Network.tenderly_mainnet,
+    ],
+    [Stake.Aave]: [Network.kovan, Network.mainnet, Network.tenderly_mainnet],
   },
   lendingPool: {
-    [Market.Proto]: [Network.kovan, Network.mainnet],
-    [Market.AMM]: [Network.kovan, Network.mainnet],
+    [Market.Proto]: [Network.kovan, Network.mainnet, Network.tenderly_mainnet],
+    [Market.AMM]: [Network.kovan, Network.tenderly_mainnet],
     [Market.Matic]: [Network.matic_mainnet],
   },
-  governance: [Network.kovan, Network.mainnet],
-  wethGateway: [Network.kovan, Network.mainnet, Network.matic_mainnet], // TODO: enable again for mainnet when weth gateway address added (current is fork)
+  governance: [Network.kovan, Network.mainnet, Network.tenderly_mainnet],
+  wethGateway: [Network.kovan, Network.matic_mainnet, Network.tenderly_mainnet], // TODO: enable again for mainnet when weth gateway address added (current is fork)
   faucet: [Network.kovan],
-  liquiditySwapAdapter: [Network.kovan, Network.mainnet],
-  repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
-  aaveGovernanceV2: [Network.kovan, Network.mainnet],
+  liquiditySwapAdapter: [
+    Network.kovan,
+    Network.mainnet,
+    Network.tenderly_mainnet,
+  ],
+  repayWithCollateralAdapter: [
+    Network.kovan,
+    Network.mainnet,
+    Network.tenderly_mainnet,
+  ],
+  aaveGovernanceV2: [Network.kovan, Network.mainnet, Network.tenderly_mainnet],
 };
 
 export * from './v2/addresses';

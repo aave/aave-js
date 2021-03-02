@@ -31,7 +31,17 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     GOVERNANCE_PROTO_CONTRACT: '0x8a2efd9a790199f4c94c6effe210fce0b4724f52',
     LEND_TO_AAVE_MIGRATOR: '0x317625234562b1526ea2fac4030ea499c5291de4',
-    WETH_GATEWAY: '0x723e25Ff8a4A6FB9a4CA2D388Cc5ade0Ad659163', // TODO: change for mainnet new weth_gateway, current is from fork
+    WETH_GATEWAY: '', // TODO: change for mainnet new weth_gateway
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '0x63a3f444e97d14e671e7ee323c4234c8095e3516',
+    REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
+    FLASHLIQUIDATION: '',
+  },
+  [Network.tenderly_mainnet]: {
+    SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+    GOVERNANCE_PROTO_CONTRACT: '0x8a2efd9a790199f4c94c6effe210fce0b4724f52',
+    LEND_TO_AAVE_MIGRATOR: '0x317625234562b1526ea2fac4030ea499c5291de4',
+    WETH_GATEWAY: '0x723e25Ff8a4A6FB9a4CA2D388Cc5ade0Ad659163',
     FAUCET: '',
     SWAP_COLLATERAL_ADAPTER: '0x63a3f444e97d14e671e7ee323c4234c8095e3516',
     REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
@@ -60,6 +70,9 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     [Network.mainnet]: {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
+    [Network.tenderly_mainnet]: {
+      LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
+    },
   },
   [Market.AMM]: {
     [Network.kovan]: {
@@ -69,7 +82,10 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '',
     },
     [Network.mainnet]: {
-      LENDINGPOOL_ADDRESS: '0x21BcFd7D83Ce5f567F53194B4a7c7D1dA8222500', // TODO: add real address, current is from fork
+      LENDINGPOOL_ADDRESS: '',
+    },
+    [Network.tenderly_mainnet]: {
+      LENDINGPOOL_ADDRESS: '0x21BcFd7D83Ce5f567F53194B4a7c7D1dA8222500',
     },
   },
   [Market.Matic]: {
@@ -95,6 +111,14 @@ export const aaveGovernanceV2Addresses: GovernanceConfigType = {
     AAVE_GOVERNANCE_V2_HELPER: '',
   },
   [Network.mainnet]: {
+    AAVE_GOVERNANCE_V2: '0xEC568fffba86c094cf06b22134B23074DFE2252c',
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT:
+      '0x61910EcD7e8e942136CE7Fe7943f956cea1CC2f7',
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG:
+      '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',
+    AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
+  },
+  [Network.tenderly_mainnet]: {
     AAVE_GOVERNANCE_V2: '0xEC568fffba86c094cf06b22134B23074DFE2252c',
     AAVE_GOVERNANCE_V2_EXECUTOR_SHORT:
       '0x61910EcD7e8e942136CE7Fe7943f956cea1CC2f7',
