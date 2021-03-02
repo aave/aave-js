@@ -926,7 +926,15 @@ export default class LendingPool
       params,
       '0',
       ' from : ',
-      initiator
+      initiator,
+      'uncoded params: ',
+      [
+        collateralAsset,
+        borrowedAsset,
+        user,
+        convertedDebtTokenCover,
+        useEthPath || false,
+      ]
     );
 
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
