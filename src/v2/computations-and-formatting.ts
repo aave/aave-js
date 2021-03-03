@@ -2,28 +2,29 @@ import BigNumber from 'bignumber.js';
 
 import {
   BigNumberValue,
-  valueToBigNumber,
-  valueToZDBigNumber,
   normalize,
   pow10,
+  valueToBigNumber,
+  valueToZDBigNumber,
 } from '../helpers/bignumber';
 import {
   calculateAvailableBorrowsETH,
+  calculateAverageRate,
+  calculateCompoundedInterest,
   calculateHealthFactorFromBalances,
+  currentATokenBalance,
   getCompoundedBalance,
   getCompoundedStableBalance,
-  calculateAverageRate,
   LTV_PRECISION,
-  calculateCompoundedInterest,
 } from '../helpers/pool-math';
 import { rayMul } from '../helpers/ray-math';
 import {
+  ComputedReserveData,
   ComputedUserReserve,
   ReserveData,
+  ReserveRatesData,
   UserReserveData,
   UserSummaryData,
-  ReserveRatesData,
-  ComputedReserveData,
 } from './types';
 import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
 
@@ -75,7 +76,7 @@ export function computeUserReserveData(
     price: { priceInEth },
     decimals,
   } = poolReserve;
-  const underlyingBalance = getCompoundedBalance(
+  const underlyingBalance = currentATokenBalance(
     userReserve.scaledATokenBalance,
     poolReserve.liquidityIndex,
     poolReserve.liquidityRate,

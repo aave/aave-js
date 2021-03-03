@@ -4,7 +4,8 @@ import {
   formatUserSummaryData,
 } from '../../v2/computations-and-formatting';
 import BigNumber from 'bignumber.js';
-import { getCompoundedBalance } from '../../helpers/pool-math';
+import { currentATokenBalance } from '../../helpers/pool-math';
+import * as RayMath from '../../helpers/ray-math';
 
 const mockReserve: ReserveData = {
   underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
@@ -165,7 +166,7 @@ describe('computations and formattings', () => {
       // expected balance computed with hardhat
       const currentTimestamp = 1609675535;
       const expectedATokenBalance = '161594727054623229';
-      const underlyingBalance = getCompoundedBalance(
+      const underlyingBalance = currentATokenBalance(
         scaledATokenBalance,
         liquidityIndex,
         currentLiquidityRate,
@@ -173,6 +174,34 @@ describe('computations and formattings', () => {
         currentTimestamp
       ).toString();
       expect(underlyingBalance).toBe(expectedATokenBalance);
+    });
+
+    it('should compute collateral balance from subgraph data', () => {
+      // id: 0xa5a69107816c5e3dfa5561e6b621dfe6294f6e5b0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e0xb53c1a33016b2dc2ff3653530bff1848a515c8c5
+      const mockUserReserve = {
+        scaledATokenBalance: '161316503206059870',
+        currentATokenBalance: '161422626192524099',
+        lastUpdateTimestamp: 1609361267,
+        liquidityRate: '356057734567773693054943410',
+      };
+      const scaledATokenBalanceRay = RayMath.wadToRay(
+        mockUserReserve.scaledATokenBalance
+      );
+      const currentATokenBalanceRay = RayMath.wadToRay(
+        mockUserReserve.currentATokenBalance
+      );
+      const liquidityIndex = RayMath.rayDiv(
+        currentATokenBalanceRay,
+        scaledATokenBalanceRay
+      );
+      const underlyingBalance = currentATokenBalance(
+        mockUserReserve.scaledATokenBalance,
+        liquidityIndex,
+        mockUserReserve.liquidityRate,
+        mockUserReserve.lastUpdateTimestamp,
+        mockUserReserve.lastUpdateTimestamp
+      ).toString();
+      expect(underlyingBalance).toBe(mockUserReserve.currentATokenBalance);
     });
   });
 });

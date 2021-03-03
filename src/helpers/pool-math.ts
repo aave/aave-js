@@ -2,11 +2,12 @@ import BigNumber from 'bignumber.js';
 
 import {
   BigNumberValue,
+  pow10,
   valueToBigNumber,
   valueToZDBigNumber,
-  pow10,
 } from './bignumber';
 import * as RayMath from './ray-math';
+import { RAY } from './ray-math';
 import { SECONDS_PER_YEAR } from './constants';
 
 export const LTV_PRECISION = 4;
@@ -126,4 +127,57 @@ export function calculateAverageRate(
     .dividedBy(timestamp1 - timestamp0)
     .multipliedBy(SECONDS_PER_YEAR)
     .toString();
+}
+
+export function currentATokenBalance(
+  scaledATokenBalance: BigNumberValue,
+  liquidityIndex: BigNumberValue,
+  currentLiquidityRate: BigNumberValue,
+  lastUpdateTimestamp: number,
+  currentTimestamp: number
+): BigNumber {
+  const principalBalanceRay = RayMath.wadToRay(scaledATokenBalance);
+  const normalizedIncome = getNormalizedIncome(
+    liquidityIndex,
+    currentLiquidityRate,
+    lastUpdateTimestamp,
+    currentTimestamp
+  );
+  const scaledATokenBalanceRay = RayMath.rayMul(
+    principalBalanceRay,
+    normalizedIncome
+  );
+  return RayMath.rayToWad(scaledATokenBalanceRay);
+}
+
+function getNormalizedIncome(
+  liquidityIndex: BigNumberValue,
+  currentLiquidityRate: BigNumberValue,
+  lastUpdateTimestamp: number,
+  currentTimestamp: number
+): BigNumber {
+  liquidityIndex = valueToZDBigNumber(liquidityIndex);
+  currentLiquidityRate = valueToZDBigNumber(currentLiquidityRate);
+  if (currentTimestamp === lastUpdateTimestamp) {
+    return liquidityIndex;
+  }
+  const linearInterest = calculateLinearInterest(
+    currentLiquidityRate,
+    lastUpdateTimestamp,
+    currentTimestamp
+  );
+  return RayMath.rayMul(linearInterest, liquidityIndex);
+}
+
+function calculateLinearInterest(
+  currentLiquidityRate: BigNumberValue,
+  lastUpdateTimestamp: number,
+  currentTimestamp: number
+): BigNumber {
+  currentLiquidityRate = valueToZDBigNumber(currentLiquidityRate);
+  const timeDifference = currentTimestamp - lastUpdateTimestamp;
+  return currentLiquidityRate
+    .multipliedBy(timeDifference)
+    .div(SECONDS_PER_YEAR)
+    .plus(RAY);
 }
