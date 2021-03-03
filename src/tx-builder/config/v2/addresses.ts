@@ -88,11 +88,11 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '0xcD32cabd71bdc123477aB42b46E178526056B4e2',
     },
   },
-  [Market.Matic]: {
-    [Network.matic_mainnet]: {
-      LENDINGPOOL_ADDRESS: '0x15Ec48a46d2D26cf4ADf5A39123E4c75e6887fE0',
-    },
-  },
+  // [Market.Matic]: {
+  //   [Network.matic_mainnet]: {
+  //     LENDINGPOOL_ADDRESS: '0x15Ec48a46d2D26cf4ADf5A39123E4c75e6887fE0',
+  //   },
+  // },
 };
 
 export const aaveGovernanceV2Addresses: GovernanceConfigType = {

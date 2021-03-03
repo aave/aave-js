@@ -15,7 +15,7 @@ export enum InterestRate {
 export enum Market {
   Proto = 'proto',
   AMM = 'amm',
-  Matic = 'matic',
+  // Matic = 'matic',
   // Uniswap = 'uniswap',
 }
 

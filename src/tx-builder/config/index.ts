@@ -132,7 +132,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
   lendingPool: {
     [Market.Proto]: [Network.kovan, Network.mainnet, Network.tenderly_mainnet],
     [Market.AMM]: [Network.kovan, Network.tenderly_mainnet],
-    [Market.Matic]: [Network.matic_mainnet],
+    // [Market.Matic]: [Network.matic_mainnet],
   },
   governance: [Network.kovan, Network.mainnet, Network.tenderly_mainnet],
   wethGateway: [Network.kovan, Network.matic_mainnet, Network.tenderly_mainnet], // TODO: enable again for mainnet when weth gateway address added (current is fork)
