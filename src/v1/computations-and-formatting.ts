@@ -47,7 +47,7 @@ export function getCompoundedBorrowBalance(
 
   let cumulatedInterest;
   if (userReserve.borrowRateMode === BorrowRateMode.Variable) {
-    let compoundedInterest = calculateCompoundedInterest(
+    const compoundedInterest = calculateCompoundedInterest(
       reserve.variableBorrowRate,
       currentTimestamp,
       reserve.lastUpdateTimestamp
