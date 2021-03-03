@@ -103,6 +103,17 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
+  "eslint": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:import/typescript",
+      "plugin:prettier/recommended"
+    ]
+  },
   "resolutions": {
     "**/typescript": "^4.0.5",
     "**/@typescript-eslint/eslint-plugin": "^4.6.1",
