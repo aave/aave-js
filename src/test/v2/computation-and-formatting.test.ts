@@ -4,6 +4,7 @@ import {
   formatUserSummaryData,
 } from '../../v2/computations-and-formatting';
 import BigNumber from 'bignumber.js';
+import { getCompoundedBalance } from '../../helpers/pool-math';
 
 const mockReserve: ReserveData = {
   underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
@@ -150,6 +151,28 @@ describe('computations and formattings', () => {
       )[0];
 
       expect(new BigNumber(second.totalDebt).gte(first.totalDebt)).toBe(true);
+    });
+
+    it('should compute collateral balance from blockchain data', () => {
+      // data exported from user 0xa5a69107816c5e3dfa5561e6b621dfe6294f6e5b
+      // at block number: 11581421
+      // reserve: YFI
+      const scaledATokenBalance = '161316503206059870';
+      const liquidityIndex = '1001723339432542553527150680';
+      const currentLiquidityRate = '22461916953455574582370088';
+      const lastUpdateTimestamp = 1609673617;
+      // at a later time, but on the same block
+      // expected balance computed with hardhat
+      const currentTimestamp = 1609675535;
+      const expectedATokenBalance = '161594727054623229';
+      const underlyingBalance = getCompoundedBalance(
+        scaledATokenBalance,
+        liquidityIndex,
+        currentLiquidityRate,
+        lastUpdateTimestamp,
+        currentTimestamp
+      ).toString();
+      expect(underlyingBalance).toBe(expectedATokenBalance);
     });
   });
 });
