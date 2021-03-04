@@ -135,7 +135,12 @@ export const enabledNetworksByService: EnabledNetworksType = {
     // [Market.Matic]: [Network.matic_mainnet],
   },
   governance: [Network.kovan, Network.mainnet, Network.tenderly_mainnet],
-  wethGateway: [Network.kovan, Network.matic_mainnet, Network.tenderly_mainnet], // TODO: enable again for mainnet when weth gateway address added (current is fork)
+  wethGateway: [
+    Network.kovan,
+    Network.matic_mainnet,
+    Network.tenderly_mainnet,
+    Network.mainnet,
+  ],
   faucet: [Network.kovan],
   liquiditySwapAdapter: [
     Network.kovan,
