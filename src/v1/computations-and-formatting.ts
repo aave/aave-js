@@ -158,7 +158,12 @@ export function calculateCumulatedBalance(
     RayMath.rayDiv(
       RayMath.rayMul(
         RayMath.wadToRay(balance),
-        getReserveNormalizedIncome(poolReserve, currentTimestamp)
+        getReserveNormalizedIncome(
+          poolReserve.liquidityRate,
+          poolReserve.liquidityIndex,
+          poolReserve.lastUpdateTimestamp,
+          currentTimestamp
+        )
       ),
       userReserve.userBalanceIndex
     )

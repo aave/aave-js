@@ -62,43 +62,38 @@ export const calculateLinearInterest = (
 };
 
 export function getReserveNormalizedIncome(
-  reserve: {
-    liquidityRate: BigNumberValue;
-    liquidityIndex: BigNumberValue;
-    lastUpdateTimestamp: number;
-  },
+  rate: BigNumberValue,
+  index: BigNumberValue,
+  lastUpdateTimestamp: number,
   currentTimestamp: number
 ): BigNumber {
-  const { liquidityRate, liquidityIndex, lastUpdateTimestamp } = reserve;
-  if (valueToZDBigNumber(liquidityRate).eq('0')) {
-    return valueToZDBigNumber(liquidityIndex);
+  if (valueToZDBigNumber(rate).eq('0')) {
+    return valueToZDBigNumber(index);
   }
 
   const cumulatedInterest = calculateLinearInterest(
-    liquidityRate,
+    rate,
     currentTimestamp,
     lastUpdateTimestamp
   );
 
-  return RayMath.rayMul(cumulatedInterest, liquidityIndex);
+  return RayMath.rayMul(cumulatedInterest, index);
 }
 
 export function getLinearBalance(
-  principalBalance: BigNumberValue,
-  reserveIndex: BigNumberValue,
-  reserveRate: BigNumberValue,
+  balance: BigNumberValue,
+  index: BigNumberValue,
+  rate: BigNumberValue,
   lastUpdateTimestamp: number,
   currentTimestamp: number
 ) {
   return RayMath.rayToWad(
     RayMath.rayMul(
-      RayMath.wadToRay(principalBalance),
+      RayMath.wadToRay(balance),
       getReserveNormalizedIncome(
-        {
-          liquidityIndex: reserveIndex,
-          liquidityRate: reserveRate,
-          lastUpdateTimestamp,
-        },
+        rate,
+        index,
+        lastUpdateTimestamp,
         currentTimestamp
       )
     )
