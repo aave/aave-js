@@ -46,6 +46,65 @@ export function getCompoundedBalance(
   );
 }
 
+export const calculateLinearInterest = (
+  rate: BigNumberValue,
+  currentTimestamp: number,
+  lastUpdateTimestamp: number
+) => {
+  const timeDelta = RayMath.wadToRay(
+    valueToZDBigNumber(currentTimestamp - lastUpdateTimestamp)
+  );
+  const timeDeltaInSeconds = RayMath.rayDiv(
+    timeDelta,
+    RayMath.wadToRay(SECONDS_PER_YEAR)
+  );
+  return RayMath.rayMul(rate, timeDeltaInSeconds).plus(RayMath.RAY);
+};
+
+export function getReserveNormalizedIncome(
+  reserve: {
+    liquidityRate: BigNumberValue;
+    liquidityIndex: BigNumberValue;
+    lastUpdateTimestamp: number;
+  },
+  currentTimestamp: number
+): BigNumber {
+  const { liquidityRate, liquidityIndex, lastUpdateTimestamp } = reserve;
+  if (valueToZDBigNumber(liquidityRate).eq('0')) {
+    return valueToZDBigNumber(liquidityIndex);
+  }
+
+  const cumulatedInterest = calculateLinearInterest(
+    liquidityRate,
+    currentTimestamp,
+    lastUpdateTimestamp
+  );
+
+  return RayMath.rayMul(cumulatedInterest, liquidityIndex);
+}
+
+export function getLinearBalance(
+  principalBalance: BigNumberValue,
+  reserveIndex: BigNumberValue,
+  reserveRate: BigNumberValue,
+  lastUpdateTimestamp: number,
+  currentTimestamp: number
+) {
+  return RayMath.rayToWad(
+    RayMath.rayMul(
+      RayMath.wadToRay(principalBalance),
+      getReserveNormalizedIncome(
+        {
+          liquidityIndex: reserveIndex,
+          liquidityRate: reserveRate,
+          lastUpdateTimestamp,
+        },
+        currentTimestamp
+      )
+    )
+  );
+}
+
 export function getCompoundedStableBalance(
   _principalBalance: BigNumberValue,
   _userStableRate: BigNumberValue,
