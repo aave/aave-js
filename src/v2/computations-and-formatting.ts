@@ -15,6 +15,7 @@ import {
   calculateAverageRate,
   LTV_PRECISION,
   calculateCompoundedInterest,
+  getLinearBalance,
 } from '../helpers/pool-math';
 import { rayMul } from '../helpers/ray-math';
 import {
@@ -75,7 +76,7 @@ export function computeUserReserveData(
     price: { priceInEth },
     decimals,
   } = poolReserve;
-  const underlyingBalance = getCompoundedBalance(
+  const underlyingBalance = getLinearBalance(
     userReserve.scaledATokenBalance,
     poolReserve.liquidityIndex,
     poolReserve.liquidityRate,

@@ -46,6 +46,60 @@ export function getCompoundedBalance(
   );
 }
 
+export const calculateLinearInterest = (
+  rate: BigNumberValue,
+  currentTimestamp: number,
+  lastUpdateTimestamp: number
+) => {
+  const timeDelta = RayMath.wadToRay(
+    valueToZDBigNumber(currentTimestamp - lastUpdateTimestamp)
+  );
+  const timeDeltaInSeconds = RayMath.rayDiv(
+    timeDelta,
+    RayMath.wadToRay(SECONDS_PER_YEAR)
+  );
+  return RayMath.rayMul(rate, timeDeltaInSeconds).plus(RayMath.RAY);
+};
+
+export function getReserveNormalizedIncome(
+  rate: BigNumberValue,
+  index: BigNumberValue,
+  lastUpdateTimestamp: number,
+  currentTimestamp: number
+): BigNumber {
+  if (valueToZDBigNumber(rate).eq('0')) {
+    return valueToZDBigNumber(index);
+  }
+
+  const cumulatedInterest = calculateLinearInterest(
+    rate,
+    currentTimestamp,
+    lastUpdateTimestamp
+  );
+
+  return RayMath.rayMul(cumulatedInterest, index);
+}
+
+export function getLinearBalance(
+  balance: BigNumberValue,
+  index: BigNumberValue,
+  rate: BigNumberValue,
+  lastUpdateTimestamp: number,
+  currentTimestamp: number
+) {
+  return RayMath.rayToWad(
+    RayMath.rayMul(
+      RayMath.wadToRay(balance),
+      getReserveNormalizedIncome(
+        rate,
+        index,
+        lastUpdateTimestamp,
+        currentTimestamp
+      )
+    )
+  );
+}
+
 export function getCompoundedStableBalance(
   _principalBalance: BigNumberValue,
   _userStableRate: BigNumberValue,

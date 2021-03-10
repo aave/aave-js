@@ -21,6 +21,10 @@ import {
   SECONDS_PER_YEAR,
   USD_DECIMALS,
 } from '../helpers/constants';
+import {
+  calculateAverageRate,
+  getReserveNormalizedIncome,
+} from '../helpers/pool-math';
 
 export type GetCompoundedBorrowBalanceParamsReserve = Pick<
   ReserveData,
@@ -81,21 +85,6 @@ export const calculateCompoundedInterest = (
   return RayMath.binomialApproximatedRayPow(ratePerSecond, timeDelta);
 };
 
-export const calculateLinearInterest = (
-  rate: BigNumberValue,
-  currentTimestamp: number,
-  lastUpdateTimestamp: number
-) => {
-  const timeDelta = RayMath.wadToRay(
-    valueToZDBigNumber(currentTimestamp - lastUpdateTimestamp)
-  );
-  const timeDeltaInSeconds = RayMath.rayDiv(
-    timeDelta,
-    RayMath.wadToRay(SECONDS_PER_YEAR)
-  );
-  return RayMath.rayMul(rate, timeDeltaInSeconds).plus(RayMath.RAY);
-};
-
 export function calculateHealthFactorFromBalances(
   collateralBalanceETH: BigNumberValue,
   borrowBalanceETH: BigNumberValue,
@@ -149,30 +138,11 @@ export function calculateAvailableBorrowsETH(
   return availableBorrowsETH.minus(borrowFee);
 }
 
-export type GetReserveNormalizedIncomeReserve = Pick<
-  ReserveData,
-  'liquidityRate' | 'liquidityIndex' | 'lastUpdateTimestamp'
->;
-
-export function getReserveNormalizedIncome(
-  reserve: GetReserveNormalizedIncomeReserve,
-  currentTimestamp: number
-): BigNumber {
-  const { liquidityRate, liquidityIndex, lastUpdateTimestamp } = reserve;
-  if (valueToZDBigNumber(liquidityRate).eq('0')) {
-    return valueToZDBigNumber(liquidityIndex);
-  }
-
-  const cumulatedInterest = calculateLinearInterest(
-    liquidityRate,
-    currentTimestamp,
-    lastUpdateTimestamp
-  );
-
-  return RayMath.rayMul(cumulatedInterest, liquidityIndex);
-}
-
-export type CalculateCumulatedBalancePoolReserve = GetReserveNormalizedIncomeReserve;
+export type CalculateCumulatedBalancePoolReserve = {
+  liquidityRate: BigNumberValue;
+  liquidityIndex: BigNumberValue;
+  lastUpdateTimestamp: number;
+};
 export type CalculateCumulatedBalanceUserReserve = Pick<
   UserReserveData,
   'userBalanceIndex'
@@ -188,7 +158,12 @@ export function calculateCumulatedBalance(
     RayMath.rayDiv(
       RayMath.rayMul(
         RayMath.wadToRay(balance),
-        getReserveNormalizedIncome(poolReserve, currentTimestamp)
+        getReserveNormalizedIncome(
+          poolReserve.liquidityRate,
+          poolReserve.liquidityIndex,
+          poolReserve.lastUpdateTimestamp,
+          currentTimestamp
+        )
       ),
       userReserve.userBalanceIndex
     )
@@ -566,20 +541,6 @@ export function formatUserSummaryData(
     ),
     healthFactor: userData.healthFactor,
   };
-}
-
-export function calculateAverageRate(
-  index0: string,
-  index1: string,
-  timestamp0: number,
-  timestamp1: number
-): string {
-  return new BigNumber(index1)
-    .dividedBy(index0)
-    .minus('1')
-    .dividedBy(timestamp1 - timestamp0)
-    .multipliedBy('31536000')
-    .toString();
 }
 
 export function formatReserves(
