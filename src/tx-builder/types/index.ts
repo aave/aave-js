@@ -29,6 +29,17 @@ export enum ChainId {
   kovan = 42,
 }
 
+export enum StakeActions {
+  signStaking = 'signStaking',
+  stakeWithPermit = 'stakeWithPermit',
+  stake = 'stake',
+  redeem = 'redeem',
+  cooldown = 'cooldown',
+  claimRewards = 'claimRewards',
+  claimRewardsAndStake = 'claimRewardsAndStake',
+  claimRewardsAndRedeem = 'claimRewardsAndRedeem',
+}
+
 export enum eEthereumTxType {
   ERC20_APPROVAL = 'ERC20_APPROVAL',
   DLP_ACTION = 'DLP_ACTION',
@@ -141,8 +152,6 @@ export type tDistinctGovernanceV2Addresses = Pick<
 
 export type tdistinctStakingAddressesBetweenTokens = {
   TOKEN_STAKING_ADDRESS: tEthereumAddress;
-  STAKING_HELPER_ADDRESS: tEthereumAddress;
-  canUsePermit: boolean;
 };
 
 export type ContractAddresses = {
@@ -216,7 +225,9 @@ export type LendingPoolConfigType = {
 
 export type EnabledNetworksType = {
   staking: {
-    [sToken: string]: Network[];
+    [action: string]: {
+      [sToken: string]: Network[];
+    };
   };
   lendingPool: {
     [market: string]: Network[];

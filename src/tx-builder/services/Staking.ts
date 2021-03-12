@@ -5,12 +5,7 @@ import {
   distinctStakingAddressesBetweenTokens,
   MAX_UINT_AMOUNT,
 } from '../config';
-import {
-  IStakedToken,
-  IAaveStakingHelper,
-  IAaveStakingHelper__factory,
-  IStakedToken__factory,
-} from '../contract-types';
+import { IStakedToken, IStakedToken__factory } from '../contract-types';
 import StakingInterface from '../interfaces/Staking';
 import {
   ChainId,
@@ -18,6 +13,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   Stake,
+  StakeActions,
   tEthereumAddress,
   transactionType,
   tStringCurrencyUnits,
@@ -36,17 +32,11 @@ import BaseService from './BaseService';
 export default class StakingService
   extends BaseService<IStakedToken>
   implements StakingInterface {
-  readonly stakingHelperContract: IAaveStakingHelper;
-
   readonly stakingContractAddress: string;
-
-  readonly stakingHelperContractAddress: string;
 
   readonly erc20Service: IERC20ServiceInterface;
 
   readonly tokenStake: Stake;
-
-  readonly canUsePermit: boolean;
 
   constructor(
     config: Configuration,
@@ -57,34 +47,21 @@ export default class StakingService
     this.tokenStake = tokenStake;
     this.erc20Service = erc20Service;
 
-    const { provider, network } = this.config;
+    const { network } = this.config;
 
-    const {
-      TOKEN_STAKING_ADDRESS,
-      STAKING_HELPER_ADDRESS,
-      canUsePermit,
-    } = distinctStakingAddressesBetweenTokens[this.tokenStake][network];
+    const { TOKEN_STAKING_ADDRESS } = distinctStakingAddressesBetweenTokens[
+      this.tokenStake
+    ][network];
 
     this.stakingContractAddress = TOKEN_STAKING_ADDRESS;
-    this.stakingHelperContractAddress = STAKING_HELPER_ADDRESS;
-    this.canUsePermit = canUsePermit;
-
-    if (this.canUsePermit) {
-      this.stakingHelperContract = IAaveStakingHelper__factory.connect(
-        STAKING_HELPER_ADDRESS,
-        provider
-      );
-    }
   }
 
-  @StakingValidator
+  @StakingValidator(StakeActions.signStaking)
   public async signStaking(
     @IsEthAddress() user: tEthereumAddress,
     @IsPositiveAmount() amount: tStringCurrencyUnits,
     nonce: string
   ): Promise<string> {
-    if (!this.canUsePermit) return '';
-
     const { getTokenData } = this.erc20Service;
     const stakingContract: IStakedToken = this.getContractInstance(
       this.stakingContractAddress
@@ -118,7 +95,7 @@ export default class StakingService
       },
       message: {
         owner: user,
-        spender: this.stakingHelperContractAddress,
+        spender: this.stakingContractAddress,
         value: convertedAmount,
         nonce,
         deadline: constants.MaxUint256.toString(),
@@ -128,14 +105,12 @@ export default class StakingService
     return JSON.stringify(typeData);
   }
 
-  @StakingValidator
+  @StakingValidator(StakeActions.stakeWithPermit)
   public async stakeWithPermit(
     @IsEthAddress() user: tEthereumAddress,
     @IsPositiveAmount() amount: tStringCurrencyUnits,
     signature: string
   ): Promise<EthereumTransactionTypeExtended[]> {
-    if (!this.canUsePermit) return [];
-
     const txs: EthereumTransactionTypeExtended[] = [];
     const { decimalsOf } = this.erc20Service;
     const stakingContract: IStakedToken = this.getContractInstance(
@@ -148,12 +123,15 @@ export default class StakingService
       stakedTokenDecimals
     );
     const sig: Signature = utils.splitSignature(signature);
+    const deadline = constants.MaxUint256.toString();
 
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
-        this.stakingHelperContract.populateTransaction.stake(
+        stakingContract.populateTransaction.stakeWithPermit(
           user,
+          this.stakingContractAddress,
           convertedAmount,
+          deadline,
           sig.v,
           sig.r,
           sig.s
@@ -170,7 +148,7 @@ export default class StakingService
     return txs;
   }
 
-  @StakingValidator
+  @StakingValidator(StakeActions.stake)
   public async stake(
     @IsEthAddress() user: tEthereumAddress,
     @IsPositiveAmount() amount: tStringCurrencyUnits,
@@ -221,7 +199,7 @@ export default class StakingService
     return txs;
   }
 
-  @StakingValidator
+  @StakingValidator(StakeActions.redeem)
   public async redeem(
     @IsEthAddress() user: tEthereumAddress,
     @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
@@ -256,7 +234,7 @@ export default class StakingService
     ];
   }
 
-  @StakingValidator
+  @StakingValidator(StakeActions.cooldown)
   public async cooldown(
     @IsEthAddress() user: tEthereumAddress
   ): Promise<EthereumTransactionTypeExtended[]> {
@@ -278,7 +256,7 @@ export default class StakingService
     ];
   }
 
-  @StakingValidator
+  @StakingValidator(StakeActions.claimRewards)
   public async claimRewards(
     @IsEthAddress() user: tEthereumAddress,
     @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
@@ -301,6 +279,91 @@ export default class StakingService
         stakingContract.populateTransaction.claimRewards(user, convertedAmount),
       from: user,
       gasSurplus: 20,
+    });
+
+    return [
+      {
+        tx: txCallback,
+        txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
+      },
+    ];
+  }
+
+  @StakingValidator(StakeActions.claimRewardsAndStake)
+  public async claimRewardsAndStake(
+    @IsEthAddress() user: tEthereumAddress,
+    @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
+  ): Promise<EthereumTransactionTypeExtended[]> {
+    let convertedAmount: tStringDecimalUnits;
+    const stakingContract: IStakedToken = this.getContractInstance(
+      this.stakingContractAddress
+    );
+    if (amount === '-1') {
+      convertedAmount = constants.MaxUint256.toString();
+    } else {
+      const { decimalsOf } = this.erc20Service;
+      const stakedToken: string = await stakingContract.REWARD_TOKEN();
+      const stakedTokenDecimals: number = await decimalsOf(stakedToken);
+      convertedAmount = parseNumber(amount, stakedTokenDecimals);
+    }
+
+    const txCallback: () => Promise<transactionType> = this.generateTxCallback({
+      rawTxMethod: () =>
+        stakingContract.populateTransaction.claimRewardsAndStake(
+          user,
+          convertedAmount
+        ),
+      from: user,
+    });
+
+    return [
+      {
+        tx: txCallback,
+        txType: eEthereumTxType.STAKE_ACTION,
+        gas: this.generateTxPriceEstimation([], txCallback),
+      },
+    ];
+  }
+
+  @StakingValidator(StakeActions.claimRewardsAndRedeem)
+  public async claimRewardsAndRedeem(
+    @IsEthAddress() user: tEthereumAddress,
+    @IsPositiveOrMinusOneAmount() claimAmount: tStringCurrencyUnits,
+    @IsPositiveOrMinusOneAmount() redeemAmount: tStringCurrencyUnits
+  ): Promise<EthereumTransactionTypeExtended[]> {
+    let convertedClaimAmount: tStringDecimalUnits;
+    let convertedRedeemAmount: tStringDecimalUnits;
+    const stakingContract: IStakedToken = this.getContractInstance(
+      this.stakingContractAddress
+    );
+    if (claimAmount === '-1') {
+      convertedClaimAmount = constants.MaxUint256.toString();
+    } else {
+      const { decimalsOf } = this.erc20Service;
+      const stakedToken: string = await stakingContract.REWARD_TOKEN();
+      const stakedTokenDecimals: number = await decimalsOf(stakedToken);
+      convertedClaimAmount = parseNumber(claimAmount, stakedTokenDecimals);
+    }
+
+    if (redeemAmount === '-1') {
+      convertedRedeemAmount = constants.MaxUint256.toString();
+    } else {
+      const { decimalsOf } = this.erc20Service;
+
+      const stakedToken: string = await stakingContract.STAKED_TOKEN();
+      const stakedTokenDecimals: number = await decimalsOf(stakedToken);
+      convertedRedeemAmount = parseNumber(redeemAmount, stakedTokenDecimals);
+    }
+
+    const txCallback: () => Promise<transactionType> = this.generateTxCallback({
+      rawTxMethod: () =>
+        stakingContract.populateTransaction.claimRewardsAndRedeem(
+          user,
+          convertedClaimAmount,
+          convertedRedeemAmount
+        ),
+      from: user,
     });
 
     return [

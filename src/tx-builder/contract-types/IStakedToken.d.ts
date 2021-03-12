@@ -25,9 +25,12 @@ interface IStakedTokenInterface extends ethers.utils.Interface {
     "REWARD_TOKEN()": FunctionFragment;
     "STAKED_TOKEN()": FunctionFragment;
     "claimRewards(address,uint256)": FunctionFragment;
+    "claimRewardsAndRedeem(address,uint256,uint256)": FunctionFragment;
+    "claimRewardsAndStake(address,uint256)": FunctionFragment;
     "cooldown()": FunctionFragment;
     "redeem(address,uint256)": FunctionFragment;
     "stake(address,uint256)": FunctionFragment;
+    "stakeWithPermit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -42,6 +45,14 @@ interface IStakedTokenInterface extends ethers.utils.Interface {
     functionFragment: "claimRewards",
     values: [string, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "claimRewardsAndRedeem",
+    values: [string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimRewardsAndStake",
+    values: [string, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "cooldown", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "redeem",
@@ -50,6 +61,18 @@ interface IStakedTokenInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "stake",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "stakeWithPermit",
+    values: [
+      string,
+      string,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      BytesLike
+    ]
   ): string;
 
   decodeFunctionResult(
@@ -64,9 +87,21 @@ interface IStakedTokenInterface extends ethers.utils.Interface {
     functionFragment: "claimRewards",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimRewardsAndRedeem",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimRewardsAndStake",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "cooldown", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "stakeWithPermit",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -121,6 +156,32 @@ export class IStakedToken extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    claimRewardsAndRedeem(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "claimRewardsAndRedeem(address,uint256,uint256)"(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    claimRewardsAndStake(
+      to: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "claimRewardsAndStake(address,uint256)"(
+      to: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     cooldown(overrides?: Overrides): Promise<ContractTransaction>;
 
     "cooldown()"(overrides?: Overrides): Promise<ContractTransaction>;
@@ -148,6 +209,28 @@ export class IStakedToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    stakeWithPermit(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "stakeWithPermit(address,address,uint256,uint256,uint8,bytes32,bytes32)"(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
 
   REWARD_TOKEN(overrides?: CallOverrides): Promise<string>;
@@ -165,6 +248,32 @@ export class IStakedToken extends Contract {
   ): Promise<ContractTransaction>;
 
   "claimRewards(address,uint256)"(
+    to: string,
+    amount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  claimRewardsAndRedeem(
+    to: string,
+    claimAmount: BigNumberish,
+    redeemAmount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "claimRewardsAndRedeem(address,uint256,uint256)"(
+    to: string,
+    claimAmount: BigNumberish,
+    redeemAmount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  claimRewardsAndStake(
+    to: string,
+    amount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "claimRewardsAndStake(address,uint256)"(
     to: string,
     amount: BigNumberish,
     overrides?: Overrides
@@ -198,6 +307,28 @@ export class IStakedToken extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  stakeWithPermit(
+    from: string,
+    to: string,
+    amount: BigNumberish,
+    deadline: BigNumberish,
+    v: BigNumberish,
+    r: BytesLike,
+    s: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "stakeWithPermit(address,address,uint256,uint256,uint8,bytes32,bytes32)"(
+    from: string,
+    to: string,
+    amount: BigNumberish,
+    deadline: BigNumberish,
+    v: BigNumberish,
+    r: BytesLike,
+    s: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     REWARD_TOKEN(overrides?: CallOverrides): Promise<string>;
 
@@ -214,6 +345,32 @@ export class IStakedToken extends Contract {
     ): Promise<void>;
 
     "claimRewards(address,uint256)"(
+      to: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    claimRewardsAndRedeem(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "claimRewardsAndRedeem(address,uint256,uint256)"(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    claimRewardsAndStake(
+      to: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "claimRewardsAndStake(address,uint256)"(
       to: string,
       amount: BigNumberish,
       overrides?: CallOverrides
@@ -246,6 +403,28 @@ export class IStakedToken extends Contract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    stakeWithPermit(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "stakeWithPermit(address,address,uint256,uint256,uint8,bytes32,bytes32)"(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {};
@@ -266,6 +445,32 @@ export class IStakedToken extends Contract {
     ): Promise<BigNumber>;
 
     "claimRewards(address,uint256)"(
+      to: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    claimRewardsAndRedeem(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "claimRewardsAndRedeem(address,uint256,uint256)"(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    claimRewardsAndStake(
+      to: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "claimRewardsAndStake(address,uint256)"(
       to: string,
       amount: BigNumberish,
       overrides?: Overrides
@@ -298,6 +503,28 @@ export class IStakedToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    stakeWithPermit(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "stakeWithPermit(address,address,uint256,uint256,uint8,bytes32,bytes32)"(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -316,6 +543,32 @@ export class IStakedToken extends Contract {
     ): Promise<PopulatedTransaction>;
 
     "claimRewards(address,uint256)"(
+      to: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    claimRewardsAndRedeem(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "claimRewardsAndRedeem(address,uint256,uint256)"(
+      to: string,
+      claimAmount: BigNumberish,
+      redeemAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    claimRewardsAndStake(
+      to: string,
+      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "claimRewardsAndStake(address,uint256)"(
       to: string,
       amount: BigNumberish,
       overrides?: Overrides
@@ -346,6 +599,28 @@ export class IStakedToken extends Contract {
     "stake(address,uint256)"(
       onBehalfOf: string,
       amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    stakeWithPermit(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "stakeWithPermit(address,address,uint256,uint256,uint8,bytes32,bytes32)"(
+      from: string,
+      to: string,
+      amount: BigNumberish,
+      deadline: BigNumberish,
+      v: BigNumberish,
+      r: BytesLike,
+      s: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

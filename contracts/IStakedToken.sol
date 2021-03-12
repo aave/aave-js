@@ -27,4 +27,22 @@ interface IStakedToken {
    * @param amount Amount to stake
    **/
   function claimRewards(address to, uint256 amount) external;
+
+  function stakeWithPermit(
+    address from,
+    address to,
+    uint256 amount,
+    uint256 deadline,
+    uint8 v,
+    bytes32 r,
+    bytes32 s
+  ) external;
+
+  function claimRewardsAndStake(address to, uint256 amount) external;
+
+  function claimRewardsAndRedeem(
+    address to,
+    uint256 claimAmount,
+    uint256 redeemAmount
+  ) external;
 }
