@@ -41,7 +41,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     SYNTHETIX_PROXY_ADDRESS: '',
     GOVERNANCE_PROTO_CONTRACT: '',
     LEND_TO_AAVE_MIGRATOR: '',
-    WETH_GATEWAY: '0x8644f1485e29425456b7905221617BB9ce872dCE',
+    WETH_GATEWAY: '0x91f38459F4462c4Bd01730AB97767C0B8AEDc599',
     FAUCET: '',
     SWAP_COLLATERAL_ADAPTER: '',
     REPAY_WITH_COLLATERAL_ADAPTER: '',
@@ -74,7 +74,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
   },
   [Market.Matic]: {
     [Network.matic_mainnet]: {
-      LENDINGPOOL_ADDRESS: '0x15Ec48a46d2D26cf4ADf5A39123E4c75e6887fE0',
+      LENDINGPOOL_ADDRESS: '0xFb6aD45ce179B0d87FE6ffa4ca8d620560efd318',
     },
   },
 };
