@@ -27,6 +27,7 @@ import {
   ComputedReserveData,
 } from './types';
 import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
+import { Tracing } from 'trace_events';
 
 export function getEthAndUsdBalance(
   balance: BigNumberValue,
@@ -357,7 +358,16 @@ export function formatUserSummaryData(
  * @param currentTimestamp unix timestamp which must be higher than reserve.lastUpdateTimestamp
  */
 export function calculateReserveDebt(
-  reserve: ReserveData,
+  reserve: {
+    totalScaledVariableDebt: string;
+    totalPrincipalStableDebt: string;
+    averageStableRate: string;
+    variableBorrowIndex: string;
+    variableBorrowRate: string;
+    lastUpdateTimestamp: number;
+    stableDebtLastUpdateTimestamp: number;
+    decimals: number;
+  },
   currentTimestamp: number
 ) {
   const totalVariableDebt = normalize(
@@ -385,11 +395,38 @@ export function calculateReserveDebt(
   return { totalVariableDebt, totalStableDebt };
 }
 
-export function formatReserves(
-  reserves: ReserveData[],
-  currentTimestamp?: number,
-  reserveIndexes30DaysAgo?: ReserveRatesData[]
-): ComputedReserveData[] {
+export function formatReserves<
+  T extends {
+    availableLiquidity: string;
+    averageStableRate: string;
+    baseLTVasCollateral: string;
+    decimals: number;
+    id: string;
+    lastUpdateTimestamp: number;
+    liquidityIndex: string;
+    liquidityRate: string;
+    price: {
+      priceInEth: string;
+    };
+    reserveFactor: string;
+    reserveLiquidationBonus: string;
+    reserveLiquidationThreshold: string;
+    stableBorrowRate: string;
+    stableDebtLastUpdateTimestamp: number;
+    totalScaledVariableDebt: string;
+    totalPrincipalStableDebt: string;
+    variableBorrowIndex: string;
+    variableBorrowRate: string;
+  },
+  V extends {
+    id: string;
+    paramsHistory: {
+      variableBorrowIndex: string;
+      liquidityIndex: string;
+      timestamp: number;
+    }[];
+  }
+>(reserves: T[], currentTimestamp?: number, reserveIndexes30DaysAgo?: V[]) {
   return reserves.map((reserve) => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
       (res) => res.id === reserve.id
