@@ -405,9 +405,7 @@ export function formatReserves<
     lastUpdateTimestamp: number;
     liquidityIndex: string;
     liquidityRate: string;
-    price: {
-      priceInEth: string;
-    };
+    priceInEth: string;
     reserveFactor: string;
     reserveLiquidationBonus: string;
     reserveLiquidationThreshold: string;
@@ -417,21 +415,9 @@ export function formatReserves<
     totalPrincipalStableDebt: string;
     variableBorrowIndex: string;
     variableBorrowRate: string;
-  },
-  V extends {
-    id: string;
-    paramsHistory: {
-      variableBorrowIndex: string;
-      liquidityIndex: string;
-      timestamp: number;
-    }[];
   }
->(reserves: T[], currentTimestamp?: number, reserveIndexes30DaysAgo?: V[]) {
+>(reserves: T[], currentTimestamp?: number) {
   return reserves.map((reserve) => {
-    const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
-      (res) => res.id === reserve.id
-    )?.paramsHistory?.[0];
-
     const availableLiquidity = normalize(
       reserve.availableLiquidity,
       reserve.decimals
@@ -457,33 +443,13 @@ export function formatReserves<
       availableLiquidity,
       utilizationRate,
       totalDebt: totalDebt.toString(),
-      price: {
-        ...reserve.price,
-        priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
-      },
+      priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
       baseLTVasCollateral: normalize(
         reserve.baseLTVasCollateral,
         LTV_PRECISION
       ),
       reserveFactor: normalize(reserve.reserveFactor, LTV_PRECISION),
       variableBorrowRate: normalize(reserve.variableBorrowRate, RAY_DECIMALS),
-      avg30DaysVariableBorrowRate: reserve30DaysAgo
-        ? calculateAverageRate(
-            reserve30DaysAgo.variableBorrowIndex,
-            reserve.variableBorrowIndex,
-            reserve30DaysAgo.timestamp,
-            reserve.lastUpdateTimestamp
-          )
-        : undefined,
-      avg30DaysLiquidityRate: reserve30DaysAgo
-        ? calculateAverageRate(
-            reserve30DaysAgo.liquidityIndex,
-            reserve.liquidityIndex,
-            reserve30DaysAgo.timestamp,
-            reserve.lastUpdateTimestamp
-          )
-        : undefined,
-
       stableBorrowRate: normalize(reserve.stableBorrowRate, RAY_DECIMALS),
       liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
       liquidityIndex: normalize(reserve.liquidityIndex, RAY_DECIMALS),
