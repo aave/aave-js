@@ -70,13 +70,13 @@ export default class BaseService<T extends Contract> {
     txs: EthereumTransactionTypeExtended[],
     txCallback: () => Promise<transactionType>,
     action: string = ProtocolAction.default
-  ): GasResponse => async () => {
+  ): GasResponse => async (force = false) => {
     try {
       const gasPrice = await getGasPrice(this.config);
       const hasPendingApprovals = txs.find(
         (tx) => tx.txType === eEthereumTxType.ERC20_APPROVAL
       );
-      if (!hasPendingApprovals) {
+      if (!hasPendingApprovals || force) {
         const {
           gasLimit,
           gasPrice: gasPriceProv,
