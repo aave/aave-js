@@ -12,7 +12,6 @@ import {
   calculateHealthFactorFromBalances,
   getCompoundedBalance,
   getCompoundedStableBalance,
-  calculateAverageRate,
   LTV_PRECISION,
   calculateCompoundedInterest,
   getLinearBalance,
@@ -23,11 +22,8 @@ import {
   ReserveData,
   UserReserveData,
   UserSummaryData,
-  ReserveRatesData,
-  ComputedReserveData,
 } from './types';
 import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
-import { Tracing } from 'trace_events';
 
 export function getEthAndUsdBalance(
   balance: BigNumberValue,
@@ -443,7 +439,7 @@ export function formatReserves<
       availableLiquidity,
       utilizationRate,
       totalDebt: totalDebt.toString(),
-      priceInEth: normalize(reserve.price.priceInEth, ETH_DECIMALS),
+      priceInEth: normalize(reserve.priceInEth, ETH_DECIMALS),
       baseLTVasCollateral: normalize(
         reserve.baseLTVasCollateral,
         LTV_PRECISION
