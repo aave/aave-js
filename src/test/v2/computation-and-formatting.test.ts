@@ -5,7 +5,7 @@ import {
 } from '../../v2/computations-and-formatting';
 import BigNumber from 'bignumber.js';
 
-const mockReserve: ReserveData = {
+const mockReserve = {
   underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
   name: '',
   symbol: 'DAI',
@@ -41,7 +41,7 @@ const mockReserve: ReserveData = {
   stableRateSlope2: '750000000000000000000000000',
   id:
     '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
-  price: { priceInEth: '1634050000000000' },
+  priceInEth: '1634050000000000',
   // fake data
   optimalUtilisationRate: '109284236984257451326752610',
   baseVariableBorrowRate: '109284236984257451326752610',
@@ -73,7 +73,7 @@ const mockUserReserve: UserReserveData = {
 describe('computations and formattings', () => {
   describe('formatUserSummaryData', () => {
     const formattedMockReserve = formatUserSummaryData(
-      [mockReserve],
+      [{ price: { priceInEth: mockReserve.priceInEth }, ...mockReserve }],
       [mockUserReserve],
       '0cd96fb5ee9616f64d892644f53f35be4f90xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
       '598881655557838',
@@ -106,12 +106,8 @@ describe('computations and formattings', () => {
      * We should not throw if that's the case, but just ignore it
      */
     it("should not error When 30dago reserves doesn't contain paramsHistory", () => {
-      formatReserves([mockReserve], mockReserve.lastUpdateTimestamp + 2000, [
-        mockReserve as any,
-      ]);
-      formatReserves([mockReserve], mockReserve.lastUpdateTimestamp + 2000, [
-        { ...mockReserve, paramsHistory: [] } as any,
-      ]);
+      formatReserves([mockReserve], mockReserve.lastUpdateTimestamp + 2000);
+      formatReserves([mockReserve], mockReserve.lastUpdateTimestamp + 2000);
       // would be wrong if any of the above threw
       expect(true).toBe(true);
     });
@@ -140,13 +136,11 @@ describe('computations and formattings', () => {
        */
       const first = formatReserves(
         [mockReserve],
-        mockReserve.lastUpdateTimestamp + 1,
-        [mockReserve as any]
+        mockReserve.lastUpdateTimestamp + 1
       )[0];
       const second = formatReserves(
         [mockReserve],
-        mockReserve.lastUpdateTimestamp + 2,
-        [mockReserve as any]
+        mockReserve.lastUpdateTimestamp + 2
       )[0];
 
       expect(new BigNumber(second.totalDebt).gte(first.totalDebt)).toBe(true);
