@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { transactionType, Configuration } from '../types';
 
-const DEFAULT_SURPLUS = 15; // 15%
+const DEFAULT_SURPLUS = 30; // 30%
 
 export const estimateGas = async (
   tx: transactionType,
