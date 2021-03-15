@@ -38,6 +38,8 @@ export enum StakeActions {
   claimRewards = 'claimRewards',
   claimRewardsAndStake = 'claimRewardsAndStake',
   claimRewardsAndRedeem = 'claimRewardsAndRedeem',
+  claimAllRewardsAndStake = 'claimAllRewardsAndStake',
+  claimAllRewards = 'claimAllRewards',
 }
 
 export enum eEthereumTxType {
@@ -116,6 +118,7 @@ export type AddressModel = {
   AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
   FLASHLIQUIDATION: tEthereumAddress;
+  CLAIM_HELPER_ADDRESS: tEthereumAddress;
 };
 
 export type tCommonContractAddressBetweenMarkets = Pick<
@@ -128,6 +131,7 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'SWAP_COLLATERAL_ADAPTER'
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
   | 'FLASHLIQUIDATION'
+  | 'CLAIM_HELPER_ADDRESS'
 >;
 
 export type tDistinctContractAddressBetweenMarkets = Pick<

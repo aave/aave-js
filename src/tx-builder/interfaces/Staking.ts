@@ -40,4 +40,10 @@ export default interface StakingInterface {
     claimAmount: tStringCurrencyUnits,
     redeemAmount: tStringCurrencyUnits
   ) => Promise<EthereumTransactionTypeExtended[]>;
+  claimAllRewards: (
+    user: tEthereumAddress
+  ) => Promise<EthereumTransactionTypeExtended[]>;
+  claimAllRewardsAndStake: (
+    user: tEthereumAddress
+  ) => Promise<EthereumTransactionTypeExtended[]>;
 }

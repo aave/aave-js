@@ -28,6 +28,7 @@ import {
   Optional,
 } from '../validators/paramValidators';
 import BaseService from './BaseService';
+import { ClaimStakingRewardsHelperInterface } from './ClaimStakingRewardsHelper';
 
 export default class StakingService
   extends BaseService<IStakedToken>
@@ -36,16 +37,20 @@ export default class StakingService
 
   readonly erc20Service: IERC20ServiceInterface;
 
+  readonly claimStakingRewardsHelperService: ClaimStakingRewardsHelperInterface;
+
   readonly tokenStake: Stake;
 
   constructor(
     config: Configuration,
     erc20Service: IERC20ServiceInterface,
+    claimStakingRewardsHelperService: ClaimStakingRewardsHelperInterface,
     tokenStake: Stake
   ) {
     super(config, IStakedToken__factory);
     this.tokenStake = tokenStake;
     this.erc20Service = erc20Service;
+    this.claimStakingRewardsHelperService = claimStakingRewardsHelperService;
 
     const { network } = this.config;
 
@@ -372,6 +377,24 @@ export default class StakingService
         txType: eEthereumTxType.STAKE_ACTION,
         gas: this.generateTxPriceEstimation([], txCallback),
       },
+    ];
+  }
+
+  // We don't accept amount, to claim all rewards / -1
+  @StakingValidator(StakeActions.claimAllRewards)
+  public async claimAllRewards(
+    @IsEthAddress() user: tEthereumAddress
+  ): Promise<EthereumTransactionTypeExtended[]> {
+    return [this.claimStakingRewardsHelperService.claimAllRewards(user)];
+  }
+
+  @StakingValidator(StakeActions.claimAllRewardsAndStake)
+  public async claimAllRewardsAndStake(
+    @IsEthAddress() user: tEthereumAddress
+    // @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
+  ): Promise<EthereumTransactionTypeExtended[]> {
+    return [
+      this.claimStakingRewardsHelperService.claimAllRewardsAndStake(user),
     ];
   }
 }
