@@ -57,10 +57,17 @@ export default class WETHGatewayService
 
   @WETHValidator
   public async depositETH(
+    @IsEthAddress('lendingPool')
     @IsEthAddress('user')
     @IsEthAddress('onBehalfOf')
     @IsPositiveAmount('amount')
-    { user, amount, onBehalfOf, referralCode }: WETHDepositParamsType
+    {
+      lendingPool,
+      user,
+      amount,
+      onBehalfOf,
+      referralCode,
+    }: WETHDepositParamsType
   ): Promise<EthereumTransactionTypeExtended[]> {
     const convertedAmount: tStringDecimalUnits = parseNumber(amount, 18);
 
@@ -71,6 +78,7 @@ export default class WETHGatewayService
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         wethGatewayContract.populateTransaction.depositETH(
+          lendingPool,
           onBehalfOf || user,
           referralCode || '0'
         ),
@@ -89,10 +97,12 @@ export default class WETHGatewayService
 
   @WETHValidator
   public async borrowETH(
+    @IsEthAddress('lendingPool')
     @IsEthAddress('user')
     @IsPositiveAmount('amount')
     @IsEthAddress('debtTokenAddress')
     {
+      lendingPool,
       user,
       amount,
       debtTokenAddress,
@@ -128,6 +138,7 @@ export default class WETHGatewayService
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         wethGatewayContract.populateTransaction.borrowETH(
+          lendingPool,
           convertedAmount,
           numericRateMode,
           referralCode || '0'
@@ -150,11 +161,18 @@ export default class WETHGatewayService
 
   @WETHValidator
   public async withdrawETH(
+    @IsEthAddress('lendingPool')
     @IsEthAddress('user')
     @IsEthAddress('onBehalfOf')
     @IsPositiveOrMinusOneAmount('amount')
     @IsEthAddress('aTokenAddress')
-    { user, amount, onBehalfOf, aTokenAddress }: WETHWithdrawParamsType
+    {
+      lendingPool,
+      user,
+      amount,
+      onBehalfOf,
+      aTokenAddress,
+    }: WETHWithdrawParamsType
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
     const { isApproved, approve }: IERC20ServiceInterface = this.erc20Service;
@@ -186,6 +204,7 @@ export default class WETHGatewayService
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         wethGatewayContract.populateTransaction.withdrawETH(
+          lendingPool,
           convertedAmount,
           onBehalfOf || user
         ),
@@ -207,10 +226,17 @@ export default class WETHGatewayService
 
   @WETHValidator
   public async repayETH(
+    @IsEthAddress('lendingPool')
     @IsEthAddress('user')
     @IsEthAddress('onBehalfOf')
     @IsPositiveAmount('amount')
-    { user, amount, interestRateMode, onBehalfOf }: WETHRepayParamsType
+    {
+      lendingPool,
+      user,
+      amount,
+      interestRateMode,
+      onBehalfOf,
+    }: WETHRepayParamsType
   ): Promise<EthereumTransactionTypeExtended[]> {
     const convertedAmount: tStringDecimalUnits = parseNumber(amount, 18);
     const numericRateMode = interestRateMode === InterestRate.Variable ? 2 : 1;
@@ -221,6 +247,7 @@ export default class WETHGatewayService
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         wethGatewayContract.populateTransaction.repayETH(
+          lendingPool,
           convertedAmount,
           numericRateMode,
           onBehalfOf || user

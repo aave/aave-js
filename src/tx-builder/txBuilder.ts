@@ -9,7 +9,13 @@ import FaucetService from './services/Faucet';
 import LTAMigratorService from './services/LTAMigrator';
 import StakingService from './services/Staking';
 import SynthetixService from './services/SynthetixService';
-import { Configuration, DefaultProviderKeys, Network, Stake } from './types';
+import {
+  ChainId,
+  Configuration,
+  DefaultProviderKeys,
+  Network,
+  Stake,
+} from './types';
 
 export default class BaseTxBuilder {
   readonly configuration: Configuration;
@@ -38,6 +44,9 @@ export default class BaseTxBuilder {
       | providers.BaseProvider
       | providers.Web3Provider;
 
+    // TODO: this is probably not enough as we use network down the road
+    const chainId = ChainId[network];
+
     if (!injectedProvider) {
       if (defaultProviderKeys && Object.keys(defaultProviderKeys).length > 1) {
         provider = ethers.getDefaultProvider(network, defaultProviderKeys);
@@ -49,11 +58,11 @@ export default class BaseTxBuilder {
         );
       }
     } else if (typeof injectedProvider === 'string') {
-      provider = new providers.JsonRpcProvider(injectedProvider, network);
+      provider = new providers.JsonRpcProvider(injectedProvider, chainId);
     } else if (injectedProvider instanceof providers.Web3Provider) {
       provider = injectedProvider;
     } else {
-      provider = new providers.Web3Provider(injectedProvider, network);
+      provider = new providers.Web3Provider(injectedProvider, chainId);
     }
 
     this.configuration = { network, provider };
