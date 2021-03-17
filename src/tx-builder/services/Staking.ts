@@ -295,42 +295,6 @@ export default class StakingService
     ];
   }
 
-  @StakingValidator(StakeActions.claimRewardsAndStake)
-  public async claimRewardsAndStake(
-    @IsEthAddress() user: tEthereumAddress,
-    @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
-  ): Promise<EthereumTransactionTypeExtended[]> {
-    let convertedAmount: tStringDecimalUnits;
-    const stakingContract: IStakedToken = this.getContractInstance(
-      this.stakingContractAddress
-    );
-    if (amount === '-1') {
-      convertedAmount = constants.MaxUint256.toString();
-    } else {
-      const { decimalsOf } = this.erc20Service;
-      const stakedToken: string = await stakingContract.REWARD_TOKEN();
-      const stakedTokenDecimals: number = await decimalsOf(stakedToken);
-      convertedAmount = parseNumber(amount, stakedTokenDecimals);
-    }
-
-    const txCallback: () => Promise<transactionType> = this.generateTxCallback({
-      rawTxMethod: () =>
-        stakingContract.populateTransaction.claimRewardsAndStake(
-          user,
-          convertedAmount
-        ),
-      from: user,
-    });
-
-    return [
-      {
-        tx: txCallback,
-        txType: eEthereumTxType.STAKE_ACTION,
-        gas: this.generateTxPriceEstimation([], txCallback),
-      },
-    ];
-  }
-
   @StakingValidator(StakeActions.claimRewardsAndRedeem)
   public async claimRewardsAndRedeem(
     @IsEthAddress() user: tEthereumAddress,
@@ -380,7 +344,18 @@ export default class StakingService
     ];
   }
 
-  // We don't accept amount, to claim all rewards / -1
+  @StakingValidator(StakeActions.claimRewardsAndStake)
+  public async claimRewardsAndStake(
+    @IsEthAddress() user: tEthereumAddress
+  ): Promise<EthereumTransactionTypeExtended[]> {
+    return [
+      this.claimStakingRewardsHelperService.claimAndStake(
+        user,
+        this.stakingContractAddress
+      ),
+    ];
+  }
+
   @StakingValidator(StakeActions.claimAllRewards)
   public async claimAllRewards(
     @IsEthAddress() user: tEthereumAddress
@@ -391,7 +366,6 @@ export default class StakingService
   @StakingValidator(StakeActions.claimAllRewardsAndStake)
   public async claimAllRewardsAndStake(
     @IsEthAddress() user: tEthereumAddress
-    // @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
   ): Promise<EthereumTransactionTypeExtended[]> {
     return [
       this.claimStakingRewardsHelperService.claimAllRewardsAndStake(user),

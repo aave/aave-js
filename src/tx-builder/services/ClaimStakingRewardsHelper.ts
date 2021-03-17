@@ -1,4 +1,3 @@
-import { constants } from 'ethers';
 import { commonContractAddressBetweenMarketsV2 } from '../config';
 import { IClaimStakingRewardsHelper__factory } from '../contract-types/factories/IClaimStakingRewardsHelper__factory';
 import { IClaimStakingRewardsHelper } from '../contract-types/IClaimStakingRewardsHelper';
@@ -6,26 +5,22 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
-  StakeActions,
   tEthereumAddress,
   transactionType,
-  tStringCurrencyUnits,
 } from '../types';
-import { StakingValidator } from '../validators/methodValidators';
-import {
-  IsEthAddress,
-  IsPositiveOrMinusOneAmount,
-} from '../validators/paramValidators';
+import { ClaimHelperValidator } from '../validators/methodValidators';
+import { IsEthAddress } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
 export interface ClaimStakingRewardsHelperInterface {
-  claimAllRewards: (
-    user: tEthereumAddress
-    // amount: tStringCurrencyUnits
-  ) => EthereumTransactionTypeExtended;
+  claimAllRewards: (user: tEthereumAddress) => EthereumTransactionTypeExtended;
   claimAllRewardsAndStake: (
     user: tEthereumAddress
-    // amount: tStringCurrencyUnits
+  ) => EthereumTransactionTypeExtended;
+
+  claimAndStake: (
+    user: tEthereumAddress,
+    stakeToken: tEthereumAddress
   ) => EthereumTransactionTypeExtended;
 }
 
@@ -44,10 +39,9 @@ export default class ClaimStakingRewardsHelperService
   }
 
   // We don't accept amount, to claim all rewards / -1
-  @StakingValidator(StakeActions.claimAllRewards)
+  @ClaimHelperValidator
   public claimAllRewards(
     @IsEthAddress() user: tEthereumAddress
-    // @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
   ): EthereumTransactionTypeExtended {
     const claimHelperContract: IClaimStakingRewardsHelper = this.getContractInstance(
       this.claimHelperAddress
@@ -55,10 +49,7 @@ export default class ClaimStakingRewardsHelperService
 
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
-        claimHelperContract.populateTransaction.claimAllRewards(
-          user,
-          constants.MaxUint256.toString()
-        ),
+        claimHelperContract.populateTransaction.claimAllRewards(user),
       from: user,
     });
 
@@ -69,10 +60,9 @@ export default class ClaimStakingRewardsHelperService
     };
   }
 
-  @StakingValidator(StakeActions.claimAllRewardsAndStake)
+  @ClaimHelperValidator
   public claimAllRewardsAndStake(
     @IsEthAddress() user: tEthereumAddress
-    // @IsPositiveOrMinusOneAmount() amount: tStringCurrencyUnits
   ): EthereumTransactionTypeExtended {
     const claimHelperContract: IClaimStakingRewardsHelper = this.getContractInstance(
       this.claimHelperAddress
@@ -80,16 +70,34 @@ export default class ClaimStakingRewardsHelperService
 
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
-        claimHelperContract.populateTransaction.claimAllRewardsAndStake(
-          user,
-          constants.MaxUint256.toString()
-        ),
+        claimHelperContract.populateTransaction.claimAllRewardsAndStake(user),
       from: user,
     });
 
     return {
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
+      gas: this.generateTxPriceEstimation([], txCallback),
+    };
+  }
+
+  @ClaimHelperValidator
+  public claimAndStake(
+    @IsEthAddress() user: tEthereumAddress,
+    @IsEthAddress() stakeToken: tEthereumAddress
+  ): EthereumTransactionTypeExtended {
+    const claimHelperContract: IClaimStakingRewardsHelper = this.getContractInstance(
+      this.claimHelperAddress
+    );
+    const txCallback: () => Promise<transactionType> = this.generateTxCallback({
+      rawTxMethod: () =>
+        claimHelperContract.populateTransaction.claimAndStake(user, stakeToken),
+      from: user,
+    });
+
+    return {
+      tx: txCallback,
+      txType: eEthereumTxType.STAKE_ACTION,
       gas: this.generateTxPriceEstimation([], txCallback),
     };
   }

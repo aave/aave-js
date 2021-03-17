@@ -22,17 +22,22 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface IClaimStakingRewardsHelperInterface extends ethers.utils.Interface {
   functions: {
-    "claimAllRewards(address,uint256)": FunctionFragment;
-    "claimAllRewardsAndStake(address,uint256)": FunctionFragment;
+    "claimAllRewards(address)": FunctionFragment;
+    "claimAllRewardsAndStake(address)": FunctionFragment;
+    "claimAndStake(address,address)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "claimAllRewards",
-    values: [string, BigNumberish]
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "claimAllRewardsAndStake",
-    values: [string, BigNumberish]
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimAndStake",
+    values: [string, string]
   ): string;
 
   decodeFunctionResult(
@@ -41,6 +46,10 @@ interface IClaimStakingRewardsHelperInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "claimAllRewardsAndStake",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimAndStake",
     data: BytesLike
   ): Result;
 
@@ -63,75 +72,96 @@ export class IClaimStakingRewardsHelper extends Contract {
   functions: {
     claimAllRewards(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "claimAllRewards(address,uint256)"(
+    "claimAllRewards(address)"(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     claimAllRewardsAndStake(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "claimAllRewardsAndStake(address,uint256)"(
+    "claimAllRewardsAndStake(address)"(
       to: string,
-      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    claimAndStake(
+      to: string,
+      stakeToken: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "claimAndStake(address,address)"(
+      to: string,
+      stakeToken: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
   };
 
   claimAllRewards(
     to: string,
-    amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "claimAllRewards(address,uint256)"(
+  "claimAllRewards(address)"(
     to: string,
-    amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   claimAllRewardsAndStake(
     to: string,
-    amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "claimAllRewardsAndStake(address,uint256)"(
+  "claimAllRewardsAndStake(address)"(
     to: string,
-    amount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  claimAndStake(
+    to: string,
+    stakeToken: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "claimAndStake(address,address)"(
+    to: string,
+    stakeToken: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    claimAllRewards(
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    claimAllRewards(to: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "claimAllRewards(address,uint256)"(
+    "claimAllRewards(address)"(
       to: string,
-      amount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     claimAllRewardsAndStake(
       to: string,
-      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "claimAllRewardsAndStake(address,uint256)"(
+    "claimAllRewardsAndStake(address)"(
       to: string,
-      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    claimAndStake(
+      to: string,
+      stakeToken: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "claimAndStake(address,address)"(
+      to: string,
+      stakeToken: string,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -139,27 +169,32 @@ export class IClaimStakingRewardsHelper extends Contract {
   filters: {};
 
   estimateGas: {
-    claimAllRewards(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
+    claimAllRewards(to: string, overrides?: Overrides): Promise<BigNumber>;
 
-    "claimAllRewards(address,uint256)"(
+    "claimAllRewards(address)"(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     claimAllRewardsAndStake(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "claimAllRewardsAndStake(address,uint256)"(
+    "claimAllRewardsAndStake(address)"(
       to: string,
-      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    claimAndStake(
+      to: string,
+      stakeToken: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "claimAndStake(address,address)"(
+      to: string,
+      stakeToken: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
   };
@@ -167,25 +202,33 @@ export class IClaimStakingRewardsHelper extends Contract {
   populateTransaction: {
     claimAllRewards(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "claimAllRewards(address,uint256)"(
+    "claimAllRewards(address)"(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     claimAllRewardsAndStake(
       to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "claimAllRewardsAndStake(address,uint256)"(
+    "claimAllRewardsAndStake(address)"(
       to: string,
-      amount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    claimAndStake(
+      to: string,
+      stakeToken: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "claimAndStake(address,address)"(
+      to: string,
+      stakeToken: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

@@ -132,6 +132,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
       [Stake.Aave]: [Network.kovan],
     },
   },
+  claimStakingRewardsHelper: [Network.kovan],
   lendingPool: {
     [Market.Proto]: [Network.kovan, Network.mainnet],
   },

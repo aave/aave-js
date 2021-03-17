@@ -10,6 +10,9 @@ import LTAMigratorService from './services/LTAMigrator';
 import StakingService from './services/Staking';
 import SynthetixService from './services/SynthetixService';
 import { Configuration, DefaultProviderKeys, Network, Stake } from './types';
+import ClaimStakingRewardsHelperService, {
+  ClaimStakingRewardsHelperInterface,
+} from './services/ClaimStakingRewardsHelper';
 
 export default class BaseTxBuilder {
   readonly configuration: Configuration;
@@ -21,6 +24,8 @@ export default class BaseTxBuilder {
   public ltaMigratorService: LTAMigratorInterface;
 
   public faucetService: FaucetInterface;
+
+  readonly claimStakingRewardsHelperService: ClaimStakingRewardsHelperInterface;
 
   readonly stakings: { [stake: string]: StakingInterface };
 
@@ -64,6 +69,9 @@ export default class BaseTxBuilder {
       this.configuration,
       this.erc20Service
     );
+    this.claimStakingRewardsHelperService = new ClaimStakingRewardsHelperService(
+      this.configuration
+    );
     this.faucetService = new FaucetService(this.configuration);
 
     this.stakings = {};
@@ -75,6 +83,7 @@ export default class BaseTxBuilder {
       this.stakings[stakeToken] = new StakingService(
         this.configuration,
         this.erc20Service,
+        this.claimStakingRewardsHelperService,
         stakeToken
       );
     }

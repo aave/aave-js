@@ -26,7 +26,6 @@ interface IStakedTokenInterface extends ethers.utils.Interface {
     "STAKED_TOKEN()": FunctionFragment;
     "claimRewards(address,uint256)": FunctionFragment;
     "claimRewardsAndRedeem(address,uint256,uint256)": FunctionFragment;
-    "claimRewardsAndStake(address,uint256)": FunctionFragment;
     "cooldown()": FunctionFragment;
     "redeem(address,uint256)": FunctionFragment;
     "stake(address,uint256)": FunctionFragment;
@@ -48,10 +47,6 @@ interface IStakedTokenInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "claimRewardsAndRedeem",
     values: [string, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimRewardsAndStake",
-    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "cooldown", values?: undefined): string;
   encodeFunctionData(
@@ -89,10 +84,6 @@ interface IStakedTokenInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "claimRewardsAndRedeem",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimRewardsAndStake",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "cooldown", data: BytesLike): Result;
@@ -167,18 +158,6 @@ export class IStakedToken extends Contract {
       to: string,
       claimAmount: BigNumberish,
       redeemAmount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    claimRewardsAndStake(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "claimRewardsAndStake(address,uint256)"(
-      to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -267,18 +246,6 @@ export class IStakedToken extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  claimRewardsAndStake(
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  "claimRewardsAndStake(address,uint256)"(
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
   cooldown(overrides?: Overrides): Promise<ContractTransaction>;
 
   "cooldown()"(overrides?: Overrides): Promise<ContractTransaction>;
@@ -361,18 +328,6 @@ export class IStakedToken extends Contract {
       to: string,
       claimAmount: BigNumberish,
       redeemAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    claimRewardsAndStake(
-      to: string,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "claimRewardsAndStake(address,uint256)"(
-      to: string,
-      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -464,18 +419,6 @@ export class IStakedToken extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    claimRewardsAndStake(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    "claimRewardsAndStake(address,uint256)"(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
     cooldown(overrides?: Overrides): Promise<BigNumber>;
 
     "cooldown()"(overrides?: Overrides): Promise<BigNumber>;
@@ -559,18 +502,6 @@ export class IStakedToken extends Contract {
       to: string,
       claimAmount: BigNumberish,
       redeemAmount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    claimRewardsAndStake(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "claimRewardsAndStake(address,uint256)"(
-      to: string,
-      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 

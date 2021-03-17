@@ -233,6 +233,7 @@ export type EnabledNetworksType = {
       [sToken: string]: Network[];
     };
   };
+  claimStakingRewardsHelper: Network[];
   lendingPool: {
     [market: string]: Network[];
   };
