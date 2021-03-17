@@ -20,6 +20,11 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "lendingPool",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "amount",
         type: "uint256",
@@ -44,6 +49,11 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "lendingPool",
+        type: "address",
+      },
+      {
+        internalType: "address",
         name: "onBehalfOf",
         type: "address",
       },
@@ -60,6 +70,11 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "address",
+        name: "lendingPool",
+        type: "address",
+      },
       {
         internalType: "uint256",
         name: "amount",
@@ -83,6 +98,11 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "address",
+        name: "lendingPool",
+        type: "address",
+      },
       {
         internalType: "uint256",
         name: "amount",

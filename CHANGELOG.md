@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/aave/aave-js/compare/v2.5.0...v2.6.0) (2021-03-16)
+
+
+### Features
+
+* add calculateReserveDebt function ([#90](https://github.com/aave/aave-js/issues/90)) ([53ee066](https://github.com/aave/aave-js/commit/53ee06640879c3a30f15ff9d045166964201d89f))
+* new weth gateway & AMM market ([#96](https://github.com/aave/aave-js/issues/96)) ([fe5881a](https://github.com/aave/aave-js/commit/fe5881ace599bfa21c64cc351c6317d0c15563cb))
+* updated gas margin to 30% ([#122](https://github.com/aave/aave-js/issues/122)) ([776904c](https://github.com/aave/aave-js/commit/776904c1de0a56042f9559f49a6cc62a19b9c6b1))
+
+
+### Bug Fixes
+
+* add mainnet address and fix max amount ([#101](https://github.com/aave/aave-js/issues/101)) ([ca709b3](https://github.com/aave/aave-js/commit/ca709b3ff8d8383b2b23784770feba613b4d93b2))
+* move linear calculation from v1 to common ([#115](https://github.com/aave/aave-js/issues/115)) ([ecce2b0](https://github.com/aave/aave-js/commit/ecce2b0299bd8cacdcaf0cb323c382994c1a5636))
+* resolve eslint config issues with prettier deprecation ([#117](https://github.com/aave/aave-js/issues/117)) ([5638f5f](https://github.com/aave/aave-js/commit/5638f5f008e217626920702cd0146c2d2eca5913))
+* skip release step on forks ([#118](https://github.com/aave/aave-js/issues/118)) ([21fdb9a](https://github.com/aave/aave-js/commit/21fdb9a4551be9fba746b1362c29cd488b02eb73))
+
 ## [2.5.0](https://github.com/aave/aave-js/compare/v2.4.1...v2.5.0) (2021-02-17)
 
 
