@@ -1,25 +1,29 @@
 import { commonContractAddressBetweenMarketsV2 } from '../config';
-import { ISwapCollateral__factory, ISwapCollateral } from '../contract-types';
-import LiquiditySwapAdapterInterface from '../interfaces/LiquiditySwapAdapter';
+import {
+  IParaSwapLiquiditySwapAdapter__factory,
+  IParaSwapLiquiditySwapAdapter,
+} from '../contract-types';
+import LiquiditySwapAdapterInterface from '../interfaces/LiquiditySwapAdapterParaswap';
 import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   transactionType,
 } from '../types';
-import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterMethodTypes';
+import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
 import { LiquiditySwapValidator } from '../validators/methodValidators';
 import { IsEthAddress, IsPositiveAmount } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
 export default class LiquiditySwapAdapterService
-  extends BaseService<ISwapCollateral>
+  extends BaseService<IParaSwapLiquiditySwapAdapter>
   implements LiquiditySwapAdapterInterface {
   readonly liquiditySwapAdapterAddress: string;
 
   constructor(config: Configuration) {
-    super(config, ISwapCollateral__factory);
+    super(config, IParaSwapLiquiditySwapAdapter__factory);
 
+    console.log('nw', this.config.network);
     const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
       this.config.network
     ];
@@ -31,6 +35,7 @@ export default class LiquiditySwapAdapterService
     @IsEthAddress('user')
     @IsEthAddress('assetToSwapFrom')
     @IsEthAddress('assetToSwapTo')
+    @IsEthAddress('augustus')
     @IsPositiveAmount('amountToSwap')
     @IsPositiveAmount('minAmountToReceive')
     {
@@ -40,7 +45,9 @@ export default class LiquiditySwapAdapterService
       amountToSwap,
       minAmountToReceive,
       permitParams,
-      useEthPath,
+      augustus,
+      swapCallData,
+      swapAll,
     }: SwapAndDepositMethodType
   ): EthereumTransactionTypeExtended {
     const liquiditySwapContract = this.getContractInstance(
@@ -50,12 +57,14 @@ export default class LiquiditySwapAdapterService
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         liquiditySwapContract.populateTransaction.swapAndDeposit(
-          [assetToSwapFrom],
-          [assetToSwapTo],
-          [amountToSwap],
-          [minAmountToReceive],
-          [permitParams],
-          [useEthPath || false]
+          assetToSwapFrom,
+          assetToSwapTo,
+          amountToSwap,
+          minAmountToReceive,
+          swapAll ? 4 + 2 * 32 : 0,
+          swapCallData,
+          augustus,
+          permitParams
         ),
       from: user,
     });

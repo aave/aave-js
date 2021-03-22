@@ -1,3 +1,4 @@
+import { BytesLike } from 'ethers';
 import {
   tEthereumAddress,
   tStringCurrencyUnits,
@@ -69,7 +70,8 @@ export type LPSwapCollateral = {
   swapAll: boolean;
   onBehalfOf?: tEthereumAddress;
   referralCode?: string;
-  useEthPath?: boolean;
+  augustus: tEthereumAddress;
+  swapCallData: BytesLike;
 };
 
 export type LPRepayWithCollateral = {
