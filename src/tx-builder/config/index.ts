@@ -78,7 +78,7 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
   },
   [Stake.Balancer]: {
     [Network.kovan]: {
-      TOKEN_STAKING_ADDRESS: '0x31ce45Ab6E26C72c47C52c27498D460099545ef2',
+      TOKEN_STAKING_ADDRESS: '0xCe7021eDabaf82D28adBBea449Bc4dF70261F33E',
     },
     [Network.ropsten]: {
       TOKEN_STAKING_ADDRESS: '',
