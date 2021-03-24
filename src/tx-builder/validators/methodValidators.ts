@@ -5,6 +5,7 @@ import {
   amount0OrPositiveValidator,
   amountGtThan0OrMinus1,
   amountGtThan0Validator,
+  isEthAddressArrayValidator,
   isEthAddressOrEnsValidator,
   isEthAddressValidator,
   optionalValidator,
@@ -28,6 +29,34 @@ export function LPValidator(
     }
 
     isEthAddressValidator(target, propertyName, arguments);
+
+    amountGtThan0Validator(target, propertyName, arguments);
+
+    amountGtThan0OrMinus1(target, propertyName, arguments);
+
+    return method?.apply(this, arguments);
+  };
+}
+
+export function IncentivesValidator(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  target: any,
+  propertyName: string,
+  descriptor: TypedPropertyDescriptor<any>
+): any {
+  const method = descriptor.value;
+  // eslint-disable-next-line no-param-reassign
+  descriptor.value = function () {
+    const currentNetwork = this.config.network;
+    const acceptedNetworks: Network[] =
+      enabledNetworksByService.lendingPool[this.market];
+    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+      return [];
+    }
+
+    isEthAddressValidator(target, propertyName, arguments);
+
+    isEthAddressArrayValidator(target, propertyName, arguments);
 
     amountGtThan0Validator(target, propertyName, arguments);
 

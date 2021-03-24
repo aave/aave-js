@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IAaveGovernanceV2 } from "./IAaveGovernanceV2";
+export type { IAaveIncentivesController } from "./IAaveIncentivesController";
 export type { IAaveProtoGovernance } from "./IAaveProtoGovernance";
 export type { IAaveStakingHelper } from "./IAaveStakingHelper";
 export type { IDebtTokenBase } from "./IDebtTokenBase";
@@ -23,6 +24,7 @@ export type { ISynthetix } from "./ISynthetix";
 export type { IWETHGateway } from "./IWETHGateway";
 
 export { IAaveGovernanceV2__factory } from "./factories/IAaveGovernanceV2__factory";
+export { IAaveIncentivesController__factory } from "./factories/IAaveIncentivesController__factory";
 export { IAaveProtoGovernance__factory } from "./factories/IAaveProtoGovernance__factory";
 export { IAaveStakingHelper__factory } from "./factories/IAaveStakingHelper__factory";
 export { IDebtTokenBase__factory } from "./factories/IDebtTokenBase__factory";

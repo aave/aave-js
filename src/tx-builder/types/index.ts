@@ -38,6 +38,7 @@ export enum eEthereumTxType {
   STAKE_ACTION = 'STAKE_ACTION',
   MIGRATION_LEND_AAVE = 'MIGRATION_LEND_AAVE',
   FAUCET_MINT = 'FAUCET_MINT',
+  REWARD_ACTION = 'REWARD_ACTION',
 }
 
 export enum ProtocolAction {
@@ -106,6 +107,7 @@ export type AddressModel = {
   AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
   FLASHLIQUIDATION: tEthereumAddress;
+  INCENTIVES_CONTROLLER: tEthereumAddress;
 };
 
 export type tCommonContractAddressBetweenMarkets = Pick<
@@ -118,6 +120,7 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'SWAP_COLLATERAL_ADAPTER'
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
   | 'FLASHLIQUIDATION'
+  | 'INCENTIVES_CONTROLLER'
 >;
 
 export type tDistinctContractAddressBetweenMarkets = Pick<
