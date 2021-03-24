@@ -21,7 +21,7 @@ export enum Network {
   mainnet = 'mainnet',
   ropsten = 'ropsten',
   kovan = 'kovan',
-  matic_mainnet = 'matic_mainnet',
+  matic_mainnet = 'matic',
   // matic_mumbai = 'matic_mumbai',
 }
 
