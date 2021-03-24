@@ -125,6 +125,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
   liquiditySwapAdapter: [Network.kovan, Network.mainnet],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
   aaveGovernanceV2: [Network.kovan, Network.mainnet],
+  ltaMigrator: [Network.kovan, Network.mainnet],
 };
 
 export * from './v2/addresses';

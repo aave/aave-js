@@ -19,6 +19,8 @@ import {
 } from '../types';
 import { parseNumber } from '../utils/parsings';
 import BaseService from './BaseService';
+import { LTAMigratorValidator } from '../validators/methodValidators';
+import { IsEthAddress, IsPositiveAmount } from '../validators/paramValidators';
 
 export default class LTAMigratorService
   extends BaseService<ILendToAaveMigrator>
@@ -36,10 +38,11 @@ export default class LTAMigratorService
       commonContractAddressBetweenMarketsV2[network].LEND_TO_AAVE_MIGRATOR;
   }
 
-  public migrateLendToAave = async (
-    user: tEthereumAddress,
-    amount: tStringCurrencyUnits
-  ): Promise<EthereumTransactionTypeExtended[]> => {
+  @LTAMigratorValidator
+  public async migrateLendToAave(
+    @IsEthAddress() user: tEthereumAddress,
+    @IsPositiveAmount() amount: tStringCurrencyUnits
+  ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
     // TODO: delete conditional when mainnet address
     if (this.config.network === Network.ropsten) {
@@ -82,5 +85,5 @@ export default class LTAMigratorService
     });
 
     return txs;
-  };
+  }
 }

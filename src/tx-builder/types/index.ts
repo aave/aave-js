@@ -231,6 +231,7 @@ export type EnabledNetworksType = {
   liquiditySwapAdapter: Network[];
   repayWithCollateralAdapter: Network[];
   aaveGovernanceV2: Network[];
+  ltaMigrator: Network[];
 };
 
 export type PermitSignature = {
