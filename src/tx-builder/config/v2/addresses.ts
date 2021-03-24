@@ -100,7 +100,7 @@ export const aaveGovernanceV2Addresses: GovernanceConfigType = {
       '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
   },
-  [Network.matic_mainnet]: {
+  [Network.matic]: {
     AAVE_GOVERNANCE_V2: '',
     AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
