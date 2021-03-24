@@ -37,7 +37,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
     FLASHLIQUIDATION: '0xE377fB98512D7b04827e56BC84e1838804a8019D',
   },
-  [Network.matic]: {
+  [Network.matic_mainnet]: {
     SYNTHETIX_PROXY_ADDRESS: '',
     GOVERNANCE_PROTO_CONTRACT: '',
     LEND_TO_AAVE_MIGRATOR: '',
@@ -60,7 +60,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     [Network.mainnet]: {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
-    [Network.matic]: {
+    [Network.matic_mainnet]: {
       LENDINGPOOL_ADDRESS: '0x15Ec48a46d2D26cf4ADf5A39123E4c75e6887fE0',
     },
   },
@@ -100,7 +100,7 @@ export const aaveGovernanceV2Addresses: GovernanceConfigType = {
       '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
   },
-  [Network.matic]: {
+  [Network.matic_mainnet]: {
     AAVE_GOVERNANCE_V2: '',
     AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
