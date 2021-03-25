@@ -478,7 +478,7 @@ export function formatReserves(
   });
 }
 
-//((distributionPerSecond * rewardTokenPriceEth) * secondsPerYear * APY_precision) / (aTokenSupply(totalLiquidity) * aTokenPriceEth)
+//((distributionPerSecond * rewardTokenPriceEth) * secondsPerYear) / (aTokenSupply(totalLiquidity) * aTokenPriceEth)
 export function calculateIncentivesAPY(
   emissionPerSecond: BigNumber,
   rewardTokenPriceInEth: BigNumber,
