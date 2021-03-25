@@ -26,7 +26,12 @@ import {
   ReserveRatesData,
   ComputedReserveData,
 } from './types';
-import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
+import {
+  ETH_DECIMALS,
+  RAY_DECIMALS,
+  SECONDS_PER_YEAR,
+  USD_DECIMALS,
+} from '../helpers/constants';
 
 export function getEthAndUsdBalance(
   balance: BigNumberValue,
@@ -471,4 +476,26 @@ export function formatReserves(
       variableBorrowIndex: normalize(reserve.variableBorrowIndex, RAY_DECIMALS),
     };
   });
+}
+
+//((distributionPerSecond * rewardTokenPriceEth) * secondsPerYear * APY_precision) / (aTokenSupply(totalLiquidity) * aTokenPriceEth)
+export function calculateIncentivesAPY(
+  emissionPerSecond: number,
+  rewardDecimals: number,
+  rewardTokenPriceInEth: number,
+  aTokenTotalSupply: number,
+  aTokenPriceInEth: number,
+  aTokenDecimals: number
+) {
+  const emissionPerSecondNormalized =
+    emissionPerSecond * Number(normalize(rewardTokenPriceInEth, ETH_DECIMALS));
+  const emissionPerYear =
+    emissionPerSecondNormalized * SECONDS_PER_YEAR.toNumber();
+
+  const totalSupplyNormalized =
+    Number(normalize(aTokenTotalSupply, aTokenDecimals)) *
+    Number(normalize(aTokenPriceInEth, ETH_DECIMALS));
+
+  const incentivesAPY = emissionPerYear / totalSupplyNormalized;
+  return incentivesAPY;
 }
