@@ -480,15 +480,15 @@ export function formatReserves(
 
 //((distributionPerSecond * rewardTokenPriceEth) * secondsPerYear * APY_precision) / (aTokenSupply(totalLiquidity) * aTokenPriceEth)
 export function calculateIncentivesAPY(
-  emissionPerSecond: number,
-  rewardDecimals: number,
-  rewardTokenPriceInEth: number,
-  aTokenTotalSupply: number,
-  aTokenPriceInEth: number,
+  emissionPerSecond: BigNumber,
+  rewardTokenPriceInEth: BigNumber,
+  aTokenTotalSupply: BigNumber,
+  aTokenPriceInEth: BigNumber,
   aTokenDecimals: number
 ) {
   const emissionPerSecondNormalized =
-    emissionPerSecond * Number(normalize(rewardTokenPriceInEth, ETH_DECIMALS));
+    Number(normalize(emissionPerSecond, ETH_DECIMALS)) *
+    Number(normalize(rewardTokenPriceInEth, ETH_DECIMALS));
   const emissionPerYear =
     emissionPerSecondNormalized * SECONDS_PER_YEAR.toNumber();
 
