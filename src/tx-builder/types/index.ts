@@ -22,6 +22,7 @@ export enum Network {
   ropsten = 'ropsten',
   kovan = 'kovan',
   matic_mainnet = 'matic',
+  fork = 'fork',
   // matic_mumbai = 'matic_mumbai',
 }
 
@@ -30,6 +31,7 @@ export enum ChainId {
   ropsten = 3,
   kovan = 42,
   matic = 137,
+  fork = 1337,
   // matic_mumbai = 80001,
 }
 
