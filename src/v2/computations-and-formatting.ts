@@ -499,3 +499,16 @@ export function calculateIncentivesAPY(
   const incentivesAPY = emissionPerYear / totalSupplyNormalized;
   return incentivesAPY;
 }
+
+export function calculateRewards(
+  principalUserBalance: BigNumber,
+  reserveIndex: BigNumber,
+  userIndex: BigNumber,
+  precision: number,
+  rewardTokenDecimals: number // TODO: necessary?
+): string {
+  const reward = principalUserBalance
+    .times(reserveIndex.minus(userIndex))
+    .div(10 ** precision);
+  return normalize(reward, rewardTokenDecimals);
+}
