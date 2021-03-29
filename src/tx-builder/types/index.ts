@@ -21,18 +21,16 @@ export enum Network {
   mainnet = 'mainnet',
   ropsten = 'ropsten',
   kovan = 'kovan',
-  matic_mainnet = 'matic',
+  polygon = 'polygon',
   fork = 'fork',
-  // matic_mumbai = 'matic_mumbai',
 }
 
 export enum ChainId {
   mainnet = 1,
   ropsten = 3,
   kovan = 42,
-  matic = 137,
+  polygon = 137,
   fork = 1337,
-  // matic_mumbai = 80001,
 }
 
 export enum eEthereumTxType {
