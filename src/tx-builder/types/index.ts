@@ -161,7 +161,7 @@ export type Configuration = {
 export type EthereumTransactionTypeExtended = {
   txType: eEthereumTxType;
   tx: () => Promise<transactionType>;
-  gas?: GasResponse;
+  gas: GasResponse;
 };
 
 export type TransactionGenerationMethod = {
