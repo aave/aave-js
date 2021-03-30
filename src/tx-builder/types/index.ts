@@ -15,19 +15,22 @@ export enum InterestRate {
 export enum Market {
   Proto = 'proto',
   AMM = 'amm',
-  // Uniswap = 'uniswap',
 }
 
 export enum Network {
   mainnet = 'mainnet',
   ropsten = 'ropsten',
   kovan = 'kovan',
+  polygon = 'polygon',
+  fork = 'fork',
 }
 
 export enum ChainId {
   mainnet = 1,
   ropsten = 3,
   kovan = 42,
+  polygon = 137,
+  fork = 1337,
 }
 
 export enum eEthereumTxType {
@@ -228,6 +231,7 @@ export type EnabledNetworksType = {
   liquiditySwapAdapter: Network[];
   repayWithCollateralAdapter: Network[];
   aaveGovernanceV2: Network[];
+  ltaMigrator: Network[];
 };
 
 export type PermitSignature = {
