@@ -49,6 +49,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     SWAP_COLLATERAL_ADAPTER: '',
     REPAY_WITH_COLLATERAL_ADAPTER: '',
     FLASHLIQUIDATION: '',
+    INCENTIVES_CONTROLLER: '0x357d51124f59836ded84c8a1730d72b749d8bc23',
   },
 };
 
