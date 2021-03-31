@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.1](https://github.com/aave/aave-js/compare/v2.7.0...v2.7.1) (2021-03-31)
+
+
+### Bug Fixes
+
+* updated matic new deployment addresses ([#132](https://github.com/aave/aave-js/issues/132)) ([2396e27](https://github.com/aave/aave-js/commit/2396e271892ae9d1be866824bacf0e025bb430e9))
+
 ## [2.7.0](https://github.com/aave/aave-js/compare/v2.6.0...v2.7.0) (2021-03-30)
 
 
