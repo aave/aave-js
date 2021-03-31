@@ -48,9 +48,7 @@ export default class IncentivesController
     {
       user,
       assets,
-      amount,
-      to,
-      stake, // TODO: for now hardcoded to false
+      to, // TODO: for now hardcoded to false
     }: ClaimRewardsMethodType
   ): EthereumTransactionTypeExtended[] {
     const incentivesContract: IAaveIncentivesController = this.getContractInstance(

@@ -83,7 +83,7 @@ export class IRepayWithCollateral extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "swapAndRepay(address,address,uint256,uint256,uint256,tuple,bool)"(
+    "swapAndRepay(address,address,uint256,uint256,uint256,(uint256,uint256,uint8,bytes32,bytes32),bool)"(
       collateralAsset: string,
       debtAsset: string,
       collateralAmount: BigNumberish,
@@ -118,7 +118,7 @@ export class IRepayWithCollateral extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "swapAndRepay(address,address,uint256,uint256,uint256,tuple,bool)"(
+  "swapAndRepay(address,address,uint256,uint256,uint256,(uint256,uint256,uint8,bytes32,bytes32),bool)"(
     collateralAsset: string,
     debtAsset: string,
     collateralAmount: BigNumberish,
@@ -153,7 +153,7 @@ export class IRepayWithCollateral extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "swapAndRepay(address,address,uint256,uint256,uint256,tuple,bool)"(
+    "swapAndRepay(address,address,uint256,uint256,uint256,(uint256,uint256,uint8,bytes32,bytes32),bool)"(
       collateralAsset: string,
       debtAsset: string,
       collateralAmount: BigNumberish,
@@ -191,7 +191,7 @@ export class IRepayWithCollateral extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "swapAndRepay(address,address,uint256,uint256,uint256,tuple,bool)"(
+    "swapAndRepay(address,address,uint256,uint256,uint256,(uint256,uint256,uint8,bytes32,bytes32),bool)"(
       collateralAsset: string,
       debtAsset: string,
       collateralAmount: BigNumberish,
@@ -227,7 +227,7 @@ export class IRepayWithCollateral extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "swapAndRepay(address,address,uint256,uint256,uint256,tuple,bool)"(
+    "swapAndRepay(address,address,uint256,uint256,uint256,(uint256,uint256,uint8,bytes32,bytes32),bool)"(
       collateralAsset: string,
       debtAsset: string,
       collateralAmount: BigNumberish,
