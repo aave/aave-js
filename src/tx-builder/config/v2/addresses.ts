@@ -40,6 +40,16 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     FLASHLIQUIDATION: '0xE377fB98512D7b04827e56BC84e1838804a8019D',
     CLAIM_HELPER_ADDRESS: '',
   },
+  [Network.polygon]: {
+    SYNTHETIX_PROXY_ADDRESS: '',
+    GOVERNANCE_PROTO_CONTRACT: '',
+    LEND_TO_AAVE_MIGRATOR: '',
+    WETH_GATEWAY: '0xbEadf48d62aCC944a06EEaE0A9054A90E5A7dc97',
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '',
+    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
+  },
 };
 
 export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
@@ -52,6 +62,9 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     },
     [Network.mainnet]: {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
+    },
+    [Network.polygon]: {
+      LENDINGPOOL_ADDRESS: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
     },
   },
   [Market.AMM]: {
@@ -89,5 +102,11 @@ export const aaveGovernanceV2Addresses: GovernanceConfigType = {
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG:
       '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
+  },
+  [Network.polygon]: {
+    AAVE_GOVERNANCE_V2: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
+    AAVE_GOVERNANCE_V2_HELPER: '',
   },
 };

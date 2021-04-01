@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.2](https://github.com/aave/aave-js/compare/v2.7.1...v2.7.2) (2021-03-31)
+
+### [2.7.1](https://github.com/aave/aave-js/compare/v2.7.0...v2.7.1) (2021-03-31)
+
+
+### Bug Fixes
+
+* updated matic new deployment addresses ([#132](https://github.com/aave/aave-js/issues/132)) ([2396e27](https://github.com/aave/aave-js/commit/2396e271892ae9d1be866824bacf0e025bb430e9))
+
+## [2.7.0](https://github.com/aave/aave-js/compare/v2.6.0...v2.7.0) (2021-03-30)
+
+
+### Features
+
+* polygon proto ([#123](https://github.com/aave/aave-js/issues/123)) ([50747c3](https://github.com/aave/aave-js/commit/50747c3baaaab65681464ab11895be67b5237663))
+
+
+### Bug Fixes
+
+* make gas estimation non optional ([#130](https://github.com/aave/aave-js/issues/130)) ([82a4178](https://github.com/aave/aave-js/commit/82a417819e7cb9eae6a779d29749b0a6ccbf494e))
+
 ## [2.6.0](https://github.com/aave/aave-js/compare/v2.5.0...v2.6.0) (2021-03-16)
 
 

@@ -37,6 +37,29 @@ export function LPValidator(
   };
 }
 
+export function LTAMigratorValidator(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  target: any,
+  propertyName: string,
+  descriptor: TypedPropertyDescriptor<any>
+): any {
+  const method = descriptor.value;
+  // eslint-disable-next-line no-param-reassign
+  descriptor.value = function () {
+    const currentNetwork = this.config.network;
+    const acceptedNetworks: Network[] = enabledNetworksByService.ltaMigrator;
+    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+      return [];
+    }
+
+    isEthAddressValidator(target, propertyName, arguments);
+
+    amountGtThan0Validator(target, propertyName, arguments);
+
+    return method?.apply(this, arguments);
+  };
+}
+
 export function LiquiditySwapValidator(
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   target: any,

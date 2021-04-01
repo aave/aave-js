@@ -75,6 +75,11 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
     [Network.mainnet]: {
       TOKEN_STAKING_ADDRESS: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
     },
+    [Network.polygon]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
   },
   [Stake.Balancer]: {
     [Network.kovan]: {
@@ -85,6 +90,11 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
     },
     [Network.mainnet]: {
       TOKEN_STAKING_ADDRESS: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
+    },
+    [Network.polygon]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
     },
   },
 };
@@ -134,15 +144,16 @@ export const enabledNetworksByService: EnabledNetworksType = {
   },
   claimStakingRewardsHelper: [Network.kovan],
   lendingPool: {
-    [Market.Proto]: [Network.kovan, Network.mainnet],
+    [Market.Proto]: [Network.kovan, Network.mainnet, Network.polygon],
     [Market.AMM]: [Network.kovan, Network.mainnet],
   },
   governance: [Network.kovan, Network.mainnet],
-  wethGateway: [Network.kovan, Network.mainnet],
+  wethGateway: [Network.kovan, Network.mainnet, Network.polygon],
   faucet: [Network.kovan],
   liquiditySwapAdapter: [Network.kovan, Network.mainnet],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
   aaveGovernanceV2: [Network.kovan, Network.mainnet],
+  ltaMigrator: [Network.kovan, Network.mainnet],
 };
 
 export * from './v2/addresses';
