@@ -6,6 +6,7 @@ import {
   valueToZDBigNumber,
   normalize,
   pow10,
+  normalizeBN,
 } from '../helpers/bignumber';
 import {
   calculateAvailableBorrowsETH,
@@ -485,19 +486,21 @@ export function calculateIncentivesAPY(
   aTokenTotalSupply: BigNumber,
   aTokenPriceInEth: BigNumber,
   aTokenDecimals: number
-) {
-  const emissionPerSecondNormalized =
-    Number(normalize(emissionPerSecond, ETH_DECIMALS)) *
-    Number(normalize(rewardTokenPriceInEth, ETH_DECIMALS));
-  const emissionPerYear =
-    emissionPerSecondNormalized * SECONDS_PER_YEAR.toNumber();
+): string {
+  const emissionPerSecondNormalized = normalizeBN(
+    emissionPerSecond,
+    ETH_DECIMALS
+  ).times(rewardTokenPriceInEth);
+  const emissionPerYear = emissionPerSecondNormalized.times(
+    SECONDS_PER_YEAR.toNumber()
+  );
 
-  const totalSupplyNormalized =
-    Number(normalize(aTokenTotalSupply, aTokenDecimals)) *
-    Number(normalize(aTokenPriceInEth, ETH_DECIMALS));
+  const totalSupplyNormalized = normalizeBN(
+    aTokenTotalSupply,
+    aTokenDecimals
+  ).times(aTokenPriceInEth);
 
-  const incentivesAPY = emissionPerYear / totalSupplyNormalized;
-  return incentivesAPY;
+  return emissionPerYear.div(totalSupplyNormalized).toString(10);
 }
 
 export function calculateRewards(
