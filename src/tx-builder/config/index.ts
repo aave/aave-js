@@ -76,9 +76,7 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       TOKEN_STAKING_ADDRESS: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
     },
     [Network.polygon]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
   },
   [Stake.Balancer]: {
@@ -92,9 +90,7 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       TOKEN_STAKING_ADDRESS: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
     },
     [Network.polygon]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
   },
 };
