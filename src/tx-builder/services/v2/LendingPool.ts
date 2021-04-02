@@ -46,6 +46,7 @@ import {
 import LiquiditySwapAdapterInterface from '../../interfaces/LiquiditySwapAdapterParaswap';
 import RepayWithCollateralAdapterInterface from '../../interfaces/RepayWithCollateralAdapter';
 import BaseService from '../BaseService';
+import { augustusFromAmountOffsetFromCalldata } from '../LiquiditySwapAdapterParaswap';
 
 const buildParaSwapLiquiditySwapParams = (
   assetToSwapTo: tEthereumAddress,
@@ -584,22 +585,6 @@ export default class LendingPool
       swapCallData,
     }: LPSwapCollateral
   ): Promise<EthereumTransactionTypeExtended[]> {
-    console.log('inParams', {
-      user,
-      flash,
-      fromAsset,
-      fromAToken,
-      toAsset,
-      fromAmount,
-      toAmount,
-      maxSlippage,
-      permitSignature,
-      swapAll,
-      onBehalfOf,
-      referralCode,
-      augustus,
-      swapCallData,
-    });
     const txs: EthereumTransactionTypeExtended[] = [];
 
     const permitParams = permitSignature || {
@@ -655,7 +640,9 @@ export default class LendingPool
     const params = buildParaSwapLiquiditySwapParams(
       toAsset,
       amountSlippageConverted,
-      swapAll ? 4 + 2 * 32 : 0,
+      swapAll
+        ? augustusFromAmountOffsetFromCalldata(swapCallData as string)
+        : 0,
       swapCallData,
       augustus,
       permitParams.amount,

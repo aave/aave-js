@@ -15,6 +15,15 @@ import { LiquiditySwapValidator } from '../validators/methodValidators';
 import { IsEthAddress, IsPositiveAmount } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
+export function augustusFromAmountOffsetFromCalldata(calldata: string) {
+  switch (calldata.slice(0, 10)) {
+    case '0xda8567c8': // Augustus V3 multiSwap
+      return 4 + 32 + 2 * 32;
+    default:
+      throw new Error('Unrecognized function selector for Augustus');
+  }
+}
+
 export default class LiquiditySwapAdapterService
   extends BaseService<IParaSwapLiquiditySwapAdapter>
   implements LiquiditySwapAdapterInterface {
@@ -23,7 +32,6 @@ export default class LiquiditySwapAdapterService
   constructor(config: Configuration) {
     super(config, IParaSwapLiquiditySwapAdapter__factory);
 
-    console.log('nw', this.config.network);
     const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
       this.config.network
     ];
@@ -61,7 +69,9 @@ export default class LiquiditySwapAdapterService
           assetToSwapTo,
           amountToSwap,
           minAmountToReceive,
-          swapAll ? 4 + 2 * 32 : 0,
+          swapAll
+            ? augustusFromAmountOffsetFromCalldata(swapCallData as string)
+            : 0,
           swapCallData,
           augustus,
           permitParams
