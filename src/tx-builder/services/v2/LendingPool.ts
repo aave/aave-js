@@ -651,7 +651,6 @@ export default class LendingPool
       permitParams.r,
       permitParams.s
     );
-    console.log('ParaSwapLiquiditySwapParams', params);
 
     if (flash) {
       const FLASHLOAN_PREMIUM_TOTAL: BigNumber = await lendingPoolContract.FLASHLOAN_PREMIUM_TOTAL();
@@ -700,18 +699,6 @@ export default class LendingPool
       });
       return txs;
     }
-
-    console.log('swapAndDepositParams', {
-      user,
-      assetToSwapFrom: fromAsset,
-      assetToSwapTo: toAsset,
-      amountToSwap: convertedAmount,
-      minAmountToReceive: amountSlippageConverted,
-      swapAll,
-      swapCallData,
-      augustus,
-      permitParams,
-    });
 
     // Direct call to swap and deposit
     const swapAndDepositTx: EthereumTransactionTypeExtended = await this.liquiditySwapAdapterService.swapAndDeposit(
