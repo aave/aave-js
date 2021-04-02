@@ -6,13 +6,12 @@ The aave-js package gives developers access to methods for formatting data and e
 
 1. [Quick Start](#quick-start)
 2. [Data Formatting Methods](#data-formatting-methods)
-   a. [User Data](#user-data)
-   - [computeUserReserveData](#computeUserReserveData)
-   - [computeRawUserSummaryData](#computeRawUserSummaryData) : returns user summary data in small units with 0 decimal places, except health-factor
-   - [formatUserSummaryData](#formatUserSummaryData) : returns user summary data in big units
-   - [formatReserves](#formatReserves) : returns reserves data formatted to big units
+   - a. [User Data](#user-data)
+      - [formatUserSummaryData](#formatUserSummaryData) 
+   - b. [Reserve Data](#reserve-data)
+      - [formatReserves](#formatReserves) 
 3. [Transaction Methods](#transaction-methods)
-   a. [Lending Pool V2](#lending-pool-v2)
+   - a. [Lending Pool V2](#lending-pool-v2)
       - [deposit](#deposit)
       - [borrow](#borrow)
       - [repay](#repay)
@@ -22,12 +21,12 @@ The aave-js package gives developers access to methods for formatting data and e
       - [liquidationCall](#liquidationCall)
       - [swapCollateral](#swapCollateral)
       - [repayWithCollateral](#repayWithCollateral)
-   b. [Staking](#staking)
+   - b. [Staking](#staking)
       - [stake](#stake)
       - [redeem](#redeem)
       - [cooldown](#cooldown)
       - [claimRewards](#claimRewards)
-   c. [Governance V2](#governancev2)
+   - c. [Governance V2](#governancev2)
       - [Governance](#governance)
       - [create](#create)
       - [cancel](#cancel)
@@ -37,7 +36,7 @@ The aave-js package gives developers access to methods for formatting data and e
       - [GovernanceDelegation](#governanceDelegation)
       - [delegate](#delegate)
       - [delegateByType](#delegateByType)
-   d. [Faucets](#faucets)
+   - d. [Faucets](#faucets)
       - [mint](#mint)
 4. [Lint](#lint)
 5. [Build](#build)
@@ -63,33 +62,102 @@ npm install --save @aave/protocol-js
 
 AAVE aggregates on-chain protocol data into a variety of different subgraphs on TheGraph which can be queried directly using the playground (links below) and integrated into applications directly via TheGraph API. 
 
+The aave-js data formatting methods are a layer beyond graphql which wraps protocol data into more usable formats. Each method will require inputs from AAVE subgraph queries, links to these queries in the source code are provided for each method below.
+
 Check out this [getting started](https://docs.aave.com/developers/getting-started/using-graphql) guide to get your application integrated with the AAVE subgraphs
 
-The aave-js data formatting methods are a layer beyond graphql which wraps protocol data into more usable formats. Each method will require inputs from AAVE subgraph queries, links to these queries in the source code are provided for each method below.
+- V1 GraphQL:
+   - Playground: https://thegraph.com/explorer/subgraph/aave/protocol-multy-raw
+   - API: https://api.thegraph.com/subgraphs/name/aave/protocol-multy-raw
+
+- V2 GraphQL (V2 Market and AMM Market)
+	- Playground: https://thegraph.com/explorer/subgraph/aave/protocol-v2
+	- API: https://api.thegraph.com/subgraphs/name/aave/protocol-v2
+
+The V2 Subgraph contains data for both the V2 and AMM markets. The market which a reserve belongs to can be identified with the pool parameter (market address). The pool id for available markets are below:
+
+- V2 Market: "0xb53c1a33016b2dc2ff3653530bff1848a515c8c5"
+- AMM Market: "0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5"
 
 ## Sample Usage
 
 ```js
 import { v1, v2 } from '@aave/protocol-js';
 
-// Sample GQL Query 
+// Fetch poolReservesData from GQL Subscription
+// Fetch rawUserReserves from GQL Subscription
+// Fetch ethPriceUSD from GQL Subscription
 
-v1.formatReserves()
+let userAddress = "0x..."
 
-v2.formatUserSummaryData()
+let userSummary = v2.formatUserSummaryData(poolReservesData, rawUserReserves, userAddress.toLowerCase(), Math.floor(Date.now() / 1000))
 
 ```
 
 ## User Data
 
-### computeUserReserveData
-TO-DO: typedoc 
-### computeRawUserSummaryData
-TO-DO: typedoc
 ### formatUserSummaryData
-TO-DO: typedoc
+
+Returns formatted summary of AAVE user portfolio including: array of holdings, total liquidity, total collateral, total borrows, liquidation threshold, health factor, and available borrowing power 
+
+- @param `poolReservesData` GraphQL input:
+	- subscription: src/[v1 or v2]/graphql/subscriptions/reserves-update-subscription.graphql
+      : Requires input of pool (address of market which can be found above, or remove this filter to fetch all markets)
+	- types: src/[v1 or v2]/graphql/fragments/pool-reserve-data.graphql
+- @param `rawUserReserves` GraphQL input, query can be found here: 
+   - subscription: src/[v1 or v2]/graphql/subscriptions/user-position-update-subscription.graphql
+      : Requires input of user (lowercase address), and pool (address of market which can be found above, or remove this filter to fetch all markets)
+   - types: src/[v1 or v2]/graphql/fragments/user-reserve-data.graphql
+- @param `userId` Wallet address, MUST BE LOWERCASE!
+- @param `usdPriceEth` Current price of USD in ETH in small units (10^18). For example, if ETH price in USD = $1900, usdPriceEth = (1 / 1900) * 10^18
+   : Can also be fetched using this subscription: /src/[v1 or v2]/graphql/subscriptions/usd-price-eth-update-subscription.graphql
+- @param `currentTimestamp` Current Unix timestamp in milliseconds: Math.floor(Date.now() / 1000)
+
+```
+v1.formatUserSummaryData(
+  poolReservesData: ReserveData[],
+  rawUserReserves: UserReserveData[],
+  userId: string,
+  usdPriceEth: BigNumberValue,
+  currentTimestamp: number
+);
+
+v2.formatUserSummaryData(
+  poolReservesData: ReserveData[],
+  rawUserReserves: UserReserveData[],
+  userId: string,
+  usdPriceEth: BigNumberValue,
+  currentTimestamp: number
+);
+```
+
+## Reserve Data
+
 ### formatReserves
-TO-DO: typedoc
+
+Returns formatted summary of each AAVE reserve asset 
+
+Note: liquidityRate = deposit rate in the return object
+
+- @param `reserves` GraphQL input: 
+	- subscription: src/[v1 or v2]/graphql/subscriptions/reserves-update-subscription.graphql
+      : Requires input of pool (address of market which can be found above, or remove this filter to fetch all markets)
+	- types: src/[v1 or v2]/graphql/fragments/pool-reserve-data.graphql
+- @param `reservesIndexed30DaysAgo` GraphQL input:
+   - subscription: src/[v1 or v2]/graphql/subscriptions/reserve-rates-30-days-ago.graphql
+   - types: src/[v1 or v2]/graphql/fragments/reserve-rates-history-data.graphql
+
+```
+v1.formatReserves(
+	reserves, // ReserveData[] 
+	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+);
+
+v2.formatReserves(
+	reserves, // ReserveData[] 
+	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+);
+```
 
 # Transaction Methods
 
@@ -584,43 +652,3 @@ To build run:
 npm run build // builds with tsdx
 npm run build:tsc // builds with tsc
 ```
-
-
-
-
-
-
-
-
-// Is any of this still needed?
-
-
-### Breaking changes in v1
-
-- Endpoint addresses should be changed (addresses above)
-- Graphql documents should be "recompiled"
-- Reserve id not underlying asset address anymore, it's not unique enough because same asset can be in 2 or more pools.
-- But reserve has underlyingAssetAddress field
-
-### Breaking changes in v2
-
-- the main entry-point exports v2 methods & graphql queries
-
-```js
-// before
-import { formatUserSummaryData } from '@aave/protocol-js';
-
-formatUserSummaryData();
-
-// after
-import { v1 } from '@aave/protocol-js';
-
-v1.formatUserSummaryData();
-```
-
-## TODO
-
-- Extra documentation
-- Transactions encoding logic
-- React hooks
-- Tests
