@@ -489,17 +489,17 @@ export function calculateIncentivesAPY(
   const emissionPerSecondNormalized = normalizeBN(
     emissionPerSecond,
     ETH_DECIMALS
-  ).times(rewardTokenPriceInEth);
-  const emissionPerYear = emissionPerSecondNormalized.times(
-    SECONDS_PER_YEAR.toNumber()
+  ).multipliedBy(rewardTokenPriceInEth);
+  const emissionPerYear = emissionPerSecondNormalized.multipliedBy(
+    SECONDS_PER_YEAR
   );
 
   const totalSupplyNormalized = normalizeBN(
     aTokenTotalSupply,
     aTokenDecimals
-  ).times(aTokenPriceInEth);
+  ).multipliedBy(aTokenPriceInEth);
 
-  return emissionPerYear.div(totalSupplyNormalized).toString(10);
+  return emissionPerYear.dividedBy(totalSupplyNormalized).toString(10);
 }
 
 export function calculateRewards(
@@ -515,14 +515,14 @@ export function calculateRewards(
   const currentTimestamp = Math.floor(Date.now() / 1000);
   const timeDelta = currentTimestamp - reserveIndexTimestamp;
   const currentReserveIndex = emissionPerSecond
-    .times(timeDelta)
-    .times(10 ** precision)
-    .div(totalSupply)
+    .multipliedBy(timeDelta)
+    .multipliedBy(10 ** precision)
+    .dividedBy(totalSupply)
     .plus(reserveIndex);
 
   const reward = principalUserBalance
-    .times(currentReserveIndex.minus(userIndex))
-    .div(10 ** precision);
+    .multipliedBy(currentReserveIndex.minus(userIndex))
+    .dividedBy(10 ** precision);
 
   return normalize(reward, rewardTokenDecimals);
 }
