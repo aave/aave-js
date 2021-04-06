@@ -1,4 +1,3 @@
-import { BigNumberish } from '@ethersproject/bignumber';
 import BigNumber from 'bignumber.js';
 
 export type ReserveRatesData = {
@@ -12,12 +11,12 @@ export type ReserveRatesData = {
 };
 
 export type ReserveSupplyData = {
-  totalScaledVariableDebt: BigNumberish;
-  variableBorrowIndex: BigNumberish;
-  variableBorrowRate: BigNumberish;
-  totalPrincipalStableDebt: BigNumberish;
-  averageStableRate: BigNumberish;
-  availableLiquidity: BigNumberish;
+  totalScaledVariableDebt: string;
+  variableBorrowIndex: string;
+  variableBorrowRate: string;
+  totalPrincipalStableDebt: string;
+  averageStableRate: string;
+  availableLiquidity: string;
   stableDebtLastUpdateTimestamp: number;
   lastUpdateTimestamp: number;
 };
@@ -73,9 +72,9 @@ export type ComputedReserveData = {
 } & ReserveData;
 
 export type Supplies = {
-  totalVariableDebt: BigNumberish;
-  totalStableDebt: BigNumberish;
-  totalLiquidity: BigNumberish;
+  totalVariableDebt: BigNumber;
+  totalStableDebt: BigNumber;
+  totalLiquidity: BigNumber;
 };
 
 export type UserReserveData = {
