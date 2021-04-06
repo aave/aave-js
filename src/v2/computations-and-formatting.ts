@@ -479,7 +479,6 @@ export function formatReserves(
   });
 }
 
-//((distributionPerSecond * rewardTokenPriceEth) * secondsPerYear) / (aTokenSupply(totalLiquidity) * aTokenPriceEth)
 export function calculateIncentivesAPY(
   emissionPerSecond: BigNumber,
   rewardTokenPriceInEth: BigNumber,
@@ -508,10 +507,21 @@ export function calculateRewards(
   reserveIndex: BigNumber,
   userIndex: BigNumber,
   precision: number,
-  rewardTokenDecimals: number // TODO: necessary?
+  rewardTokenDecimals: number,
+  reserveIndexTimestamp: number,
+  emissionPerSecond: BigNumber
 ): string {
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  const timeDelta = currentTimestamp - reserveIndexTimestamp;
+  const currentReserveIndex = emissionPerSecond
+    .times(timeDelta)
+    .times(10 ** precision)
+    .div(principalUserBalance)
+    .plus(reserveIndex);
+
   const reward = principalUserBalance
-    .times(reserveIndex.minus(userIndex))
+    .times(currentReserveIndex.minus(userIndex))
     .div(10 ** precision);
+
   return normalize(reward, rewardTokenDecimals);
 }
