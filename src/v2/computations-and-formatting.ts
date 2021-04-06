@@ -26,6 +26,8 @@ import {
   UserSummaryData,
   ReserveRatesData,
   ComputedReserveData,
+  Supplies,
+  ReserveSupplyData,
 } from './types';
 import {
   ETH_DECIMALS,
@@ -479,12 +481,58 @@ export function formatReserves(
   });
 }
 
+/**
+ * Calculates the debt accrued to a given point in time.
+ * @param reserve
+ * @param currentTimestamp unix timestamp which must be higher than reserve.lastUpdateTimestamp
+ */
+export function calculateReserveDebtSuppliesRaw(
+  reserve: ReserveSupplyData,
+  currentTimestamp: number
+) {
+  const totalVariableDebt = rayMul(
+    rayMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
+    calculateCompoundedInterest(
+      reserve.variableBorrowRate,
+      currentTimestamp,
+      reserve.lastUpdateTimestamp
+    )
+  );
+  const totalStableDebt = rayMul(
+    reserve.totalPrincipalStableDebt,
+    calculateCompoundedInterest(
+      reserve.averageStableRate,
+      currentTimestamp,
+      reserve.stableDebtLastUpdateTimestamp
+    )
+  );
+  return { totalVariableDebt, totalStableDebt };
+}
+
+export function calculateSupplies(reserve: ReserveSupplyData): Supplies {
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+
+  const {
+    totalVariableDebt,
+    totalStableDebt,
+  } = calculateReserveDebtSuppliesRaw(reserve, currentTimestamp);
+
+  const totalDebt = totalVariableDebt.plus(totalStableDebt);
+
+  const totalLiquidity = totalDebt.plus(reserve.availableLiquidity);
+  return {
+    totalVariableDebt,
+    totalStableDebt,
+    totalLiquidity,
+  };
+}
+
 export function calculateIncentivesAPY(
   emissionPerSecond: BigNumber,
   rewardTokenPriceInEth: BigNumber,
-  aTokenTotalSupply: BigNumber,
-  aTokenPriceInEth: BigNumber,
-  aTokenDecimals: number
+  tokenTotalSupply: BigNumber,
+  tokenPriceInEth: BigNumber,
+  tokenDecimals: number
 ): string {
   const emissionPerSecondNormalized = normalizeBN(
     emissionPerSecond,
@@ -495,9 +543,9 @@ export function calculateIncentivesAPY(
   );
 
   const totalSupplyNormalized = normalizeBN(
-    aTokenTotalSupply,
-    aTokenDecimals
-  ).multipliedBy(aTokenPriceInEth);
+    tokenTotalSupply,
+    tokenDecimals
+  ).multipliedBy(tokenPriceInEth);
 
   return emissionPerYear.dividedBy(totalSupplyNormalized).toString(10);
 }

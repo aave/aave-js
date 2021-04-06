@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 export type ReserveRatesData = {
   id: string;
   symbol: string;
@@ -6,6 +8,17 @@ export type ReserveRatesData = {
     liquidityIndex: string;
     timestamp: number;
   }[];
+};
+
+export type ReserveSupplyData = {
+  totalScaledVariableDebt: BigNumber;
+  variableBorrowIndex: BigNumber;
+  variableBorrowRate: BigNumber;
+  totalPrincipalStableDebt: BigNumber;
+  averageStableRate: BigNumber;
+  availableLiquidity: BigNumber;
+  stableDebtLastUpdateTimestamp: number;
+  lastUpdateTimestamp: number;
 };
 
 export type ReserveData = {
@@ -57,6 +70,12 @@ export type ComputedReserveData = {
   totalDebt: string;
   totalLiquidity: string;
 } & ReserveData;
+
+export type Supplies = {
+  totalVariableDebt: BigNumber;
+  totalStableDebt: BigNumber;
+  totalLiquidity: BigNumber;
+};
 
 export type UserReserveData = {
   scaledATokenBalance: string;
