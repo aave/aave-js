@@ -509,14 +509,15 @@ export function calculateRewards(
   precision: number,
   rewardTokenDecimals: number,
   reserveIndexTimestamp: number,
-  emissionPerSecond: BigNumber
+  emissionPerSecond: BigNumber,
+  totalSupply: BigNumber
 ): string {
   const currentTimestamp = Math.floor(Date.now() / 1000);
   const timeDelta = currentTimestamp - reserveIndexTimestamp;
   const currentReserveIndex = emissionPerSecond
     .times(timeDelta)
     .times(10 ** precision)
-    .div(principalUserBalance)
+    .div(totalSupply)
     .plus(reserveIndex);
 
   const reward = principalUserBalance
