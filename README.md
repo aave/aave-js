@@ -58,8 +58,6 @@ npm install --save @aave/protocol-js
 
 # Data Formatting Methods
 
-*These methods are being updated for v3 with simplified inputs, check back for updated documentation*
-
 AAVE aggregates on-chain protocol data into a variety of different subgraphs on TheGraph which can be queried directly using the playground (links below) and integrated into applications directly via TheGraph API. 
 
 The aave-js data formatting methods are a layer beyond graphql which wraps protocol data into more usable formats. Each method will require inputs from AAVE subgraph queries, links to these queries in the source code are provided for each method below.
@@ -111,7 +109,7 @@ Returns formatted summary of AAVE user portfolio including: array of holdings, t
 - @param `userId` Wallet address, MUST BE LOWERCASE!
 - @param `usdPriceEth` Current price of USD in ETH in small units (10^18). For example, if ETH price in USD = $1900, usdPriceEth = (1 / 1900) * 10^18
    : Can also be fetched using this subscription: /src/[v1 or v2]/graphql/subscriptions/usd-price-eth-update-subscription.graphql
-- @param `currentTimestamp` Current Unix timestamp in milliseconds: Math.floor(Date.now() / 1000)
+- @param `currentTimestamp` Current Unix timestamp in seconds: Math.floor(Date.now() / 1000)
 
 ```
 v1.formatUserSummaryData(
