@@ -130,7 +130,6 @@ export default class LendingPool
     { user, reserve, amount, onBehalfOf, referralCode }: LPDepositParamsType
   ): Promise<EthereumTransactionTypeExtended[]> {
     if (reserve.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()) {
-      console.log(this.lendingPoolAddress, this.market);
       return this.wethGatewayService.depositETH({
         lendingPool: this.lendingPoolAddress,
         user,
