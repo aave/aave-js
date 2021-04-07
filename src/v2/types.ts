@@ -71,9 +71,9 @@ export type ReserveData = {
   aEmissionPerSecond: string;
   vEmissionPerSecond: string;
   sEmissionPerSecond: string;
-  aIncentivesLastUpdateTimestamp: string;
-  vIncentivesLastUpdateTimestamp: string;
-  sIncentivesLastUpdateTimestamp: string;
+  aIncentivesLastUpdateTimestamp: number;
+  vIncentivesLastUpdateTimestamp: number;
+  sIncentivesLastUpdateTimestamp: number;
   aTokenIncentivesIndex: string;
   vTokenIncentivesIndex: string;
   sTokenIncentivesIndex: string;
