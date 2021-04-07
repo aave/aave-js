@@ -149,7 +149,7 @@ export function computeUserReserveData(
     userReserve.aTokenincentivesUserIndex,
     rewardsInfo.incentivePrecision,
     rewardsInfo.rewardTokenDecimals,
-    Number(poolReserve.aIncentivesLastUpdateTimestamp),
+    poolReserve.aIncentivesLastUpdateTimestamp,
     poolReserve.aEmissionPerSecond,
     totalLiquidity
   );
@@ -167,7 +167,7 @@ export function computeUserReserveData(
     userReserve.vTokenincentivesUserIndex,
     rewardsInfo.incentivePrecision,
     rewardsInfo.rewardTokenDecimals,
-    Number(poolReserve.vIncentivesLastUpdateTimestamp),
+    poolReserve.vIncentivesLastUpdateTimestamp,
     poolReserve.vEmissionPerSecond,
     totalVariableDebt
   );
@@ -184,7 +184,7 @@ export function computeUserReserveData(
     userReserve.sTokenincentivesUserIndex,
     rewardsInfo.incentivePrecision,
     rewardsInfo.rewardTokenDecimals,
-    Number(poolReserve.sIncentivesLastUpdateTimestamp),
+    poolReserve.sIncentivesLastUpdateTimestamp,
     poolReserve.sEmissionPerSecond,
     totalStableDebt
   );
