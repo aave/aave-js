@@ -1,130 +1,163 @@
-# Aave Protocol js
+# AAVE-JS
 
-Aave protocol logic package, supports main and uniswap markets
+AAVE is a decentralized non-custodial liquidity market protocol where users can participate as depositors or borrowers. The AAVE Protocol is a set of open source smart contracts which facilitate the lending and borrowing of user funds. These contracts, and all user transactions/balances are stored on a public ledger called a blockchain, making them accessible to anyone.
 
-The simplest way to get initial protocol data - use our subgraphs on TheGraph protocol:
-https://thegraph.com/explorer/subgraph/aave/protocol-multy-ropsten-raw - ropsten
-https://thegraph.com/explorer/subgraph/aave/protocol-multy-kovan-raw - kovan
-https://thegraph.com/explorer/subgraph/aave/protocol-multy-raw - mainnet
+The aave-js package gives developers access to methods for formatting data and executing transactions on the AAVE protocol.
 
-_/graphql/_ folder contains graphql documents with the structures needed for aggregation methods.
+1. [Quick Start](#quick-start)
+2. [Data Formatting Methods](#data-formatting-methods)
+   - a. [User Data](#user-data)
+      - [formatUserSummaryData](#formatUserSummaryData) 
+   - b. [Reserve Data](#reserve-data)
+      - [formatReserves](#formatReserves) 
+3. [Transaction Methods](#transaction-methods)
+   - a. [Lending Pool V2](#lending-pool-v2)
+      - [deposit](#deposit)
+      - [borrow](#borrow)
+      - [repay](#repay)
+      - [withdraw](#withdraw)
+      - [swapBorrowRateMode](#swapBorrowRateMode)
+      - [setUsageAsCollateral](#setUsageAsCollateral)
+      - [liquidationCall](#liquidationCall)
+      - [swapCollateral](#swapCollateral)
+      - [repayWithCollateral](#repayWithCollateral)
+   - b. [Staking](#staking)
+      - [stake](#stake)
+      - [redeem](#redeem)
+      - [cooldown](#cooldown)
+      - [claimRewards](#claimRewards)
+   - c. [Governance V2](#governancev2)
+      - [Governance](#governance)
+      - [create](#create)
+      - [cancel](#cancel)
+      - [queue](#queue)
+      - [execute](#execute)
+      - [submitVote](#submitVote)
+      - [GovernanceDelegation](#governanceDelegation)
+      - [delegate](#delegate)
+      - [delegateByType](#delegateByType)
+   - d. [Faucets](#faucets)
+      - [mint](#mint)
+4. [Lint](#lint)
+5. [Build](#build)
 
-## Installation
-
-```bash
-// with npm
-npm install @aave/protocol-js
-// with yarn
-yarn add @aave/protocol-js
-```
-
-## Usage
-
-Here is a quick example to get you started:
-
-```js
-import { v1, v2 } from '@aave/protocol-js';
-
-// returns user summary data in big units.
-v1.formatUserSummaryData(
-  poolReservesData,
-  rawUserReserves,
-  userId,
-  usdPriceEth,
-  currentTimestamp
-);
-
-// returns user summary data in small units with 0 decimal places, except health-factor.
-v1.computeRawUserSummaryData(
-  poolReservesData,
-  rawUserReserves,
-  userId,
-  usdPriceEth,
-  currentTimestamp
-);
-
-// returns reserves data formatted to big units.
-v2.formatReserves(reserves, currentTimestamp);
-```
-
-If you want to use the built-in graphql queries & subscriptions you can find them in `dist/v<1|2>/graphql`.
-
-## Braking changes in v1
-
-- Endpoint addresses should be changed (addresses above)
-- Graphql documents should be "recompiled"
-- Reserve id not underlying asset address anymore, it's not unique enough because same asset can be in 2 or more pools.
-- But reserve has underlyingAssetAddress field
-
-## Braking changes in v2
-
-- the main entry-point exports v2 methods & graphql queries
-
-```js
-// before
-import { formatUserSummaryData } from '@aave/protocol-js';
-
-formatUserSummaryData();
-
-// after
-import { v1 } from '@aave/protocol-js';
-
-v1.formatUserSummaryData();
-```
-
-## TODO
-
-- Extra documentation
-- Transactions encoding logic
-- React hooks
-- Tests
-
-# Transaction Building for Aave protocol
-
-This library can be used to easily interact with the Aave protocol.
-
-# Transaction methods
-
-1. [Quick Start](#quickstart)
-2. [Lending Pool V2](#lendingpool)
-   - [deposit](#deposit)
-   - [borrow](#borrow)
-   - [repay](#repay)
-   - [withdraw](#withdraw)
-   - [swapBorrowRateMode](#swapBorrowRateMode)
-   - [setUsageAsCollateral](#setUsageAsCollateral)
-   - [liquidationCall](#liquidationCall)
-   - [swapCollateral](#swapCollateral)
-   - [repayWithCollateral](#repayWithCollateral)
-3. [Staking](#staking)
-   - [stake](#stake)
-   - [redeem](#redeem)
-   - [cooldown](#cooldown)
-   - [claimRewards](#claimRewards)
-4. [Governance V2](#governancev2)
-   - [Governance](#governance)
-     - [create](#create)
-     - [cancel](#cancel)
-     - [queue](#queue)
-     - [execute](#execute)
-     - [submitVote](#submitVote)
-   - [GovernanceDelegation](#governanceDelegation)
-     - [delegate](#delegate)
-     - [delegateByType](#delegateByType)
-5. [Faucets](#faucets)
-   - [mint](#mint)
-6. [Lint](#lint)
-7. [Build](#build)
 
 # Quick Start
 
 This package uses [ethers v5](https://github.com/ethers-io/ethers.js#readme) as peer dependency, so make sure you have installed it in your project.
 
+```bash
+npm install --save ethers
+```
+
 ## Installing
 
-```
+```bash
 npm install --save @aave/protocol-js
 ```
+
+# Data Formatting Methods
+
+AAVE aggregates on-chain protocol data into a variety of different subgraphs on TheGraph which can be queried directly using the playground (links below) and integrated into applications directly via TheGraph API. 
+
+The aave-js data formatting methods are a layer beyond graphql which wraps protocol data into more usable formats. Each method will require inputs from AAVE subgraph queries, links to these queries in the source code are provided for each method below.
+
+Check out this [getting started](https://docs.aave.com/developers/getting-started/using-graphql) guide to get your application integrated with the AAVE subgraphs
+
+- V1 GraphQL:
+   - Playground: https://thegraph.com/explorer/subgraph/aave/protocol-multy-raw
+   - API: https://api.thegraph.com/subgraphs/name/aave/protocol-multy-raw
+
+- V2 GraphQL (V2 Market and AMM Market)
+	- Playground: https://thegraph.com/explorer/subgraph/aave/protocol-v2
+	- API: https://api.thegraph.com/subgraphs/name/aave/protocol-v2
+
+The V2 Subgraph contains data for both the V2 and AMM markets. The market which a reserve belongs to can be identified with the pool parameter (market address). The pool id for available markets are below:
+
+- V2 Market: "0xb53c1a33016b2dc2ff3653530bff1848a515c8c5"
+- AMM Market: "0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5"
+
+## Sample Usage
+
+```js
+import { v1, v2 } from '@aave/protocol-js';
+
+// Fetch poolReservesData from GQL Subscription
+// Fetch rawUserReserves from GQL Subscription
+// Fetch ethPriceUSD from GQL Subscription
+
+let userAddress = "0x..."
+
+let userSummary = v2.formatUserSummaryData(poolReservesData, rawUserReserves, userAddress.toLowerCase(), Math.floor(Date.now() / 1000))
+
+```
+
+## User Data
+
+### formatUserSummaryData
+
+Returns formatted summary of AAVE user portfolio including: array of holdings, total liquidity, total collateral, total borrows, liquidation threshold, health factor, and available borrowing power 
+
+- @param `poolReservesData` GraphQL input:
+	- subscription: src/[v1 or v2]/graphql/subscriptions/reserves-update-subscription.graphql
+      : Requires input of pool (address of market which can be found above, or remove this filter to fetch all markets)
+	- types: src/[v1 or v2]/graphql/fragments/pool-reserve-data.graphql
+- @param `rawUserReserves` GraphQL input, query can be found here: 
+   - subscription: src/[v1 or v2]/graphql/subscriptions/user-position-update-subscription.graphql
+      : Requires input of user (lowercase address), and pool (address of market which can be found above, or remove this filter to fetch all markets)
+   - types: src/[v1 or v2]/graphql/fragments/user-reserve-data.graphql
+- @param `userId` Wallet address, MUST BE LOWERCASE!
+- @param `usdPriceEth` Current price of USD in ETH in small units (10^18). For example, if ETH price in USD = $1900, usdPriceEth = (1 / 1900) * 10^18
+   : Can also be fetched using this subscription: /src/[v1 or v2]/graphql/subscriptions/usd-price-eth-update-subscription.graphql
+- @param `currentTimestamp` Current Unix timestamp in seconds: Math.floor(Date.now() / 1000)
+
+```
+v1.formatUserSummaryData(
+  poolReservesData: ReserveData[],
+  rawUserReserves: UserReserveData[],
+  userId: string,
+  usdPriceEth: BigNumberValue,
+  currentTimestamp: number
+);
+
+v2.formatUserSummaryData(
+  poolReservesData: ReserveData[],
+  rawUserReserves: UserReserveData[],
+  userId: string,
+  usdPriceEth: BigNumberValue,
+  currentTimestamp: number
+);
+```
+
+## Reserve Data
+
+### formatReserves
+
+Returns formatted summary of each AAVE reserve asset 
+
+Note: liquidityRate = deposit rate in the return object
+
+- @param `reserves` GraphQL input: 
+	- subscription: src/[v1 or v2]/graphql/subscriptions/reserves-update-subscription.graphql
+      : Requires input of pool (address of market which can be found above, or remove this filter to fetch all markets)
+	- types: src/[v1 or v2]/graphql/fragments/pool-reserve-data.graphql
+- @param `reservesIndexed30DaysAgo` GraphQL input:
+   - subscription: src/[v1 or v2]/graphql/subscriptions/reserve-rates-30-days-ago.graphql
+   - types: src/[v1 or v2]/graphql/fragments/reserve-rates-history-data.graphql
+
+```
+v1.formatReserves(
+	reserves, // ReserveData[] 
+	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+);
+
+v2.formatReserves(
+	reserves, // ReserveData[] 
+	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+);
+```
+
+# Transaction Methods
 
 ## Markets and Networks
 
@@ -158,7 +191,7 @@ The library accepts 3 kinds of providers:
 
 To learn more about supported providers, see the [ethers documentation on providers](https://docs.ethers.io/v5/api/providers/#providers).
 
-# Lending Pool V2
+## Lending Pool V2
 
 Object that contains all the necessary methods to create Aave lending pool transactions.
 
@@ -173,7 +206,7 @@ having {tx, txType}
 - tx: object with transaction fields.
 - txType: string determining the kinds of transaction.
 
-## deposit
+### deposit
 
 Deposits the underlying asset into the reserve. A corresponding amount of the overlying asset (aTokens) is minted.
 
@@ -195,7 +228,7 @@ lendingPool.deposit({
 
 If the `user` is not approved, an approval transaction will also be returned.
 
-## borrow
+### borrow
 
 Borrow an `amount` of `reserve` asset.
 
@@ -227,7 +260,7 @@ lendingPool.borrow({
 });
 ```
 
-## repay
+### repay
 
 Repays a borrow on the specific reserve, for the specified amount (or for the whole amount, if (-1) is specified).
 the target user is defined by `onBehalfOf`. If there is no repayment on behalf of another account, `onBehalfOf` must be equal to `user`.
@@ -256,7 +289,7 @@ lendingPool.repay({
 
 If the `user` is not approved, an approval transaction will also be returned.
 
-## withdraw
+### withdraw
 
 Withdraws the underlying asset of an aToken asset.
 
@@ -276,7 +309,7 @@ lendingPool.withdraw({
 });
 ```
 
-## swapBorrowRateMode
+### swapBorrowRateMode
 
 Borrowers can use this function to swap between stable and variable borrow rate modes.
 
@@ -298,7 +331,7 @@ lendingPool.swapBorrowRateMode({
 });
 ```
 
-## setUsageAsCollateral
+### setUsageAsCollateral
 
 Allows depositors to enable or disable a specific deposit as collateral.
 
@@ -314,7 +347,7 @@ lendingPool.setUsageAsCollateral({
 });
 ```
 
-## liquidationCall
+### liquidationCall
 
 Users can invoke this function to liquidate an undercollateralized position.
 
@@ -336,7 +369,7 @@ lendingPool.liquidationCall({
 });
 ```
 
-## swapCollateral
+### swapCollateral
 
 Allows users to swap a collateral to another asset
 
@@ -380,7 +413,7 @@ await lendingPool.swapCollateral({
 });
 ```
 
-## repayWithCollateral
+### repayWithCollateral
 
 Allows a borrower to repay the open debt with the borrower collateral
 
@@ -422,7 +455,7 @@ await lendingPool.repayWithCollateral({
 });
 ```
 
-# Governance V2
+## Governance V2
 
 Example of how to use the governance service
 
@@ -442,7 +475,7 @@ const gov2 = txBuilder.aaveGovernanceV2Service;
 const powerDelegation = txBuilder.governanceDelegationTokenService;
 ```
 
-## create
+### create
 
 Creates a Proposal (needs to be validated by the Proposal Validator)
 
@@ -475,7 +508,7 @@ gov2.create({
 });
 ```
 
-## cancel
+### cancel
 
 Cancels a Proposal.
 Callable by the \_guardian with relaxed conditions, or by anybody if the conditions of cancellation on the executor are fulfilled
@@ -490,7 +523,7 @@ gov2.cancel({
 })
 ```
 
-## queue
+### queue
 
 Queue the proposal (If Proposal Succeeded)
 
@@ -504,7 +537,7 @@ gov2.queue({
 })
 ```
 
-## execute
+### execute
 
 Execute the proposal (If Proposal Queued)
 
@@ -518,7 +551,7 @@ gov2.execute({
 })
 ```
 
-## submitVote
+### submitVote
 
 Function allowing msg.sender to vote for/against a proposal
 
@@ -534,9 +567,9 @@ gov2.submitVote({
 })
 ```
 
-# Governance Delegation
+## Governance Delegation
 
-## delegate
+### delegate
 
 Method for the user to delegate voting `and` proposition power to the chosen address
 
@@ -552,7 +585,7 @@ powerDelegation.delegate({
 });
 ```
 
-## delegateByType
+### delegateByType
 
 Method for the user to delegate voting `or` proposition power to the chosen address
 
@@ -570,7 +603,7 @@ powerDelegation.delegateByType({
 });
 ```
 
-# Faucets
+## Faucets
 
 To use the testnet faucets which are compatible with Aave:
 
@@ -585,7 +618,7 @@ const txBuilder = new TxBuilderV2(Network.main, httpProvider);
 const faucet = txBuilder.faucetService;
 ```
 
-## mint
+### mint
 
 Mint tokens for the usage on the Aave protocol on the Kovan network. The amount of minted tokens is fixed and depends on the token
 
@@ -601,7 +634,7 @@ faucet.mint({
 });
 ```
 
-# Lint
+## Lint
 
 To lint we use EsLint with typescript plugins and extending Airbnb
 
@@ -609,7 +642,7 @@ To lint we use EsLint with typescript plugins and extending Airbnb
 npm run lint
 ```
 
-# Build
+## Build
 
 To build run:
 
