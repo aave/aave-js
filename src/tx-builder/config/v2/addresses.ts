@@ -47,6 +47,16 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '',
     FLASHLIQUIDATION: '',
   },
+  [Network.mumbai]: {
+    SYNTHETIX_PROXY_ADDRESS: '',
+    GOVERNANCE_PROTO_CONTRACT: '',
+    LEND_TO_AAVE_MIGRATOR: '',
+    WETH_GATEWAY: '',
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '',
+    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
+  },
 };
 
 export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
@@ -61,6 +71,9 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
     },
     [Network.polygon]: {
+      LENDINGPOOL_ADDRESS: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
+    },
+    [Network.mumbai]: {
       LENDINGPOOL_ADDRESS: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
     },
   },
@@ -101,6 +114,12 @@ export const aaveGovernanceV2Addresses: GovernanceConfigType = {
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
   },
   [Network.polygon]: {
+    AAVE_GOVERNANCE_V2: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
+    AAVE_GOVERNANCE_V2_HELPER: '',
+  },
+  [Network.mumbai]: {
     AAVE_GOVERNANCE_V2: '',
     AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',

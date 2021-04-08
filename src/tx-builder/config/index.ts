@@ -85,6 +85,11 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       TOKEN_STAKING_ADDRESS: '',
       STAKING_HELPER_ADDRESS: '',
     },
+    [Network.mumbai]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
   },
   [Stake.Balancer]: {
     [Network.kovan]: {
@@ -103,6 +108,11 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       STAKING_HELPER_ADDRESS: '',
     },
     [Network.polygon]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
+    [Network.mumbai]: {
       canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
       STAKING_HELPER_ADDRESS: '',
