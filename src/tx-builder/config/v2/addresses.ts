@@ -74,7 +74,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
     },
     [Network.mumbai]: {
-      LENDINGPOOL_ADDRESS: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
+      LENDINGPOOL_ADDRESS: '0xF4aDEACc36a8DeEaa2Dd94223923069eD97910F1',
     },
   },
   [Market.AMM]: {
