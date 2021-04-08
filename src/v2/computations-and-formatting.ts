@@ -151,7 +151,8 @@ export function computeUserReserveData(
     rewardsInfo.rewardTokenDecimals,
     poolReserve.aIncentivesLastUpdateTimestamp,
     poolReserve.aEmissionPerSecond,
-    totalLiquidity
+    totalLiquidity,
+    currentTimestamp
   );
 
   const [aTokenRewardsETH, aTokenRewardsUSD] = getEthAndUsdBalance(
@@ -163,13 +164,14 @@ export function computeUserReserveData(
 
   const vTokenRewards = calculateRewards(
     variableBorrows,
-    poolReserve.aTokenIncentivesIndex,
+    poolReserve.vTokenIncentivesIndex,
     userReserve.vTokenincentivesUserIndex,
     rewardsInfo.incentivePrecision,
     rewardsInfo.rewardTokenDecimals,
     poolReserve.vIncentivesLastUpdateTimestamp,
     poolReserve.vEmissionPerSecond,
-    totalVariableDebt
+    totalVariableDebt,
+    currentTimestamp
   );
 
   const [vTokenRewardsETH, vTokenRewardsUSD] = getEthAndUsdBalance(
@@ -186,7 +188,8 @@ export function computeUserReserveData(
     rewardsInfo.rewardTokenDecimals,
     poolReserve.sIncentivesLastUpdateTimestamp,
     poolReserve.sEmissionPerSecond,
-    totalStableDebt
+    totalStableDebt,
+    currentTimestamp
   );
 
   const [sTokenRewardsETH, sTokenRewardsUSD] = getEthAndUsdBalance(
@@ -701,9 +704,9 @@ export function calculateRewards(
   rewardTokenDecimals: number,
   reserveIndexTimestamp: number,
   emissionPerSecond: string,
-  totalSupply: BigNumber
+  totalSupply: BigNumber,
+  currentTimestamp: number
 ): string {
-  const currentTimestamp = Math.floor(Date.now() / 1000);
   const timeDelta = currentTimestamp - reserveIndexTimestamp;
   const currentReserveIndex = valueToBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
