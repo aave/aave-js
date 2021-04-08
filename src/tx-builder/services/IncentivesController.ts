@@ -17,7 +17,6 @@ import BaseService from './BaseService';
 export type ClaimRewardsMethodType = {
   user: string;
   assets: string[];
-  amount?: string; //TODO: does it make sense to have amount? shouldn't it be always max?
   to: string;
   stake?: boolean;
 };
@@ -45,11 +44,7 @@ export default class IncentivesController
     @IsEthAddress('user')
     @IsEthAddressArray('assets')
     @IsEthAddress('to')
-    {
-      user,
-      assets,
-      to, // TODO: for now hardcoded to false
-    }: ClaimRewardsMethodType
+    { user, assets, to }: ClaimRewardsMethodType
   ): EthereumTransactionTypeExtended[] {
     const incentivesContract: IAaveIncentivesController = this.getContractInstance(
       this.incentivesControllerAddress
