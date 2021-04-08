@@ -51,7 +51,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     SYNTHETIX_PROXY_ADDRESS: '',
     GOVERNANCE_PROTO_CONTRACT: '',
     LEND_TO_AAVE_MIGRATOR: '',
-    WETH_GATEWAY: '',
+    WETH_GATEWAY: '0xE61A8763d7824C4a35BC0CC00d2c9e4c20457B7f',
     FAUCET: '',
     SWAP_COLLATERAL_ADAPTER: '',
     REPAY_WITH_COLLATERAL_ADAPTER: '',
