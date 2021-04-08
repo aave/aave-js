@@ -143,17 +143,19 @@ export function computeUserReserveData(
     lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
   });
 
-  const aTokenRewards = calculateRewards(
-    underlyingBalance,
-    poolReserve.aTokenIncentivesIndex,
-    userReserve.aTokenincentivesUserIndex,
-    rewardsInfo.incentivePrecision,
-    rewardsInfo.rewardTokenDecimals,
-    poolReserve.aIncentivesLastUpdateTimestamp,
-    poolReserve.aEmissionPerSecond,
-    totalLiquidity,
-    currentTimestamp
-  );
+  const aTokenRewards = totalLiquidity.gt(0)
+    ? calculateRewards(
+        underlyingBalance,
+        poolReserve.aTokenIncentivesIndex,
+        userReserve.aTokenincentivesUserIndex,
+        rewardsInfo.incentivePrecision,
+        rewardsInfo.rewardTokenDecimals,
+        poolReserve.aIncentivesLastUpdateTimestamp,
+        poolReserve.aEmissionPerSecond,
+        totalLiquidity,
+        currentTimestamp
+      )
+    : '0';
 
   const [aTokenRewardsETH, aTokenRewardsUSD] = getEthAndUsdBalance(
     aTokenRewards,
@@ -162,17 +164,19 @@ export function computeUserReserveData(
     usdPriceEth
   );
 
-  const vTokenRewards = calculateRewards(
-    variableBorrows,
-    poolReserve.vTokenIncentivesIndex,
-    userReserve.vTokenincentivesUserIndex,
-    rewardsInfo.incentivePrecision,
-    rewardsInfo.rewardTokenDecimals,
-    poolReserve.vIncentivesLastUpdateTimestamp,
-    poolReserve.vEmissionPerSecond,
-    totalVariableDebt,
-    currentTimestamp
-  );
+  const vTokenRewards = totalVariableDebt.gt(0)
+    ? calculateRewards(
+        variableBorrows,
+        poolReserve.vTokenIncentivesIndex,
+        userReserve.vTokenincentivesUserIndex,
+        rewardsInfo.incentivePrecision,
+        rewardsInfo.rewardTokenDecimals,
+        poolReserve.vIncentivesLastUpdateTimestamp,
+        poolReserve.vEmissionPerSecond,
+        totalVariableDebt,
+        currentTimestamp
+      )
+    : '0';
 
   const [vTokenRewardsETH, vTokenRewardsUSD] = getEthAndUsdBalance(
     vTokenRewards,
@@ -180,17 +184,19 @@ export function computeUserReserveData(
     rewardsInfo.rewardTokenDecimals,
     usdPriceEth
   );
-  const sTokenRewards = calculateRewards(
-    stableBorrows,
-    poolReserve.sTokenIncentivesIndex,
-    userReserve.sTokenincentivesUserIndex,
-    rewardsInfo.incentivePrecision,
-    rewardsInfo.rewardTokenDecimals,
-    poolReserve.sIncentivesLastUpdateTimestamp,
-    poolReserve.sEmissionPerSecond,
-    totalStableDebt,
-    currentTimestamp
-  );
+  const sTokenRewards = totalStableDebt.gt(0)
+    ? calculateRewards(
+        stableBorrows,
+        poolReserve.sTokenIncentivesIndex,
+        userReserve.sTokenincentivesUserIndex,
+        rewardsInfo.incentivePrecision,
+        rewardsInfo.rewardTokenDecimals,
+        poolReserve.sIncentivesLastUpdateTimestamp,
+        poolReserve.sEmissionPerSecond,
+        totalStableDebt,
+        currentTimestamp
+      )
+    : '0';
 
   const [sTokenRewardsETH, sTokenRewardsUSD] = getEthAndUsdBalance(
     sTokenRewards,
