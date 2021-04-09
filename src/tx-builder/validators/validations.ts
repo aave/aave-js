@@ -106,14 +106,22 @@ export function isEthAddressArrayValidator(
           methodArguments[0][storedParams.field]
           // !utils.isAddress(methodArguments[0][storedParams.field])
         ) {
-          const fieldArray = methodArguments[0][storedParams.field].split(',');
-          fieldArray.forEach((address: string) => {
-            if (!utils.isAddress(address)) {
-              throw new Error(
-                `Address: ${address} is not a valid ethereum Address`
-              );
-            }
-          });
+          console.log(
+            'array is ====> ',
+            methodArguments[0][storedParams.field]
+          );
+          if (methodArguments[0][storedParams.field].length > 0) {
+            const fieldArray = methodArguments[0][storedParams.field].split(
+              ','
+            );
+            fieldArray.forEach((address: string) => {
+              if (!utils.isAddress(address)) {
+                throw new Error(
+                  `Address: ${address} is not a valid ethereum Address`
+                );
+              }
+            });
+          }
         }
       } else {
         const isOptional =
@@ -123,14 +131,16 @@ export function isEthAddressArrayValidator(
           !isOptional
           // !utils.isAddress(methodArguments[storedParams.index])
         ) {
-          const fieldArray = methodArguments[storedParams.index].split(',');
-          fieldArray.forEach((address: string) => {
-            if (!utils.isAddress(address)) {
-              throw new Error(
-                `Address: ${address} is not a valid ethereum Address`
-              );
-            }
-          });
+          if (methodArguments[storedParams.index].length > 0) {
+            const fieldArray = methodArguments[storedParams.index].split(',');
+            fieldArray.forEach((address: string) => {
+              if (!utils.isAddress(address)) {
+                throw new Error(
+                  `Address: ${address} is not a valid ethereum Address`
+                );
+              }
+            });
+          }
         }
       }
     });
