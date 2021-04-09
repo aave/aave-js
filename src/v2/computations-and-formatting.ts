@@ -544,32 +544,35 @@ export function formatReserves(
         ? totalDebt.dividedBy(totalLiquidity).toString()
         : '0';
 
-    const aIncentivesAPY = totalLiquidity
-      ? calculateIncentivesAPY(
-          reserve.aEmissionPerSecond,
-          rewardTokenPriceEth,
-          totalLiquidity,
-          reserve.price.priceInEth
-        )
-      : '0';
+    const aIncentivesAPY =
+      totalLiquidity !== '0'
+        ? calculateIncentivesAPY(
+            reserve.aEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalLiquidity,
+            reserve.price.priceInEth
+          )
+        : '0';
 
-    const vIncentivesAPY = totalVariableDebt
-      ? calculateIncentivesAPY(
-          reserve.vEmissionPerSecond,
-          rewardTokenPriceEth,
-          totalVariableDebt,
-          reserve.price.priceInEth
-        )
-      : '0';
+    const vIncentivesAPY =
+      totalVariableDebt !== '0'
+        ? calculateIncentivesAPY(
+            reserve.vEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalVariableDebt,
+            reserve.price.priceInEth
+          )
+        : '0';
 
-    const sIncentivesAPY = totalStableDebt
-      ? calculateIncentivesAPY(
-          reserve.sEmissionPerSecond,
-          rewardTokenPriceEth,
-          totalStableDebt,
-          reserve.price.priceInEth
-        )
-      : '0';
+    const sIncentivesAPY =
+      totalStableDebt !== '0'
+        ? calculateIncentivesAPY(
+            reserve.sEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalStableDebt,
+            reserve.price.priceInEth
+          )
+        : '0';
 
     return {
       ...reserve,
