@@ -79,7 +79,7 @@ export function IncentivesValidator(
 
     isEthAddressValidator(target, propertyName, arguments);
 
-    isEthAddressArrayValidator(target, propertyName, arguments);
+    // isEthAddressArrayValidator(target, propertyName, arguments);
 
     return method?.apply(this, arguments);
   };

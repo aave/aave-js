@@ -42,7 +42,7 @@ export default class IncentivesController
   @IncentivesValidator
   public claimRewards(
     @IsEthAddress('user')
-    @IsEthAddressArray('assets')
+    // @IsEthAddressArray('assets')
     @IsEthAddress('to')
     { user, assets, to }: ClaimRewardsMethodType
   ): EthereumTransactionTypeExtended[] {
