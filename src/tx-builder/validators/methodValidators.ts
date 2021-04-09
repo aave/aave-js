@@ -72,7 +72,7 @@ export function IncentivesValidator(
   descriptor.value = function () {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
-      enabledNetworksByService.lendingPool[this.market];
+      enabledNetworksByService.incentivesController;
     if (acceptedNetworks.indexOf(currentNetwork) === -1) {
       return [];
     }

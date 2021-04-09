@@ -237,6 +237,7 @@ export type EnabledNetworksType = {
   repayWithCollateralAdapter: Network[];
   aaveGovernanceV2: Network[];
   ltaMigrator: Network[];
+  incentivesController: Network[];
 };
 
 export type PermitSignature = {
