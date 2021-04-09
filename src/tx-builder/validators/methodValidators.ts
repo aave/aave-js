@@ -81,10 +81,6 @@ export function IncentivesValidator(
 
     isEthAddressArrayValidator(target, propertyName, arguments);
 
-    amountGtThan0Validator(target, propertyName, arguments);
-
-    amountGtThan0OrMinus1(target, propertyName, arguments);
-
     return method?.apply(this, arguments);
   };
 }
