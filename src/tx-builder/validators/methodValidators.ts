@@ -5,7 +5,7 @@ import {
   amount0OrPositiveValidator,
   amountGtThan0OrMinus1,
   amountGtThan0Validator,
-  isEthAddressArrayValidator,
+  // isEthAddressArrayValidator,
   isEthAddressOrEnsValidator,
   isEthAddressValidator,
   optionalValidator,

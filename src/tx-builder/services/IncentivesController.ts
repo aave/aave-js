@@ -11,7 +11,7 @@ import {
   transactionType,
 } from '../types';
 import { IncentivesValidator } from '../validators/methodValidators';
-import { IsEthAddress, IsEthAddressArray } from '../validators/paramValidators';
+import { IsEthAddress } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
 export type ClaimRewardsMethodType = {
