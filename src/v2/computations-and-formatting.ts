@@ -716,13 +716,13 @@ export function calculateRewards(
   const timeDelta = currentTimestamp - reserveIndexTimestamp;
   const currentReserveIndex = valueToBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
-    .multipliedBy(10 ** precision)
+    .multipliedBy(pow10(precision))
     .dividedBy(totalSupply)
     .plus(reserveIndex);
 
   const reward = valueToBigNumber(principalUserBalance)
     .multipliedBy(currentReserveIndex.minus(userIndex))
-    .dividedBy(10 ** precision);
+    .dividedBy(pow10(precision));
 
   return normalize(reward, rewardTokenDecimals);
 }
