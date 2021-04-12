@@ -132,16 +132,19 @@ export function computeUserReserveData(
     totalLiquidity,
     totalStableDebt,
     totalVariableDebt,
-  } = calculateSupplies({
-    totalScaledVariableDebt: poolReserve.totalScaledVariableDebt,
-    variableBorrowIndex: poolReserve.variableBorrowIndex,
-    variableBorrowRate: poolReserve.variableBorrowRate,
-    totalPrincipalStableDebt: poolReserve.totalPrincipalStableDebt,
-    averageStableRate: poolReserve.averageStableRate,
-    availableLiquidity: poolReserve.availableLiquidity,
-    stableDebtLastUpdateTimestamp: poolReserve.stableDebtLastUpdateTimestamp,
-    lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
-  });
+  } = calculateSupplies(
+    {
+      totalScaledVariableDebt: poolReserve.totalScaledVariableDebt,
+      variableBorrowIndex: poolReserve.variableBorrowIndex,
+      variableBorrowRate: poolReserve.variableBorrowRate,
+      totalPrincipalStableDebt: poolReserve.totalPrincipalStableDebt,
+      averageStableRate: poolReserve.averageStableRate,
+      availableLiquidity: poolReserve.availableLiquidity,
+      stableDebtLastUpdateTimestamp: poolReserve.stableDebtLastUpdateTimestamp,
+      lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
+    },
+    currentTimestamp
+  );
 
   const aTokenRewards = totalLiquidity.gt(0)
     ? calculateRewards(
@@ -666,9 +669,10 @@ export function calculateReserveDebtSuppliesRaw(
   return { totalVariableDebt, totalStableDebt };
 }
 
-export function calculateSupplies(reserve: ReserveSupplyData): Supplies {
-  const currentTimestamp = Math.floor(Date.now() / 1000);
-
+export function calculateSupplies(
+  reserve: ReserveSupplyData,
+  currentTimestamp: number
+): Supplies {
   const {
     totalVariableDebt,
     totalStableDebt,
