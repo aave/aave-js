@@ -52,12 +52,6 @@ export function isEthAddressValidator(
   if (addressParameters) {
     addressParameters.forEach((storedParams) => {
       if (storedParams.field) {
-        console.log(
-          'address is : ',
-          methodArguments[0][storedParams.field],
-          ' and is valid:: ',
-          utils.isAddress(methodArguments[0][storedParams.field])
-        );
         if (
           methodArguments[0][storedParams.field] &&
           !utils.isAddress(methodArguments[0][storedParams.field])
@@ -106,10 +100,6 @@ export function isEthAddressArrayValidator(
           methodArguments[0][storedParams.field]
           // !utils.isAddress(methodArguments[0][storedParams.field])
         ) {
-          console.log(
-            'array is ====> ',
-            methodArguments[0][storedParams.field]
-          );
           if (methodArguments[0][storedParams.field].length > 0) {
             const fieldArray = methodArguments[0][storedParams.field].split(
               ','
