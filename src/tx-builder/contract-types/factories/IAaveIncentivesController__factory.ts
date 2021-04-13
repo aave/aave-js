@@ -38,11 +38,6 @@ const _abi = [
         name: "to",
         type: "address",
       },
-      {
-        internalType: "bool",
-        name: "stake",
-        type: "bool",
-      },
     ],
     name: "claimRewards",
     outputs: [

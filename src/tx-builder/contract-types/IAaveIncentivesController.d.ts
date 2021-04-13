@@ -22,12 +22,12 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface IAaveIncentivesControllerInterface extends ethers.utils.Interface {
   functions: {
-    "claimRewards(address[],uint256,address,bool)": FunctionFragment;
+    "claimRewards(address[],uint256,address)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "claimRewards",
-    values: [string[], BigNumberish, string, boolean]
+    values: [string[], BigNumberish, string]
   ): string;
 
   decodeFunctionResult(
@@ -56,15 +56,13 @@ export class IAaveIncentivesController extends Contract {
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "claimRewards(address[],uint256,address,bool)"(
+    "claimRewards(address[],uint256,address)"(
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
   };
@@ -73,15 +71,13 @@ export class IAaveIncentivesController extends Contract {
     assets: string[],
     amount: BigNumberish,
     to: string,
-    stake: boolean,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "claimRewards(address[],uint256,address,bool)"(
+  "claimRewards(address[],uint256,address)"(
     assets: string[],
     amount: BigNumberish,
     to: string,
-    stake: boolean,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -90,15 +86,13 @@ export class IAaveIncentivesController extends Contract {
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "claimRewards(address[],uint256,address,bool)"(
+    "claimRewards(address[],uint256,address)"(
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -110,15 +104,13 @@ export class IAaveIncentivesController extends Contract {
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "claimRewards(address[],uint256,address,bool)"(
+    "claimRewards(address[],uint256,address)"(
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: Overrides
     ): Promise<BigNumber>;
   };
@@ -128,15 +120,13 @@ export class IAaveIncentivesController extends Contract {
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "claimRewards(address[],uint256,address,bool)"(
+    "claimRewards(address[],uint256,address)"(
       assets: string[],
       amount: BigNumberish,
       to: string,
-      stake: boolean,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };

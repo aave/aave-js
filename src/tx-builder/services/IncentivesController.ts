@@ -18,7 +18,6 @@ export type ClaimRewardsMethodType = {
   user: string;
   assets: string[];
   to: string;
-  stake?: boolean;
 };
 
 export interface IncentivesControllerInterface {
@@ -54,8 +53,7 @@ export default class IncentivesController
         incentivesContract.populateTransaction.claimRewards(
           assets,
           constants.MaxUint256.toString(),
-          to,
-          false
+          to || user
         ),
       from: user,
     });
