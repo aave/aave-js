@@ -567,7 +567,7 @@ export default class LendingPool
     @IsEthAddress('onBehalfOf')
     @IsEthAddress('augustus')
     @IsPositiveAmount('fromAmount')
-    @IsPositiveAmount('toAmount')
+    @IsPositiveAmount('minToAmount')
     {
       user,
       flash,
@@ -575,8 +575,7 @@ export default class LendingPool
       fromAToken,
       toAsset,
       fromAmount,
-      toAmount,
-      maxSlippage,
+      minToAmount,
       permitSignature,
       swapAll,
       onBehalfOf,
@@ -623,13 +622,8 @@ export default class LendingPool
 
     const tokenToDecimals: number = await this.erc20Service.decimalsOf(toAsset);
 
-    const amountSlippage = (
-      Number(toAmount) -
-      (Number(toAmount) * Number(maxSlippage)) / 100
-    ).toString();
-
     const amountSlippageConverted: string = parseNumber(
-      amountSlippage,
+      minToAmount,
       tokenToDecimals
     );
 

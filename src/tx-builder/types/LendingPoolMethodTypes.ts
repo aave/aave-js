@@ -64,8 +64,7 @@ export type LPSwapCollateral = {
   fromAToken: tEthereumAddress;
   toAsset: tEthereumAddress; // List of the addresses of the reserve to be swapped to and deposited
   fromAmount: tStringCurrencyUnits; // List of amounts to be swapped. If the amount exceeds the balance, the total balance is used for the swap
-  toAmount: tStringCurrencyUnits;
-  maxSlippage: string;
+  minToAmount: tStringCurrencyUnits;
   permitSignature?: PermitSignature;
   swapAll: boolean;
   onBehalfOf?: tEthereumAddress;
