@@ -74,7 +74,6 @@ export default class WETHGatewayService
     const wethGatewayContract: IWETHGateway = this.getContractInstance(
       this.wethGatewayAddress
     );
-
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         wethGatewayContract.populateTransaction.depositETH(

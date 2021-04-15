@@ -6,6 +6,7 @@ import {
   valueToZDBigNumber,
   normalize,
   pow10,
+  normalizeBN,
 } from '../helpers/bignumber';
 import {
   calculateAvailableBorrowsETH,
@@ -25,8 +26,16 @@ import {
   UserSummaryData,
   ReserveRatesData,
   ComputedReserveData,
+  Supplies,
+  ReserveSupplyData,
+  RewardsInformation,
 } from './types';
-import { ETH_DECIMALS, RAY_DECIMALS, USD_DECIMALS } from '../helpers/constants';
+import {
+  ETH_DECIMALS,
+  RAY_DECIMALS,
+  SECONDS_PER_YEAR,
+  USD_DECIMALS,
+} from '../helpers/constants';
 
 export function getEthAndUsdBalance(
   balance: BigNumberValue,
@@ -70,7 +79,8 @@ export function computeUserReserveData(
   poolReserve: ReserveData,
   userReserve: UserReserveData,
   usdPriceEth: BigNumberValue,
-  currentTimestamp: number
+  currentTimestamp: number,
+  rewardsInfo: RewardsInformation
 ): ComputedUserReserve {
   const {
     price: { priceInEth },
@@ -118,6 +128,85 @@ export function computeUserReserveData(
     decimals,
     usdPriceEth
   );
+  const {
+    totalLiquidity,
+    totalStableDebt,
+    totalVariableDebt,
+  } = calculateSupplies(
+    {
+      totalScaledVariableDebt: poolReserve.totalScaledVariableDebt,
+      variableBorrowIndex: poolReserve.variableBorrowIndex,
+      variableBorrowRate: poolReserve.variableBorrowRate,
+      totalPrincipalStableDebt: poolReserve.totalPrincipalStableDebt,
+      averageStableRate: poolReserve.averageStableRate,
+      availableLiquidity: poolReserve.availableLiquidity,
+      stableDebtLastUpdateTimestamp: poolReserve.stableDebtLastUpdateTimestamp,
+      lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
+    },
+    currentTimestamp
+  );
+
+  const aTokenRewards = totalLiquidity.gt(0)
+    ? calculateRewards(
+        underlyingBalance,
+        poolReserve.aTokenIncentivesIndex,
+        userReserve.aTokenincentivesUserIndex,
+        rewardsInfo.incentivePrecision,
+        rewardsInfo.rewardTokenDecimals,
+        poolReserve.aIncentivesLastUpdateTimestamp,
+        poolReserve.aEmissionPerSecond,
+        totalLiquidity,
+        currentTimestamp
+      )
+    : '0';
+
+  const [aTokenRewardsETH, aTokenRewardsUSD] = getEthAndUsdBalance(
+    aTokenRewards,
+    rewardsInfo.rewardTokenPriceEth,
+    rewardsInfo.rewardTokenDecimals,
+    usdPriceEth
+  );
+
+  const vTokenRewards = totalVariableDebt.gt(0)
+    ? calculateRewards(
+        variableBorrows,
+        poolReserve.vTokenIncentivesIndex,
+        userReserve.vTokenincentivesUserIndex,
+        rewardsInfo.incentivePrecision,
+        rewardsInfo.rewardTokenDecimals,
+        poolReserve.vIncentivesLastUpdateTimestamp,
+        poolReserve.vEmissionPerSecond,
+        totalVariableDebt,
+        currentTimestamp
+      )
+    : '0';
+
+  const [vTokenRewardsETH, vTokenRewardsUSD] = getEthAndUsdBalance(
+    vTokenRewards,
+    rewardsInfo.rewardTokenPriceEth,
+    rewardsInfo.rewardTokenDecimals,
+    usdPriceEth
+  );
+  const sTokenRewards = totalStableDebt.gt(0)
+    ? calculateRewards(
+        stableBorrows,
+        poolReserve.sTokenIncentivesIndex,
+        userReserve.sTokenincentivesUserIndex,
+        rewardsInfo.incentivePrecision,
+        rewardsInfo.rewardTokenDecimals,
+        poolReserve.sIncentivesLastUpdateTimestamp,
+        poolReserve.sEmissionPerSecond,
+        totalStableDebt,
+        currentTimestamp
+      )
+    : '0';
+
+  const [sTokenRewardsETH, sTokenRewardsUSD] = getEthAndUsdBalance(
+    sTokenRewards,
+    rewardsInfo.rewardTokenPriceEth,
+    rewardsInfo.rewardTokenDecimals,
+    usdPriceEth
+  );
 
   return {
     ...userReserve,
@@ -139,6 +228,27 @@ export function computeUserReserveData(
     totalBorrowsUSD: valueToZDBigNumber(variableBorrowsUSD)
       .plus(stableBorrowsUSD)
       .toString(),
+    aTokenRewards,
+    aTokenRewardsETH,
+    aTokenRewardsUSD,
+    vTokenRewards,
+    vTokenRewardsETH,
+    vTokenRewardsUSD,
+    sTokenRewards,
+    sTokenRewardsETH,
+    sTokenRewardsUSD,
+    totalRewards: valueToZDBigNumber(aTokenRewards)
+      .plus(vTokenRewards)
+      .plus(sTokenRewards)
+      .toString(),
+    totalRewardsETH: valueToZDBigNumber(aTokenRewardsETH)
+      .plus(vTokenRewardsETH)
+      .plus(sTokenRewardsETH)
+      .toString(),
+    totalRewardsUSD: valueToZDBigNumber(aTokenRewardsUSD)
+      .plus(vTokenRewardsUSD)
+      .plus(sTokenRewardsUSD)
+      .toString(),
   };
 }
 
@@ -147,13 +257,18 @@ export function computeRawUserSummaryData(
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
-  currentTimestamp: number
+  currentTimestamp: number,
+  rewardsInfo: RewardsInformation
 ): UserSummaryData {
   let totalLiquidityETH = valueToZDBigNumber('0');
   let totalCollateralETH = valueToZDBigNumber('0');
   let totalBorrowsETH = valueToZDBigNumber('0');
   let currentLtv = valueToBigNumber('0');
   let currentLiquidationThreshold = valueToBigNumber('0');
+
+  let totalRewards = valueToBigNumber('0');
+  let totalRewardsETH = valueToBigNumber('0');
+  let totalRewardsUSD = valueToBigNumber('0');
 
   const userReservesData = rawUserReserves
     .map((userReserve) => {
@@ -169,8 +284,18 @@ export function computeRawUserSummaryData(
         poolReserve,
         userReserve,
         usdPriceEth,
-        currentTimestamp
+        currentTimestamp,
+        rewardsInfo
       );
+
+      totalRewards = totalRewards.plus(computedUserReserve.totalRewards);
+      totalRewardsETH = totalRewardsETH.plus(
+        computedUserReserve.totalRewardsETH
+      );
+      totalRewardsUSD = totalRewardsUSD.plus(
+        computedUserReserve.totalRewardsUSD
+      );
+
       totalLiquidityETH = totalLiquidityETH.plus(
         computedUserReserve.underlyingBalanceETH
       );
@@ -249,6 +374,9 @@ export function computeRawUserSummaryData(
     totalLiquidityUSD,
     totalCollateralUSD,
     totalBorrowsUSD,
+    totalRewards: totalRewards.toString(),
+    totalRewardsETH: totalRewardsETH.toString(),
+    totalRewardsUSD: totalRewardsUSD.toString(),
     id: userId,
     totalLiquidityETH: totalLiquidityETH.toString(),
     totalCollateralETH: totalCollateralETH.toString(),
@@ -266,14 +394,16 @@ export function formatUserSummaryData(
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
-  currentTimestamp: number
+  currentTimestamp: number,
+  rewardsInfo: RewardsInformation
 ): UserSummaryData {
   const userData = computeRawUserSummaryData(
     poolReservesData,
     rawUserReserves,
     userId,
     usdPriceEth,
-    currentTimestamp
+    currentTimestamp,
+    rewardsInfo
   );
   const userReservesData = userData.reservesData.map(
     ({ reserve, ...userReserve }): ComputedUserReserve => {
@@ -348,6 +478,9 @@ export function formatUserSummaryData(
       4
     ),
     healthFactor: userData.healthFactor,
+    totalRewards: userData.totalRewards,
+    totalRewardsETH: userData.totalRewardsETH,
+    totalRewardsUSD: userData.totalRewardsUSD,
   };
 }
 
@@ -388,7 +521,8 @@ export function calculateReserveDebt(
 export function formatReserves(
   reserves: ReserveData[],
   currentTimestamp?: number,
-  reserveIndexes30DaysAgo?: ReserveRatesData[]
+  reserveIndexes30DaysAgo?: ReserveRatesData[],
+  rewardTokenPriceEth = '0'
 ): ComputedReserveData[] {
   return reserves.map((reserve) => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
@@ -412,6 +546,37 @@ export function formatReserves(
       totalLiquidity !== '0'
         ? totalDebt.dividedBy(totalLiquidity).toString()
         : '0';
+
+    const aIncentivesAPY =
+      totalLiquidity !== '0'
+        ? calculateIncentivesAPY(
+            reserve.aEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalLiquidity,
+            reserve.price.priceInEth
+          )
+        : '0';
+
+    const vIncentivesAPY =
+      totalVariableDebt !== '0'
+        ? calculateIncentivesAPY(
+            reserve.vEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalVariableDebt,
+            reserve.price.priceInEth
+          )
+        : '0';
+
+    const sIncentivesAPY =
+      totalStableDebt !== '0'
+        ? calculateIncentivesAPY(
+            reserve.sEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalStableDebt,
+            reserve.price.priceInEth
+          )
+        : '0';
+
     return {
       ...reserve,
       totalVariableDebt,
@@ -419,6 +584,9 @@ export function formatReserves(
       totalLiquidity,
       availableLiquidity,
       utilizationRate,
+      aIncentivesAPY,
+      vIncentivesAPY,
+      sIncentivesAPY,
       totalDebt: totalDebt.toString(),
       price: {
         ...reserve.price,
@@ -471,4 +639,98 @@ export function formatReserves(
       variableBorrowIndex: normalize(reserve.variableBorrowIndex, RAY_DECIMALS),
     };
   });
+}
+
+/**
+ * Calculates the debt accrued to a given point in time.
+ * @param reserve
+ * @param currentTimestamp unix timestamp which must be higher than reserve.lastUpdateTimestamp
+ */
+export function calculateReserveDebtSuppliesRaw(
+  reserve: ReserveSupplyData,
+  currentTimestamp: number
+) {
+  const totalVariableDebt = rayMul(
+    rayMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
+    calculateCompoundedInterest(
+      reserve.variableBorrowRate,
+      currentTimestamp,
+      reserve.lastUpdateTimestamp
+    )
+  );
+  const totalStableDebt = rayMul(
+    reserve.totalPrincipalStableDebt,
+    calculateCompoundedInterest(
+      reserve.averageStableRate,
+      currentTimestamp,
+      reserve.stableDebtLastUpdateTimestamp
+    )
+  );
+  return { totalVariableDebt, totalStableDebt };
+}
+
+export function calculateSupplies(
+  reserve: ReserveSupplyData,
+  currentTimestamp: number
+): Supplies {
+  const {
+    totalVariableDebt,
+    totalStableDebt,
+  } = calculateReserveDebtSuppliesRaw(reserve, currentTimestamp);
+
+  const totalDebt = totalVariableDebt.plus(totalStableDebt);
+
+  const totalLiquidity = totalDebt.plus(reserve.availableLiquidity);
+  return {
+    totalVariableDebt,
+    totalStableDebt,
+    totalLiquidity,
+  };
+}
+
+export function calculateIncentivesAPY(
+  emissionPerSecond: string,
+  rewardTokenPriceInEth: string,
+  tokenTotalSupplyNormalized: string,
+  tokenPriceInEth: string
+): string {
+  const emissionPerSecondNormalized = normalizeBN(
+    emissionPerSecond,
+    ETH_DECIMALS
+  ).multipliedBy(rewardTokenPriceInEth);
+  const emissionPerYear = emissionPerSecondNormalized.multipliedBy(
+    SECONDS_PER_YEAR
+  );
+
+  const totalSupplyNormalized = valueToBigNumber(
+    tokenTotalSupplyNormalized
+  ).multipliedBy(tokenPriceInEth);
+
+  return emissionPerYear.dividedBy(totalSupplyNormalized).toString(10);
+}
+
+export function calculateRewards(
+  principalUserBalance: string,
+  reserveIndex: string,
+  userIndex: string,
+  precision: number,
+  rewardTokenDecimals: number,
+  reserveIndexTimestamp: number,
+  emissionPerSecond: string,
+  totalSupply: BigNumber,
+  currentTimestamp: number
+): string {
+  const timeDelta = currentTimestamp - reserveIndexTimestamp;
+
+  const currentReserveIndex = valueToBigNumber(emissionPerSecond)
+    .multipliedBy(timeDelta)
+    .multipliedBy(pow10(precision))
+    .dividedBy(totalSupply)
+    .plus(reserveIndex);
+
+  const reward = valueToBigNumber(principalUserBalance)
+    .multipliedBy(currentReserveIndex.minus(userIndex))
+    .dividedBy(pow10(precision));
+
+  return normalize(reward, rewardTokenDecimals);
 }

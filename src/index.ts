@@ -6,7 +6,6 @@ import StakingInterface from './tx-builder/interfaces/Staking';
 import SynthetixInterface from './tx-builder/interfaces/Synthetix';
 import AaveGovernanceV2Interface from './tx-builder/interfaces/v2/AaveGovernanceV2';
 import GovernanceDelegationTokenInterface from './tx-builder/interfaces/v2/GovernanceDelegationToken';
-
 // math imports
 import * as v1 from './v1';
 import * as v2 from './v2';
@@ -36,6 +35,10 @@ export * from './tx-builder/types/FaucetMethodTypes';
 export * from './tx-builder/types/GovernanceV2MethodTypes';
 export * from './tx-builder/types/GovernanceV2ReturnTypes';
 export * from './tx-builder/types/GovDelegationMethodTypes';
+export {
+  ClaimRewardsMethodType,
+  IncentivesControllerInterface,
+} from './tx-builder/services/IncentivesController';
 
 export * from './tx-builder/config';
 

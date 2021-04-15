@@ -16,6 +16,9 @@ import {
   Network,
   Stake,
 } from './types';
+import IncentivesController, {
+  IncentivesControllerInterface,
+} from './services/IncentivesController';
 
 export default class BaseTxBuilder {
   readonly configuration: Configuration;
@@ -27,6 +30,8 @@ export default class BaseTxBuilder {
   public ltaMigratorService: LTAMigratorInterface;
 
   public faucetService: FaucetInterface;
+
+  public incentiveService: IncentivesControllerInterface;
 
   readonly stakings: { [stake: string]: StakingInterface };
 
@@ -74,6 +79,7 @@ export default class BaseTxBuilder {
       this.erc20Service
     );
     this.faucetService = new FaucetService(this.configuration);
+    this.incentiveService = new IncentivesController(this.configuration);
 
     this.stakings = {};
   }
