@@ -254,7 +254,7 @@ export default class WETHGatewayService
           numericRateMode,
           onBehalfOf || user
         ),
-      gasSurplus: network === Network.polygon ? 40 : 30,
+      gasSurplus: network === Network.polygon ? 100 : 30,
       from: user,
       value: convertedAmount,
     });
