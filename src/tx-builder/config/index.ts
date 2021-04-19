@@ -148,6 +148,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
       Network.mumbai,
     ],
     [Market.AMM]: [Network.kovan, Network.mainnet],
+    [Market.Pro]: [Network.kovan],
   },
   governance: [Network.kovan, Network.mainnet],
   wethGateway: [
