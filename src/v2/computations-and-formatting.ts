@@ -36,7 +36,6 @@ import {
   SECONDS_PER_YEAR,
   USD_DECIMALS,
 } from '../helpers/constants';
-import { Tracing } from 'trace_events';
 
 export function getEthAndUsdBalance(
   balance: BigNumberValue,
