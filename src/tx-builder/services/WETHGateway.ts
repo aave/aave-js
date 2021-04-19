@@ -9,7 +9,6 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   InterestRate,
-  Network,
   ProtocolAction,
   transactionType,
   tStringDecimalUnits,
