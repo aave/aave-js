@@ -36,6 +36,7 @@ import {
   SECONDS_PER_YEAR,
   USD_DECIMALS,
 } from '../helpers/constants';
+import { Tracing } from 'trace_events';
 
 export function getEthAndUsdBalance(
   balance: BigNumberValue,
@@ -518,11 +519,72 @@ export function calculateReserveDebt(
   return { totalVariableDebt, totalStableDebt };
 }
 
+export function getIncentiveAPYs<
+  T extends {
+    aEmissionPerSecond: string;
+    vEmissionPerSecond: string;
+    sEmissionPerSecond: string;
+    totalLiquidity: string;
+    totalVariableDebt: string;
+    totalStableDebt: string;
+    price: {
+      priceInEth: string;
+    };
+  }
+>(reserves: T[], rewardTokenPriceEth = '0') {
+  return reserves.map((reserve) => {
+    const {
+      totalLiquidity,
+      totalVariableDebt,
+      totalStableDebt,
+      aEmissionPerSecond,
+      vEmissionPerSecond,
+      sEmissionPerSecond,
+      price,
+    } = reserve;
+    const aIncentivesAPY =
+      totalLiquidity !== '0'
+        ? calculateIncentivesAPY(
+            aEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalLiquidity,
+            price.priceInEth
+          )
+        : '0';
+
+    const vIncentivesAPY =
+      totalVariableDebt !== '0'
+        ? calculateIncentivesAPY(
+            vEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalVariableDebt,
+            price.priceInEth
+          )
+        : '0';
+
+    const sIncentivesAPY =
+      totalStableDebt !== '0'
+        ? calculateIncentivesAPY(
+            sEmissionPerSecond,
+            rewardTokenPriceEth,
+            totalStableDebt,
+            price.priceInEth
+          )
+        : '0';
+
+    return {
+      ...reserve,
+      aIncentivesAPY,
+      vIncentivesAPY,
+      sIncentivesAPY,
+    };
+  });
+}
+
 export function formatReserves(
   reserves: ReserveData[],
   currentTimestamp?: number,
-  reserveIndexes30DaysAgo?: ReserveRatesData[],
-  rewardTokenPriceEth = '0'
+  reserveIndexes30DaysAgo?: ReserveRatesData[]
 ): ComputedReserveData[] {
   return reserves.map((reserve) => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
@@ -547,36 +609,6 @@ export function formatReserves(
         ? totalDebt.dividedBy(totalLiquidity).toString()
         : '0';
 
-    const aIncentivesAPY =
-      totalLiquidity !== '0'
-        ? calculateIncentivesAPY(
-            reserve.aEmissionPerSecond,
-            rewardTokenPriceEth,
-            totalLiquidity,
-            reserve.price.priceInEth
-          )
-        : '0';
-
-    const vIncentivesAPY =
-      totalVariableDebt !== '0'
-        ? calculateIncentivesAPY(
-            reserve.vEmissionPerSecond,
-            rewardTokenPriceEth,
-            totalVariableDebt,
-            reserve.price.priceInEth
-          )
-        : '0';
-
-    const sIncentivesAPY =
-      totalStableDebt !== '0'
-        ? calculateIncentivesAPY(
-            reserve.sEmissionPerSecond,
-            rewardTokenPriceEth,
-            totalStableDebt,
-            reserve.price.priceInEth
-          )
-        : '0';
-
     return {
       ...reserve,
       totalVariableDebt,
@@ -584,9 +616,6 @@ export function formatReserves(
       totalLiquidity,
       availableLiquidity,
       utilizationRate,
-      aIncentivesAPY,
-      vIncentivesAPY,
-      sIncentivesAPY,
       totalDebt: totalDebt.toString(),
       price: {
         ...reserve.price,

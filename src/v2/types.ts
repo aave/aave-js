@@ -85,9 +85,6 @@ export type ComputedReserveData = {
   totalVariableDebt: string;
   totalDebt: string;
   totalLiquidity: string;
-  aIncentivesAPY: string;
-  vIncentivesAPY: string;
-  sIncentivesAPY: string;
 } & ReserveData;
 
 export type Supplies = {
