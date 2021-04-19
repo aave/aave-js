@@ -10,7 +10,7 @@ import {
   eEthereumTxType,
 } from '../types';
 import { ContractsFactory } from '../interfaces/ContractsFactory';
-import { estimateGas, getGasPrice } from '../utils/gasStation';
+import { estimateGasByNetwork, getGasPrice } from '../utils/gasStation';
 import { DEFAULT_NULL_VALUE_ON_TX, gasLimitRecommendations } from '../config';
 
 export default class BaseService<T extends Contract> {
@@ -53,7 +53,7 @@ export default class BaseService<T extends Contract> {
       value: value || DEFAULT_NULL_VALUE_ON_TX,
     };
 
-    tx.gasLimit = await estimateGas(tx, this.config, gasSurplus);
+    tx.gasLimit = await estimateGasByNetwork(tx, this.config, gasSurplus);
 
     if (
       action &&

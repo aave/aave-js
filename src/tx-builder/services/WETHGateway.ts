@@ -9,7 +9,6 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   InterestRate,
-  Network,
   ProtocolAction,
   transactionType,
   tStringDecimalUnits,
@@ -244,8 +243,6 @@ export default class WETHGatewayService
       this.wethGatewayAddress
     );
 
-    const { network } = this.config;
-
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         wethGatewayContract.populateTransaction.repayETH(
@@ -254,7 +251,7 @@ export default class WETHGatewayService
           numericRateMode,
           onBehalfOf || user
         ),
-      gasSurplus: network === Network.polygon ? 100 : 30,
+      gasSurplus: 30,
       from: user,
       value: convertedAmount,
     });
