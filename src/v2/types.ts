@@ -171,6 +171,13 @@ export type ComputedUserReserve = UserReserveData & {
 };
 
 export type ComputedUserRewards = {
+  reservesData: ReserveRewards[];
+  totalRewards: string;
+  totalRewardsETH: string;
+  totalRewardsUSD: string;
+};
+
+export type ReserveRewards = {
   aTokenRewards: string;
   aTokenRewardsETH: string;
   aTokenRewardsUSD: string;
