@@ -89,6 +89,10 @@ export function getUserRewardsByReserve<
   usdPriceEth: BigNumberValue,
   rewardsInfo: RewardsInformation
 ): ComputedUserRewards[] {
+  // let totalRewards = valueToBigNumber('0');
+  // let totalRewardsETH = valueToBigNumber('0');
+  // let totalRewardsUSD = valueToBigNumber('0');
+
   return rawUserReserves.map((userReserve: T) => {
     const poolReserve = poolReservesData.find(
       (reserve: R) => reserve.id === userReserve.reserve.id
@@ -181,6 +185,14 @@ export function getUserRewardsByReserve<
       rewardsInfo.rewardTokenDecimals,
       usdPriceEth
     );
+
+    //totalRewards = totalRewards.plus(computedUserReserve.totalRewards);
+    // totalRewardsETH = totalRewardsETH.plus(
+    //   computedUserReserve.totalRewardsETH
+    // );
+    // totalRewardsUSD = totalRewardsUSD.plus(
+    //   computedUserReserve.totalRewardsUSD
+    // );
 
     return {
       aTokenRewards,
@@ -297,10 +309,6 @@ export function computeRawUserSummaryData(
   let currentLtv = valueToBigNumber('0');
   let currentLiquidationThreshold = valueToBigNumber('0');
 
-  let totalRewards = valueToBigNumber('0');
-  let totalRewardsETH = valueToBigNumber('0');
-  let totalRewardsUSD = valueToBigNumber('0');
-
   const userReservesData = rawUserReserves
     .map((userReserve) => {
       const poolReserve = poolReservesData.find(
@@ -316,14 +324,6 @@ export function computeRawUserSummaryData(
         userReserve,
         usdPriceEth,
         currentTimestamp
-      );
-
-      totalRewards = totalRewards.plus(computedUserReserve.totalRewards);
-      totalRewardsETH = totalRewardsETH.plus(
-        computedUserReserve.totalRewardsETH
-      );
-      totalRewardsUSD = totalRewardsUSD.plus(
-        computedUserReserve.totalRewardsUSD
       );
 
       totalLiquidityETH = totalLiquidityETH.plus(
@@ -404,9 +404,6 @@ export function computeRawUserSummaryData(
     totalLiquidityUSD,
     totalCollateralUSD,
     totalBorrowsUSD,
-    totalRewards: totalRewards.toString(),
-    totalRewardsETH: totalRewardsETH.toString(),
-    totalRewardsUSD: totalRewardsUSD.toString(),
     id: userId,
     totalLiquidityETH: totalLiquidityETH.toString(),
     totalCollateralETH: totalCollateralETH.toString(),
@@ -506,9 +503,6 @@ export function formatUserSummaryData(
       4
     ),
     healthFactor: userData.healthFactor,
-    totalRewards: userData.totalRewards,
-    totalRewardsETH: userData.totalRewardsETH,
-    totalRewardsUSD: userData.totalRewardsUSD,
   };
 }
 

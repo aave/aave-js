@@ -198,7 +198,4 @@ export type UserSummaryData = {
   currentLiquidationThreshold: string;
   healthFactor: string;
   reservesData: ComputedUserReserve[];
-  totalRewards: string;
-  totalRewardsETH: string;
-  totalRewardsUSD: string;
 };
