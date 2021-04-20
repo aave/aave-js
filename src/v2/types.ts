@@ -72,6 +72,7 @@ export type ReserveData = {
 };
 
 export type IncentivizedReserve = {
+  id: string;
   aEmissionPerSecond: string;
   vEmissionPerSecond: string;
   sEmissionPerSecond: string;
@@ -81,6 +82,13 @@ export type IncentivizedReserve = {
   price: {
     priceInEth: string;
   };
+};
+
+export type ReserveIncentivesAPY = {
+  id: string;
+  aIncentivesAPY: string;
+  vIncentivesAPY: string;
+  sIncentivesAPY: string;
 };
 
 export type IncentivizedUserReserve = {

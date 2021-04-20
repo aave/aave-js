@@ -34,6 +34,7 @@ import {
   IncentivizedUserReserveData,
   ComputedUserRewards,
   ReserveRewards,
+  ReserveIncentivesAPY,
 } from './types';
 import {
   ETH_DECIMALS,
@@ -639,7 +640,7 @@ export function formatReserves(
 export function getIncentiveAPYs<T extends IncentivizedReserve>(
   reserves: T[],
   rewardTokenPriceEth = '0'
-) {
+): ReserveIncentivesAPY[] {
   return reserves.map((reserve: T) => {
     const aIncentivesAPY =
       reserve.totalLiquidity !== '0'
@@ -672,6 +673,7 @@ export function getIncentiveAPYs<T extends IncentivizedReserve>(
         : '0';
 
     return {
+      id: reserve.id,
       aIncentivesAPY,
       vIncentivesAPY,
       sIncentivesAPY,
