@@ -101,6 +101,11 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
     },
   },
+  [Market.Pro]: {
+    [Network.kovan]: {
+      LENDINGPOOL_ADDRESS: '0xF9969e21c865FF0B347f137d28f21cBe7102457B',
+    },
+  },
 };
 
 export const aaveGovernanceV2Addresses: GovernanceConfigType = {
