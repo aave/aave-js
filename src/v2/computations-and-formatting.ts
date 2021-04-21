@@ -722,6 +722,18 @@ export function calculateRewards(
 ): string {
   const timeDelta = currentTimestamp - reserveIndexTimestamp;
 
+  console.log(`
+    principalUserBalance: ${principalUserBalance},
+    reserveIndex: ${reserveIndex},
+    userIndex: ${userIndex},
+    precision: ${precision}
+    rewardTokenDecimals: ${rewardTokenDecimals}
+    emissionPerSecond: ${emissionPerSecond}
+    emissionPerSecond: ${totalSupply},
+    reserveIndexTimestamp: ${reserveIndexTimestamp}
+    currentTimestamp: ${currentTimestamp}
+    timeDelta: ${timeDelta}
+  `);
   const currentReserveIndex = valueToBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
     .multipliedBy(pow10(precision))
