@@ -156,7 +156,8 @@ export function computeUserReserveData(
         poolReserve.aIncentivesLastUpdateTimestamp,
         poolReserve.aEmissionPerSecond,
         totalLiquidity,
-        currentTimestamp
+        currentTimestamp,
+        rewardsInfo.emissionEndTimestamp
       )
     : '0';
 
@@ -177,7 +178,8 @@ export function computeUserReserveData(
         poolReserve.vIncentivesLastUpdateTimestamp,
         poolReserve.vEmissionPerSecond,
         totalVariableDebt,
-        currentTimestamp
+        currentTimestamp,
+        rewardsInfo.emissionEndTimestamp
       )
     : '0';
 
@@ -197,7 +199,8 @@ export function computeUserReserveData(
         poolReserve.sIncentivesLastUpdateTimestamp,
         poolReserve.sEmissionPerSecond,
         totalStableDebt,
-        currentTimestamp
+        currentTimestamp,
+        rewardsInfo.emissionEndTimestamp
       )
     : '0';
 
@@ -718,9 +721,14 @@ export function calculateRewards(
   reserveIndexTimestamp: number,
   emissionPerSecond: string,
   totalSupply: BigNumber,
-  currentTimestamp: number
+  currentTimestamp: number,
+  emissionEndTimestamp: number
 ): string {
-  const timeDelta = currentTimestamp - reserveIndexTimestamp;
+  const actualCurrentTimestamp =
+    currentTimestamp > emissionEndTimestamp
+      ? emissionEndTimestamp
+      : currentTimestamp;
+  const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
 
   const currentReserveIndex = valueToBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
