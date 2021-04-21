@@ -186,6 +186,7 @@ export type ComputedUserRewards = {
 };
 
 export type ReserveRewards = {
+  id: string;
   aTokenRewards: string;
   aTokenRewardsETH: string;
   aTokenRewardsUSD: string;

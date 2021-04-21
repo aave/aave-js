@@ -204,6 +204,7 @@ export function getUserRewardsByReserve<
       totalRewardsUSD = totalRewardsUSD.plus(reserveTotalRewardsUSD);
 
       return {
+        id: userReserve.reserve.id,
         aTokenRewards,
         aTokenRewardsETH,
         aTokenRewardsUSD,
