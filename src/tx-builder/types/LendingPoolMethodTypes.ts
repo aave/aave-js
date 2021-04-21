@@ -19,6 +19,7 @@ export type LPWithdrawParamsType = {
   amount: tStringCurrencyUnits;
   onBehalfOf?: tEthereumAddress;
   aTokenAddress?: tEthereumAddress;
+  unwrapBaseCurrency?: boolean;
 };
 export type LPBorrowParamsType = {
   user: tEthereumAddress;

@@ -177,9 +177,19 @@ export default class LendingPool
     @IsPositiveOrMinusOneAmount('amount')
     @IsEthAddress('onBehalfOf')
     @IsEthAddress('aTokenAddress')
-    { user, reserve, amount, onBehalfOf, aTokenAddress }: LPWithdrawParamsType
+    {
+      user,
+      reserve,
+      amount,
+      onBehalfOf,
+      aTokenAddress,
+      unwrapBaseCurrency,
+    }: LPWithdrawParamsType
   ): Promise<EthereumTransactionTypeExtended[]> {
-    if (reserve.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+    if (
+      reserve.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase() &&
+      unwrapBaseCurrency
+    ) {
       if (!aTokenAddress) {
         throw new Error(
           'To withdraw ETH you need to pass the aWETH token address'
