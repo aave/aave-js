@@ -140,75 +140,49 @@ export function computeUserReserveData(
 }
 
 export function computeRawUserSummaryData(
-  poolReservesData: ReserveData[],
+  poolReservesData: { [key: string]: ReserveData },
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
   currentTimestamp: number
-): UserSummaryData {
-  let totalLiquidityETH = valueToZDBigNumber('0');
+) {
   let totalCollateralETH = valueToZDBigNumber('0');
   let totalBorrowsETH = valueToZDBigNumber('0');
-  let currentLtv = valueToBigNumber('0');
   let currentLiquidationThreshold = valueToBigNumber('0');
 
-  const userReservesData = rawUserReserves
-    .map((userReserve) => {
-      const poolReserve = poolReservesData.find(
-        (reserve) => reserve.id === userReserve.reserve.id
+  const userReservesData = rawUserReserves.map((userReserve) => {
+    const poolReserve = poolReservesData[userReserve.reserve.id];
+    if (!poolReserve) {
+      throw new Error(
+        'Reserve is not registered on platform, please contact support'
       );
-      if (!poolReserve) {
-        throw new Error(
-          'Reserve is not registered on platform, please contact support'
-        );
-      }
-      const computedUserReserve = computeUserReserveData(
-        poolReserve,
-        userReserve,
-        usdPriceEth,
-        currentTimestamp
-      );
-      totalLiquidityETH = totalLiquidityETH.plus(
+    }
+    const computedUserReserve = computeUserReserveData(
+      poolReserve,
+      userReserve,
+      usdPriceEth,
+      currentTimestamp
+    );
+    totalBorrowsETH = totalBorrowsETH
+      .plus(computedUserReserve.variableBorrowsETH)
+      .plus(computedUserReserve.stableBorrowsETH);
+
+    // asset enabled as collateral
+    if (
+      poolReserve.usageAsCollateralEnabled &&
+      userReserve.usageAsCollateralEnabledOnUser
+    ) {
+      totalCollateralETH = totalCollateralETH.plus(
         computedUserReserve.underlyingBalanceETH
       );
-      totalBorrowsETH = totalBorrowsETH
-        .plus(computedUserReserve.variableBorrowsETH)
-        .plus(computedUserReserve.stableBorrowsETH);
-
-      // asset enabled as collateral
-      if (
-        poolReserve.usageAsCollateralEnabled &&
-        userReserve.usageAsCollateralEnabledOnUser
-      ) {
-        totalCollateralETH = totalCollateralETH.plus(
-          computedUserReserve.underlyingBalanceETH
-        );
-        currentLtv = currentLtv.plus(
-          valueToBigNumber(
-            computedUserReserve.underlyingBalanceETH
-          ).multipliedBy(poolReserve.baseLTVasCollateral)
-        );
-        currentLiquidationThreshold = currentLiquidationThreshold.plus(
-          valueToBigNumber(
-            computedUserReserve.underlyingBalanceETH
-          ).multipliedBy(poolReserve.reserveLiquidationThreshold)
-        );
-      }
-      return computedUserReserve;
-    })
-    .sort((a, b) =>
-      a.reserve.symbol > b.reserve.symbol
-        ? 1
-        : a.reserve.symbol < b.reserve.symbol
-        ? -1
-        : 0
-    );
-
-  if (currentLtv.gt(0)) {
-    currentLtv = currentLtv
-      .div(totalCollateralETH)
-      .decimalPlaces(0, BigNumber.ROUND_DOWN);
-  }
+      currentLiquidationThreshold = currentLiquidationThreshold.plus(
+        valueToBigNumber(computedUserReserve.underlyingBalanceETH).multipliedBy(
+          poolReserve.reserveLiquidationThreshold
+        )
+      );
+    }
+    return computedUserReserve;
+  });
   if (currentLiquidationThreshold.gt(0)) {
     currentLiquidationThreshold = currentLiquidationThreshold
       .div(totalCollateralETH)
@@ -221,38 +195,10 @@ export function computeRawUserSummaryData(
     currentLiquidationThreshold
   );
 
-  const totalCollateralUSD = totalCollateralETH
-    .multipliedBy(pow10(USD_DECIMALS))
-    .dividedBy(usdPriceEth)
-    .toString();
-
-  const totalLiquidityUSD = totalLiquidityETH
-    .multipliedBy(pow10(USD_DECIMALS))
-    .dividedBy(usdPriceEth)
-    .toString();
-
-  const totalBorrowsUSD = totalBorrowsETH
-    .multipliedBy(pow10(USD_DECIMALS))
-    .dividedBy(usdPriceEth)
-    .toString();
-
-  const availableBorrowsETH = calculateAvailableBorrowsETH(
-    totalCollateralETH,
-    totalBorrowsETH,
-    currentLtv
-  );
-
   return {
-    totalLiquidityUSD,
-    totalCollateralUSD,
-    totalBorrowsUSD,
     id: userId,
-    totalLiquidityETH: totalLiquidityETH.toString(),
     totalCollateralETH: totalCollateralETH.toString(),
     totalBorrowsETH: totalBorrowsETH.toString(),
-    availableBorrowsETH: availableBorrowsETH.toString(),
-    currentLoanToValue: currentLtv.toString(),
-    currentLiquidationThreshold: currentLiquidationThreshold.toString(),
     healthFactor: healthFactor.toString(),
     reservesData: userReservesData,
   };
