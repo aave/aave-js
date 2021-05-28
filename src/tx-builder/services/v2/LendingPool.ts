@@ -35,6 +35,7 @@ import {
   LPSwapCollateral,
   LPWithdrawParamsType,
   LPFlashLiquidation,
+  LPApproveDelegation,
 } from '../../types/LendingPoolMethodTypes';
 import WETHGatewayInterface from '../../interfaces/WETHGateway';
 import {
@@ -45,6 +46,7 @@ import {
 import LiquiditySwapAdapterInterface from '../../interfaces/LiquiditySwapAdapter';
 import RepayWithCollateralAdapterInterface from '../../interfaces/RepayWithCollateralAdapter';
 import BaseService from '../BaseService';
+import BaseDebtTokenInterface from '../../interfaces/BaseDebtToken';
 
 export default class LendingPool
   extends BaseService<ILendingPool>
@@ -63,6 +65,8 @@ export default class LendingPool
 
   readonly repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface;
 
+  readonly baseDebtTokenService: BaseDebtTokenInterface;
+
   constructor(
     config: Configuration,
     erc20Service: IERC20ServiceInterface,
@@ -70,6 +74,7 @@ export default class LendingPool
     wethGatewayService: WETHGatewayInterface,
     liquiditySwapAdapterService: LiquiditySwapAdapterInterface,
     repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface,
+    baseDebtTokenService: BaseDebtTokenInterface,
     market: Market
   ) {
     super(config, ILendingPool__factory);
@@ -78,6 +83,7 @@ export default class LendingPool
     this.wethGatewayService = wethGatewayService;
     this.liquiditySwapAdapterService = liquiditySwapAdapterService;
     this.repayWithCollateralAdapterService = repayWithCollateralAdapterService;
+    this.baseDebtTokenService = baseDebtTokenService;
     this.market = market;
 
     const { network } = this.config;
@@ -930,6 +936,49 @@ export default class LendingPool
         ProtocolAction.liquidationFlash
       ),
     });
+    return txs;
+  }
+
+  @LPValidator
+  public async approveDelegation(
+    @IsEthAddress('delegator')
+    @IsEthAddress('delegatee')
+    @IsEthAddress('debtToken')
+    { delegator, delegatee, debtToken, amount }: LPApproveDelegation
+  ): Promise<EthereumTransactionTypeExtended[]> {
+    const txs: EthereumTransactionTypeExtended[] = [];
+
+    const approved: boolean = await this.baseDebtTokenService.isDelegationApproved(
+      debtToken,
+      delegator,
+      delegatee,
+      amount
+    );
+
+    if (!approved) {
+      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
+        delegator,
+        debtToken,
+        delegatee,
+        constants.MaxUint256.toString()
+      );
+
+      txs.push(approveTx);
+    }
+
+    const tokenDecimals: number = await this.erc20Service.decimalsOf(debtToken);
+
+    const convertedAmount: string = parseNumber(amount, tokenDecimals);
+
+    // Direct call to approveDelegation on debt token
+    const approveDelegationTx: EthereumTransactionTypeExtended = await this.baseDebtTokenService.approveDelegation(
+      delegator,
+      delegatee,
+      debtToken,
+      convertedAmount
+    );
+
+    txs.push(approveDelegationTx);
     return txs;
   }
 }
