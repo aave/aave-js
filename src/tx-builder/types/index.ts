@@ -12,11 +12,10 @@ export enum InterestRate {
   Variable = 'Variable',
 }
 
-
 export enum Market {
   Proto = 'proto',
   AMM = 'amm',
-  USD = "USD"
+  USD = 'USD',
 }
 
 export enum Network {

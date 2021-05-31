@@ -103,7 +103,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     [Network.mainnet]: {
       LENDINGPOOL_ADDRESS: '0x218Be5512798fa1BCB6431FccF1Ec20f5429C68F',
     },
-  }
+  },
 };
 
 export const aaveGovernanceV2Addresses: GovernanceConfigType = {
