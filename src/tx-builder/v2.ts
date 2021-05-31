@@ -19,7 +19,8 @@ import GovernanceDelegationTokenService from './services/v2/GovernanceDelegation
 
 export default class TxBuilder
   extends BaseTxBuilder
-  implements TxBuilderInterface {
+  implements TxBuilderInterface
+{
   readonly lendingPools: {
     [market: string]: LendingPoolInterface;
   };
@@ -60,15 +61,13 @@ export default class TxBuilder
     this.liquiditySwapAdapterService = new LiquiditySwapAdapterService(
       this.configuration
     );
-    this.repayWithCollateralAdapterService = new RepayWithCollateralAdapterService(
-      this.configuration
-    );
+    this.repayWithCollateralAdapterService =
+      new RepayWithCollateralAdapterService(this.configuration);
     this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
       this.configuration
     );
-    this.governanceDelegationTokenService = new GovernanceDelegationTokenService(
-      this.configuration
-    );
+    this.governanceDelegationTokenService =
+      new GovernanceDelegationTokenService(this.configuration);
   }
 
   public getLendingPool = (market: Market): LendingPoolInterface => {
