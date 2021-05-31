@@ -128,23 +128,21 @@ export function computeUserReserveData(
     decimals,
     usdPriceEth
   );
-  const {
-    totalLiquidity,
-    totalStableDebt,
-    totalVariableDebt,
-  } = calculateSupplies(
-    {
-      totalScaledVariableDebt: poolReserve.totalScaledVariableDebt,
-      variableBorrowIndex: poolReserve.variableBorrowIndex,
-      variableBorrowRate: poolReserve.variableBorrowRate,
-      totalPrincipalStableDebt: poolReserve.totalPrincipalStableDebt,
-      averageStableRate: poolReserve.averageStableRate,
-      availableLiquidity: poolReserve.availableLiquidity,
-      stableDebtLastUpdateTimestamp: poolReserve.stableDebtLastUpdateTimestamp,
-      lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
-    },
-    currentTimestamp
-  );
+  const { totalLiquidity, totalStableDebt, totalVariableDebt } =
+    calculateSupplies(
+      {
+        totalScaledVariableDebt: poolReserve.totalScaledVariableDebt,
+        variableBorrowIndex: poolReserve.variableBorrowIndex,
+        variableBorrowRate: poolReserve.variableBorrowRate,
+        totalPrincipalStableDebt: poolReserve.totalPrincipalStableDebt,
+        averageStableRate: poolReserve.averageStableRate,
+        availableLiquidity: poolReserve.availableLiquidity,
+        stableDebtLastUpdateTimestamp:
+          poolReserve.stableDebtLastUpdateTimestamp,
+        lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
+      },
+      currentTimestamp
+    );
 
   const aTokenRewards = totalLiquidity.gt(0)
     ? calculateRewards(
@@ -673,10 +671,8 @@ export function calculateSupplies(
   reserve: ReserveSupplyData,
   currentTimestamp: number
 ): Supplies {
-  const {
-    totalVariableDebt,
-    totalStableDebt,
-  } = calculateReserveDebtSuppliesRaw(reserve, currentTimestamp);
+  const { totalVariableDebt, totalStableDebt } =
+    calculateReserveDebtSuppliesRaw(reserve, currentTimestamp);
 
   const totalDebt = totalVariableDebt.plus(totalStableDebt);
 
@@ -698,9 +694,8 @@ export function calculateIncentivesAPY(
     emissionPerSecond,
     ETH_DECIMALS
   ).multipliedBy(rewardTokenPriceInEth);
-  const emissionPerYear = emissionPerSecondNormalized.multipliedBy(
-    SECONDS_PER_YEAR
-  );
+  const emissionPerYear =
+    emissionPerSecondNormalized.multipliedBy(SECONDS_PER_YEAR);
 
   const totalSupplyNormalized = valueToBigNumber(
     tokenTotalSupplyNormalized

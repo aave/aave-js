@@ -14,15 +14,15 @@ import BaseService from './BaseService';
 
 export default class LiquiditySwapAdapterService
   extends BaseService<ISwapCollateral>
-  implements LiquiditySwapAdapterInterface {
+  implements LiquiditySwapAdapterInterface
+{
   readonly liquiditySwapAdapterAddress: string;
 
   constructor(config: Configuration) {
     super(config, ISwapCollateral__factory);
 
-    const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
-      this.config.network
-    ];
+    const { SWAP_COLLATERAL_ADAPTER } =
+      commonContractAddressBetweenMarketsV2[this.config.network];
     this.liquiditySwapAdapterAddress = SWAP_COLLATERAL_ADAPTER;
   }
 

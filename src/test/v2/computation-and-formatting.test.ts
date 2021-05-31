@@ -39,8 +39,7 @@ const mockReserve: ReserveData = {
   variableRateSlope2: '750000000000000000000000000',
   stableRateSlope1: '20000000000000000000000000',
   stableRateSlope2: '750000000000000000000000000',
-  id:
-    '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
+  id: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
   price: { priceInEth: '1634050000000000' },
   // fake data
   optimalUtilisationRate: '109284236984257451326752610',
@@ -67,8 +66,7 @@ const mockUserReserve: UserReserveData = {
   variableBorrowIndex: '0',
   //id:0cd96fb5ee9616f64d892644f53f35be4f90xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
   reserve: {
-    id:
-      '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
+    id: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
     underlyingAsset: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
     name: '',
     symbol: 'DAI',

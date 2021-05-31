@@ -17,7 +17,8 @@ import { parseNumber } from '../utils/parsings';
 
 export default class ERC20Service
   extends BaseService<IERC20Detailed>
-  implements IERC20ServiceInterface {
+  implements IERC20ServiceInterface
+{
   readonly tokenDecimals: { [address: string]: number };
 
   constructor(config: Configuration) {
@@ -106,11 +107,8 @@ export default class ERC20Service
       decimals: decimalsGetter,
     }: IERC20Detailed = this.getContractInstance(token);
 
-    const [name, symbol, decimals]: [
-      string,
-      string,
-      number
-    ] = await Promise.all([nameGetter(), symbolGetter(), decimalsGetter()]);
+    const [name, symbol, decimals]: [string, string, number] =
+      await Promise.all([nameGetter(), symbolGetter(), decimalsGetter()]);
 
     return {
       name,

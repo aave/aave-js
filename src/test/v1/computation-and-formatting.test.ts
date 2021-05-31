@@ -11,8 +11,7 @@ const mockReserve: ReserveData = {
   baseVariableBorrowRate: '10000000000000000000000000',
   borrowingEnabled: true,
   decimals: 18,
-  id:
-    '0x0000000000085d4780b73119b644ae5ecd22b3760x24a42fd28c976a61df5d00d0599c34c4f90748c8',
+  id: '0x0000000000085d4780b73119b644ae5ecd22b3760x24a42fd28c976a61df5d00d0599c34c4f90748c8',
   isActive: true,
   isFreezed: false,
   lastUpdateTimestamp: 1610384006,
