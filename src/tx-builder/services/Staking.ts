@@ -35,8 +35,7 @@ import BaseService from './BaseService';
 
 export default class StakingService
   extends BaseService<IStakedToken>
-  implements StakingInterface
-{
+  implements StakingInterface {
   readonly stakingHelperContract: IAaveStakingHelper;
 
   readonly stakingContractAddress: string;
@@ -60,8 +59,11 @@ export default class StakingService
 
     const { provider, network } = this.config;
 
-    const { TOKEN_STAKING_ADDRESS, STAKING_HELPER_ADDRESS, canUsePermit } =
-      distinctStakingAddressesBetweenTokens[this.tokenStake][network];
+    const {
+      TOKEN_STAKING_ADDRESS,
+      STAKING_HELPER_ADDRESS,
+      canUsePermit,
+    } = distinctStakingAddressesBetweenTokens[this.tokenStake][network];
 
     this.stakingContractAddress = TOKEN_STAKING_ADDRESS;
     this.stakingHelperContractAddress = STAKING_HELPER_ADDRESS;

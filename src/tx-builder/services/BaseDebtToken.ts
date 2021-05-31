@@ -16,8 +16,7 @@ import BaseService from './BaseService';
 
 export default class BaseDebtToken
   extends BaseService<IDebtTokenBase>
-  implements BaseDebtTokenInterface
-{
+  implements BaseDebtTokenInterface {
   readonly erc20Service: IERC20ServiceInterface;
 
   constructor(config: Configuration, erc20Service: IERC20ServiceInterface) {
@@ -31,8 +30,9 @@ export default class BaseDebtToken
     debtTokenAddress: tEthereumAddress,
     amount: tStringDecimalUnits
   ): EthereumTransactionTypeExtended {
-    const debtTokenContract: IDebtTokenBase =
-      this.getContractInstance(debtTokenAddress);
+    const debtTokenContract: IDebtTokenBase = this.getContractInstance(
+      debtTokenAddress
+    );
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         debtTokenContract.populateTransaction.approveDelegation(
@@ -58,13 +58,13 @@ export default class BaseDebtToken
     const decimals: number = await this.erc20Service.decimalsOf(
       debtTokenAddress
     );
-    const debtTokenContract: IDebtTokenBase =
-      this.getContractInstance(debtTokenAddress);
-    const delegatedAllowance: BigNumber =
-      await debtTokenContract.borrowAllowance(
-        allowanceGiver,
-        allowanceReceiver
-      );
+    const debtTokenContract: IDebtTokenBase = this.getContractInstance(
+      debtTokenAddress
+    );
+    const delegatedAllowance: BigNumber = await debtTokenContract.borrowAllowance(
+      allowanceGiver,
+      allowanceReceiver
+    );
     const amountBNWithDecimals: BigNumber = BigNumber.from(
       parseNumber(amount, decimals)
     );

@@ -37,8 +37,7 @@ import BaseService from '../BaseService';
 
 export default class GovernanceDelegationTokenService
   extends BaseService<IGovernancePowerDelegationToken>
-  implements GovernanceDelegationTokenInterface
-{
+  implements GovernanceDelegationTokenInterface {
   constructor(config: Configuration) {
     super(config, IGovernancePowerDelegationToken__factory);
   }
@@ -51,8 +50,9 @@ export default class GovernanceDelegationTokenService
     { user, delegatee, governanceToken }: GovDelegate
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
 
     const delegateeAddress: string = await this.getDelegateeAddress(delegatee);
 
@@ -81,8 +81,9 @@ export default class GovernanceDelegationTokenService
     { user, delegatee, delegationType, governanceToken }: GovDelegateByType
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
 
     const delegateeAddress: string = await this.getDelegateeAddress(delegatee);
 
@@ -112,8 +113,9 @@ export default class GovernanceDelegationTokenService
     { user, delegatee, expiry, signature, governanceToken }: GovDelegateBySig
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
     const nonce = await this.getNonce({ user, governanceToken });
     const { v, r, s } = splitSignature(signature);
 
@@ -156,8 +158,9 @@ export default class GovernanceDelegationTokenService
     }: GovDelegateByTypeBySig
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
     const nonce = await this.getNonce({ user, governanceToken });
     const { v, r, s } = splitSignature(signature);
 
@@ -283,8 +286,9 @@ export default class GovernanceDelegationTokenService
     @IsEthAddress('governanceToken')
     { delegator, delegationType, governanceToken }: GovGetDelegateeByType
   ): Promise<tEthereumAddress> {
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
     return governanceDelegationToken.getDelegateeByType(
       delegator,
       delegationType
@@ -297,8 +301,9 @@ export default class GovernanceDelegationTokenService
     @IsEthAddress('governanceToken')
     { user, delegationType, governanceToken }: GovGetPowerCurrent
   ): Promise<tStringDecimalUnits> {
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
     return (
       await governanceDelegationToken.getPowerCurrent(user, delegationType)
     ).toString();
@@ -311,8 +316,9 @@ export default class GovernanceDelegationTokenService
     @IsPositiveAmount('blockNumber')
     { user, blockNumber, delegationType, governanceToken }: GovGetPowerAtBlock
   ): Promise<tStringDecimalUnits> {
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
     return (
       await governanceDelegationToken.getPowerAtBlock(
         user,
@@ -328,8 +334,9 @@ export default class GovernanceDelegationTokenService
     @IsEthAddress('governanceToken')
     { user, governanceToken }: GovGetNonce
   ): Promise<tStringDecimalUnits> {
-    const governanceDelegationToken: IGovernancePowerDelegationToken =
-      this.getContractInstance(governanceToken);
+    const governanceDelegationToken: IGovernancePowerDelegationToken = this.getContractInstance(
+      governanceToken
+    );
     // eslint-disable-next-line no-underscore-dangle
     return (await governanceDelegationToken._nonces(user)).toString();
   }

@@ -110,8 +110,7 @@ const parseProposal = async (rawProposal: ProposalRPC): Promise<Proposal> => {
 };
 export default class AaveGovernanceV2Service
   extends BaseService<IAaveGovernanceV2>
-  implements AaveGovernanceV2Interface
-{
+  implements AaveGovernanceV2Interface {
   readonly aaveGovernanceV2Address: string;
 
   readonly aaveGovernanceV2HelperAddress: string;
@@ -391,8 +390,10 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingAtBlockType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy =
-      IGovernanceStrategy__factory.connect(strategy, provider);
+    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
+      strategy,
+      provider
+    );
 
     const power = await proposalStrategy.getPropositionPowerAt(
       user,
@@ -408,8 +409,10 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingAtBlockType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy =
-      IGovernanceStrategy__factory.connect(strategy, provider);
+    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
+      strategy,
+      provider
+    );
 
     const power = await proposalStrategy.getVotingPowerAt(
       user,
@@ -424,8 +427,10 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingSupplyType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy =
-      IGovernanceStrategy__factory.connect(strategy, provider);
+    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
+      strategy,
+      provider
+    );
 
     const total = await proposalStrategy.getTotalPropositionSupplyAt(
       block.toString()
@@ -439,8 +444,10 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingSupplyType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy =
-      IGovernanceStrategy__factory.connect(strategy, provider);
+    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
+      strategy,
+      provider
+    );
 
     const total = await proposalStrategy.getTotalVotingSupplyAt(
       block.toString()

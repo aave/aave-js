@@ -7,8 +7,7 @@ import { commonContractAddressBetweenMarketsV2 } from '../config';
 
 export default class SynthetixService
   extends BaseService<ISynthetix>
-  implements SynthetixInterface
-{
+  implements SynthetixInterface {
   constructor(config: Configuration) {
     super(config, ISynthetix__factory);
   }
@@ -37,8 +36,9 @@ export default class SynthetixService
         .SYNTHETIX_PROXY_ADDRESS
     );
 
-    const transferableAmount: BigNumber =
-      await synthContract.transferableSynthetix(userAddress);
+    const transferableAmount: BigNumber = await synthContract.transferableSynthetix(
+      userAddress
+    );
     return BigNumber.from(amount).lte(transferableAmount);
   };
 }

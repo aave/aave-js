@@ -28,8 +28,7 @@ export interface IncentivesControllerInterface {
 
 export default class IncentivesController
   extends BaseService<IAaveIncentivesController>
-  implements IncentivesControllerInterface
-{
+  implements IncentivesControllerInterface {
   readonly incentivesControllerAddress: string;
 
   constructor(config: Configuration) {
@@ -46,8 +45,9 @@ export default class IncentivesController
     @IsEthAddress('to')
     { user, assets, to }: ClaimRewardsMethodType
   ): EthereumTransactionTypeExtended[] {
-    const incentivesContract: IAaveIncentivesController =
-      this.getContractInstance(this.incentivesControllerAddress);
+    const incentivesContract: IAaveIncentivesController = this.getContractInstance(
+      this.incentivesControllerAddress
+    );
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         incentivesContract.populateTransaction.claimRewards(

@@ -170,16 +170,14 @@ export function calculateCumulatedBalance(
   );
 }
 
-export type CalculateCurrentUnderlyingBalancePoolReserve =
-  CalculateCumulatedBalancePoolReserve;
-export type CalculateCurrentUnderlyingBalanceUserReserve =
-  CalculateCumulatedBalanceUserReserve &
-    Pick<
-      UserReserveData,
-      | 'principalATokenBalance'
-      | 'redirectedBalance'
-      | 'interestRedirectionAddress'
-    >;
+export type CalculateCurrentUnderlyingBalancePoolReserve = CalculateCumulatedBalancePoolReserve;
+export type CalculateCurrentUnderlyingBalanceUserReserve = CalculateCumulatedBalanceUserReserve &
+  Pick<
+    UserReserveData,
+    | 'principalATokenBalance'
+    | 'redirectedBalance'
+    | 'interestRedirectionAddress'
+  >;
 
 export function calculateCurrentUnderlyingBalance(
   userReserve: CalculateCurrentUnderlyingBalanceUserReserve,
@@ -665,8 +663,9 @@ export function calculateInterestRates(
   }
 
   if (!totalBorrows.eq(0)) {
-    const weightedVariableRate =
-      currentVariableBorrowRate.multipliedBy(totalBorrowsVariable);
+    const weightedVariableRate = currentVariableBorrowRate.multipliedBy(
+      totalBorrowsVariable
+    );
     const weightedStableRate = valueToBigNumber(
       reserve.averageStableBorrowRate
     ).multipliedBy(totalBorrowsStable);

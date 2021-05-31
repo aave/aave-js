@@ -48,8 +48,7 @@ import BaseService from '../BaseService';
 
 export default class LendingPool
   extends BaseService<ILendingPool>
-  implements LendingPoolInterface
-{
+  implements LendingPoolInterface {
   readonly market: Market;
 
   readonly erc20Service: IERC20ServiceInterface;
@@ -105,8 +104,11 @@ export default class LendingPool
         referralCode,
       });
     }
-    const { isApproved, approve, decimalsOf }: IERC20ServiceInterface =
-      this.erc20Service;
+    const {
+      isApproved,
+      approve,
+      decimalsOf,
+    }: IERC20ServiceInterface = this.erc20Service;
     const txs: EthereumTransactionTypeExtended[] = [];
     const reserveDecimals: number = await decimalsOf(reserve);
     const convertedAmount: tStringDecimalUnits = parseNumber(
@@ -114,12 +116,11 @@ export default class LendingPool
       reserveDecimals
     );
 
-    const fundsAvailable: boolean =
-      await this.synthetixService.synthetixValidation(
-        user,
-        reserve,
-        convertedAmount
-      );
+    const fundsAvailable: boolean = await this.synthetixService.synthetixValidation(
+      user,
+      reserve,
+      convertedAmount
+    );
     if (!fundsAvailable) {
       throw new Error('Not enough funds to execute operation');
     }
@@ -313,8 +314,11 @@ export default class LendingPool
       });
     }
     const txs: EthereumTransactionTypeExtended[] = [];
-    const { isApproved, approve, decimalsOf }: IERC20ServiceInterface =
-      this.erc20Service;
+    const {
+      isApproved,
+      approve,
+      decimalsOf,
+    }: IERC20ServiceInterface = this.erc20Service;
 
     const lendingPoolContract = this.getContractInstance(
       this.lendingPoolAddress
@@ -329,12 +333,11 @@ export default class LendingPool
         : parseNumber(amount, decimals);
 
     if (amount !== '-1') {
-      const fundsAvailable: boolean =
-        await this.synthetixService.synthetixValidation(
-          user,
-          reserve,
-          convertedAmount
-        );
+      const fundsAvailable: boolean = await this.synthetixService.synthetixValidation(
+        user,
+        reserve,
+        convertedAmount
+      );
       if (!fundsAvailable) {
         throw new Error('Not enough funds to execute operation');
       }
@@ -457,8 +460,11 @@ export default class LendingPool
     }: LPLiquidationCall
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    const { isApproved, approve, getTokenData }: IERC20ServiceInterface =
-      this.erc20Service;
+    const {
+      isApproved,
+      approve,
+      getTokenData,
+    }: IERC20ServiceInterface = this.erc20Service;
 
     const approved = await isApproved(
       debtReserve,
@@ -553,8 +559,9 @@ export default class LendingPool
       s: '0x0000000000000000000000000000000000000000000000000000000000000000',
     };
 
-    const { SWAP_COLLATERAL_ADAPTER } =
-      commonContractAddressBetweenMarketsV2[this.config.network];
+    const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
+      this.config.network
+    ];
 
     const approved: boolean = await this.erc20Service.isApproved(
       fromAToken,
@@ -564,13 +571,12 @@ export default class LendingPool
     );
 
     if (!approved) {
-      const approveTx: EthereumTransactionTypeExtended =
-        this.erc20Service.approve(
-          user,
-          fromAToken,
-          SWAP_COLLATERAL_ADAPTER,
-          constants.MaxUint256.toString()
-        );
+      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
+        user,
+        fromAToken,
+        SWAP_COLLATERAL_ADAPTER,
+        constants.MaxUint256.toString()
+      );
 
       txs.push(approveTx);
     }
@@ -596,8 +602,7 @@ export default class LendingPool
     );
 
     if (flash) {
-      const FLASHLOAN_PREMIUM_TOTAL: BigNumber =
-        await lendingPoolContract.FLASHLOAN_PREMIUM_TOTAL();
+      const FLASHLOAN_PREMIUM_TOTAL: BigNumber = await lendingPoolContract.FLASHLOAN_PREMIUM_TOTAL();
       const convertedAmountNoFees: string = BigNumber.from(convertedAmount)
         .sub(
           BigNumber.from(convertedAmount)
@@ -641,8 +646,8 @@ export default class LendingPool
         ]
       );
 
-      const txCallback: () => Promise<transactionType> =
-        this.generateTxCallback({
+      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
+        {
           rawTxMethod: () =>
             lendingPoolContract.populateTransaction.flashLoan(
               SWAP_COLLATERAL_ADAPTER,
@@ -654,7 +659,8 @@ export default class LendingPool
               referralCode || '0'
             ),
           from: user,
-        });
+        }
+      );
 
       txs.push({
         tx: txCallback,
@@ -669,8 +675,8 @@ export default class LendingPool
     }
 
     // Direct call to swap and deposit
-    const swapAndDepositTx: EthereumTransactionTypeExtended =
-      await this.liquiditySwapAdapterService.swapAndDeposit({
+    const swapAndDepositTx: EthereumTransactionTypeExtended = await this.liquiditySwapAdapterService.swapAndDeposit(
+      {
         user,
         assetToSwapFrom: fromAsset,
         assetToSwapTo: toAsset,
@@ -680,7 +686,8 @@ export default class LendingPool
         minAmountToReceive: amountSlippageConverted,
         permitParams,
         useEthPath,
-      });
+      }
+    );
 
     txs.push(swapAndDepositTx);
     return txs;
@@ -721,8 +728,9 @@ export default class LendingPool
       s: '0x0000000000000000000000000000000000000000000000000000000000000000',
     };
 
-    const { REPAY_WITH_COLLATERAL_ADAPTER } =
-      commonContractAddressBetweenMarketsV2[this.config.network];
+    const {
+      REPAY_WITH_COLLATERAL_ADAPTER,
+    } = commonContractAddressBetweenMarketsV2[this.config.network];
 
     const approved: boolean = await this.erc20Service.isApproved(
       fromAToken,
@@ -732,13 +740,12 @@ export default class LendingPool
     );
 
     if (!approved) {
-      const approveTx: EthereumTransactionTypeExtended =
-        this.erc20Service.approve(
-          user,
-          fromAToken,
-          REPAY_WITH_COLLATERAL_ADAPTER,
-          constants.MaxUint256.toString()
-        );
+      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
+        user,
+        fromAToken,
+        REPAY_WITH_COLLATERAL_ADAPTER,
+        constants.MaxUint256.toString()
+      );
 
       txs.push(approveTx);
     }
@@ -794,8 +801,8 @@ export default class LendingPool
         this.lendingPoolAddress
       );
 
-      const txCallback: () => Promise<transactionType> =
-        this.generateTxCallback({
+      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
+        {
           rawTxMethod: () =>
             lendingPoolContract.populateTransaction.flashLoan(
               REPAY_WITH_COLLATERAL_ADAPTER,
@@ -807,7 +814,8 @@ export default class LendingPool
               referralCode || '0'
             ),
           from: user,
-        });
+        }
+      );
 
       txs.push({
         tx: txCallback,
@@ -822,8 +830,8 @@ export default class LendingPool
       return txs;
     }
 
-    const swapAndRepayTx: EthereumTransactionTypeExtended =
-      this.repayWithCollateralAdapterService.swapAndRepay({
+    const swapAndRepayTx: EthereumTransactionTypeExtended = this.repayWithCollateralAdapterService.swapAndRepay(
+      {
         user,
         collateralAsset: fromAsset,
         debtAsset: assetToRepay,
@@ -832,7 +840,8 @@ export default class LendingPool
         debtRateMode: numericInterestRate,
         permit: permitParams,
         useEthPath,
-      });
+      }
+    );
 
     txs.push(swapAndRepayTx);
 
@@ -865,8 +874,9 @@ export default class LendingPool
 
     const txs: EthereumTransactionTypeExtended[] = [];
 
-    const { FLASHLIQUIDATION } =
-      commonContractAddressBetweenMarketsV2[this.config.network];
+    const { FLASHLIQUIDATION } = commonContractAddressBetweenMarketsV2[
+      this.config.network
+    ];
 
     const lendingPoolContract: ILendingPool = this.getContractInstance(
       this.lendingPoolAddress
