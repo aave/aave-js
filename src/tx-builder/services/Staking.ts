@@ -33,12 +33,12 @@ import {
 } from '../validators/paramValidators';
 import BaseService from './BaseService';
 
-export default class StakingService
-  extends BaseService<IStakedToken>
+export default class StakingService extends BaseService<IStakedToken>
   implements StakingInterface {
   readonly stakingHelperContract: IAaveStakingHelper;
 
-  readonly stakingContractAddress: string;
+  public readonly stakingContractAddress: tEthereumAddress;
+  public readonly stakingRewardTokenContractAddress: tEthereumAddress;
 
   readonly stakingHelperContractAddress: string;
 
@@ -61,11 +61,13 @@ export default class StakingService
 
     const {
       TOKEN_STAKING_ADDRESS,
+      STAKING_REWARD_TOKEN_ADDRESS,
       STAKING_HELPER_ADDRESS,
       canUsePermit,
     } = distinctStakingAddressesBetweenTokens[this.tokenStake][network];
 
     this.stakingContractAddress = TOKEN_STAKING_ADDRESS;
+    this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN_ADDRESS;
     this.stakingHelperContractAddress = STAKING_HELPER_ADDRESS;
     this.canUsePermit = canUsePermit;
 

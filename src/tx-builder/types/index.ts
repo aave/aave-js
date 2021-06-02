@@ -150,6 +150,7 @@ export type tDistinctGovernanceV2Addresses = Pick<
 
 export type tdistinctStakingAddressesBetweenTokens = {
   TOKEN_STAKING_ADDRESS: tEthereumAddress;
+  STAKING_REWARD_TOKEN_ADDRESS: tEthereumAddress;
   STAKING_HELPER_ADDRESS: tEthereumAddress;
   canUsePermit: boolean;
 };

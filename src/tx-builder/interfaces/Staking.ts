@@ -5,6 +5,9 @@ import {
 } from '../types';
 
 export default interface StakingInterface {
+  stakingContractAddress: tEthereumAddress;
+  stakingRewardTokenContractAddress: tEthereumAddress;
+
   stake: (
     user: tEthereumAddress,
     amount: tStringCurrencyUnits,
