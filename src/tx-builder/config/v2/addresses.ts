@@ -17,6 +17,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
     FLASHLIQUIDATION: '0x9D50F0b23b1805773f607F0B4678d724322B7AC2',
     INCENTIVES_CONTROLLER: '',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN: '',
   },
   [Network.ropsten]: {
     SYNTHETIX_PROXY_ADDRESS: '',
@@ -28,6 +29,7 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '',
     FLASHLIQUIDATION: '',
     INCENTIVES_CONTROLLER: '',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN: '',
   },
   [Network.mainnet]: {
     SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
@@ -39,6 +41,8 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '0x498c5431eb517101582988fbb36431ddaac8f4b1',
     FLASHLIQUIDATION: '0xE377fB98512D7b04827e56BC84e1838804a8019D',
     INCENTIVES_CONTROLLER: '0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN:
+      '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
   },
   [Network.polygon]: {
     SYNTHETIX_PROXY_ADDRESS: '',
@@ -50,6 +54,8 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '',
     FLASHLIQUIDATION: '',
     INCENTIVES_CONTROLLER: '0x357d51124f59836ded84c8a1730d72b749d8bc23',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN:
+      '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
   },
   [Network.mumbai]: {
     SYNTHETIX_PROXY_ADDRESS: '',
@@ -61,6 +67,8 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     REPAY_WITH_COLLATERAL_ADAPTER: '',
     FLASHLIQUIDATION: '',
     INCENTIVES_CONTROLLER: '0xd41aE58e803Edf4304334acCE4DC4Ec34a63C644',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN:
+      '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
   },
 };
 
