@@ -740,20 +740,23 @@ export function calculateRewards(
   //   .multipliedBy(currentReserveIndex.minus(userIndex))
   //   .dividedBy(pow10(precision));
 
-  const emissionPerTime: string = valueToBigNumber(emissionPerSecond)
+  const emissionPerTime = valueToBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
-    .multipliedBy(pow10(precision))
-    .dividedBy(totalSupply)
-    .toFixed(2);
+    .multipliedBy(pow10(precision));
 
-  const currentReserveIndex = valueToBigNumber(emissionPerTime).plus(
+  const emissionSupply = valueToZDBigNumber(emissionPerTime).dividedBy(
+    totalSupply
+  );
+
+  const currentReserveIndex = valueToZDBigNumber(emissionSupply).plus(
     reserveIndex
   );
 
-  const reward = valueToBigNumber(principalUserBalance)
-    .multipliedBy(currentReserveIndex.minus(userIndex))
-    .dividedBy(pow10(precision))
-    .toFixed(2);
+  const reward = valueToBigNumber(principalUserBalance).multipliedBy(
+    currentReserveIndex.minus(userIndex)
+  );
 
-  return normalize(reward, rewardTokenDecimals);
+  const preciseReward = valueToZDBigNumber(reward).dividedBy(pow10(precision));
+
+  return normalize(valueToZDBigNumber(preciseReward), rewardTokenDecimals);
 }
