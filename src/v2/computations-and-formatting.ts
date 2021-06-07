@@ -730,33 +730,15 @@ export function calculateRewards(
       : currentTimestamp;
   const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
 
-  // const currentReserveIndex = valueToBigNumber(emissionPerSecond)
-  //   .multipliedBy(timeDelta)
-  //   .multipliedBy(pow10(precision))
-  //   .dividedBy(totalSupply)
-  //   .plus(reserveIndex);
-
-  // const reward = valueToBigNumber(principalUserBalance)
-  //   .multipliedBy(currentReserveIndex.minus(userIndex))
-  //   .dividedBy(pow10(precision));
-
-  const emissionPerTime = valueToBigNumber(emissionPerSecond)
+  const currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
-    .multipliedBy(pow10(precision));
+    .multipliedBy(pow10(precision))
+    .dividedBy(totalSupply)
+    .plus(reserveIndex);
 
-  const emissionSupply = valueToZDBigNumber(emissionPerTime).dividedBy(
-    totalSupply
-  );
+  const reward = valueToZDBigNumber(principalUserBalance)
+    .multipliedBy(currentReserveIndex.minus(userIndex))
+    .dividedBy(pow10(precision));
 
-  const currentReserveIndex = valueToZDBigNumber(emissionSupply).plus(
-    reserveIndex
-  );
-
-  const reward = valueToBigNumber(principalUserBalance).multipliedBy(
-    currentReserveIndex.minus(userIndex)
-  );
-
-  const preciseReward = valueToZDBigNumber(reward).dividedBy(pow10(precision));
-
-  return normalize(valueToZDBigNumber(preciseReward), rewardTokenDecimals);
+  return normalize(reward, rewardTokenDecimals);
 }
