@@ -730,15 +730,30 @@ export function calculateRewards(
       : currentTimestamp;
   const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
 
-  const currentReserveIndex = valueToBigNumber(emissionPerSecond)
+  // const currentReserveIndex = valueToBigNumber(emissionPerSecond)
+  //   .multipliedBy(timeDelta)
+  //   .multipliedBy(pow10(precision))
+  //   .dividedBy(totalSupply)
+  //   .plus(reserveIndex);
+
+  // const reward = valueToBigNumber(principalUserBalance)
+  //   .multipliedBy(currentReserveIndex.minus(userIndex))
+  //   .dividedBy(pow10(precision));
+
+  const emissionPerTime: string = valueToBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
     .multipliedBy(pow10(precision))
     .dividedBy(totalSupply)
-    .plus(reserveIndex);
+    .toFixed(2);
+
+  const currentReserveIndex = valueToBigNumber(emissionPerTime).plus(
+    reserveIndex
+  );
 
   const reward = valueToBigNumber(principalUserBalance)
     .multipliedBy(currentReserveIndex.minus(userIndex))
-    .dividedBy(pow10(precision));
+    .dividedBy(pow10(precision))
+    .toFixed(2);
 
   return normalize(reward, rewardTokenDecimals);
 }
