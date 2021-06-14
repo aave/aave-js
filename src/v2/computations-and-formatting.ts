@@ -742,17 +742,28 @@ export function calculateRewards(
     currentTimestamp > emissionEndTimestamp
       ? emissionEndTimestamp
       : currentTimestamp;
+
   const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
   console.log(`
     reserveIndexTimestamp  => ${reserveIndexTimestamp}
     actualCurrentTimestamp => ${actualCurrentTimestamp}
     time delta        => ${timeDelta}
   `);
-  const currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
-    .multipliedBy(timeDelta)
-    .multipliedBy(pow10(precision))
-    .dividedBy(totalSupply)
-    .plus(reserveIndex);
+
+  let currentReserveIndex;
+  if (
+    reserveIndexTimestamp == +currentTimestamp ||
+    reserveIndexTimestamp >= emissionEndTimestamp
+  ) {
+    console.log(`entro aki -------------------`);
+    currentReserveIndex = valueToZDBigNumber(reserveIndex);
+  } else {
+    currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
+      .multipliedBy(timeDelta)
+      .multipliedBy(pow10(precision))
+      .dividedBy(totalSupply)
+      .plus(reserveIndex);
+  }
 
   const reward = valueToZDBigNumber(principalUserBalance)
     .multipliedBy(currentReserveIndex.minus(userIndex))
