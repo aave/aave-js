@@ -211,6 +211,14 @@ export function computeUserReserveData(
     usdPriceEth
   );
 
+  console.log(
+    'total rewards:: ',
+    valueToZDBigNumber(aTokenRewardsUSD)
+      .plus(vTokenRewardsUSD)
+      .plus(sTokenRewardsUSD)
+      .toString()
+  );
+
   return {
     ...userReserve,
     underlyingBalance,
@@ -735,7 +743,7 @@ export function calculateRewards(
       ? emissionEndTimestamp
       : currentTimestamp;
   const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
-
+  console.log('time delta ====> ', timeDelta);
   const currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
     .multipliedBy(timeDelta)
     .multipliedBy(pow10(precision))
@@ -745,6 +753,6 @@ export function calculateRewards(
   const reward = valueToZDBigNumber(principalUserBalance)
     .multipliedBy(currentReserveIndex.minus(userIndex))
     .dividedBy(pow10(precision));
-
+  console.log('reward ======>>> ', reward);
   return normalize(reward, rewardTokenDecimals);
 }
