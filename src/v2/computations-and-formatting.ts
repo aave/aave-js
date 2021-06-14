@@ -525,7 +525,8 @@ export function formatReserves(
   reserves: ReserveData[],
   currentTimestamp?: number,
   reserveIndexes30DaysAgo?: ReserveRatesData[],
-  rewardTokenPriceEth = '0'
+  rewardTokenPriceEth = '0',
+  emissionEndTimestamp?: number
 ): ComputedReserveData[] {
   return reserves.map((reserve) => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
@@ -550,8 +551,13 @@ export function formatReserves(
         ? totalDebt.dividedBy(totalLiquidity).toString()
         : '0';
 
+    const hasEmission =
+      emissionEndTimestamp &&
+      emissionEndTimestamp >
+        (currentTimestamp || Math.floor(Date.now() / 1000));
+
     const aIncentivesAPY =
-      totalLiquidity !== '0'
+      hasEmission && totalLiquidity !== '0'
         ? calculateIncentivesAPY(
             reserve.aEmissionPerSecond,
             rewardTokenPriceEth,
@@ -561,7 +567,7 @@ export function formatReserves(
         : '0';
 
     const vIncentivesAPY =
-      totalVariableDebt !== '0'
+      hasEmission && totalVariableDebt !== '0'
         ? calculateIncentivesAPY(
             reserve.vEmissionPerSecond,
             rewardTokenPriceEth,
@@ -571,7 +577,7 @@ export function formatReserves(
         : '0';
 
     const sIncentivesAPY =
-      totalStableDebt !== '0'
+      hasEmission && totalStableDebt !== '0'
         ? calculateIncentivesAPY(
             reserve.sEmissionPerSecond,
             rewardTokenPriceEth,
