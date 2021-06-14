@@ -744,8 +744,8 @@ export function calculateRewards(
       : currentTimestamp;
   const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
   console.log(`
-    current Timestamp => ${currentTimestamp}
-    emissi  Timestamp => ${emissionEndTimestamp}
+    reserveIndexTimestamp  => ${reserveIndexTimestamp}
+    actualCurrentTimestamp => ${actualCurrentTimestamp}
     time delta        => ${timeDelta}
   `);
   const currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
@@ -757,6 +757,6 @@ export function calculateRewards(
   const reward = valueToZDBigNumber(principalUserBalance)
     .multipliedBy(currentReserveIndex.minus(userIndex))
     .dividedBy(pow10(precision));
-  console.log('reward ======>>> ', reward.toString);
+  console.log('reward ======>>> ', reward.toString());
   return normalize(reward, rewardTokenDecimals);
 }
