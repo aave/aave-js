@@ -34,7 +34,7 @@ export enum ChainId {
   polygon = 137,
   fork = 1337,
   mumbai = 80001,
-  polygon_fork = 1337,
+  polygon_fork = 1338,
 }
 
 export enum eEthereumTxType {
