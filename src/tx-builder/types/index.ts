@@ -24,6 +24,7 @@ export enum Network {
   polygon = 'polygon',
   fork = 'fork',
   mumbai = 'mumbai',
+  polygon_fork = 'polygon_fork',
 }
 
 export enum ChainId {
@@ -33,6 +34,7 @@ export enum ChainId {
   polygon = 137,
   fork = 1337,
   mumbai = 80001,
+  polygon_fork = 1337,
 }
 
 export enum eEthereumTxType {
