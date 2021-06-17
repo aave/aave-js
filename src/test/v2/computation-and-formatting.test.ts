@@ -95,6 +95,7 @@ describe('computations and formattings', () => {
         rewardTokenDecimals: 18,
         incentivePrecision: 18,
         rewardTokenPriceEth: '0',
+        emissionEndTimestamp: 0,
       }
     );
     expect(

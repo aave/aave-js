@@ -26,6 +26,7 @@ export type RewardsInformation = {
   rewardTokenDecimals: number;
   incentivePrecision: number;
   rewardTokenPriceEth: string;
+  emissionEndTimestamp: number;
 };
 
 export type ReserveData = {
