@@ -1,4 +1,4 @@
-import { BigNumber, constants, utils } from 'ethers';
+import { BigNumber, constants, utils, BigNumberish, BytesLike } from 'ethers';
 import {
   API_ETH_MOCK_ADDRESS,
   commonContractAddressBetweenMarketsV2,
@@ -21,6 +21,7 @@ import {
   TokenMetadataType,
   transactionType,
   tStringDecimalUnits,
+  tEthereumAddress,
 } from '../../types';
 import { getTxValue, parseNumber } from '../../utils/parsings';
 import { LPValidator } from '../../validators/methodValidators';
@@ -43,10 +44,43 @@ import {
   IsPositiveAmount,
   IsPositiveOrMinusOneAmount,
 } from '../../validators/paramValidators';
-import LiquiditySwapAdapterInterface from '../../interfaces/LiquiditySwapAdapter';
+import LiquiditySwapAdapterInterface from '../../interfaces/LiquiditySwapAdapterParaswap';
 import RepayWithCollateralAdapterInterface from '../../interfaces/RepayWithCollateralAdapter';
 import BaseService from '../BaseService';
 import BaseDebtTokenInterface from '../../interfaces/BaseDebtToken';
+import { augustusFromAmountOffsetFromCalldata } from '../LiquiditySwapAdapterParaswap';
+
+const buildParaSwapLiquiditySwapParams = (
+  assetToSwapTo: tEthereumAddress,
+  minAmountToReceive: BigNumberish,
+  swapAllBalanceOffset: BigNumberish,
+  swapCalldata: string | Buffer | BytesLike,
+  augustus: tEthereumAddress,
+  permitAmount: BigNumberish,
+  deadline: BigNumberish,
+  v: BigNumberish,
+  r: string | Buffer | BytesLike,
+  s: string | Buffer | BytesLike
+) => {
+  return utils.defaultAbiCoder.encode(
+    [
+      'address',
+      'uint256',
+      'uint256',
+      'bytes',
+      'address',
+      'tuple(uint256,uint256,uint8,bytes32,bytes32)',
+    ],
+    [
+      assetToSwapTo,
+      minAmountToReceive,
+      swapAllBalanceOffset,
+      swapCalldata,
+      augustus,
+      [permitAmount, deadline, v, r, s],
+    ]
+  );
+};
 
 export default class LendingPool
   extends BaseService<ILendingPool>
@@ -537,8 +571,9 @@ export default class LendingPool
     @IsEthAddress('fromAToken')
     @IsEthAddress('toAsset')
     @IsEthAddress('onBehalfOf')
+    @IsEthAddress('augustus')
     @IsPositiveAmount('fromAmount')
-    @IsPositiveAmount('toAmount')
+    @IsPositiveAmount('minToAmount')
     {
       user,
       flash,
@@ -546,13 +581,13 @@ export default class LendingPool
       fromAToken,
       toAsset,
       fromAmount,
-      toAmount,
-      maxSlippage,
+      minToAmount,
       permitSignature,
       swapAll,
       onBehalfOf,
       referralCode,
-      useEthPath,
+      augustus,
+      swapCallData,
     }: LPSwapCollateral
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
@@ -593,18 +628,28 @@ export default class LendingPool
 
     const tokenToDecimals: number = await this.erc20Service.decimalsOf(toAsset);
 
-    const amountSlippage = (
-      Number(toAmount) -
-      (Number(toAmount) * Number(maxSlippage)) / 100
-    ).toString();
-
     const amountSlippageConverted: string = parseNumber(
-      amountSlippage,
+      minToAmount,
       tokenToDecimals
     );
 
     const lendingPoolContract = this.getContractInstance(
       this.lendingPoolAddress
+    );
+
+    const params = buildParaSwapLiquiditySwapParams(
+      toAsset,
+      amountSlippageConverted,
+      swapAll
+        ? augustusFromAmountOffsetFromCalldata(swapCallData as string)
+        : 0,
+      swapCallData,
+      augustus,
+      permitParams.amount,
+      permitParams.deadline,
+      permitParams.v,
+      permitParams.r,
+      permitParams.s
     );
 
     if (flash) {
@@ -625,31 +670,6 @@ export default class LendingPool
       const convertedAmountWithSurplus: string = parseNumber(
         amountWithSurplus,
         tokenDecimals
-      );
-
-      const params: string = utils.defaultAbiCoder.encode(
-        [
-          'address[]',
-          'uint256[]',
-          'bool[]',
-          'uint256[]',
-          'uint256[]',
-          'uint8[]',
-          'bytes32[]',
-          'bytes32[]',
-          'bool[]',
-        ],
-        [
-          [toAsset],
-          [amountSlippageConverted],
-          [swapAll],
-          [permitParams.amount],
-          [permitParams.deadline],
-          [permitParams.v],
-          [permitParams.r],
-          [permitParams.s],
-          [useEthPath || false],
-        ]
       );
 
       const txCallback: () => Promise<transactionType> = this.generateTxCallback(
@@ -686,12 +706,12 @@ export default class LendingPool
         user,
         assetToSwapFrom: fromAsset,
         assetToSwapTo: toAsset,
-        amountToSwap: swapAll
-          ? constants.MaxUint256.toString()
-          : convertedAmount,
+        amountToSwap: convertedAmount,
         minAmountToReceive: amountSlippageConverted,
+        swapAll,
+        swapCallData,
+        augustus,
         permitParams,
-        useEthPath,
       }
     );
 

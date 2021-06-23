@@ -156,7 +156,8 @@ export function computeUserReserveData(
         poolReserve.aIncentivesLastUpdateTimestamp,
         poolReserve.aEmissionPerSecond,
         totalLiquidity,
-        currentTimestamp
+        currentTimestamp,
+        rewardsInfo.emissionEndTimestamp
       )
     : '0';
 
@@ -177,7 +178,8 @@ export function computeUserReserveData(
         poolReserve.vIncentivesLastUpdateTimestamp,
         poolReserve.vEmissionPerSecond,
         totalVariableDebt,
-        currentTimestamp
+        currentTimestamp,
+        rewardsInfo.emissionEndTimestamp
       )
     : '0';
 
@@ -197,7 +199,8 @@ export function computeUserReserveData(
         poolReserve.sIncentivesLastUpdateTimestamp,
         poolReserve.sEmissionPerSecond,
         totalStableDebt,
-        currentTimestamp
+        currentTimestamp,
+        rewardsInfo.emissionEndTimestamp
       )
     : '0';
 
@@ -522,7 +525,8 @@ export function formatReserves(
   reserves: ReserveData[],
   currentTimestamp?: number,
   reserveIndexes30DaysAgo?: ReserveRatesData[],
-  rewardTokenPriceEth = '0'
+  rewardTokenPriceEth = '0',
+  emissionEndTimestamp?: number
 ): ComputedReserveData[] {
   return reserves.map((reserve) => {
     const reserve30DaysAgo = reserveIndexes30DaysAgo?.find(
@@ -547,8 +551,13 @@ export function formatReserves(
         ? totalDebt.dividedBy(totalLiquidity).toString()
         : '0';
 
+    const hasEmission =
+      emissionEndTimestamp &&
+      emissionEndTimestamp >
+        (currentTimestamp || Math.floor(Date.now() / 1000));
+
     const aIncentivesAPY =
-      totalLiquidity !== '0'
+      hasEmission && totalLiquidity !== '0'
         ? calculateIncentivesAPY(
             reserve.aEmissionPerSecond,
             rewardTokenPriceEth,
@@ -558,7 +567,7 @@ export function formatReserves(
         : '0';
 
     const vIncentivesAPY =
-      totalVariableDebt !== '0'
+      hasEmission && totalVariableDebt !== '0'
         ? calculateIncentivesAPY(
             reserve.vEmissionPerSecond,
             rewardTokenPriceEth,
@@ -568,7 +577,7 @@ export function formatReserves(
         : '0';
 
     const sIncentivesAPY =
-      totalStableDebt !== '0'
+      hasEmission && totalStableDebt !== '0'
         ? calculateIncentivesAPY(
             reserve.sEmissionPerSecond,
             rewardTokenPriceEth,
@@ -718,17 +727,31 @@ export function calculateRewards(
   reserveIndexTimestamp: number,
   emissionPerSecond: string,
   totalSupply: BigNumber,
-  currentTimestamp: number
+  currentTimestamp: number,
+  emissionEndTimestamp: number
 ): string {
-  const timeDelta = currentTimestamp - reserveIndexTimestamp;
+  const actualCurrentTimestamp =
+    currentTimestamp > emissionEndTimestamp
+      ? emissionEndTimestamp
+      : currentTimestamp;
 
-  const currentReserveIndex = valueToBigNumber(emissionPerSecond)
-    .multipliedBy(timeDelta)
-    .multipliedBy(pow10(precision))
-    .dividedBy(totalSupply)
-    .plus(reserveIndex);
+  const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
 
-  const reward = valueToBigNumber(principalUserBalance)
+  let currentReserveIndex;
+  if (
+    reserveIndexTimestamp == +currentTimestamp ||
+    reserveIndexTimestamp >= emissionEndTimestamp
+  ) {
+    currentReserveIndex = valueToZDBigNumber(reserveIndex);
+  } else {
+    currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
+      .multipliedBy(timeDelta)
+      .multipliedBy(pow10(precision))
+      .dividedBy(totalSupply)
+      .plus(reserveIndex);
+  }
+
+  const reward = valueToZDBigNumber(principalUserBalance)
     .multipliedBy(currentReserveIndex.minus(userIndex))
     .dividedBy(pow10(precision));
 

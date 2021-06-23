@@ -1,3 +1,4 @@
+import { BytesLike } from 'ethers';
 import { PermitSignature, tEthereumAddress } from '.';
 
 export type SwapAndDepositMethodType = {
@@ -7,5 +8,7 @@ export type SwapAndDepositMethodType = {
   amountToSwap: string;
   minAmountToReceive: string;
   permitParams: PermitSignature;
-  useEthPath?: boolean;
+  swapCallData: BytesLike;
+  augustus: tEthereumAddress;
+  swapAll: boolean;
 };

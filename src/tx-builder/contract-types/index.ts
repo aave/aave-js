@@ -20,6 +20,7 @@ export type { IProposalValidator } from "./IProposalValidator";
 export type { IRepayWithCollateral } from "./IRepayWithCollateral";
 export type { IStakedToken } from "./IStakedToken";
 export type { ISwapCollateral } from "./ISwapCollateral";
+export type { IParaSwapLiquiditySwapAdapter } from "./IParaSwapLiquiditySwapAdapter";
 export type { ISynthetix } from "./ISynthetix";
 export type { IWETHGateway } from "./IWETHGateway";
 
@@ -42,5 +43,6 @@ export { IProposalValidator__factory } from "./factories/IProposalValidator__fac
 export { IRepayWithCollateral__factory } from "./factories/IRepayWithCollateral__factory";
 export { IStakedToken__factory } from "./factories/IStakedToken__factory";
 export { ISwapCollateral__factory } from "./factories/ISwapCollateral__factory";
+export { IParaSwapLiquiditySwapAdapter__factory } from "./factories/IParaSwapLiquiditySwapAdapter__factory";
 export { ISynthetix__factory } from "./factories/ISynthetix__factory";
 export { IWETHGateway__factory } from "./factories/IWETHGateway__factory";
