@@ -968,37 +968,10 @@ export default class LendingPool
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
 
-    const approved: boolean = await this.baseDebtTokenService.isDelegationApproved(
-      debtToken,
-      delegator,
-      delegatee,
-      amount
-    );
+    const approveDelegation = this.baseDebtTokenService.approveDelegation(delegator, delegatee, debtToken, amount);
 
-    if (!approved) {
-      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
-        delegator,
-        debtToken,
-        delegatee,
-        constants.MaxUint256.toString()
-      );
+    txs.push(approveDelegation);
 
-      txs.push(approveTx);
-    }
-
-    const tokenDecimals: number = await this.erc20Service.decimalsOf(debtToken);
-
-    const convertedAmount: string = parseNumber(amount, tokenDecimals);
-
-    // Direct call to approveDelegation on debt token
-    const approveDelegationTx: EthereumTransactionTypeExtended = await this.baseDebtTokenService.approveDelegation(
-      delegator,
-      delegatee,
-      debtToken,
-      convertedAmount
-    );
-
-    txs.push(approveDelegationTx);
     return txs;
   }
 }

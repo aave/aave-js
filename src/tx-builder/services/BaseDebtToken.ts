@@ -44,7 +44,7 @@ export default class BaseDebtTokenService
 
     return {
       tx: txCallback,
-      txType: eEthereumTxType.ERC20_APPROVAL,
+      txType: eEthereumTxType.CREDIT_DELEGATION_ACTION,
       gas: this.generateTxPriceEstimation([], txCallback),
     };
   }
