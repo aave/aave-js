@@ -968,7 +968,12 @@ export default class LendingPool
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
 
-    const approveDelegation = this.baseDebtTokenService.approveDelegation(delegator, delegatee, debtToken, amount);
+    const approveDelegation = this.baseDebtTokenService.approveDelegation(
+      delegator,
+      delegatee,
+      debtToken,
+      amount
+    );
 
     txs.push(approveDelegation);
 
