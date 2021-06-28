@@ -1,4 +1,4 @@
-import { BigNumber, constants, utils, BigNumberish, BytesLike } from 'ethers';
+import { constants, utils, BigNumberish, BytesLike } from 'ethers';
 import {
   API_ETH_MOCK_ADDRESS,
   commonContractAddressBetweenMarketsV2,
@@ -647,15 +647,6 @@ export default class LendingPool
     );
 
     if (flash) {
-      const FLASHLOAN_PREMIUM_TOTAL: BigNumber = await lendingPoolContract.FLASHLOAN_PREMIUM_TOTAL();
-      const convertedAmountNoFees: string = BigNumber.from(convertedAmount)
-        .sub(
-          BigNumber.from(convertedAmount)
-            .mul(FLASHLOAN_PREMIUM_TOTAL)
-            .div(10000)
-        )
-        .toString();
-
       const amountWithSurplus: string = (
         Number(fromAmount) +
         (Number(fromAmount) * Number(SURPLUS)) / 100
@@ -672,7 +663,7 @@ export default class LendingPool
             lendingPoolContract.populateTransaction.flashLoan(
               SWAP_COLLATERAL_ADAPTER,
               [fromAsset],
-              swapAll ? [convertedAmountWithSurplus] : [convertedAmountNoFees],
+              swapAll ? [convertedAmountWithSurplus] : [convertedAmount],
               [0], // interest rate mode to NONE for flashloan to not open debt
               onBehalfOf || user,
               params,
