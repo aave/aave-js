@@ -108,3 +108,10 @@ export type LPFlashLiquidation = {
   initiator: tEthereumAddress;
   useEthPath: boolean;
 };
+
+export type LPApproveDelegation = {
+  delegator: tEthereumAddress;
+  delegatee: tEthereumAddress;
+  debtToken: tEthereumAddress;
+  amount: tStringCurrencyUnits;
+};
