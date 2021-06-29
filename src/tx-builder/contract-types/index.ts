@@ -4,7 +4,7 @@
 export type { IAaveGovernanceV2 } from "./IAaveGovernanceV2";
 export type { IAaveIncentivesController } from "./IAaveIncentivesController";
 export type { IAaveProtoGovernance } from "./IAaveProtoGovernance";
-export type { IAaveStakingHelper } from "./IAaveStakingHelper";
+export type { IClaimStakingRewardsHelper } from "./IClaimStakingRewardsHelper";
 export type { IDebtTokenBase } from "./IDebtTokenBase";
 export type { IERC20Detailed } from "./IERC20Detailed";
 export type { IExecutorWithTimelock } from "./IExecutorWithTimelock";
@@ -27,7 +27,7 @@ export type { IWETHGateway } from "./IWETHGateway";
 export { IAaveGovernanceV2__factory } from "./factories/IAaveGovernanceV2__factory";
 export { IAaveIncentivesController__factory } from "./factories/IAaveIncentivesController__factory";
 export { IAaveProtoGovernance__factory } from "./factories/IAaveProtoGovernance__factory";
-export { IAaveStakingHelper__factory } from "./factories/IAaveStakingHelper__factory";
+export { IClaimStakingRewardsHelper__factory } from "./factories/IClaimStakingRewardsHelper__factory";
 export { IDebtTokenBase__factory } from "./factories/IDebtTokenBase__factory";
 export { IERC20Detailed__factory } from "./factories/IERC20Detailed__factory";
 export { IExecutorWithTimelock__factory } from "./factories/IExecutorWithTimelock__factory";

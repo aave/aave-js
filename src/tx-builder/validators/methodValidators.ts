@@ -137,7 +137,33 @@ export function RepayWithCollateralValidator(
   };
 }
 
-export function StakingValidator(
+// export function StakingValidatorOld(
+//   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+//   target: any,
+//   propertyName: string,
+//   descriptor: TypedPropertyDescriptor<any>
+// ): any {
+//   const method = descriptor.value;
+//   // eslint-disable-next-line no-param-reassign
+//   descriptor.value = function () {
+//     const currentNetwork = this.config.network;
+//     const acceptedNetworks: Network[] =
+//       enabledNetworksByService.staking[this.tokenStake];
+//     if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+//       return [];
+//     }
+
+//     const isParamOptional = optionalValidator(target, propertyName, arguments);
+
+//     isEthAddressValidator(target, propertyName, arguments, isParamOptional);
+
+//     amountGtThan0Validator(target, propertyName, arguments, isParamOptional);
+
+//     return method?.apply(this, arguments);
+//   };
+// }
+
+export function ClaimHelperValidator(
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   target: any,
   propertyName: string,
@@ -148,7 +174,7 @@ export function StakingValidator(
   descriptor.value = function () {
     const currentNetwork = this.config.network;
     const acceptedNetworks: Network[] =
-      enabledNetworksByService.staking[this.tokenStake];
+      enabledNetworksByService.claimStakingRewardsHelper;
     if (acceptedNetworks.indexOf(currentNetwork) === -1) {
       return [];
     }
@@ -157,9 +183,43 @@ export function StakingValidator(
 
     isEthAddressValidator(target, propertyName, arguments, isParamOptional);
 
-    amountGtThan0Validator(target, propertyName, arguments, isParamOptional);
+    // amountGtThan0Validator(target, propertyName, arguments, isParamOptional);
 
     return method?.apply(this, arguments);
+  };
+}
+
+export function StakingValidator(action: string) {
+  return function (
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    target: any,
+    propertyName: string,
+    descriptor: TypedPropertyDescriptor<any>
+  ): any {
+    const method = descriptor.value;
+
+    // eslint-disable-next-line no-param-reassign
+    descriptor.value = function () {
+      const currentNetwork = this.config.network;
+      const acceptedNetworks: Network[] =
+        enabledNetworksByService.staking[action][this.tokenStake];
+      //   enabledNetworksByService.staking[this.tokenStake];
+      if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+        return [];
+      }
+
+      const isParamOptional = optionalValidator(
+        target,
+        propertyName,
+        arguments
+      );
+
+      isEthAddressValidator(target, propertyName, arguments, isParamOptional);
+
+      amountGtThan0Validator(target, propertyName, arguments, isParamOptional);
+
+      return method?.apply(this, arguments);
+    };
   };
 }
 
