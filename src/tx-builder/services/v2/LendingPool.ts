@@ -532,6 +532,19 @@ export default class LendingPool
       this.lendingPoolAddress
     );
 
+    console.log(
+      ' # LIQUIDATION CALL : ',
+      collateralReserve,
+      debtReserve,
+      liquidatedUser,
+      convertedAmount,
+      getAToken || false,
+      'from:',
+      liquidator,
+      ' value: ',
+      getTxValue(debtReserve, convertedAmount)
+    );
+
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         lendingPoolContract.populateTransaction.liquidationCall(
@@ -909,6 +922,27 @@ export default class LendingPool
 
     const params: string = utils.defaultAbiCoder.encode(
       ['address', 'address', 'address', 'uint256', 'bool'],
+      [
+        collateralAsset,
+        borrowedAsset,
+        user,
+        convertedDebtTokenCover,
+        useEthPath || false,
+      ]
+    );
+
+    console.log(
+      '# flashLiquidation: ',
+      FLASHLIQUIDATION,
+      [borrowedAsset],
+      [flashBorrowAmount],
+      [0],
+      initiator,
+      params,
+      '0',
+      ' from : ',
+      initiator,
+      'uncoded params: ',
       [
         collateralAsset,
         borrowedAsset,
