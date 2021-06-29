@@ -1,5 +1,5 @@
 import { EthereumTransactionTypeExtended } from '../types';
-import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterMethodTypes';
+import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
 
 export default interface LiquiditySwapAdapterInterface {
   swapAndDeposit: (

@@ -74,7 +74,6 @@ export default class WETHGatewayService
     const wethGatewayContract: IWETHGateway = this.getContractInstance(
       this.wethGatewayAddress
     );
-
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         wethGatewayContract.populateTransaction.depositETH(
@@ -252,6 +251,7 @@ export default class WETHGatewayService
           numericRateMode,
           onBehalfOf || user
         ),
+      gasSurplus: 30,
       from: user,
       value: convertedAmount,
     });

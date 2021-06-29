@@ -33,7 +33,9 @@ import { ClaimStakingRewardsHelperInterface } from './ClaimStakingRewardsHelper'
 export default class StakingService
   extends BaseService<IStakedToken>
   implements StakingInterface {
-  readonly stakingContractAddress: string;
+  public readonly stakingContractAddress: tEthereumAddress;
+
+  public readonly stakingRewardTokenContractAddress: tEthereumAddress;
 
   readonly erc20Service: IERC20ServiceInterface;
 
@@ -54,11 +56,13 @@ export default class StakingService
 
     const { network } = this.config;
 
-    const { TOKEN_STAKING_ADDRESS } = distinctStakingAddressesBetweenTokens[
-      this.tokenStake
-    ][network];
+    const {
+      TOKEN_STAKING_ADDRESS,
+      STAKING_REWARD_TOKEN_ADDRESS,
+    } = distinctStakingAddressesBetweenTokens[this.tokenStake][network];
 
     this.stakingContractAddress = TOKEN_STAKING_ADDRESS;
+    this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN_ADDRESS;
   }
 
   @StakingValidator(StakeActions.signStaking)

@@ -23,6 +23,8 @@ export enum Network {
   kovan = 'kovan',
   polygon = 'polygon',
   fork = 'fork',
+  mumbai = 'mumbai',
+  polygon_fork = 'polygon_fork',
 }
 
 export enum ChainId {
@@ -31,6 +33,8 @@ export enum ChainId {
   kovan = 42,
   polygon = 137,
   fork = 1337,
+  mumbai = 80001,
+  polygon_fork = 1338,
 }
 
 export enum StakeActions {
@@ -54,6 +58,7 @@ export enum eEthereumTxType {
   STAKE_ACTION = 'STAKE_ACTION',
   MIGRATION_LEND_AAVE = 'MIGRATION_LEND_AAVE',
   FAUCET_MINT = 'FAUCET_MINT',
+  REWARD_ACTION = 'REWARD_ACTION',
 }
 
 export enum ProtocolAction {
@@ -123,6 +128,8 @@ export type AddressModel = {
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
   FLASHLIQUIDATION: tEthereumAddress;
   CLAIM_HELPER_ADDRESS: tEthereumAddress;
+  INCENTIVES_CONTROLLER: tEthereumAddress;
+  INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
 };
 
 export type tCommonContractAddressBetweenMarkets = Pick<
@@ -136,6 +143,8 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
   | 'FLASHLIQUIDATION'
   | 'CLAIM_HELPER_ADDRESS'
+  | 'INCENTIVES_CONTROLLER'
+  | 'INCENTIVES_CONTROLLER_REWARD_TOKEN'
 >;
 
 export type tDistinctContractAddressBetweenMarkets = Pick<
@@ -160,6 +169,7 @@ export type tDistinctGovernanceV2Addresses = Pick<
 
 export type tdistinctStakingAddressesBetweenTokens = {
   TOKEN_STAKING_ADDRESS: tEthereumAddress;
+  STAKING_REWARD_TOKEN_ADDRESS: tEthereumAddress;
 };
 
 export type ContractAddresses = {
@@ -248,6 +258,7 @@ export type EnabledNetworksType = {
   repayWithCollateralAdapter: Network[];
   aaveGovernanceV2: Network[];
   ltaMigrator: Network[];
+  incentivesController: Network[];
 };
 
 export type PermitSignature = {

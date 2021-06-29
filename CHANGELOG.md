@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/aave/aave-js/compare/v3.0.0...v3.1.0) (2021-06-21)
+
+
+### Features
+
+* integrate paraswap adapter ([#127](https://github.com/aave/aave-js/issues/127)) ([d17734c](https://github.com/aave/aave-js/commit/d17734c19d6ce10a22358e156747e8fbbca6af5d))
+
+## [3.0.0](https://github.com/aave/aave-js/compare/v2.7.2...v3.0.0) (2021-06-17)
+
+
+### Features
+
+* added emissionEndTimestamp to rewards info object. Updated calc… ([#156](https://github.com/aave/aave-js/issues/156)) ([2c3aa16](https://github.com/aave/aave-js/commit/2c3aa162c1db0b366323c4bef6859d8bce5e33fe))
+
+
+### Bug Fixes
+
+* added 1M gas as default by polygon network tx ([#151](https://github.com/aave/aave-js/issues/151)) ([8c4131a](https://github.com/aave/aave-js/commit/8c4131acef1a908d69a328a6925a1caf65df7375))
+
 ### [2.7.2](https://github.com/aave/aave-js/compare/v2.7.1...v2.7.2) (2021-03-31)
 
 ### [2.7.1](https://github.com/aave/aave-js/compare/v2.7.0...v2.7.1) (2021-03-31)

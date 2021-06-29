@@ -6,6 +6,7 @@ import { canBeEnsAddress } from '../utils/parsings';
 // import 'reflect-metadata';
 import {
   is0OrPositiveMetadataKey,
+  isEthAddressArrayMetadataKey,
   isEthAddressMetadataKey,
   isEthAddressOrENSMetadataKey,
   isPositiveMetadataKey,
@@ -74,6 +75,62 @@ export function isEthAddressValidator(
               methodArguments[storedParams.index]
             } is not a valid ethereum Address`
           );
+        }
+      }
+    });
+  }
+}
+
+export function isEthAddressArrayValidator(
+  target: any,
+  propertyName: string,
+  methodArguments: any,
+  isParamOptional?: boolean[]
+): void {
+  const addressParameters: paramsType[] = Reflect.getOwnMetadata(
+    isEthAddressArrayMetadataKey,
+    target,
+    propertyName
+  );
+
+  if (addressParameters) {
+    addressParameters.forEach((storedParams) => {
+      if (storedParams.field) {
+        if (
+          methodArguments[0][storedParams.field]
+          // !utils.isAddress(methodArguments[0][storedParams.field])
+        ) {
+          if (methodArguments[0][storedParams.field].length > 0) {
+            const fieldArray = methodArguments[0][storedParams.field].split(
+              ','
+            );
+            fieldArray.forEach((address: string) => {
+              if (!utils.isAddress(address)) {
+                throw new Error(
+                  `Address: ${address} is not a valid ethereum Address`
+                );
+              }
+            });
+          }
+        }
+      } else {
+        const isOptional =
+          isParamOptional && isParamOptional[storedParams.index];
+        if (
+          methodArguments[storedParams.index] &&
+          !isOptional
+          // !utils.isAddress(methodArguments[storedParams.index])
+        ) {
+          if (methodArguments[storedParams.index].length > 0) {
+            const fieldArray = methodArguments[storedParams.index].split(',');
+            fieldArray.forEach((address: string) => {
+              if (!utils.isAddress(address)) {
+                throw new Error(
+                  `Address: ${address} is not a valid ethereum Address`
+                );
+              }
+            });
+          }
         }
       }
     });

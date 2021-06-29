@@ -8,6 +8,7 @@ import WETHGatewayInterface from './WETHGateway';
 import FaucetInterface from './Faucet';
 import AaveGovernanceV2Interface from './v2/AaveGovernanceV2';
 import GovernanceDelegationTokenInterface from './v2/GovernanceDelegationToken';
+import { IncentivesControllerInterface } from '../services/IncentivesController';
 
 export default interface TxBuilderInterface {
   erc20Service: IERC20ServiceInterface;
@@ -15,6 +16,7 @@ export default interface TxBuilderInterface {
   ltaMigratorService: LTAMigratorInterface;
   wethGatewayService: WETHGatewayInterface;
   faucetService: FaucetInterface;
+  incentiveService: IncentivesControllerInterface;
   aaveGovernanceV2Service: AaveGovernanceV2Interface;
   governanceDelegationTokenService: GovernanceDelegationTokenInterface;
   getLendingPool: (market: Market) => LendingPoolInterfaceV2;

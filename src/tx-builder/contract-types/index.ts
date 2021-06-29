@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IAaveGovernanceV2 } from "./IAaveGovernanceV2";
+export type { IAaveIncentivesController } from "./IAaveIncentivesController";
 export type { IAaveProtoGovernance } from "./IAaveProtoGovernance";
 export type { IClaimStakingRewardsHelper } from "./IClaimStakingRewardsHelper";
 export type { IDebtTokenBase } from "./IDebtTokenBase";
@@ -19,10 +20,12 @@ export type { IProposalValidator } from "./IProposalValidator";
 export type { IRepayWithCollateral } from "./IRepayWithCollateral";
 export type { IStakedToken } from "./IStakedToken";
 export type { ISwapCollateral } from "./ISwapCollateral";
+export type { IParaSwapLiquiditySwapAdapter } from "./IParaSwapLiquiditySwapAdapter";
 export type { ISynthetix } from "./ISynthetix";
 export type { IWETHGateway } from "./IWETHGateway";
 
 export { IAaveGovernanceV2__factory } from "./factories/IAaveGovernanceV2__factory";
+export { IAaveIncentivesController__factory } from "./factories/IAaveIncentivesController__factory";
 export { IAaveProtoGovernance__factory } from "./factories/IAaveProtoGovernance__factory";
 export { IClaimStakingRewardsHelper__factory } from "./factories/IClaimStakingRewardsHelper__factory";
 export { IDebtTokenBase__factory } from "./factories/IDebtTokenBase__factory";
@@ -40,5 +43,6 @@ export { IProposalValidator__factory } from "./factories/IProposalValidator__fac
 export { IRepayWithCollateral__factory } from "./factories/IRepayWithCollateral__factory";
 export { IStakedToken__factory } from "./factories/IStakedToken__factory";
 export { ISwapCollateral__factory } from "./factories/ISwapCollateral__factory";
+export { IParaSwapLiquiditySwapAdapter__factory } from "./factories/IParaSwapLiquiditySwapAdapter__factory";
 export { ISynthetix__factory } from "./factories/ISynthetix__factory";
 export { IWETHGateway__factory } from "./factories/IWETHGateway__factory";

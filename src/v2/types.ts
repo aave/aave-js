@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+
 export type ReserveRatesData = {
   id: string;
   symbol: string;
@@ -6,6 +8,25 @@ export type ReserveRatesData = {
     liquidityIndex: string;
     timestamp: number;
   }[];
+};
+
+export type ReserveSupplyData = {
+  totalScaledVariableDebt: string;
+  variableBorrowIndex: string;
+  variableBorrowRate: string;
+  totalPrincipalStableDebt: string;
+  averageStableRate: string;
+  availableLiquidity: string;
+  stableDebtLastUpdateTimestamp: number;
+  lastUpdateTimestamp: number;
+};
+
+export type RewardsInformation = {
+  rewardTokenAddress: string;
+  rewardTokenDecimals: number;
+  incentivePrecision: number;
+  rewardTokenPriceEth: string;
+  emissionEndTimestamp: number;
 };
 
 export type ReserveData = {
@@ -48,6 +69,15 @@ export type ReserveData = {
   price: {
     priceInEth: string;
   };
+  aEmissionPerSecond: string;
+  vEmissionPerSecond: string;
+  sEmissionPerSecond: string;
+  aIncentivesLastUpdateTimestamp: number;
+  vIncentivesLastUpdateTimestamp: number;
+  sIncentivesLastUpdateTimestamp: number;
+  aTokenIncentivesIndex: string;
+  vTokenIncentivesIndex: string;
+  sTokenIncentivesIndex: string;
 };
 
 export type ComputedReserveData = {
@@ -56,7 +86,16 @@ export type ComputedReserveData = {
   totalVariableDebt: string;
   totalDebt: string;
   totalLiquidity: string;
+  aIncentivesAPY: string;
+  vIncentivesAPY: string;
+  sIncentivesAPY: string;
 } & ReserveData;
+
+export type Supplies = {
+  totalVariableDebt: BigNumber;
+  totalStableDebt: BigNumber;
+  totalLiquidity: BigNumber;
+};
 
 export type UserReserveData = {
   scaledATokenBalance: string;
@@ -76,6 +115,9 @@ export type UserReserveData = {
     reserveLiquidationBonus: string;
     lastUpdateTimestamp: number;
   };
+  aTokenincentivesUserIndex: string;
+  vTokenincentivesUserIndex: string;
+  sTokenincentivesUserIndex: string;
 };
 
 export type ComputedUserReserve = UserReserveData & {
@@ -94,6 +136,19 @@ export type ComputedUserReserve = UserReserveData & {
   totalBorrows: string;
   totalBorrowsETH: string;
   totalBorrowsUSD: string;
+
+  aTokenRewards: string;
+  aTokenRewardsETH: string;
+  aTokenRewardsUSD: string;
+  vTokenRewards: string;
+  vTokenRewardsETH: string;
+  vTokenRewardsUSD: string;
+  sTokenRewards: string;
+  sTokenRewardsETH: string;
+  sTokenRewardsUSD: string;
+  totalRewards: string;
+  totalRewardsETH: string;
+  totalRewardsUSD: string;
 };
 
 export type UserSummaryData = {
@@ -109,4 +164,7 @@ export type UserSummaryData = {
   currentLiquidationThreshold: string;
   healthFactor: string;
   reservesData: ComputedUserReserve[];
+  totalRewards: string;
+  totalRewardsETH: string;
+  totalRewardsUSD: string;
 };

@@ -19,6 +19,9 @@ import {
 import ClaimStakingRewardsHelperService, {
   ClaimStakingRewardsHelperInterface,
 } from './services/ClaimStakingRewardsHelper';
+import IncentivesController, {
+  IncentivesControllerInterface,
+} from './services/IncentivesController';
 
 export default class BaseTxBuilder {
   readonly configuration: Configuration;
@@ -32,6 +35,8 @@ export default class BaseTxBuilder {
   public faucetService: FaucetInterface;
 
   readonly claimStakingRewardsHelperService: ClaimStakingRewardsHelperInterface;
+
+  public incentiveService: IncentivesControllerInterface;
 
   readonly stakings: { [stake: string]: StakingInterface };
 
@@ -82,6 +87,7 @@ export default class BaseTxBuilder {
       this.configuration
     );
     this.faucetService = new FaucetService(this.configuration);
+    this.incentiveService = new IncentivesController(this.configuration);
 
     this.stakings = {};
   }

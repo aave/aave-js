@@ -4,6 +4,7 @@
 import 'reflect-metadata';
 
 export const isEthAddressMetadataKey = Symbol('ethAddress');
+export const isEthAddressArrayMetadataKey = Symbol('ethAddressArray');
 export const isEthAddressOrENSMetadataKey = Symbol('ethOrENSAddress');
 export const isPositiveMetadataKey = Symbol('isPositive');
 export const isPositiveOrMinusOneMetadataKey = Symbol('isPositiveOrMinusOne');
@@ -34,6 +35,32 @@ export function IsEthAddress(field?: string) {
 
     Reflect.defineMetadata(
       isEthAddressMetadataKey,
+      existingPossibleAddresses,
+      target,
+      propertyKey
+    );
+  };
+}
+
+// tslint:disable-next-line: function-name
+export function IsEthAddressArray(field?: string) {
+  return function (
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    target: any,
+    propertyKey: string | symbol,
+    parameterIndex: number
+  ): void {
+    const existingPossibleAddresses: paramsType[] =
+      Reflect.getOwnMetadata(isEthAddressMetadataKey, target, propertyKey) ||
+      [];
+
+    existingPossibleAddresses.push({
+      index: parameterIndex,
+      field,
+    });
+
+    Reflect.defineMetadata(
+      isEthAddressArrayMetadataKey,
       existingPossibleAddresses,
       target,
       propertyKey

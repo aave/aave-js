@@ -45,6 +45,15 @@ const mockReserve: ReserveData = {
   // fake data
   optimalUtilisationRate: '109284236984257451326752610',
   baseVariableBorrowRate: '109284236984257451326752610',
+  aEmissionPerSecond: '0',
+  vEmissionPerSecond: '0',
+  sEmissionPerSecond: '0',
+  aIncentivesLastUpdateTimestamp: 1606992400,
+  vIncentivesLastUpdateTimestamp: 1606992400,
+  sIncentivesLastUpdateTimestamp: 1606992400,
+  aTokenIncentivesIndex: '0',
+  vTokenIncentivesIndex: '0',
+  sTokenIncentivesIndex: '0',
 };
 
 const mockUserReserve: UserReserveData = {
@@ -68,6 +77,9 @@ const mockUserReserve: UserReserveData = {
     reserveLiquidationBonus: '10500',
     lastUpdateTimestamp: 1607000068,
   },
+  aTokenincentivesUserIndex: '0',
+  vTokenincentivesUserIndex: '0',
+  sTokenincentivesUserIndex: '0',
 };
 
 describe('computations and formattings', () => {
@@ -77,7 +89,14 @@ describe('computations and formattings', () => {
       [mockUserReserve],
       '0cd96fb5ee9616f64d892644f53f35be4f90xff795577d9ac8bd7d90ee22b6c1703490b6512fd0x88757f2f99175387ab4c6a4b3067c77a695b0349',
       '598881655557838',
-      mockUserReserve.reserve.lastUpdateTimestamp + 2000
+      mockUserReserve.reserve.lastUpdateTimestamp + 2000,
+      {
+        rewardTokenAddress: '0xb597cd8d3217ea6477232f9217fa70837ff667af',
+        rewardTokenDecimals: 18,
+        incentivePrecision: 18,
+        rewardTokenPriceEth: '0',
+        emissionEndTimestamp: 0,
+      }
     );
     expect(
       formattedMockReserve.reservesData[0].reserve.reserveLiquidationBonus
