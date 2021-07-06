@@ -8,6 +8,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  tEthereumAddress,
   transactionType,
 } from '../types';
 import { IncentivesValidator } from '../validators/methodValidators';
@@ -21,6 +22,7 @@ export type ClaimRewardsMethodType = {
 };
 
 export interface IncentivesControllerInterface {
+  incentivesControllerRewardTokenAddress: tEthereumAddress;
   claimRewards: (
     args: ClaimRewardsMethodType
   ) => EthereumTransactionTypeExtended[];
@@ -29,13 +31,16 @@ export interface IncentivesControllerInterface {
 export default class IncentivesController
   extends BaseService<IAaveIncentivesController>
   implements IncentivesControllerInterface {
+  public readonly incentivesControllerRewardTokenAddress: tEthereumAddress;
   readonly incentivesControllerAddress: string;
 
   constructor(config: Configuration) {
     super(config, IAaveIncentivesController__factory);
     const { network } = this.config;
-    this.incentivesControllerAddress =
-      commonContractAddressBetweenMarketsV2[network].INCENTIVES_CONTROLLER;
+    const addresses = commonContractAddressBetweenMarketsV2[network];
+    this.incentivesControllerAddress = addresses.INCENTIVES_CONTROLLER;
+    this.incentivesControllerRewardTokenAddress =
+      addresses.INCENTIVES_CONTROLLER_REWARD_TOKEN;
   }
 
   @IncentivesValidator

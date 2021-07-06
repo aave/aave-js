@@ -25,6 +25,7 @@ export enum Network {
   polygon = 'polygon',
   fork = 'fork',
   mumbai = 'mumbai',
+  polygon_fork = 'polygon_fork',
 }
 
 export enum ChainId {
@@ -34,6 +35,7 @@ export enum ChainId {
   polygon = 137,
   fork = 1337,
   mumbai = 80001,
+  polygon_fork = 1338,
 }
 
 export enum eEthereumTxType {
@@ -114,6 +116,7 @@ export type AddressModel = {
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
   FLASHLIQUIDATION: tEthereumAddress;
   INCENTIVES_CONTROLLER: tEthereumAddress;
+  INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
 };
 
 export type tCommonContractAddressBetweenMarkets = Pick<
@@ -127,6 +130,7 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
   | 'FLASHLIQUIDATION'
   | 'INCENTIVES_CONTROLLER'
+  | 'INCENTIVES_CONTROLLER_REWARD_TOKEN'
 >;
 
 export type tDistinctContractAddressBetweenMarkets = Pick<
@@ -151,6 +155,7 @@ export type tDistinctGovernanceV2Addresses = Pick<
 
 export type tdistinctStakingAddressesBetweenTokens = {
   TOKEN_STAKING_ADDRESS: tEthereumAddress;
+  STAKING_REWARD_TOKEN_ADDRESS: tEthereumAddress;
   STAKING_HELPER_ADDRESS: tEthereumAddress;
   canUsePermit: boolean;
 };
