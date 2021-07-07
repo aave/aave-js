@@ -109,7 +109,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '',
     },
     [Network.mainnet]: {
-      LENDINGPOOL_ADDRESS: '0x53856C8b7D62F107f4f00E8271b039120bB3F2DA',
+      LENDINGPOOL_ADDRESS: '0xDCe23A5Be6F967d1E8D03C70952d03322E6BD50C',
     },
   },
 };
