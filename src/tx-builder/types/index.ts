@@ -15,6 +15,7 @@ export enum InterestRate {
 export enum Market {
   Proto = 'proto',
   AMM = 'amm',
+  USD = 'USD',
 }
 
 export enum Network {
