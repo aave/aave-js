@@ -10,7 +10,6 @@ import {
 } from '../types';
 
 export const DEFAULT_NULL_VALUE_ON_TX = BigNumber.from(0).toHexString();
-export const POLYGON_DEFAULT_GAS = BigNumber.from('1000000');
 export const DEFAULT_APPROVE_AMOUNT = constants.MaxUint256.toString();
 export const MAX_UINT_AMOUNT =
   '115792089237316195423570985008687907853269984665640564039457584007913129639935';
@@ -157,7 +156,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
     Network.mumbai,
   ],
   faucet: [Network.kovan],
-  liquiditySwapAdapter: [Network.kovan, Network.mainnet],
+  liquiditySwapAdapter: [Network.mainnet, Network.polygon],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
   aaveGovernanceV2: [Network.kovan, Network.mainnet],
   ltaMigrator: [Network.kovan, Network.mainnet],
