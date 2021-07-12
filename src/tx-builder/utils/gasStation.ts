@@ -3,7 +3,7 @@ import { transactionType, Configuration, Network } from '../types';
 
 const DEFAULT_SURPLUS = 30; // 30%
 // polygon gas estimation is very off for some reason
-const POLYGON_SURPLUS = 100; // 100%
+const POLYGON_SURPLUS = 60; // 60%
 
 export const estimateGas = async (
   tx: transactionType,
