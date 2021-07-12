@@ -157,7 +157,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
     Network.mumbai,
   ],
   faucet: [Network.kovan],
-  liquiditySwapAdapter: [Network.kovan, Network.mainnet],
+  liquiditySwapAdapter: [Network.mainnet, Network.polygon],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
   aaveGovernanceV2: [Network.kovan, Network.mainnet],
   ltaMigrator: [Network.kovan, Network.mainnet],
