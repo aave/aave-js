@@ -1,8 +1,9 @@
 import { BigNumber } from 'ethers';
-import { POLYGON_DEFAULT_GAS } from '../config';
 import { transactionType, Configuration, Network } from '../types';
 
 const DEFAULT_SURPLUS = 30; // 30%
+// polygon gas estimation is very off for some reason
+const POLYGON_SURPLUS = 100; // 100%
 
 export const estimateGas = async (
   tx: transactionType,
@@ -24,7 +25,7 @@ export const estimateGasByNetwork = async (
 
   const { network } = config;
   if (network === Network.polygon) {
-    return POLYGON_DEFAULT_GAS;
+    return estimatedGas.add(estimatedGas.mul(POLYGON_SURPLUS).div(100));
   }
 
   return estimatedGas.add(
