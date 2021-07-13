@@ -101,7 +101,7 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
       LENDINGPOOL_ADDRESS: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
     },
   },
-  [Market.Pro]: {
+  [Market.Arc]: {
     [Network.kovan]: {
       LENDINGPOOL_ADDRESS: '0x5476d4a6A174a2ae96a51126e895fbc721176647',
     },
