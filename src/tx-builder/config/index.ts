@@ -98,6 +98,30 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       STAKING_REWARD_TOKEN_ADDRESS: '',
       STAKING_HELPER_ADDRESS: '',
     },
+    [Network.arbitrum_one]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
+    [Network.arbitrum_rinkeby]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
+    [Network.avalanche]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
+    [Network.fuji]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
   },
   [Stake.Balancer]: {
     [Network.kovan]: {
@@ -132,6 +156,30 @@ export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
       STAKING_REWARD_TOKEN_ADDRESS: '',
       STAKING_HELPER_ADDRESS: '',
     },
+    [Network.arbitrum_one]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
+    [Network.arbitrum_rinkeby]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
+    [Network.avalanche]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
+    [Network.fuji]: {
+      canUsePermit: false,
+      TOKEN_STAKING_ADDRESS: '',
+      STAKING_REWARD_TOKEN_ADDRESS: '',
+      STAKING_HELPER_ADDRESS: '',
+    },
   },
 };
 
@@ -146,6 +194,8 @@ export const enabledNetworksByService: EnabledNetworksType = {
       Network.mainnet,
       Network.polygon,
       Network.mumbai,
+      Network.fuji,
+      Network.arbitrum_rinkeby,
     ],
     [Market.AMM]: [Network.kovan, Network.mainnet],
   },
@@ -155,6 +205,8 @@ export const enabledNetworksByService: EnabledNetworksType = {
     Network.mainnet,
     Network.polygon,
     Network.mumbai,
+    Network.fuji,
+    Network.arbitrum_rinkeby,
   ],
   faucet: [Network.kovan],
   liquiditySwapAdapter: [Network.kovan, Network.mainnet],

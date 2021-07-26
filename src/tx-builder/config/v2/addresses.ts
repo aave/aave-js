@@ -70,6 +70,54 @@ export const commonContractAddressBetweenMarketsV2: CommonConfigType = {
     INCENTIVES_CONTROLLER_REWARD_TOKEN:
       '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
   },
+  [Network.arbitrum_one]: {
+    SYNTHETIX_PROXY_ADDRESS: '',
+    GOVERNANCE_PROTO_CONTRACT: '',
+    LEND_TO_AAVE_MIGRATOR: '',
+    WETH_GATEWAY: '',
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '',
+    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
+    INCENTIVES_CONTROLLER: '',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN: '',
+  },
+  [Network.arbitrum_rinkeby]: {
+    SYNTHETIX_PROXY_ADDRESS: '',
+    GOVERNANCE_PROTO_CONTRACT: '',
+    LEND_TO_AAVE_MIGRATOR: '',
+    WETH_GATEWAY: '0x5263530Adb439F688734c2b6a18833cbc2D8B15a',
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '',
+    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
+    INCENTIVES_CONTROLLER: '',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN: '',
+  },
+  [Network.avalanche]: {
+    SYNTHETIX_PROXY_ADDRESS: '',
+    GOVERNANCE_PROTO_CONTRACT: '',
+    LEND_TO_AAVE_MIGRATOR: '',
+    WETH_GATEWAY: '',
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '',
+    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
+    INCENTIVES_CONTROLLER: '',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN: '',
+  },
+  [Network.fuji]: {
+    SYNTHETIX_PROXY_ADDRESS: '',
+    GOVERNANCE_PROTO_CONTRACT: '',
+    LEND_TO_AAVE_MIGRATOR: '',
+    WETH_GATEWAY: '0x5D48898eA439A9fBADa4d69E192B583b32d15221',
+    FAUCET: '',
+    SWAP_COLLATERAL_ADAPTER: '',
+    REPAY_WITH_COLLATERAL_ADAPTER: '',
+    FLASHLIQUIDATION: '',
+    INCENTIVES_CONTROLLER: '',
+    INCENTIVES_CONTROLLER_REWARD_TOKEN: '',
+  },
 };
 
 export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
@@ -88,6 +136,18 @@ export const distinctContractAddressBetweenMarketsV2: LendingPoolConfigType = {
     },
     [Network.mumbai]: {
       LENDINGPOOL_ADDRESS: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
+    },
+    [Network.avalanche]: {
+      LENDINGPOOL_ADDRESS: '',
+    },
+    [Network.fuji]: {
+      LENDINGPOOL_ADDRESS: '0xb9d29F3FF75361C078067aBCE0d7157B11bC508C',
+    },
+    [Network.arbitrum_one]: {
+      LENDINGPOOL_ADDRESS: '',
+    },
+    [Network.arbitrum_rinkeby]: {
+      LENDINGPOOL_ADDRESS: '0x2004Df201bb14F41613E15736a9f0A24569870D6',
     },
   },
   [Market.AMM]: {
