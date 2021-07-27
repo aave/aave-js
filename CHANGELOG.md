@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/aave/aave-js/compare/v3.1.0...v3.2.0) (2021-07-27)
+
+
+### Features
+
+* add swap adapter on polygon ([#208](https://github.com/aave/aave-js/issues/208)) ([66cff72](https://github.com/aave/aave-js/commit/66cff729299f11e721538488d987ff377eb0b616))
+
+
+### Bug Fixes
+
+* drop fee deduction as paraswap needs exact amount ([#196](https://github.com/aave/aave-js/issues/196)) ([aad2d41](https://github.com/aave/aave-js/commit/aad2d41e323e2ff429001fcc2baace738865f012))
+
 ## [3.1.0](https://github.com/aave/aave-js/compare/v3.0.0...v3.1.0) (2021-06-21)
 
 
