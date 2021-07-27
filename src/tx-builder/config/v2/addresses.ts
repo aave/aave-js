@@ -198,4 +198,28 @@ export const aaveGovernanceV2Addresses: GovernanceConfigType = {
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
     AAVE_GOVERNANCE_V2_HELPER: '',
   },
+  [Network.avalanche]: {
+    AAVE_GOVERNANCE_V2: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
+    AAVE_GOVERNANCE_V2_HELPER: '',
+  },
+  [Network.fuji]: {
+    AAVE_GOVERNANCE_V2: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
+    AAVE_GOVERNANCE_V2_HELPER: '',
+  },
+  [Network.arbitrum_one]: {
+    AAVE_GOVERNANCE_V2: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
+    AAVE_GOVERNANCE_V2_HELPER: '',
+  },
+  [Network.arbitrum_rinkeby]: {
+    AAVE_GOVERNANCE_V2: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: '',
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '',
+    AAVE_GOVERNANCE_V2_HELPER: '',
+  },
 };
