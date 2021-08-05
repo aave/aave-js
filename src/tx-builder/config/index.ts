@@ -151,12 +151,16 @@ export const enabledNetworksByService: EnabledNetworksType = {
     [Market.Arc]: [Network.kovan, Network.mainnet],
   },
   governance: [Network.kovan, Network.mainnet],
-  wethGateway: [
-    Network.kovan,
-    Network.mainnet,
-    Network.polygon,
-    Network.mumbai,
-  ],
+  wethGateway: {
+    [Market.Proto]: [
+      Network.kovan,
+      Network.mainnet,
+      Network.polygon,
+      Network.mumbai,
+    ],
+    [Market.AMM]: [Network.kovan, Network.mainnet],
+    [Market.Arc]: [Network.kovan, Network.mainnet],
+  },
   faucet: [Network.kovan],
   liquiditySwapAdapter: [Network.kovan, Network.mainnet],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],

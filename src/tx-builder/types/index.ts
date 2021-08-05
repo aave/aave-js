@@ -124,7 +124,6 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'SYNTHETIX_PROXY_ADDRESS'
   | 'GOVERNANCE_PROTO_CONTRACT'
   | 'LEND_TO_AAVE_MIGRATOR'
-  | 'WETH_GATEWAY'
   | 'FAUCET'
   | 'SWAP_COLLATERAL_ADAPTER'
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
@@ -142,7 +141,7 @@ export type tDistinctContractAddressBetweenMarkets = Pick<
 
 export type tDistinctContractAddressBetweenMarketsV2 = Pick<
   AddressModel,
-  'LENDINGPOOL_ADDRESS'
+  'LENDINGPOOL_ADDRESS' | 'WETH_GATEWAY'
 >;
 
 export type tDistinctGovernanceV2Addresses = Pick<
@@ -237,7 +236,7 @@ export type EnabledNetworksType = {
     [market: string]: Network[];
   };
   governance: Network[];
-  wethGateway: Network[];
+  wethGateway: { [market: string]: Network[] };
   faucet: Network[];
   liquiditySwapAdapter: Network[];
   repayWithCollateralAdapter: Network[];

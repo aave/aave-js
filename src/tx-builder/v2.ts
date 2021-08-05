@@ -24,6 +24,10 @@ export default class TxBuilder
     [market: string]: LendingPoolInterface;
   };
 
+  readonly wethGateways: {
+    [market: string]: WETHGatewayInterface;
+  };
+
   readonly baseDebtTokenService: BaseDebtTokenInterface;
 
   readonly liquiditySwapAdapterService: LiquiditySwapAdapterInterface;
@@ -33,8 +37,6 @@ export default class TxBuilder
   public aaveGovernanceV2Service: AaveGovernanceV2Interface;
 
   public governanceDelegationTokenService: GovernanceDelegationTokenInterface;
-
-  public wethGatewayService: WETHGatewayInterface;
 
   constructor(
     network: Network = Network.mainnet,
@@ -48,13 +50,9 @@ export default class TxBuilder
     super(network, injectedProvider, defaultProviderKeys);
 
     this.lendingPools = {};
+    this.wethGateways = {};
     this.baseDebtTokenService = new BaseDebtToken(
       this.configuration,
-      this.erc20Service
-    );
-    this.wethGatewayService = new WETHGatewayService(
-      this.configuration,
-      this.baseDebtTokenService,
       this.erc20Service
     );
     this.liquiditySwapAdapterService = new LiquiditySwapAdapterService(
@@ -71,13 +69,27 @@ export default class TxBuilder
     );
   }
 
+  public getWethGateway = (market: Market): WETHGatewayInterface => {
+    if (!this.wethGateways[market]) {
+      this.wethGateways[market] = new WETHGatewayService(
+        this.configuration,
+        this.baseDebtTokenService,
+        this.erc20Service,
+        market
+        )
+    }
+
+    return this.wethGateways[market];
+  }
+
   public getLendingPool = (market: Market): LendingPoolInterface => {
+    const wethGatewayService: WETHGatewayInterface = this.getWethGateway(market); 
     if (!this.lendingPools[market]) {
       this.lendingPools[market] = new LendingPool(
         this.configuration,
         this.erc20Service,
         this.synthetixService,
-        this.wethGatewayService,
+        wethGatewayService,
         this.liquiditySwapAdapterService,
         this.repayWithCollateralAdapterService,
         market
