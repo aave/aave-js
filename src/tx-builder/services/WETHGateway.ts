@@ -1,8 +1,5 @@
 import { constants } from 'ethers';
-import {
-  commonContractAddressBetweenMarketsV2,
-  distinctContractAddressBetweenMarketsV2,
-} from '../config';
+import { distinctContractAddressBetweenMarketsV2 } from '../config';
 import { IWETHGateway, IWETHGateway__factory } from '../contract-types';
 import BaseDebtTokenInterface from '../interfaces/BaseDebtToken';
 import IERC20ServiceInterface from '../interfaces/ERC20';
