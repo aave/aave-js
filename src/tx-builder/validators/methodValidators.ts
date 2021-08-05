@@ -198,7 +198,8 @@ export function WETHValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] = enabledNetworksByService.wethGateway[this.market];
+    const acceptedNetworks: Network[] =
+      enabledNetworksByService.wethGateway[this.market];
     if (acceptedNetworks.indexOf(currentNetwork) === -1) {
       return [];
     }

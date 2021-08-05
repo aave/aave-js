@@ -76,14 +76,16 @@ export default class TxBuilder
         this.baseDebtTokenService,
         this.erc20Service,
         market
-        )
+      );
     }
 
     return this.wethGateways[market];
-  }
+  };
 
   public getLendingPool = (market: Market): LendingPoolInterface => {
-    const wethGatewayService: WETHGatewayInterface = this.getWethGateway(market); 
+    const wethGatewayService: WETHGatewayInterface = this.getWethGateway(
+      market
+    );
     if (!this.lendingPools[market]) {
       this.lendingPools[market] = new LendingPool(
         this.configuration,
