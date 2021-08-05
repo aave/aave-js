@@ -1,5 +1,5 @@
 import { constants } from 'ethers';
-import { commonContractAddressBetweenMarketsV2 } from '../config';
+import { distinctContractAddressBetweenMarketsV2 } from '../config';
 import { IWETHGateway, IWETHGateway__factory } from '../contract-types';
 import BaseDebtTokenInterface from '../interfaces/BaseDebtToken';
 import IERC20ServiceInterface from '../interfaces/ERC20';
@@ -9,6 +9,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   InterestRate,
+  Market,
   ProtocolAction,
   transactionType,
   tStringDecimalUnits,
@@ -31,28 +32,34 @@ import BaseService from './BaseService';
 export default class WETHGatewayService
   extends BaseService<IWETHGateway>
   implements WETHGatewayInterface {
-  readonly wethGatewayAddress: string;
-
   readonly config: Configuration;
 
   readonly baseDebtTokenService: BaseDebtTokenInterface;
 
   readonly erc20Service: IERC20ServiceInterface;
 
+  readonly market: Market;
+
+  readonly wethGatewayAddress: string;
+
   constructor(
     config: Configuration,
     baseDebtTokenService: BaseDebtTokenInterface,
-    erc20Service: IERC20ServiceInterface
+    erc20Service: IERC20ServiceInterface,
+    market: Market
   ) {
     super(config, IWETHGateway__factory);
     this.config = config;
     this.baseDebtTokenService = baseDebtTokenService;
     this.erc20Service = erc20Service;
+    this.market = market;
 
     const { network } = this.config;
-    const { WETH_GATEWAY } = commonContractAddressBetweenMarketsV2[network];
 
-    this.wethGatewayAddress = WETH_GATEWAY;
+    this.wethGatewayAddress =
+      distinctContractAddressBetweenMarketsV2[this.market][
+        network
+      ].WETH_GATEWAY;
   }
 
   @WETHValidator
