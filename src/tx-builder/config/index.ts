@@ -207,7 +207,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
     Network.fuji,
     Network.arbitrum_rinkeby,
   ],
-  faucet: [Network.kovan],
+  faucet: [Network.kovan, Network.fuji],
   liquiditySwapAdapter: [Network.mainnet, Network.polygon],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
   aaveGovernanceV2: [Network.kovan, Network.mainnet],
