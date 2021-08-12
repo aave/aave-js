@@ -26,8 +26,7 @@ import BaseService from './BaseService';
 
 export default class FaucetService
   extends BaseService<IMinter>
-  implements FaucetInterface
-{
+  implements FaucetInterface {
   readonly faucetAddress: string;
 
   readonly faucetContract: IFaucet;
