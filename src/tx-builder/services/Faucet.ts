@@ -26,7 +26,8 @@ import BaseService from './BaseService';
 
 export default class FaucetService
   extends BaseService<IMinter>
-  implements FaucetInterface {
+  implements FaucetInterface
+{
   readonly faucetAddress: string;
 
   readonly faucetContract: IFaucet;
@@ -54,13 +55,14 @@ export default class FaucetService
     { userAddress, reserve, tokenSymbol }: FaucetParamsType
   ): Promise<EthereumTransactionTypeExtended[]> {
     const amount: string = mintAmountsPerToken[tokenSymbol];
-    const txValue = await this.getTxValue(reserve, amount);
+
+    // const txValue = await this.getTxValue(reserve, amount);
 
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         this.faucetContract.populateTransaction.mint(reserve, amount),
       from: userAddress,
-      value: txValue,
+      value: DEFAULT_NULL_VALUE_ON_TX,
     });
 
     return [
