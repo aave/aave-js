@@ -14,9 +14,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
-  tEthereumAddress,
   transactionType,
-  tStringDecimalUnits,
 } from '../types';
 import { FaucetParamsType } from '../types/FaucetMethodTypes';
 import { mintAmountsPerToken } from '../utils/parsings';
@@ -26,7 +24,8 @@ import BaseService from './BaseService';
 
 export default class FaucetService
   extends BaseService<IMinter>
-  implements FaucetInterface {
+  implements FaucetInterface
+{
   readonly faucetAddress: string;
 
   readonly faucetContract: IFaucet;
@@ -55,8 +54,6 @@ export default class FaucetService
   ): Promise<EthereumTransactionTypeExtended[]> {
     const amount: string = mintAmountsPerToken[tokenSymbol];
 
-    // const txValue = await this.getTxValue(reserve, amount);
-
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         this.faucetContract.populateTransaction.mint(reserve, amount),
@@ -71,17 +68,5 @@ export default class FaucetService
         gas: this.generateTxPriceEstimation([], txCallback),
       },
     ];
-  }
-
-  private async getTxValue(
-    token: tEthereumAddress,
-    amount: tStringDecimalUnits
-  ): Promise<tStringDecimalUnits> {
-    const minterAddress: string = await this.faucetContract.getMinter(token);
-    const minterContract: IMinter = this.getContractInstance(minterAddress);
-
-    const isEthRequired: boolean = await minterContract.isEthRequired();
-
-    return isEthRequired ? amount : DEFAULT_NULL_VALUE_ON_TX;
   }
 }
