@@ -36,7 +36,6 @@ export const mintAmountsPerToken: { [token: string]: tStringDecimalUnits } = {
   LINK: parseNumber('1000', 18),
   MANA: parseNumber('100000', 18),
   MKR: parseNumber('10', 18),
-  WETH: parseNumber('10', 18),
   REN: parseNumber('10000', 18),
   REP: parseNumber('1000', 18),
   SNX: parseNumber('100', 18),
