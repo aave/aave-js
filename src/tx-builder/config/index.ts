@@ -160,7 +160,7 @@ export const enabledNetworksByService: EnabledNetworksType = {
     [Market.AMM]: [Network.kovan, Network.mainnet],
     [Market.Arc]: [Network.kovan, Network.mainnet],
   },
-  faucet: [Network.kovan],
+  faucet: [Network.kovan, Network.mumbai],
   liquiditySwapAdapter: [Network.mainnet, Network.polygon],
   repayWithCollateralAdapter: [Network.kovan, Network.mainnet],
   aaveGovernanceV2: [Network.kovan, Network.mainnet],
