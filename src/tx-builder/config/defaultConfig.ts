@@ -60,24 +60,22 @@ export const defaultConfig: TxBuilderConfig = {
       SWAP_COLLATERAL_ADAPTER: '0x135896DE8421be2ec868E0b811006171D9df802A',
     },
     kovan: {
-
       SWAP_COLLATERAL_ADAPTER: '0xC18451d36aA370fDACe8d45839bF975F48f7AEa1',
     },
     polygon: {
-
       SWAP_COLLATERAL_ADAPTER: '0x35784a624D4FfBC3594f4d16fA3801FeF063241c',
-    }
+    },
   },
   repayWithCollateral: {
     mainnet: {
       REPAY_WITH_COLLATERAL_ADAPTER:
-      '0x498c5431eb517101582988fbb36431ddaac8f4b1',
+        '0x498c5431eb517101582988fbb36431ddaac8f4b1',
     },
     kovan: {
       REPAY_WITH_COLLATERAL_ADAPTER:
-        '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1'
-    }
-  }
+        '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
+    },
+  },
   faucet: {
     kovan: {
       FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',

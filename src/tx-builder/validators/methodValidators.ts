@@ -10,7 +10,7 @@ import {
   isEthAddressValidator,
   optionalValidator,
 } from './validations';
-import { enabledNetworksByService } from '../config';
+// import { enabledNetworksByService } from '../config';
 import { utils } from 'ethers';
 
 export function LPValidator(
@@ -49,8 +49,11 @@ export function LTAMigratorValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] = enabledNetworksByService.ltaMigrator;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const { LEND_TO_AAVE_MIGRATOR } = this.migratorConfig[currentNetwork];
+
+    if (!utils.isAddress(LEND_TO_AAVE_MIGRATOR)) {
+      console.error(`[MigratorValidator] You need to pass valid addresses`);
       return [];
     }
 
@@ -72,9 +75,15 @@ export function IncentivesValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] =
-      enabledNetworksByService.incentivesController;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const { INCENTIVES_CONTROLLER, INCENTIVES_CONTROLLER_REWARD_TOKEN } =
+      this.incentivesConfig[currentNetwork];
+
+    if (
+      !utils.isAddress(INCENTIVES_CONTROLLER_REWARD_TOKEN) ||
+      !utils.isAddress(INCENTIVES_CONTROLLER)
+    ) {
+      console.error(`[IncentivesValidator] You need to pass valid addresses`);
       return [];
     }
 
@@ -96,9 +105,14 @@ export function LiquiditySwapValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] =
-      enabledNetworksByService.liquiditySwapAdapter;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const { SWAP_COLLATERAL_ADAPTER } =
+      this.swapCollateralConfig[currentNetwork];
+
+    if (!utils.isAddress(SWAP_COLLATERAL_ADAPTER)) {
+      console.error(
+        `[LiquiditySwapValidator] You need to pass valid addresses`
+      );
       return [];
     }
 
@@ -122,9 +136,14 @@ export function RepayWithCollateralValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] =
-      enabledNetworksByService.repayWithCollateralAdapter;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const { REPAY_WITH_COLLATERAL_ADAPTER } =
+      this.repayWithCollateralConfig[currentNetwork];
+
+    if (!utils.isAddress(REPAY_WITH_COLLATERAL_ADAPTER)) {
+      console.error(
+        `[RepayWithCollateralValidator] You need to pass valid addresses`
+      );
       return [];
     }
 
@@ -163,6 +182,7 @@ export function StakingValidator(
       !utils.isAddress(STAKING_REWARD_TOKEN_ADDRESS) ||
       (STAKING_HELPER_ADDRESS && !utils.isAddress(TOKEN_STAKING_ADDRESS))
     ) {
+      console.error(`[StakingValidator] You need to pass valid addresses`);
       return [];
     }
 
@@ -186,8 +206,11 @@ export function FaucetValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] = enabledNetworksByService.faucet;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const { FAUCET } = this.faucetConfig.faucet[currentNetwork];
+
+    if (!utils.isAddress(FAUCET)) {
+      console.error(`[FaucetValidator] You need to pass valid addresses`);
       return [];
     }
 
@@ -236,9 +259,21 @@ export function GovValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] =
-      enabledNetworksByService.aaveGovernanceV2;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const {
+      AAVE_GOVERNANCE_V2,
+      AAVE_GOVERNANCE_V2_HELPER,
+      AAVE_GOVERNANCE_V2_EXECUTOR_SHORT,
+      AAVE_GOVERNANCE_V2_EXECUTOR_LONG,
+    } = this.governanceConfig[currentNetwork];
+
+    if (
+      !utils.isAddress(AAVE_GOVERNANCE_V2) ||
+      !utils.isAddress(AAVE_GOVERNANCE_V2_HELPER) ||
+      !utils.isAddress(AAVE_GOVERNANCE_V2_EXECUTOR_SHORT) ||
+      !utils.isAddress(AAVE_GOVERNANCE_V2_EXECUTOR_LONG)
+    ) {
+      console.error(`[GovernanceValidator] You need to pass valid addresses`);
       return [];
     }
 
@@ -259,13 +294,6 @@ export function GovDelegationValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] =
-      enabledNetworksByService.aaveGovernanceV2;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
-      return [];
-    }
-
     isEthAddressValidator(target, propertyName, arguments);
     isEthAddressOrEnsValidator(target, propertyName, arguments);
     amountGtThan0Validator(target, propertyName, arguments);

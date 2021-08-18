@@ -58,7 +58,7 @@ export default class StakingService
     this.tokenStake = tokenStake;
     this.erc20Service = erc20Service;
 
-    const { network } = this.config;
+    const { network, provider } = this.config;
 
     const {
       TOKEN_STAKING_ADDRESS,
@@ -70,6 +70,13 @@ export default class StakingService
     this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN_ADDRESS;
 
     this.stakingHelperContractAddress = STAKING_HELPER_ADDRESS;
+
+    if (this.stakingHelperContractAddress) {
+      this.stakingHelperContract = IAaveStakingHelper__factory.connect(
+        this.stakingHelperContractAddress,
+        provider
+      );
+    }
   }
 
   @StakingValidator
@@ -144,14 +151,9 @@ export default class StakingService
     );
     const sig: Signature = utils.splitSignature(signature);
 
-    const stakingHelperContract = IAaveStakingHelper__factory.connect(
-      this.stakingHelperContractAddress,
-      this.config.provider
-    );
-
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
-        stakingHelperContract.populateTransaction.stake(
+        this.stakingHelperContract.populateTransaction.stake(
           user,
           convertedAmount,
           sig.v,

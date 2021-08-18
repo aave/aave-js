@@ -1,5 +1,4 @@
 import { constants } from 'ethers';
-import { commonContractAddressBetweenMarketsV2 } from '../config';
 import {
   IAaveIncentivesController,
   IAaveIncentivesController__factory,
@@ -8,6 +7,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  IncentivesConfig,
   tEthereumAddress,
   transactionType,
 } from '../types';
@@ -30,14 +30,20 @@ export interface IncentivesControllerInterface {
 
 export default class IncentivesController
   extends BaseService<IAaveIncentivesController>
-  implements IncentivesControllerInterface {
+  implements IncentivesControllerInterface
+{
   public readonly incentivesControllerRewardTokenAddress: tEthereumAddress;
   readonly incentivesControllerAddress: string;
 
-  constructor(config: Configuration) {
+  readonly incentivesConfig: IncentivesConfig;
+
+  constructor(config: Configuration, incentivesConfig: IncentivesConfig) {
     super(config, IAaveIncentivesController__factory);
     const { network } = this.config;
-    const addresses = commonContractAddressBetweenMarketsV2[network];
+    this.incentivesConfig = incentivesConfig;
+
+    const addresses = this.incentivesConfig[network];
+
     this.incentivesControllerAddress = addresses.INCENTIVES_CONTROLLER;
     this.incentivesControllerRewardTokenAddress =
       addresses.INCENTIVES_CONTROLLER_REWARD_TOKEN;
@@ -50,9 +56,8 @@ export default class IncentivesController
     @IsEthAddress('to')
     { user, assets, to }: ClaimRewardsMethodType
   ): EthereumTransactionTypeExtended[] {
-    const incentivesContract: IAaveIncentivesController = this.getContractInstance(
-      this.incentivesControllerAddress
-    );
+    const incentivesContract: IAaveIncentivesController =
+      this.getContractInstance(this.incentivesControllerAddress);
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         incentivesContract.populateTransaction.claimRewards(

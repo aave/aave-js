@@ -22,6 +22,7 @@ import {
   transactionType,
   tStringDecimalUnits,
   tEthereumAddress,
+  LendingPoolConfig,
 } from '../../types';
 import { getTxValue, parseNumber } from '../../utils/parsings';
 import { LPValidator } from '../../validators/methodValidators';
@@ -97,6 +98,8 @@ export default class LendingPool
 
   readonly repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface;
 
+  readonly lendingPoolConfig: LendingPoolConfig;
+
   constructor(
     config: Configuration,
     erc20Service: IERC20ServiceInterface,
@@ -105,6 +108,7 @@ export default class LendingPool
     liquiditySwapAdapterService: LiquiditySwapAdapterInterface,
     repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface,
     market: Market
+    lendingPoolConfig: LendingPoolConfig
   ) {
     super(config, ILendingPool__factory);
     this.erc20Service = erc20Service;
@@ -113,10 +117,11 @@ export default class LendingPool
     this.liquiditySwapAdapterService = liquiditySwapAdapterService;
     this.repayWithCollateralAdapterService = repayWithCollateralAdapterService;
     this.market = market;
+    this.lendingPoolConfig = lendingPoolConfig;
 
     const { network } = this.config;
     this.lendingPoolAddress =
-      distinctContractAddressBetweenMarketsV2[this.market][
+      this.lendingPoolConfig[
         network
       ].LENDINGPOOL_ADDRESS;
   }

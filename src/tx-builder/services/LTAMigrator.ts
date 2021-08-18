@@ -1,8 +1,5 @@
 import IERC20ServiceInterface from '../interfaces/ERC20';
-import {
-  commonContractAddressBetweenMarketsV2,
-  DEFAULT_APPROVE_AMOUNT,
-} from '../config';
+import { DEFAULT_APPROVE_AMOUNT } from '../config';
 import {
   ILendToAaveMigrator,
   ILendToAaveMigrator__factory,
@@ -12,6 +9,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  MigratorConfig,
   Network,
   tEthereumAddress,
   transactionType,
@@ -24,18 +22,26 @@ import { IsEthAddress, IsPositiveAmount } from '../validators/paramValidators';
 
 export default class LTAMigratorService
   extends BaseService<ILendToAaveMigrator>
-  implements LTAMigratorInterface {
+  implements LTAMigratorInterface
+{
   readonly erc20Service: IERC20ServiceInterface;
 
   readonly migratorAddress: string;
 
-  constructor(config: Configuration, erc20Service: IERC20ServiceInterface) {
+  readonly migratorConfig: MigratorConfig;
+
+  constructor(
+    config: Configuration,
+    erc20Service: IERC20ServiceInterface,
+    migratorConfig: MigratorConfig
+  ) {
     super(config, ILendToAaveMigrator__factory);
     this.erc20Service = erc20Service;
+    this.migratorConfig = migratorConfig;
+
     const { network }: Configuration = this.config;
 
-    this.migratorAddress =
-      commonContractAddressBetweenMarketsV2[network].LEND_TO_AAVE_MIGRATOR;
+    this.migratorAddress = this.migratorConfig[network].LEND_TO_AAVE_MIGRATOR;
   }
 
   @LTAMigratorValidator
@@ -44,10 +50,6 @@ export default class LTAMigratorService
     @IsPositiveAmount() amount: tStringCurrencyUnits
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    // TODO: delete conditional when mainnet address
-    if (this.config.network === Network.ropsten) {
-      return txs;
-    }
 
     const { isApproved, approve, decimalsOf } = this.erc20Service;
 

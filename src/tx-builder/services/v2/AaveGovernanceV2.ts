@@ -1,6 +1,5 @@
 import { Signature, utils } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
-import { aaveGovernanceV2Addresses } from '../../config';
 import {
   IGovernanceStrategy,
   IGovernanceStrategy__factory,
@@ -15,6 +14,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  GovernanceConfig,
   tEthereumAddress,
   transactionType,
 } from '../../types';
@@ -110,15 +110,19 @@ const parseProposal = async (rawProposal: ProposalRPC): Promise<Proposal> => {
 };
 export default class AaveGovernanceV2Service
   extends BaseService<IAaveGovernanceV2>
-  implements AaveGovernanceV2Interface {
+  implements AaveGovernanceV2Interface
+{
   readonly aaveGovernanceV2Address: string;
 
   readonly aaveGovernanceV2HelperAddress: string;
 
   readonly executors: tEthereumAddress[] = [];
 
-  constructor(config: Configuration) {
+  readonly governanceConfig: GovernanceConfig;
+
+  constructor(config: Configuration, governanceConfig: GovernanceConfig) {
     super(config, IAaveGovernanceV2__factory);
+    this.governanceConfig = governanceConfig;
 
     const { network } = this.config;
     const {
@@ -126,7 +130,7 @@ export default class AaveGovernanceV2Service
       AAVE_GOVERNANCE_V2_HELPER,
       AAVE_GOVERNANCE_V2_EXECUTOR_SHORT,
       AAVE_GOVERNANCE_V2_EXECUTOR_LONG,
-    } = aaveGovernanceV2Addresses[network];
+    } = this.governanceConfig[network];
 
     this.aaveGovernanceV2Address = AAVE_GOVERNANCE_V2;
     this.aaveGovernanceV2HelperAddress = AAVE_GOVERNANCE_V2_HELPER;
@@ -390,10 +394,8 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingAtBlockType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
-      strategy,
-      provider
-    );
+    const proposalStrategy: IGovernanceStrategy =
+      IGovernanceStrategy__factory.connect(strategy, provider);
 
     const power = await proposalStrategy.getPropositionPowerAt(
       user,
@@ -409,10 +411,8 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingAtBlockType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
-      strategy,
-      provider
-    );
+    const proposalStrategy: IGovernanceStrategy =
+      IGovernanceStrategy__factory.connect(strategy, provider);
 
     const power = await proposalStrategy.getVotingPowerAt(
       user,
@@ -427,10 +427,8 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingSupplyType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
-      strategy,
-      provider
-    );
+    const proposalStrategy: IGovernanceStrategy =
+      IGovernanceStrategy__factory.connect(strategy, provider);
 
     const total = await proposalStrategy.getTotalPropositionSupplyAt(
       block.toString()
@@ -444,10 +442,8 @@ export default class AaveGovernanceV2Service
     strategy,
   }: GovGetVotingSupplyType): Promise<string> {
     const { provider }: Configuration = this.config;
-    const proposalStrategy: IGovernanceStrategy = IGovernanceStrategy__factory.connect(
-      strategy,
-      provider
-    );
+    const proposalStrategy: IGovernanceStrategy =
+      IGovernanceStrategy__factory.connect(strategy, provider);
 
     const total = await proposalStrategy.getTotalVotingSupplyAt(
       block.toString()

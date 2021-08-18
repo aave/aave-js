@@ -1,8 +1,4 @@
-import {
-  commonContractAddressBetweenMarketsV2,
-  DEFAULT_NULL_VALUE_ON_TX,
-  enabledNetworksByService,
-} from '../config';
+import { DEFAULT_NULL_VALUE_ON_TX } from '../config';
 import {
   IFaucet,
   IMinter,
@@ -14,6 +10,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  FaucetConfig,
   transactionType,
 } from '../types';
 import { FaucetParamsType } from '../types/FaucetMethodTypes';
@@ -24,20 +21,24 @@ import BaseService from './BaseService';
 
 export default class FaucetService
   extends BaseService<IMinter>
-  implements FaucetInterface {
+  implements FaucetInterface
+{
   readonly faucetAddress: string;
 
   readonly faucetContract: IFaucet;
 
-  constructor(config: Configuration) {
+  readonly faucetConfig: FaucetConfig;
+
+  constructor(config: Configuration, faucetConfig: FaucetConfig) {
     super(config, IMinter__factory);
+
+    this.faucetConfig = faucetConfig;
 
     const { provider, network } = this.config;
 
-    const { FAUCET } = commonContractAddressBetweenMarketsV2[network];
-    this.faucetAddress = FAUCET;
+    this.faucetAddress = this.faucetConfig[network].FAUCET;
 
-    if (enabledNetworksByService.faucet.indexOf(network) > -1) {
+    if (this.faucetAddress) {
       this.faucetContract = IFaucet__factory.connect(
         this.faucetAddress,
         provider

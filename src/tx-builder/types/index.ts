@@ -86,11 +86,11 @@ export type StakingConfig = {
   [stake: string]: StakingNetworkConfig;
 };
 
-export type SwapCollateral = {
-  [network: string]: { SWAP_COLLATERAL_ADAPTER?: tEthereumAddress };
+export type SwapCollateralConfig = {
+  [network: string]: { SWAP_COLLATERAL_ADAPTER: tEthereumAddress };
 };
 
-export type RepayWithCollateral = {
+export type RepayWithCollateralConfig = {
   [network: string]: { REPAY_WITH_COLLATERAL_ADAPTER: tEthereumAddress };
 };
 
@@ -101,8 +101,8 @@ export type TxBuilderConfig = {
   migrator?: MigratorConfig;
   lendingPool?: LendingPoolConfig;
   staking?: StakingConfig;
-  swapCollateral?: SwapCollateral;
-  repayWithCollateral?: RepayWithCollateral;
+  swapCollateral?: SwapCollateralConfig;
+  repayWithCollateral?: RepayWithCollateralConfig;
 };
 
 export enum eEthereumTxType {

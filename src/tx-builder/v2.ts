@@ -54,25 +54,44 @@ export default class TxBuilder
       this.configuration,
       this.erc20Service
     );
+
     this.wethGatewayService = new WETHGatewayService(
       this.configuration,
       this.baseDebtTokenService,
       this.erc20Service
     );
-    this.liquiditySwapAdapterService = new LiquiditySwapAdapterService(
-      this.configuration
-    );
-    this.repayWithCollateralAdapterService =
-      new RepayWithCollateralAdapterService(this.configuration);
-    this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
-      this.configuration
-    );
+
+    if (this.txBuilderConfig.swapCollateral) {
+      this.liquiditySwapAdapterService = new LiquiditySwapAdapterService(
+        this.configuration,
+        this.txBuilderConfig.swapCollateral
+      );
+    }
+
+    if (this.txBuilderConfig.repayWithCollateral) {
+      this.repayWithCollateralAdapterService =
+        new RepayWithCollateralAdapterService(
+          this.configuration,
+          this.txBuilderConfig.repayWithCollateral
+        );
+    }
+
+    if (this.txBuilderConfig.governance) {
+      this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
+        this.configuration,
+        this.txBuilderConfig.governance
+      );
+    }
+
     this.governanceDelegationTokenService =
       new GovernanceDelegationTokenService(this.configuration);
   }
 
   public getLendingPool = (market: Market): LendingPoolInterface => {
-    if (this.txBuilderConfig.lendingPool?[market]) {
+    if (
+      this.txBuilderConfig.lendingPool &&
+      this.txBuilderConfig.lendingPool[market]
+    ) {
       if (!this.lendingPools[market]) {
         this.lendingPools[market] = new LendingPool(
           this.configuration,
@@ -81,7 +100,8 @@ export default class TxBuilder
           this.wethGatewayService,
           this.liquiditySwapAdapterService,
           this.repayWithCollateralAdapterService,
-          market
+          market,
+          this.txBuilderConfig.lendingPool[market]
         );
       }
 

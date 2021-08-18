@@ -1,4 +1,3 @@
-import { commonContractAddressBetweenMarketsV2 } from '../config';
 import {
   IRepayWithCollateral,
   IRepayWithCollateral__factory,
@@ -8,6 +7,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  RepayWithCollateralConfig,
   transactionType,
 } from '../types';
 import { RepayWithCollateralType } from '../types/RepayWithCollateralMethodTypes';
@@ -17,17 +17,23 @@ import BaseService from './BaseService';
 
 export default class RepayWithCollateralAdapterService
   extends BaseService<IRepayWithCollateral>
-  implements RepayWithCollateralAdapterInterface {
+  implements RepayWithCollateralAdapterInterface
+{
   readonly repayWithCollateralAddress: string;
 
-  constructor(config: Configuration) {
+  readonly repayWithCollateralConfig: RepayWithCollateralConfig;
+
+  constructor(
+    config: Configuration,
+    repayWithCollateralConfig: RepayWithCollateralConfig
+  ) {
     super(config, IRepayWithCollateral__factory);
+    this.repayWithCollateralConfig = repayWithCollateralConfig;
 
-    const {
-      REPAY_WITH_COLLATERAL_ADAPTER,
-    } = commonContractAddressBetweenMarketsV2[this.config.network];
+    const { network } = this.config;
 
-    this.repayWithCollateralAddress = REPAY_WITH_COLLATERAL_ADAPTER;
+    this.repayWithCollateralAddress =
+      this.repayWithCollateralConfig[network].REPAY_WITH_COLLATERAL_ADAPTER;
   }
 
   @RepayWithCollateralValidator
@@ -48,9 +54,8 @@ export default class RepayWithCollateralAdapterService
       useEthPath,
     }: RepayWithCollateralType
   ): EthereumTransactionTypeExtended {
-    const repayWithCollateralContract: IRepayWithCollateral = this.getContractInstance(
-      this.repayWithCollateralAddress
-    );
+    const repayWithCollateralContract: IRepayWithCollateral =
+      this.getContractInstance(this.repayWithCollateralAddress);
 
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>

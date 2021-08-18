@@ -1,4 +1,3 @@
-import { commonContractAddressBetweenMarketsV2 } from '../config';
 import {
   IParaSwapLiquiditySwapAdapter__factory,
   IParaSwapLiquiditySwapAdapter,
@@ -8,6 +7,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  SwapCollateralConfig,
   transactionType,
 } from '../types';
 import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
@@ -34,16 +34,23 @@ export function augustusFromAmountOffsetFromCalldata(calldata: string) {
 
 export default class LiquiditySwapAdapterService
   extends BaseService<IParaSwapLiquiditySwapAdapter>
-  implements LiquiditySwapAdapterInterface {
+  implements LiquiditySwapAdapterInterface
+{
   readonly liquiditySwapAdapterAddress: string;
 
-  constructor(config: Configuration) {
-    super(config, IParaSwapLiquiditySwapAdapter__factory);
+  readonly swapCollateralConfig: SwapCollateralConfig;
 
-    const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
-      this.config.network
-    ];
-    this.liquiditySwapAdapterAddress = SWAP_COLLATERAL_ADAPTER;
+  constructor(
+    config: Configuration,
+    swapCollateralConfig: SwapCollateralConfig
+  ) {
+    super(config, IParaSwapLiquiditySwapAdapter__factory);
+    this.swapCollateralConfig = swapCollateralConfig;
+
+    const { network } = this.config;
+
+    this.liquiditySwapAdapterAddress =
+      this.swapCollateralConfig[network].SWAP_COLLATERAL_ADAPTER;
   }
 
   @LiquiditySwapValidator

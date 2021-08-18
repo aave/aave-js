@@ -81,39 +81,46 @@ export default class BaseTxBuilder {
 
     this.erc20Service = new ERC20Service(this.configuration);
     this.synthetixService = new SynthetixService(this.configuration);
-    this.ltaMigratorService = new LTAMigratorService(
-      this.configuration,
-      this.erc20Service
-    );
-    this.faucetService = new FaucetService(this.configuration);
-    this.incentiveService = new IncentivesController(this.configuration);
 
+    if (this.txBuilderConfig.migrator) {
+      this.ltaMigratorService = new LTAMigratorService(
+        this.configuration,
+        this.erc20Service,
+        this.txBuilderConfig.migrator
+      );
+    }
+    // TODO: move this to a method?
+    if (this.txBuilderConfig.faucet) {
+      this.faucetService = new FaucetService(
+        this.configuration,
+        this.txBuilderConfig.faucet
+      );
+    }
+
+    if (this.txBuilderConfig.incentives) {
+      this.incentiveService = new IncentivesController(
+        this.configuration,
+        this.txBuilderConfig.incentives
+      );
+    }
     this.stakings = {};
   }
 
   public getStaking = (stake: string): StakingInterface => {
-    const network = this.configuration.network;
-    // Check that the staking configuration has all the necessary objects for
-    // stake and network
-    if (
-      this.txBuilderConfig.staking &&
-      this.txBuilderConfig.staking[stake] &&
-      this.txBuilderConfig.staking[stake][network]
-    ) {
-      if (!this.stakings[stake]) {
+    if (!this.stakings[stake]) {
+      if (this.txBuilderConfig.staking && this.txBuilderConfig.staking[stake]) {
         this.stakings[stake] = new StakingService(
           this.configuration,
           this.erc20Service,
           stake,
           this.txBuilderConfig.staking[stake]
         );
+      } else {
+        throw new Error(
+          `Stake token: ${stake} doesn't exist. Please review the configuration.`
+        );
       }
-
-      return this.stakings[stake];
-    } else {
-      throw new Error(
-        `Stake token: ${stake} doesn't exist. Please change the stake token or add it to the configuration.`
-      );
     }
+    return this.stakings[stake];
   };
 }
