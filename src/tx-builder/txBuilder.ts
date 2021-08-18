@@ -14,11 +14,12 @@ import {
   Configuration,
   DefaultProviderKeys,
   Network,
-  Stake,
+  TxBuilderConfig,
 } from './types';
 import IncentivesController, {
   IncentivesControllerInterface,
 } from './services/IncentivesController';
+import { defaultConfig } from './config/defaultConfig';
 
 export default class BaseTxBuilder {
   readonly configuration: Configuration;
@@ -35,6 +36,8 @@ export default class BaseTxBuilder {
 
   readonly stakings: { [stake: string]: StakingInterface };
 
+  readonly txBuilderConfig: TxBuilderConfig;
+
   constructor(
     network: Network = Network.mainnet,
     injectedProvider?:
@@ -43,10 +46,13 @@ export default class BaseTxBuilder {
       | providers.Web3Provider
       | string
       | undefined,
-    defaultProviderKeys?: DefaultProviderKeys
+    defaultProviderKeys?: DefaultProviderKeys,
+    config: TxBuilderConfig = defaultConfig
   ) {
-    let provider: providers.Provider;
+    if (!config) {
+    }
 
+    let provider: providers.Provider;
     // TODO: this is probably not enough as we use network down the road
     const chainId = ChainId[network];
 
@@ -85,16 +91,29 @@ export default class BaseTxBuilder {
     this.stakings = {};
   }
 
-  public getStaking = (stake?: Stake): StakingInterface => {
-    const stakeToken = stake || Stake.Aave;
-    if (!this.stakings[stakeToken]) {
-      this.stakings[stakeToken] = new StakingService(
-        this.configuration,
-        this.erc20Service,
-        stakeToken
+  public getStaking = (stake: string): StakingInterface => {
+    const network = this.configuration.network;
+    // Check that the staking configuration has all the necessary objects for
+    // stake and network
+    if (
+      this.txBuilderConfig.staking &&
+      this.txBuilderConfig.staking[stake] &&
+      this.txBuilderConfig.staking[stake][network]
+    ) {
+      if (!this.stakings[stake]) {
+        this.stakings[stake] = new StakingService(
+          this.configuration,
+          this.erc20Service,
+          stake,
+          this.txBuilderConfig.staking[stake]
+        );
+      }
+
+      return this.stakings[stake];
+    } else {
+      throw new Error(
+        `Stake token: ${stake} doesn't exist. Please change the stake token or add it to the configuration.`
       );
     }
-
-    return this.stakings[stakeToken];
   };
 }

@@ -37,6 +37,74 @@ export enum ChainId {
   polygon_fork = 1338,
 }
 
+export type GovernanceConfig = {
+  [network: string]: {
+    AAVE_GOVERNANCE_V2: tEthereumAddress;
+    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: tEthereumAddress;
+    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
+    AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
+  };
+};
+
+export type FaucetConfig = {
+  [network: string]: { FAUCET: tEthereumAddress };
+};
+
+export type IncentivesConfig = {
+  [network: string]: {
+    INCENTIVES_CONTROLLER: tEthereumAddress;
+    INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
+  };
+};
+
+export type MigratorConfig = {
+  [network: string]: { LEND_TO_AAVE_MIGRATOR: tEthereumAddress };
+};
+
+export type LendingPoolNetworkConfig = {
+  [network: string]: {
+    LENDINGPOOL_ADDRESS: tEthereumAddress;
+    WETH_GATEWAY: tEthereumAddress;
+    SYNTHETIX_PROXY_ADDRESS?: tEthereumAddress;
+    FLASHLIQUIDATION?: tEthereumAddress;
+  };
+};
+
+export type LendingPoolConfig = {
+  [market: string]: LendingPoolNetworkConfig;
+};
+
+export type StakingNetworkConfig = {
+  [network: string]: {
+    TOKEN_STAKING_ADDRESS: tEthereumAddress;
+    STAKING_REWARD_TOKEN_ADDRESS: tEthereumAddress;
+    STAKING_HELPER_ADDRESS?: tEthereumAddress;
+  };
+};
+
+export type StakingConfig = {
+  [stake: string]: StakingNetworkConfig;
+};
+
+export type SwapCollateral = {
+  [network: string]: { SWAP_COLLATERAL_ADAPTER?: tEthereumAddress };
+};
+
+export type RepayWithCollateral = {
+  [network: string]: { REPAY_WITH_COLLATERAL_ADAPTER: tEthereumAddress };
+};
+
+export type TxBuilderConfig = {
+  governance?: GovernanceConfig;
+  faucet?: FaucetConfig;
+  incentives?: IncentivesConfig;
+  migrator?: MigratorConfig;
+  lendingPool?: LendingPoolConfig;
+  staking?: StakingConfig;
+  swapCollateral?: SwapCollateral;
+  repayWithCollateral?: RepayWithCollateral;
+};
+
 export enum eEthereumTxType {
   ERC20_APPROVAL = 'ERC20_APPROVAL',
   DLP_ACTION = 'DLP_ACTION',

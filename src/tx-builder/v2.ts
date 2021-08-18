@@ -1,5 +1,5 @@
 import { providers } from 'ethers';
-import { Network, Market, DefaultProviderKeys } from './types';
+import { Network, Market, DefaultProviderKeys, TxBuilderConfig } from './types';
 import TxBuilderInterface from './interfaces/TxBuilder';
 import LendingPoolInterface from './interfaces/v2/LendingPool';
 import LendingPool from './services/v2/LendingPool';
@@ -19,7 +19,8 @@ import GovernanceDelegationTokenService from './services/v2/GovernanceDelegation
 
 export default class TxBuilder
   extends BaseTxBuilder
-  implements TxBuilderInterface {
+  implements TxBuilderInterface
+{
   readonly lendingPools: {
     [market: string]: LendingPoolInterface;
   };
@@ -43,9 +44,10 @@ export default class TxBuilder
       | providers.Web3Provider
       | string
       | undefined,
-    defaultProviderKeys?: DefaultProviderKeys
+    defaultProviderKeys?: DefaultProviderKeys,
+    config?: TxBuilderConfig
   ) {
-    super(network, injectedProvider, defaultProviderKeys);
+    super(network, injectedProvider, defaultProviderKeys, config);
 
     this.lendingPools = {};
     this.baseDebtTokenService = new BaseDebtToken(
@@ -60,30 +62,34 @@ export default class TxBuilder
     this.liquiditySwapAdapterService = new LiquiditySwapAdapterService(
       this.configuration
     );
-    this.repayWithCollateralAdapterService = new RepayWithCollateralAdapterService(
-      this.configuration
-    );
+    this.repayWithCollateralAdapterService =
+      new RepayWithCollateralAdapterService(this.configuration);
     this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
       this.configuration
     );
-    this.governanceDelegationTokenService = new GovernanceDelegationTokenService(
-      this.configuration
-    );
+    this.governanceDelegationTokenService =
+      new GovernanceDelegationTokenService(this.configuration);
   }
 
   public getLendingPool = (market: Market): LendingPoolInterface => {
-    if (!this.lendingPools[market]) {
-      this.lendingPools[market] = new LendingPool(
-        this.configuration,
-        this.erc20Service,
-        this.synthetixService,
-        this.wethGatewayService,
-        this.liquiditySwapAdapterService,
-        this.repayWithCollateralAdapterService,
-        market
+    if (this.txBuilderConfig.lendingPool?[market]) {
+      if (!this.lendingPools[market]) {
+        this.lendingPools[market] = new LendingPool(
+          this.configuration,
+          this.erc20Service,
+          this.synthetixService,
+          this.wethGatewayService,
+          this.liquiditySwapAdapterService,
+          this.repayWithCollateralAdapterService,
+          market
+        );
+      }
+
+      return this.lendingPools[market];
+    } else {
+      throw new Error(
+        `Market: ${market} not in configuration. Please change market or add it to the configuration object`
       );
     }
-
-    return this.lendingPools[market];
   };
 }

@@ -11,6 +11,7 @@ import {
   optionalValidator,
 } from './validations';
 import { enabledNetworksByService } from '../config';
+import { utils } from 'ethers';
 
 export function LPValidator(
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -147,9 +148,21 @@ export function StakingValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] =
-      enabledNetworksByService.staking[this.tokenStake];
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    // No need to check if addresses exist for network
+    // because this is checked at initialization and type checking of config
+    const {
+      TOKEN_STAKING_ADDRESS,
+      STAKING_REWARD_TOKEN_ADDRESS,
+      STAKING_HELPER_ADDRESS,
+    } = this.stakingConfig[currentNetwork];
+
+    // Check if addresses are valid.
+    if (
+      !utils.isAddress(TOKEN_STAKING_ADDRESS) ||
+      !utils.isAddress(STAKING_REWARD_TOKEN_ADDRESS) ||
+      (STAKING_HELPER_ADDRESS && !utils.isAddress(TOKEN_STAKING_ADDRESS))
+    ) {
       return [];
     }
 
