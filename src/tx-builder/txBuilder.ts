@@ -83,7 +83,10 @@ export default class BaseTxBuilder {
     this.erc20Service = new ERC20Service(this.configuration);
     this.synthetixService = new SynthetixService(this.configuration);
 
-    if (this.txBuilderConfig.migrator) {
+    if (
+      this.txBuilderConfig.migrator &&
+      this.txBuilderConfig.migrator[network]
+    ) {
       this.ltaMigratorService = new LTAMigratorService(
         this.configuration,
         this.erc20Service,
@@ -91,14 +94,17 @@ export default class BaseTxBuilder {
       );
     }
 
-    if (this.txBuilderConfig.faucet) {
+    if (this.txBuilderConfig.faucet && this.txBuilderConfig.faucet[network]) {
       this.faucetService = new FaucetService(
         this.configuration,
         this.txBuilderConfig.faucet
       );
     }
 
-    if (this.txBuilderConfig.incentives) {
+    if (
+      this.txBuilderConfig.incentives &&
+      this.txBuilderConfig.incentives[network]
+    ) {
       this.incentiveService = new IncentivesController(
         this.configuration,
         this.txBuilderConfig.incentives

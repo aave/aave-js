@@ -57,21 +57,30 @@ export default class TxBuilder
       this.erc20Service
     );
 
-    if (this.txBuilderConfig.swapCollateral) {
+    if (
+      this.txBuilderConfig.swapCollateral &&
+      this.txBuilderConfig.swapCollateral[network]
+    ) {
       this.liquiditySwapAdapterService = new LiquiditySwapAdapterService(
         this.configuration,
         this.txBuilderConfig.swapCollateral
       );
     }
 
-    if (this.txBuilderConfig.repayWithCollateral) {
+    if (
+      this.txBuilderConfig.repayWithCollateral &&
+      this.txBuilderConfig.repayWithCollateral[network]
+    ) {
       this.repayWithCollateralAdapterService = new RepayWithCollateralAdapterService(
         this.configuration,
         this.txBuilderConfig.repayWithCollateral
       );
     }
 
-    if (this.txBuilderConfig.governance) {
+    if (
+      this.txBuilderConfig.governance &&
+      this.txBuilderConfig.governance[network]
+    ) {
       this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
         this.configuration,
         this.txBuilderConfig.governance
