@@ -65,18 +65,12 @@ export type MigratorConfig = {
   [network: string]: { LEND_TO_AAVE_MIGRATOR: tEthereumAddress };
 };
 
-export type LendingPoolNetworkConfig = {
-  [market: string]: {
-    LENDINGPOOL_ADDRESS: tEthereumAddress;
-    WETH_GATEWAY?: tEthereumAddress;
-    FLASHLIQUIDATION?: tEthereumAddress;
-  };
-};
-
 export type LendingPoolMarketConfig = {
-  LENDINGPOOL_ADDRESS: tEthereumAddress;
+  LENDING_POOL: tEthereumAddress;
   WETH_GATEWAY?: tEthereumAddress;
-  FLASHLIQUIDATION?: tEthereumAddress;
+  FLASH_LIQUIDATION_ADAPTER?: tEthereumAddress;
+  REPAY_WITH_COLLATERAL_ADAPTER?: tEthereumAddress;
+  SWAP_COLLATERAL_ADAPTER?: tEthereumAddress;
 };
 
 export type LendingPoolConfig = {
@@ -87,22 +81,14 @@ export type LendingPoolConfig = {
 
 export type StakingNetworkConfig = {
   [network: string]: {
-    TOKEN_STAKING_ADDRESS: tEthereumAddress;
-    STAKING_REWARD_TOKEN_ADDRESS: tEthereumAddress;
-    STAKING_HELPER_ADDRESS?: tEthereumAddress;
+    TOKEN_STAKING: tEthereumAddress;
+    STAKING_REWARD_TOKEN: tEthereumAddress;
+    STAKING_HELPER?: tEthereumAddress;
   };
 };
 
 export type StakingConfig = {
   [stake: string]: StakingNetworkConfig;
-};
-
-export type SwapCollateralConfig = {
-  [network: string]: { SWAP_COLLATERAL_ADAPTER: tEthereumAddress };
-};
-
-export type RepayWithCollateralConfig = {
-  [network: string]: { REPAY_WITH_COLLATERAL_ADAPTER: tEthereumAddress };
 };
 
 export type TxBuilderConfig = {
@@ -112,8 +98,6 @@ export type TxBuilderConfig = {
   migrator?: MigratorConfig;
   lendingPool?: LendingPoolConfig;
   staking?: StakingConfig;
-  swapCollateral?: SwapCollateralConfig;
-  repayWithCollateral?: RepayWithCollateralConfig;
 };
 
 export enum eEthereumTxType {
