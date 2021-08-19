@@ -1,5 +1,4 @@
 import { constants } from 'ethers';
-import { commonContractAddressBetweenMarketsV2 } from '../config';
 import { IWETHGateway, IWETHGateway__factory } from '../contract-types';
 import BaseDebtTokenInterface from '../interfaces/BaseDebtToken';
 import IERC20ServiceInterface from '../interfaces/ERC20';
@@ -9,6 +8,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   InterestRate,
+  LendingPoolNetworkConfig,
   ProtocolAction,
   transactionType,
   tStringDecimalUnits,
@@ -30,7 +30,8 @@ import BaseService from './BaseService';
 
 export default class WETHGatewayService
   extends BaseService<IWETHGateway>
-  implements WETHGatewayInterface {
+  implements WETHGatewayInterface
+{
   readonly wethGatewayAddress: string;
 
   readonly config: Configuration;
@@ -39,20 +40,22 @@ export default class WETHGatewayService
 
   readonly erc20Service: IERC20ServiceInterface;
 
+  readonly wethGatewayConfig: LendingPoolNetworkConfig;
+
   constructor(
     config: Configuration,
     baseDebtTokenService: BaseDebtTokenInterface,
-    erc20Service: IERC20ServiceInterface
+    erc20Service: IERC20ServiceInterface,
+    wethGatewayConfig: LendingPoolNetworkConfig
   ) {
     super(config, IWETHGateway__factory);
-    this.config = config;
+    this.wethGatewayConfig = wethGatewayConfig;
     this.baseDebtTokenService = baseDebtTokenService;
     this.erc20Service = erc20Service;
 
     const { network } = this.config;
-    const { WETH_GATEWAY } = commonContractAddressBetweenMarketsV2[network];
-
-    this.wethGatewayAddress = WETH_GATEWAY;
+    this.wethGatewayAddress =
+      this.wethGatewayConfig[network].WETH_GATEWAY || '';
   }
 
   @WETHValidator
@@ -113,20 +116,22 @@ export default class WETHGatewayService
     const convertedAmount: tStringDecimalUnits = parseNumber(amount, 18);
     const numericRateMode = interestRateMode === InterestRate.Variable ? 2 : 1;
 
-    const delegationApproved: boolean = await this.baseDebtTokenService.isDelegationApproved(
-      debtTokenAddress,
-      user,
-      this.wethGatewayAddress,
-      amount
-    );
-
-    if (!delegationApproved) {
-      const approveDelegationTx: EthereumTransactionTypeExtended = this.baseDebtTokenService.approveDelegation(
+    const delegationApproved: boolean =
+      await this.baseDebtTokenService.isDelegationApproved(
+        debtTokenAddress,
         user,
         this.wethGatewayAddress,
-        debtTokenAddress,
-        constants.MaxUint256.toString()
+        amount
       );
+
+    if (!delegationApproved) {
+      const approveDelegationTx: EthereumTransactionTypeExtended =
+        this.baseDebtTokenService.approveDelegation(
+          user,
+          this.wethGatewayAddress,
+          debtTokenAddress,
+          constants.MaxUint256.toString()
+        );
 
       txs.push(approveDelegationTx);
     }

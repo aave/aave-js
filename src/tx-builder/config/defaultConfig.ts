@@ -23,7 +23,6 @@ export const defaultConfig: TxBuilderConfig = {
     proto: {
       mainnet: {
         LENDINGPOOL_ADDRESS: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
-        SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
         WETH_GATEWAY: '0xcc9a0B7c43DC2a5F023Bb9b738E45B0Ef6B06E04',
         FLASHLIQUIDATION: '0xE377fB98512D7b04827e56BC84e1838804a8019D',
       },
@@ -44,7 +43,6 @@ export const defaultConfig: TxBuilderConfig = {
     amm: {
       mainnet: {
         LENDINGPOOL_ADDRESS: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
-        SYNTHETIX_PROXY_ADDRESS: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
         WETH_GATEWAY: '0xcc9a0B7c43DC2a5F023Bb9b738E45B0Ef6B06E04',
         FLASHLIQUIDATION: '0xE377fB98512D7b04827e56BC84e1838804a8019D',
       },

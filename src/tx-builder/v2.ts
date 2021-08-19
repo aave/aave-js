@@ -1,5 +1,5 @@
 import { providers } from 'ethers';
-import { Network, Market, DefaultProviderKeys, TxBuilderConfig } from './types';
+import { Network, DefaultProviderKeys, TxBuilderConfig } from './types';
 import TxBuilderInterface from './interfaces/TxBuilder';
 import LendingPoolInterface from './interfaces/v2/LendingPool';
 import LendingPool from './services/v2/LendingPool';
@@ -25,6 +25,10 @@ export default class TxBuilder
     [market: string]: LendingPoolInterface;
   };
 
+  readonly wethGateways: {
+    [market: string]: WETHGatewayInterface;
+  };
+
   readonly baseDebtTokenService: BaseDebtTokenInterface;
 
   readonly liquiditySwapAdapterService: LiquiditySwapAdapterInterface;
@@ -34,8 +38,6 @@ export default class TxBuilder
   public aaveGovernanceV2Service: AaveGovernanceV2Interface;
 
   public governanceDelegationTokenService: GovernanceDelegationTokenInterface;
-
-  public wethGatewayService: WETHGatewayInterface;
 
   constructor(
     network: Network = Network.mainnet,
@@ -49,15 +51,10 @@ export default class TxBuilder
   ) {
     super(network, injectedProvider, defaultProviderKeys, config);
 
+    this.wethGateways = {};
     this.lendingPools = {};
     this.baseDebtTokenService = new BaseDebtToken(
       this.configuration,
-      this.erc20Service
-    );
-
-    this.wethGatewayService = new WETHGatewayService(
-      this.configuration,
-      this.baseDebtTokenService,
       this.erc20Service
     );
 
@@ -87,7 +84,29 @@ export default class TxBuilder
       new GovernanceDelegationTokenService(this.configuration);
   }
 
-  public getLendingPool = (market: Market): LendingPoolInterface => {
+  public getWethGateway = (market: string): WETHGatewayInterface => {
+    if (
+      this.txBuilderConfig.lendingPool &&
+      this.txBuilderConfig.lendingPool[market]
+    ) {
+      if (!this.wethGateways[market]) {
+        this.wethGateways[market] = new WETHGatewayService(
+          this.configuration,
+          this.baseDebtTokenService,
+          this.erc20Service,
+          this.txBuilderConfig.lendingPool[market]
+        );
+      }
+
+      return this.wethGateways[market];
+    } else {
+      throw new Error(
+        `Market: ${market} not in configuration. Please change market or add it to the configuration object`
+      );
+    }
+  };
+
+  public getLendingPool = (market: string): LendingPoolInterface => {
     if (
       this.txBuilderConfig.lendingPool &&
       this.txBuilderConfig.lendingPool[market]
@@ -97,11 +116,13 @@ export default class TxBuilder
           this.configuration,
           this.erc20Service,
           this.synthetixService,
-          this.wethGatewayService,
+          this.getWethGateway(market),
           this.liquiditySwapAdapterService,
           this.repayWithCollateralAdapterService,
           market,
-          this.txBuilderConfig.lendingPool[market]
+          this.txBuilderConfig.lendingPool[market],
+          this.txBuilderConfig.swapCollateral,
+          this.txBuilderConfig.repayWithCollateral
         );
       }
 

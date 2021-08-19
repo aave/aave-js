@@ -89,7 +89,7 @@ export default class BaseTxBuilder {
         this.txBuilderConfig.migrator
       );
     }
-    // TODO: move this to a method?
+
     if (this.txBuilderConfig.faucet) {
       this.faucetService = new FaucetService(
         this.configuration,

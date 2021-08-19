@@ -1,10 +1,8 @@
 import { constants, utils, BigNumberish, BytesLike } from 'ethers';
 import {
   API_ETH_MOCK_ADDRESS,
-  commonContractAddressBetweenMarketsV2,
   DEFAULT_APPROVE_AMOUNT,
   MAX_UINT_AMOUNT,
-  distinctContractAddressBetweenMarketsV2,
   SURPLUS,
 } from '../../config';
 import { ILendingPool, ILendingPool__factory } from '../../contract-types';
@@ -16,16 +14,22 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   InterestRate,
-  Market,
   ProtocolAction,
   TokenMetadataType,
   transactionType,
   tStringDecimalUnits,
   tEthereumAddress,
-  LendingPoolConfig,
+  LendingPoolNetworkConfig,
+  SwapCollateralConfig,
+  RepayWithCollateralConfig,
 } from '../../types';
 import { getTxValue, parseNumber } from '../../utils/parsings';
-import { LPValidator } from '../../validators/methodValidators';
+import {
+  LPFlashLiquidationValidator,
+  LPRepayWithCollateralValidator,
+  LPSwapCollateralValidator,
+  LPValidator,
+} from '../../validators/methodValidators';
 import {
   LPBorrowParamsType,
   LPDepositParamsType,
@@ -83,8 +87,9 @@ const buildParaSwapLiquiditySwapParams = (
 
 export default class LendingPool
   extends BaseService<ILendingPool>
-  implements LendingPoolInterface {
-  readonly market: Market;
+  implements LendingPoolInterface
+{
+  readonly market: string;
 
   readonly erc20Service: IERC20ServiceInterface;
 
@@ -98,7 +103,17 @@ export default class LendingPool
 
   readonly repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface;
 
-  readonly lendingPoolConfig: LendingPoolConfig;
+  readonly lendingPoolConfig: LendingPoolNetworkConfig;
+
+  readonly flashLiquidationAddress: string;
+
+  readonly swapCollateralConfig: SwapCollateralConfig | undefined;
+
+  readonly repayWithCollateralConfig: RepayWithCollateralConfig | undefined;
+
+  readonly swapCollateralAddress: string;
+
+  readonly repayWithCollateralAddress: string;
 
   constructor(
     config: Configuration,
@@ -107,8 +122,10 @@ export default class LendingPool
     wethGatewayService: WETHGatewayInterface,
     liquiditySwapAdapterService: LiquiditySwapAdapterInterface,
     repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface,
-    market: Market
-    lendingPoolConfig: LendingPoolConfig
+    market: string,
+    lendingPoolConfig: LendingPoolNetworkConfig,
+    swapCollateralConfig: SwapCollateralConfig | undefined,
+    repayWithCollateralConfig: RepayWithCollateralConfig | undefined
   ) {
     super(config, ILendingPool__factory);
     this.erc20Service = erc20Service;
@@ -118,12 +135,25 @@ export default class LendingPool
     this.repayWithCollateralAdapterService = repayWithCollateralAdapterService;
     this.market = market;
     this.lendingPoolConfig = lendingPoolConfig;
+    this.swapCollateralConfig = swapCollateralConfig;
+    this.repayWithCollateralConfig = repayWithCollateralConfig;
 
     const { network } = this.config;
-    this.lendingPoolAddress =
-      this.lendingPoolConfig[
-        network
-      ].LENDINGPOOL_ADDRESS;
+
+    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } =
+      this.lendingPoolConfig[network];
+    this.lendingPoolAddress = LENDINGPOOL_ADDRESS;
+    this.flashLiquidationAddress = FLASHLIQUIDATION || '';
+
+    this.swapCollateralAddress =
+      this.swapCollateralConfig && this.swapCollateralConfig[network]
+        ? this.swapCollateralConfig[network].SWAP_COLLATERAL_ADAPTER
+        : '';
+
+    this.repayWithCollateralAddress =
+      this.repayWithCollateralConfig && this.repayWithCollateralConfig[network]
+        ? this.repayWithCollateralConfig[network].REPAY_WITH_COLLATERAL_ADAPTER
+        : '';
   }
 
   @LPValidator
@@ -143,11 +173,8 @@ export default class LendingPool
         referralCode,
       });
     }
-    const {
-      isApproved,
-      approve,
-      decimalsOf,
-    }: IERC20ServiceInterface = this.erc20Service;
+    const { isApproved, approve, decimalsOf }: IERC20ServiceInterface =
+      this.erc20Service;
     const txs: EthereumTransactionTypeExtended[] = [];
     const reserveDecimals: number = await decimalsOf(reserve);
     const convertedAmount: tStringDecimalUnits = parseNumber(
@@ -155,11 +182,12 @@ export default class LendingPool
       reserveDecimals
     );
 
-    const fundsAvailable: boolean = await this.synthetixService.synthetixValidation(
-      user,
-      reserve,
-      convertedAmount
-    );
+    const fundsAvailable: boolean =
+      await this.synthetixService.synthetixValidation(
+        user,
+        reserve,
+        convertedAmount
+      );
     if (!fundsAvailable) {
       throw new Error('Not enough funds to execute operation');
     }
@@ -353,11 +381,8 @@ export default class LendingPool
       });
     }
     const txs: EthereumTransactionTypeExtended[] = [];
-    const {
-      isApproved,
-      approve,
-      decimalsOf,
-    }: IERC20ServiceInterface = this.erc20Service;
+    const { isApproved, approve, decimalsOf }: IERC20ServiceInterface =
+      this.erc20Service;
 
     const lendingPoolContract = this.getContractInstance(
       this.lendingPoolAddress
@@ -372,11 +397,12 @@ export default class LendingPool
         : parseNumber(amount, decimals);
 
     if (amount !== '-1') {
-      const fundsAvailable: boolean = await this.synthetixService.synthetixValidation(
-        user,
-        reserve,
-        convertedAmount
-      );
+      const fundsAvailable: boolean =
+        await this.synthetixService.synthetixValidation(
+          user,
+          reserve,
+          convertedAmount
+        );
       if (!fundsAvailable) {
         throw new Error('Not enough funds to execute operation');
       }
@@ -499,11 +525,8 @@ export default class LendingPool
     }: LPLiquidationCall
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    const {
-      isApproved,
-      approve,
-      getTokenData,
-    }: IERC20ServiceInterface = this.erc20Service;
+    const { isApproved, approve, getTokenData }: IERC20ServiceInterface =
+      this.erc20Service;
 
     const approved = await isApproved(
       debtReserve,
@@ -563,7 +586,7 @@ export default class LendingPool
     return txs;
   }
 
-  @LPValidator
+  @LPSwapCollateralValidator
   public async swapCollateral(
     @IsEthAddress('user')
     @IsEthAddress('fromAsset')
@@ -599,24 +622,21 @@ export default class LendingPool
       s: '0x0000000000000000000000000000000000000000000000000000000000000000',
     };
 
-    const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
-      this.config.network
-    ];
-
     const approved: boolean = await this.erc20Service.isApproved(
       fromAToken,
       user,
-      SWAP_COLLATERAL_ADAPTER,
+      this.swapCollateralAddress,
       fromAmount
     );
 
     if (!approved) {
-      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
-        user,
-        fromAToken,
-        SWAP_COLLATERAL_ADAPTER,
-        constants.MaxUint256.toString()
-      );
+      const approveTx: EthereumTransactionTypeExtended =
+        this.erc20Service.approve(
+          user,
+          fromAToken,
+          this.swapCollateralAddress,
+          constants.MaxUint256.toString()
+        );
 
       txs.push(approveTx);
     }
@@ -662,11 +682,11 @@ export default class LendingPool
         tokenDecimals
       );
 
-      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
-        {
+      const txCallback: () => Promise<transactionType> =
+        this.generateTxCallback({
           rawTxMethod: () =>
             lendingPoolContract.populateTransaction.flashLoan(
-              SWAP_COLLATERAL_ADAPTER,
+              this.swapCollateralAddress,
               [fromAsset],
               swapAll ? [convertedAmountWithSurplus] : [convertedAmount],
               [0], // interest rate mode to NONE for flashloan to not open debt
@@ -675,8 +695,7 @@ export default class LendingPool
               referralCode || '0'
             ),
           from: user,
-        }
-      );
+        });
 
       txs.push({
         tx: txCallback,
@@ -691,8 +710,8 @@ export default class LendingPool
     }
 
     // Direct call to swap and deposit
-    const swapAndDepositTx: EthereumTransactionTypeExtended = await this.liquiditySwapAdapterService.swapAndDeposit(
-      {
+    const swapAndDepositTx: EthereumTransactionTypeExtended =
+      await this.liquiditySwapAdapterService.swapAndDeposit({
         user,
         assetToSwapFrom: fromAsset,
         assetToSwapTo: toAsset,
@@ -702,14 +721,13 @@ export default class LendingPool
         swapCallData,
         augustus,
         permitParams,
-      }
-    );
+      });
 
     txs.push(swapAndDepositTx);
     return txs;
   }
 
-  @LPValidator
+  @LPRepayWithCollateralValidator
   public async repayWithCollateral(
     @IsEthAddress('user')
     @IsEthAddress('fromAsset')
@@ -744,24 +762,21 @@ export default class LendingPool
       s: '0x0000000000000000000000000000000000000000000000000000000000000000',
     };
 
-    const {
-      REPAY_WITH_COLLATERAL_ADAPTER,
-    } = commonContractAddressBetweenMarketsV2[this.config.network];
-
     const approved: boolean = await this.erc20Service.isApproved(
       fromAToken,
       user,
-      REPAY_WITH_COLLATERAL_ADAPTER,
+      this.repayWithCollateralAddress,
       repayWithAmount
     );
 
     if (!approved) {
-      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
-        user,
-        fromAToken,
-        REPAY_WITH_COLLATERAL_ADAPTER,
-        constants.MaxUint256.toString()
-      );
+      const approveTx: EthereumTransactionTypeExtended =
+        this.erc20Service.approve(
+          user,
+          fromAToken,
+          this.repayWithCollateralAddress,
+          constants.MaxUint256.toString()
+        );
 
       txs.push(approveTx);
     }
@@ -817,11 +832,11 @@ export default class LendingPool
         this.lendingPoolAddress
       );
 
-      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
-        {
+      const txCallback: () => Promise<transactionType> =
+        this.generateTxCallback({
           rawTxMethod: () =>
             lendingPoolContract.populateTransaction.flashLoan(
-              REPAY_WITH_COLLATERAL_ADAPTER,
+              this.repayWithCollateralAddress,
               [assetToRepay],
               [convertedRepayAmount],
               [0], // interest rate mode to NONE for flashloan to not open debt
@@ -830,8 +845,7 @@ export default class LendingPool
               referralCode || '0'
             ),
           from: user,
-        }
-      );
+        });
 
       txs.push({
         tx: txCallback,
@@ -846,8 +860,8 @@ export default class LendingPool
       return txs;
     }
 
-    const swapAndRepayTx: EthereumTransactionTypeExtended = this.repayWithCollateralAdapterService.swapAndRepay(
-      {
+    const swapAndRepayTx: EthereumTransactionTypeExtended =
+      this.repayWithCollateralAdapterService.swapAndRepay({
         user,
         collateralAsset: fromAsset,
         debtAsset: assetToRepay,
@@ -856,15 +870,14 @@ export default class LendingPool
         debtRateMode: numericInterestRate,
         permit: permitParams,
         useEthPath,
-      }
-    );
+      });
 
     txs.push(swapAndRepayTx);
 
     return txs;
   }
 
-  @LPValidator
+  @LPFlashLiquidationValidator
   public async flashLiquidation(
     @IsEthAddress('user')
     @IsEthAddress('collateralAsset')
@@ -881,6 +894,8 @@ export default class LendingPool
       useEthPath,
     }: LPFlashLiquidation
   ): Promise<EthereumTransactionTypeExtended[]> {
+    if (this.flashLiquidationAddress === '') return [];
+
     const addSurplus = (amount: string): string => {
       return (
         Number(amount) +
@@ -889,10 +904,6 @@ export default class LendingPool
     };
 
     const txs: EthereumTransactionTypeExtended[] = [];
-
-    const { FLASHLIQUIDATION } = commonContractAddressBetweenMarketsV2[
-      this.config.network
-    ];
 
     const lendingPoolContract: ILendingPool = this.getContractInstance(
       this.lendingPoolAddress
@@ -926,7 +937,7 @@ export default class LendingPool
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>
         lendingPoolContract.populateTransaction.flashLoan(
-          FLASHLIQUIDATION,
+          this.flashLiquidationAddress,
           [borrowedAsset],
           [flashBorrowAmount],
           [0],

@@ -3,13 +3,19 @@ import BaseService from './BaseService';
 import { Configuration, tStringDecimalUnits } from '../types';
 import { ISynthetix, ISynthetix__factory } from '../contract-types';
 import SynthetixInterface from '../interfaces/Synthetix';
-import { commonContractAddressBetweenMarketsV2 } from '../config';
+import { cosntantAddressesByNetwork } from '../config';
 
 export default class SynthetixService
   extends BaseService<ISynthetix>
-  implements SynthetixInterface {
+  implements SynthetixInterface
+{
+  readonly synthAddress: string;
   constructor(config: Configuration) {
     super(config, ISynthetix__factory);
+    const { network } = this.config;
+
+    this.synthAddress =
+      cosntantAddressesByNetwork[network].SYNTHETIX_PROXY_ADDRESS || '';
   }
 
   public synthetixValidation = async (
@@ -17,11 +23,7 @@ export default class SynthetixService
     reserve: string,
     amount: tStringDecimalUnits
   ): Promise<boolean> => {
-    const synthAddress =
-      commonContractAddressBetweenMarketsV2[this.config.network]
-        .SYNTHETIX_PROXY_ADDRESS;
-
-    if (reserve.toUpperCase() === synthAddress.toUpperCase()) {
+    if (reserve.toUpperCase() === this.synthAddress.toUpperCase()) {
       return this.isSnxTransferable(userAddress, amount);
     }
     return true;
@@ -31,14 +33,10 @@ export default class SynthetixService
     userAddress: string,
     amount: tStringDecimalUnits
   ): Promise<boolean> => {
-    const synthContract = this.getContractInstance(
-      commonContractAddressBetweenMarketsV2[this.config.network]
-        .SYNTHETIX_PROXY_ADDRESS
-    );
+    const synthContract = this.getContractInstance(this.synthAddress);
 
-    const transferableAmount: BigNumber = await synthContract.transferableSynthetix(
-      userAddress
-    );
+    const transferableAmount: BigNumber =
+      await synthContract.transferableSynthetix(userAddress);
     return BigNumber.from(amount).lte(transferableAmount);
   };
 }

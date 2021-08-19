@@ -1,4 +1,3 @@
-import { Market, Stake } from '../types';
 import IERC20ServiceInterface from './ERC20';
 import LendingPoolInterfaceV2 from './v2/LendingPool';
 import SynthetixInterface from './Synthetix';
@@ -14,11 +13,11 @@ export default interface TxBuilderInterface {
   erc20Service: IERC20ServiceInterface;
   synthetixService: SynthetixInterface;
   ltaMigratorService: LTAMigratorInterface;
-  wethGatewayService: WETHGatewayInterface;
   faucetService: FaucetInterface;
   incentiveService: IncentivesControllerInterface;
   aaveGovernanceV2Service: AaveGovernanceV2Interface;
   governanceDelegationTokenService: GovernanceDelegationTokenInterface;
-  getLendingPool: (market: Market) => LendingPoolInterfaceV2;
-  getStaking: (stake: Stake) => StakingInterface;
+  getLendingPool: (market: string) => LendingPoolInterfaceV2;
+  getStaking: (stake: string) => StakingInterface;
+  getWethGateway: (market: string) => WETHGatewayInterface;
 }

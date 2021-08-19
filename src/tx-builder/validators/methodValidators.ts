@@ -1,6 +1,5 @@
 /* eslint-disable prefer-rest-params */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Network } from '../types';
 import {
   amount0OrPositiveValidator,
   amountGtThan0OrMinus1,
@@ -13,6 +12,115 @@ import {
 // import { enabledNetworksByService } from '../config';
 import { utils } from 'ethers';
 
+export function LPFlashLiquidationValidator(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  target: any,
+  propertyName: string,
+  descriptor: TypedPropertyDescriptor<any>
+): any {
+  const method = descriptor.value;
+  // eslint-disable-next-line no-param-reassign
+  descriptor.value = function () {
+    const currentNetwork = this.config.network;
+
+    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } =
+      this.lendingPoolConfig[currentNetwork];
+
+    if (
+      !utils.isAddress(LENDINGPOOL_ADDRESS) ||
+      (FLASHLIQUIDATION && !utils.isAddress(FLASHLIQUIDATION))
+    ) {
+      console.error(
+        `[LPFlahsLiquidationValidator] You need to pass valid addresses`
+      );
+      return [];
+    }
+
+    isEthAddressValidator(target, propertyName, arguments);
+
+    amountGtThan0Validator(target, propertyName, arguments);
+
+    amountGtThan0OrMinus1(target, propertyName, arguments);
+
+    return method?.apply(this, arguments);
+  };
+}
+
+export function LPRepayWithCollateralValidator(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  target: any,
+  propertyName: string,
+  descriptor: TypedPropertyDescriptor<any>
+): any {
+  const method = descriptor.value;
+  // eslint-disable-next-line no-param-reassign
+  descriptor.value = function () {
+    const currentNetwork = this.config.network;
+
+    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig[currentNetwork];
+
+    if (
+      !utils.isAddress(LENDINGPOOL_ADDRESS) ||
+      !this.repayWithCollateralConfig ||
+      (this.repayWithCollateralConfig &&
+        !utils.isAddress(
+          this.repayWithCollateralConfig[currentNetwork]
+            .REPAY_WITH_COLLATERAL_ADAPTER
+        ))
+    ) {
+      console.error(
+        `[LPRepayWithCollateralValidator] You need to pass valid addresses`
+      );
+      return [];
+    }
+
+    isEthAddressValidator(target, propertyName, arguments);
+
+    amountGtThan0Validator(target, propertyName, arguments);
+
+    amountGtThan0OrMinus1(target, propertyName, arguments);
+
+    return method?.apply(this, arguments);
+  };
+}
+
+export function LPSwapCollateralValidator(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  target: any,
+  propertyName: string,
+  descriptor: TypedPropertyDescriptor<any>
+): any {
+  const method = descriptor.value;
+  // eslint-disable-next-line no-param-reassign
+  descriptor.value = function () {
+    const currentNetwork = this.config.network;
+
+    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig[currentNetwork];
+
+    if (
+      !utils.isAddress(LENDINGPOOL_ADDRESS) ||
+      !this.swapCollateralConfig ||
+      (this.swapCollateralConfig &&
+        !utils.isAddress(
+          this.swapCollateralConfig[currentNetwork].SWAP_COLLATERAL_ADAPTER
+        ))
+    ) {
+      console.error(
+        `[LPSwapCollateralValidator] You need to pass valid addresses`
+      );
+      return [];
+    }
+
+    isEthAddressValidator(target, propertyName, arguments);
+
+    amountGtThan0Validator(target, propertyName, arguments);
+
+    amountGtThan0OrMinus1(target, propertyName, arguments);
+
+    return method?.apply(this, arguments);
+  };
+}
+
 export function LPValidator(
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   target: any,
@@ -23,9 +131,11 @@ export function LPValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] =
-      enabledNetworksByService.lendingPool[this.market];
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig[currentNetwork];
+
+    if (!utils.isAddress(LENDINGPOOL_ADDRESS)) {
+      console.error(`[LendingPoolValidator] You need to pass valid addresses`);
       return [];
     }
 
@@ -234,8 +344,10 @@ export function WETHValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const currentNetwork = this.config.network;
-    const acceptedNetworks: Network[] = enabledNetworksByService.wethGateway;
-    if (acceptedNetworks.indexOf(currentNetwork) === -1) {
+
+    const { WETH_GATEWAY } = this.wethGatewayConfig[currentNetwork];
+    if (!WETH_GATEWAY || (WETH_GATEWAY && !utils.isAddress(WETH_GATEWAY))) {
+      console.error(`[WethGatewayValidator] You need to pass valid addresses`);
       return [];
     }
 

@@ -36,7 +36,11 @@ export enum ChainId {
   mumbai = 80001,
   polygon_fork = 1338,
 }
-
+export type ConstantAddressesByNetwork = {
+  [network: string]: {
+    SYNTHETIX_PROXY_ADDRESS?: tEthereumAddress;
+  };
+};
 export type GovernanceConfig = {
   [network: string]: {
     AAVE_GOVERNANCE_V2: tEthereumAddress;
@@ -64,8 +68,7 @@ export type MigratorConfig = {
 export type LendingPoolNetworkConfig = {
   [network: string]: {
     LENDINGPOOL_ADDRESS: tEthereumAddress;
-    WETH_GATEWAY: tEthereumAddress;
-    SYNTHETIX_PROXY_ADDRESS?: tEthereumAddress;
+    WETH_GATEWAY?: tEthereumAddress;
     FLASHLIQUIDATION?: tEthereumAddress;
   };
 };

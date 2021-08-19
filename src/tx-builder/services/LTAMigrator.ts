@@ -10,7 +10,6 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   MigratorConfig,
-  Network,
   tEthereumAddress,
   transactionType,
   tStringCurrencyUnits,
