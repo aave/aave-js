@@ -17,8 +17,7 @@ import BaseService from './BaseService';
 
 export default class RepayWithCollateralAdapterService
   extends BaseService<IRepayWithCollateral>
-  implements RepayWithCollateralAdapterInterface
-{
+  implements RepayWithCollateralAdapterInterface {
   readonly repayWithCollateralAddress: string;
 
   readonly repayWithCollateralConfig: RepayWithCollateralConfig;
@@ -32,8 +31,9 @@ export default class RepayWithCollateralAdapterService
 
     const { network } = this.config;
 
-    this.repayWithCollateralAddress =
-      this.repayWithCollateralConfig[network].REPAY_WITH_COLLATERAL_ADAPTER;
+    this.repayWithCollateralAddress = this.repayWithCollateralConfig[
+      network
+    ].REPAY_WITH_COLLATERAL_ADAPTER;
   }
 
   @RepayWithCollateralValidator
@@ -54,8 +54,9 @@ export default class RepayWithCollateralAdapterService
       useEthPath,
     }: RepayWithCollateralType
   ): EthereumTransactionTypeExtended {
-    const repayWithCollateralContract: IRepayWithCollateral =
-      this.getContractInstance(this.repayWithCollateralAddress);
+    const repayWithCollateralContract: IRepayWithCollateral = this.getContractInstance(
+      this.repayWithCollateralAddress
+    );
 
     const txCallback: () => Promise<transactionType> = this.generateTxCallback({
       rawTxMethod: () =>

@@ -174,8 +174,10 @@ export function IncentivesValidator(
   descriptor.value = function () {
     const currentNetwork = this.config.network;
 
-    const { INCENTIVES_CONTROLLER, INCENTIVES_CONTROLLER_REWARD_TOKEN } =
-      this.incentivesConfig[currentNetwork];
+    const {
+      INCENTIVES_CONTROLLER,
+      INCENTIVES_CONTROLLER_REWARD_TOKEN,
+    } = this.incentivesConfig[currentNetwork];
 
     if (
       !utils.isAddress(INCENTIVES_CONTROLLER_REWARD_TOKEN) ||
@@ -204,8 +206,9 @@ export function LiquiditySwapValidator(
   descriptor.value = function () {
     const currentNetwork = this.config.network;
 
-    const { SWAP_COLLATERAL_ADAPTER } =
-      this.swapCollateralConfig[currentNetwork];
+    const { SWAP_COLLATERAL_ADAPTER } = this.swapCollateralConfig[
+      currentNetwork
+    ];
 
     if (!utils.isAddress(SWAP_COLLATERAL_ADAPTER)) {
       console.error(
@@ -235,8 +238,9 @@ export function RepayWithCollateralValidator(
   descriptor.value = function () {
     const currentNetwork = this.config.network;
 
-    const { REPAY_WITH_COLLATERAL_ADAPTER } =
-      this.repayWithCollateralConfig[currentNetwork];
+    const { REPAY_WITH_COLLATERAL_ADAPTER } = this.repayWithCollateralConfig[
+      currentNetwork
+    ];
 
     if (!utils.isAddress(REPAY_WITH_COLLATERAL_ADAPTER)) {
       console.error(

@@ -21,8 +21,7 @@ import { IsEthAddress, IsPositiveAmount } from '../validators/paramValidators';
 
 export default class LTAMigratorService
   extends BaseService<ILendToAaveMigrator>
-  implements LTAMigratorInterface
-{
+  implements LTAMigratorInterface {
   readonly erc20Service: IERC20ServiceInterface;
 
   readonly migratorAddress: string;

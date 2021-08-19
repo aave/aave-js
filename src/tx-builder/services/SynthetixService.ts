@@ -7,8 +7,7 @@ import { cosntantAddressesByNetwork } from '../config';
 
 export default class SynthetixService
   extends BaseService<ISynthetix>
-  implements SynthetixInterface
-{
+  implements SynthetixInterface {
   readonly synthAddress: string;
   constructor(config: Configuration) {
     super(config, ISynthetix__factory);
@@ -35,8 +34,9 @@ export default class SynthetixService
   ): Promise<boolean> => {
     const synthContract = this.getContractInstance(this.synthAddress);
 
-    const transferableAmount: BigNumber =
-      await synthContract.transferableSynthetix(userAddress);
+    const transferableAmount: BigNumber = await synthContract.transferableSynthetix(
+      userAddress
+    );
     return BigNumber.from(amount).lte(transferableAmount);
   };
 }

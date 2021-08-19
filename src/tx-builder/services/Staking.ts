@@ -31,8 +31,7 @@ import BaseService from './BaseService';
 
 export default class StakingService
   extends BaseService<IStakedToken>
-  implements StakingInterface
-{
+  implements StakingInterface {
   readonly stakingHelperContract: IAaveStakingHelper;
 
   public readonly stakingContractAddress: tEthereumAddress;

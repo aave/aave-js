@@ -53,6 +53,7 @@ export default class BaseTxBuilder {
     }
 
     let provider: providers.Provider;
+    this.txBuilderConfig = config;
     // TODO: this is probably not enough as we use network down the road
     const chainId = ChainId[network];
 

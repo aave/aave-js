@@ -19,8 +19,7 @@ import GovernanceDelegationTokenService from './services/v2/GovernanceDelegation
 
 export default class TxBuilder
   extends BaseTxBuilder
-  implements TxBuilderInterface
-{
+  implements TxBuilderInterface {
   readonly lendingPools: {
     [market: string]: LendingPoolInterface;
   };
@@ -66,11 +65,10 @@ export default class TxBuilder
     }
 
     if (this.txBuilderConfig.repayWithCollateral) {
-      this.repayWithCollateralAdapterService =
-        new RepayWithCollateralAdapterService(
-          this.configuration,
-          this.txBuilderConfig.repayWithCollateral
-        );
+      this.repayWithCollateralAdapterService = new RepayWithCollateralAdapterService(
+        this.configuration,
+        this.txBuilderConfig.repayWithCollateral
+      );
     }
 
     if (this.txBuilderConfig.governance) {
@@ -80,8 +78,9 @@ export default class TxBuilder
       );
     }
 
-    this.governanceDelegationTokenService =
-      new GovernanceDelegationTokenService(this.configuration);
+    this.governanceDelegationTokenService = new GovernanceDelegationTokenService(
+      this.configuration
+    );
   }
 
   public getWethGateway = (market: string): WETHGatewayInterface => {

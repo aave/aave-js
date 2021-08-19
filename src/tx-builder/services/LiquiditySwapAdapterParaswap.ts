@@ -34,8 +34,7 @@ export function augustusFromAmountOffsetFromCalldata(calldata: string) {
 
 export default class LiquiditySwapAdapterService
   extends BaseService<IParaSwapLiquiditySwapAdapter>
-  implements LiquiditySwapAdapterInterface
-{
+  implements LiquiditySwapAdapterInterface {
   readonly liquiditySwapAdapterAddress: string;
 
   readonly swapCollateralConfig: SwapCollateralConfig;
@@ -49,8 +48,9 @@ export default class LiquiditySwapAdapterService
 
     const { network } = this.config;
 
-    this.liquiditySwapAdapterAddress =
-      this.swapCollateralConfig[network].SWAP_COLLATERAL_ADAPTER;
+    this.liquiditySwapAdapterAddress = this.swapCollateralConfig[
+      network
+    ].SWAP_COLLATERAL_ADAPTER;
   }
 
   @LiquiditySwapValidator

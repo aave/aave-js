@@ -1,4 +1,4 @@
-import { TxBuilderConfig } from 'tx-builder/types';
+import { TxBuilderConfig } from '../types';
 
 export const defaultConfig: TxBuilderConfig = {
   governance: {

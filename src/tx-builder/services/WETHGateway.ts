@@ -30,8 +30,7 @@ import BaseService from './BaseService';
 
 export default class WETHGatewayService
   extends BaseService<IWETHGateway>
-  implements WETHGatewayInterface
-{
+  implements WETHGatewayInterface {
   readonly wethGatewayAddress: string;
 
   readonly config: Configuration;
@@ -114,22 +113,20 @@ export default class WETHGatewayService
     const convertedAmount: tStringDecimalUnits = parseNumber(amount, 18);
     const numericRateMode = interestRateMode === InterestRate.Variable ? 2 : 1;
 
-    const delegationApproved: boolean =
-      await this.baseDebtTokenService.isDelegationApproved(
-        debtTokenAddress,
-        user,
-        this.wethGatewayAddress,
-        amount
-      );
+    const delegationApproved: boolean = await this.baseDebtTokenService.isDelegationApproved(
+      debtTokenAddress,
+      user,
+      this.wethGatewayAddress,
+      amount
+    );
 
     if (!delegationApproved) {
-      const approveDelegationTx: EthereumTransactionTypeExtended =
-        this.baseDebtTokenService.approveDelegation(
-          user,
-          this.wethGatewayAddress,
-          debtTokenAddress,
-          constants.MaxUint256.toString()
-        );
+      const approveDelegationTx: EthereumTransactionTypeExtended = this.baseDebtTokenService.approveDelegation(
+        user,
+        this.wethGatewayAddress,
+        debtTokenAddress,
+        constants.MaxUint256.toString()
+      );
 
       txs.push(approveDelegationTx);
     }
