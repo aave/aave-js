@@ -34,18 +34,21 @@ export default class IncentivesController
   public readonly incentivesControllerRewardTokenAddress: tEthereumAddress;
   readonly incentivesControllerAddress: string;
 
-  readonly incentivesConfig: IncentivesConfig;
+  readonly incentivesConfig: IncentivesConfig | undefined;
 
-  constructor(config: Configuration, incentivesConfig: IncentivesConfig) {
+  constructor(
+    config: Configuration,
+    incentivesConfig: IncentivesConfig | undefined
+  ) {
     super(config, IAaveIncentivesController__factory);
-    const { network } = this.config;
     this.incentivesConfig = incentivesConfig;
 
-    const addresses = this.incentivesConfig[network];
+    const { INCENTIVES_CONTROLLER, INCENTIVES_CONTROLLER_REWARD_TOKEN } =
+      this.incentivesConfig || {};
 
-    this.incentivesControllerAddress = addresses.INCENTIVES_CONTROLLER;
+    this.incentivesControllerAddress = INCENTIVES_CONTROLLER || '';
     this.incentivesControllerRewardTokenAddress =
-      addresses.INCENTIVES_CONTROLLER_REWARD_TOKEN;
+      INCENTIVES_CONTROLLER_REWARD_TOKEN || '';
   }
 
   @IncentivesValidator

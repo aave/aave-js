@@ -39,20 +39,23 @@ export default class WETHGatewayService
 
   readonly erc20Service: IERC20ServiceInterface;
 
-  readonly wethGatewayConfig: LendingPoolMarketConfig;
+  readonly wethGatewayConfig: LendingPoolMarketConfig | undefined;
 
   constructor(
     config: Configuration,
     baseDebtTokenService: BaseDebtTokenInterface,
     erc20Service: IERC20ServiceInterface,
-    wethGatewayConfig: LendingPoolMarketConfig
+    wethGatewayConfig: LendingPoolMarketConfig | undefined
   ) {
     super(config, IWETHGateway__factory);
     this.wethGatewayConfig = wethGatewayConfig;
     this.baseDebtTokenService = baseDebtTokenService;
     this.erc20Service = erc20Service;
 
-    this.wethGatewayAddress = this.wethGatewayConfig.WETH_GATEWAY || '';
+    this.wethGatewayAddress =
+      this.wethGatewayConfig && this.wethGatewayConfig.WETH_GATEWAY
+        ? this.wethGatewayConfig.WETH_GATEWAY
+        : '';
   }
 
   @WETHValidator

@@ -26,20 +26,21 @@ export default class LTAMigratorService
 
   readonly migratorAddress: string;
 
-  readonly migratorConfig: MigratorConfig;
+  readonly migratorConfig: MigratorConfig | undefined;
 
   constructor(
     config: Configuration,
     erc20Service: IERC20ServiceInterface,
-    migratorConfig: MigratorConfig
+    migratorConfig: MigratorConfig | undefined
   ) {
     super(config, ILendToAaveMigrator__factory);
     this.erc20Service = erc20Service;
     this.migratorConfig = migratorConfig;
 
-    const { network }: Configuration = this.config;
-
-    this.migratorAddress = this.migratorConfig[network].LEND_TO_AAVE_MIGRATOR;
+    this.migratorAddress =
+      this.migratorConfig && this.migratorConfig
+        ? this.migratorConfig.LEND_TO_AAVE_MIGRATOR
+        : '';
   }
 
   @LTAMigratorValidator

@@ -42,27 +42,21 @@ export type ConstantAddressesByNetwork = {
   };
 };
 export type GovernanceConfig = {
-  [network: string]: {
-    AAVE_GOVERNANCE_V2: tEthereumAddress;
-    AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: tEthereumAddress;
-    AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
-    AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
-  };
+  AAVE_GOVERNANCE_V2: tEthereumAddress;
+  AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: tEthereumAddress;
+  AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
+  AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
 };
 
-export type FaucetConfig = {
-  [network: string]: { FAUCET: tEthereumAddress };
-};
+export type FaucetConfig = { FAUCET: tEthereumAddress };
 
 export type IncentivesConfig = {
-  [network: string]: {
-    INCENTIVES_CONTROLLER: tEthereumAddress;
-    INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
-  };
+  INCENTIVES_CONTROLLER: tEthereumAddress;
+  INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
 };
 
 export type MigratorConfig = {
-  [network: string]: { LEND_TO_AAVE_MIGRATOR: tEthereumAddress };
+  LEND_TO_AAVE_MIGRATOR: tEthereumAddress;
 };
 
 export type LendingPoolMarketConfig = {
@@ -80,22 +74,24 @@ export type LendingPoolConfig = {
 };
 
 export type StakingNetworkConfig = {
-  [network: string]: {
-    TOKEN_STAKING: tEthereumAddress;
-    STAKING_REWARD_TOKEN: tEthereumAddress;
-    STAKING_HELPER?: tEthereumAddress;
-  };
+  TOKEN_STAKING: tEthereumAddress;
+  STAKING_REWARD_TOKEN: tEthereumAddress;
+  STAKING_HELPER?: tEthereumAddress;
 };
 
 export type StakingConfig = {
-  [stake: string]: StakingNetworkConfig;
+  [network: string]: { [stake: string]: StakingNetworkConfig };
 };
 
 export type TxBuilderConfig = {
-  governance?: GovernanceConfig;
-  faucet?: FaucetConfig;
-  incentives?: IncentivesConfig;
-  migrator?: MigratorConfig;
+  governance?: {
+    [network: string]: GovernanceConfig;
+  };
+  faucet?: { [network: string]: FaucetConfig };
+  incentives?: {
+    [network: string]: IncentivesConfig;
+  };
+  migrator?: { [network: string]: MigratorConfig };
   lendingPool?: LendingPoolConfig;
   staking?: StakingConfig;
 };

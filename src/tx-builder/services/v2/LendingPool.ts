@@ -19,8 +19,6 @@ import {
   transactionType,
   tStringDecimalUnits,
   tEthereumAddress,
-  SwapCollateralConfig,
-  RepayWithCollateralConfig,
   LendingPoolMarketConfig,
 } from '../../types';
 import { getTxValue, parseNumber } from '../../utils/parsings';
@@ -102,13 +100,9 @@ export default class LendingPool
 
   readonly repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface;
 
-  readonly lendingPoolConfig: LendingPoolMarketConfig;
+  readonly lendingPoolConfig: LendingPoolMarketConfig | undefined;
 
   readonly flashLiquidationAddress: string;
-
-  readonly swapCollateralConfig: SwapCollateralConfig | undefined;
-
-  readonly repayWithCollateralConfig: RepayWithCollateralConfig | undefined;
 
   readonly swapCollateralAddress: string;
 
@@ -122,9 +116,7 @@ export default class LendingPool
     liquiditySwapAdapterService: LiquiditySwapAdapterInterface,
     repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface,
     market: string,
-    lendingPoolConfig: LendingPoolMarketConfig,
-    swapCollateralConfig: SwapCollateralConfig | undefined,
-    repayWithCollateralConfig: RepayWithCollateralConfig | undefined
+    lendingPoolConfig: LendingPoolMarketConfig | undefined
   ) {
     super(config, ILendingPool__factory);
     this.erc20Service = erc20Service;
@@ -134,24 +126,18 @@ export default class LendingPool
     this.repayWithCollateralAdapterService = repayWithCollateralAdapterService;
     this.market = market;
     this.lendingPoolConfig = lendingPoolConfig;
-    this.swapCollateralConfig = swapCollateralConfig;
-    this.repayWithCollateralConfig = repayWithCollateralConfig;
 
-    const { network } = this.config;
+    const {
+      LENDING_POOL,
+      FLASH_LIQUIDATION_ADAPTER,
+      REPAY_WITH_COLLATERAL_ADAPTER,
+      SWAP_COLLATERAL_ADAPTER,
+    } = this.lendingPoolConfig || {};
 
-    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } = this.lendingPoolConfig;
-    this.lendingPoolAddress = LENDINGPOOL_ADDRESS;
-    this.flashLiquidationAddress = FLASHLIQUIDATION || '';
-
-    this.swapCollateralAddress =
-      this.swapCollateralConfig && this.swapCollateralConfig[network]
-        ? this.swapCollateralConfig[network].SWAP_COLLATERAL_ADAPTER
-        : '';
-
-    this.repayWithCollateralAddress =
-      this.repayWithCollateralConfig && this.repayWithCollateralConfig[network]
-        ? this.repayWithCollateralConfig[network].REPAY_WITH_COLLATERAL_ADAPTER
-        : '';
+    this.lendingPoolAddress = LENDING_POOL || '';
+    this.flashLiquidationAddress = FLASH_LIQUIDATION_ADAPTER || '';
+    this.swapCollateralAddress = SWAP_COLLATERAL_ADAPTER || '';
+    this.repayWithCollateralAddress = REPAY_WITH_COLLATERAL_ADAPTER || '';
   }
 
   @LPValidator
@@ -901,8 +887,6 @@ export default class LendingPool
       useEthPath,
     }: LPFlashLiquidation
   ): Promise<EthereumTransactionTypeExtended[]> {
-    if (this.flashLiquidationAddress === '') return [];
-
     const addSurplus = (amount: string): string => {
       return (
         Number(amount) +

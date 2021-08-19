@@ -7,7 +7,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
-  SwapCollateralConfig,
+  LendingPoolMarketConfig,
   transactionType,
 } from '../types';
 import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
@@ -37,20 +37,20 @@ export default class LiquiditySwapAdapterService
   implements LiquiditySwapAdapterInterface {
   readonly liquiditySwapAdapterAddress: string;
 
-  readonly swapCollateralConfig: SwapCollateralConfig;
+  readonly swapCollateralConfig: LendingPoolMarketConfig | undefined;
 
   constructor(
     config: Configuration,
-    swapCollateralConfig: SwapCollateralConfig
+    swapCollateralConfig: LendingPoolMarketConfig | undefined
   ) {
     super(config, IParaSwapLiquiditySwapAdapter__factory);
     this.swapCollateralConfig = swapCollateralConfig;
 
-    const { network } = this.config;
-
-    this.liquiditySwapAdapterAddress = this.swapCollateralConfig[
-      network
-    ].SWAP_COLLATERAL_ADAPTER;
+    this.liquiditySwapAdapterAddress =
+      this.swapCollateralConfig &&
+      this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
+        ? this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
+        : '';
   }
 
   @LiquiditySwapValidator

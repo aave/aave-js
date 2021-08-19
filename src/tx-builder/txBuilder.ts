@@ -83,50 +83,46 @@ export default class BaseTxBuilder {
     this.erc20Service = new ERC20Service(this.configuration);
     this.synthetixService = new SynthetixService(this.configuration);
 
-    if (
-      this.txBuilderConfig.migrator &&
-      this.txBuilderConfig.migrator[network]
-    ) {
-      this.ltaMigratorService = new LTAMigratorService(
-        this.configuration,
-        this.erc20Service,
-        this.txBuilderConfig.migrator
-      );
-    }
+    this.ltaMigratorService = new LTAMigratorService(
+      this.configuration,
+      this.erc20Service,
+      this.txBuilderConfig.migrator && this.txBuilderConfig.migrator[network]
+        ? this.txBuilderConfig.migrator[network]
+        : undefined
+    );
 
-    if (this.txBuilderConfig.faucet && this.txBuilderConfig.faucet[network]) {
-      this.faucetService = new FaucetService(
-        this.configuration,
-        this.txBuilderConfig.faucet
-      );
-    }
+    this.faucetService = new FaucetService(
+      this.configuration,
+      this.txBuilderConfig.faucet && this.txBuilderConfig.faucet[network]
+        ? this.txBuilderConfig.faucet[network]
+        : undefined
+    );
 
-    if (
+    this.incentiveService = new IncentivesController(
+      this.configuration,
       this.txBuilderConfig.incentives &&
       this.txBuilderConfig.incentives[network]
-    ) {
-      this.incentiveService = new IncentivesController(
-        this.configuration,
-        this.txBuilderConfig.incentives
-      );
-    }
+        ? this.txBuilderConfig.incentives[network]
+        : undefined
+    );
+
     this.stakings = {};
   }
 
   public getStaking = (stake: string): StakingInterface => {
     if (!this.stakings[stake]) {
-      if (this.txBuilderConfig.staking && this.txBuilderConfig.staking[stake]) {
-        this.stakings[stake] = new StakingService(
-          this.configuration,
-          this.erc20Service,
-          stake,
-          this.txBuilderConfig.staking[stake]
-        );
-      } else {
-        throw new Error(
-          `Stake token: ${stake} doesn't exist. Please review the configuration.`
-        );
-      }
+      const { network } = this.configuration;
+      const stakingConfig =
+        this.txBuilderConfig.staking && this.txBuilderConfig.staking[network]
+          ? this.txBuilderConfig.staking[network][stake]
+          : undefined;
+
+      this.stakings[stake] = new StakingService(
+        this.configuration,
+        this.erc20Service,
+        stake,
+        stakingConfig
+      );
     }
     return this.stakings[stake];
   };

@@ -20,7 +20,10 @@ import {
   tStringDecimalUnits,
 } from '../types';
 import { parseNumber } from '../utils/parsings';
-import { StakingValidator } from '../validators/methodValidators';
+import {
+  SignStakingValidator,
+  StakingValidator,
+} from '../validators/methodValidators';
 import {
   IsEthAddress,
   IsPositiveAmount,
@@ -38,37 +41,33 @@ export default class StakingService
 
   public readonly stakingRewardTokenContractAddress: tEthereumAddress;
 
-  readonly stakingHelperContractAddress: string | undefined;
+  readonly stakingHelperContractAddress: tEthereumAddress | undefined;
 
   readonly erc20Service: IERC20ServiceInterface;
 
   readonly tokenStake: string;
 
-  readonly stakingConfig: StakingNetworkConfig;
+  readonly stakingConfig: StakingNetworkConfig | undefined;
 
   constructor(
     config: Configuration,
     erc20Service: IERC20ServiceInterface,
     tokenStake: string,
-    stakingConfig: StakingNetworkConfig
+    stakingConfig: StakingNetworkConfig | undefined
   ) {
     super(config, IStakedToken__factory);
     this.stakingConfig = stakingConfig;
     this.tokenStake = tokenStake;
     this.erc20Service = erc20Service;
 
-    const { network, provider } = this.config;
+    const { provider } = this.config;
 
-    const {
-      TOKEN_STAKING_ADDRESS,
-      STAKING_REWARD_TOKEN_ADDRESS,
-      STAKING_HELPER_ADDRESS,
-    } = this.stakingConfig[network];
+    const { TOKEN_STAKING, STAKING_REWARD_TOKEN, STAKING_HELPER } =
+      this.stakingConfig || {};
 
-    this.stakingContractAddress = TOKEN_STAKING_ADDRESS;
-    this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN_ADDRESS;
-
-    this.stakingHelperContractAddress = STAKING_HELPER_ADDRESS;
+    this.stakingContractAddress = TOKEN_STAKING || '';
+    this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN || '';
+    this.stakingHelperContractAddress = STAKING_HELPER;
 
     if (this.stakingHelperContractAddress) {
       this.stakingHelperContract = IAaveStakingHelper__factory.connect(
@@ -78,7 +77,7 @@ export default class StakingService
     }
   }
 
-  @StakingValidator
+  @SignStakingValidator
   public async signStaking(
     @IsEthAddress() user: tEthereumAddress,
     @IsPositiveAmount() amount: tStringCurrencyUnits,

@@ -7,7 +7,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
-  RepayWithCollateralConfig,
+  LendingPoolMarketConfig,
   transactionType,
 } from '../types';
 import { RepayWithCollateralType } from '../types/RepayWithCollateralMethodTypes';
@@ -20,20 +20,20 @@ export default class RepayWithCollateralAdapterService
   implements RepayWithCollateralAdapterInterface {
   readonly repayWithCollateralAddress: string;
 
-  readonly repayWithCollateralConfig: RepayWithCollateralConfig;
+  readonly repayWithCollateralConfig: LendingPoolMarketConfig | undefined;
 
   constructor(
     config: Configuration,
-    repayWithCollateralConfig: RepayWithCollateralConfig
+    repayWithCollateralConfig: LendingPoolMarketConfig | undefined
   ) {
     super(config, IRepayWithCollateral__factory);
     this.repayWithCollateralConfig = repayWithCollateralConfig;
 
-    const { network } = this.config;
-
-    this.repayWithCollateralAddress = this.repayWithCollateralConfig[
-      network
-    ].REPAY_WITH_COLLATERAL_ADAPTER;
+    this.repayWithCollateralAddress =
+      this.repayWithCollateralConfig &&
+      this.repayWithCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
+        ? this.repayWithCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
+        : '';
   }
 
   @RepayWithCollateralValidator

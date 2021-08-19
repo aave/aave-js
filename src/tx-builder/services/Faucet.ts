@@ -26,16 +26,19 @@ export default class FaucetService
 
   readonly faucetContract: IFaucet;
 
-  readonly faucetConfig: FaucetConfig;
+  readonly faucetConfig: FaucetConfig | undefined;
 
-  constructor(config: Configuration, faucetConfig: FaucetConfig) {
+  constructor(config: Configuration, faucetConfig: FaucetConfig | undefined) {
     super(config, IMinter__factory);
 
     this.faucetConfig = faucetConfig;
 
-    const { provider, network } = this.config;
+    const { provider } = this.config;
 
-    this.faucetAddress = this.faucetConfig[network].FAUCET;
+    this.faucetAddress =
+      this.faucetConfig && this.faucetConfig.FAUCET
+        ? this.faucetConfig.FAUCET
+        : '';
 
     if (this.faucetAddress) {
       this.faucetContract = IFaucet__factory.connect(

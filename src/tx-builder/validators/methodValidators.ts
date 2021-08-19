@@ -9,6 +9,7 @@ import {
   optionalValidator,
 } from './validations';
 import { utils } from 'ethers';
+import { LendingPoolMarketConfig } from '../types';
 
 export function LPFlashLiquidationValidator(
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -19,11 +20,13 @@ export function LPFlashLiquidationValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } = this.lendingPoolConfig;
+    const { LENDING_POOL, FLASH_LIQUIDATION_ADAPTER } =
+      this.lendingPoolConfig || {};
 
     if (
-      !utils.isAddress(LENDINGPOOL_ADDRESS) ||
-      (FLASHLIQUIDATION && !utils.isAddress(FLASHLIQUIDATION))
+      !utils.isAddress(LENDING_POOL) ||
+      !FLASH_LIQUIDATION_ADAPTER ||
+      !utils.isAddress(FLASH_LIQUIDATION_ADAPTER)
     ) {
       console.error(
         `[LPFlahsLiquidationValidator] You need to pass valid addresses`
@@ -50,15 +53,13 @@ export function LPRepayWithCollateralValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig;
+    const { LENDING_POOL, REPAY_WITH_COLLATERAL_ADAPTER } =
+      this.lendingPoolConfig || {};
 
     if (
-      !utils.isAddress(LENDINGPOOL_ADDRESS) ||
-      !this.repayWithCollateralConfig ||
-      (this.repayWithCollateralConfig &&
-        !utils.isAddress(
-          this.repayWithCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
-        ))
+      !utils.isAddress(LENDING_POOL) ||
+      !REPAY_WITH_COLLATERAL_ADAPTER ||
+      !utils.isAddress(REPAY_WITH_COLLATERAL_ADAPTER)
     ) {
       console.error(
         `[LPRepayWithCollateralValidator] You need to pass valid addresses`
@@ -85,13 +86,13 @@ export function LPSwapCollateralValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig;
+    const { LENDING_POOL, SWAP_COLLATERAL_ADAPTER } =
+      this.lendingPoolConfig || {};
 
     if (
-      !utils.isAddress(LENDINGPOOL_ADDRESS) ||
-      !this.swapCollateralConfig ||
-      (this.swapCollateralConfig &&
-        !utils.isAddress(this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER))
+      !utils.isAddress(LENDING_POOL) ||
+      !SWAP_COLLATERAL_ADAPTER ||
+      !utils.isAddress(SWAP_COLLATERAL_ADAPTER)
     ) {
       console.error(
         `[LPSwapCollateralValidator] You need to pass valid addresses`
@@ -118,11 +119,9 @@ export function LPValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
+    const { LENDING_POOL } = this.lendingPoolConfig || {};
 
-    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig[currentNetwork];
-
-    if (!utils.isAddress(LENDINGPOOL_ADDRESS)) {
+    if (!utils.isAddress(LENDING_POOL)) {
       console.error(`[LendingPoolValidator] You need to pass valid addresses`);
       return [];
     }
@@ -146,9 +145,10 @@ export function LTAMigratorValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const { LEND_TO_AAVE_MIGRATOR } = this.migratorConfig[currentNetwork];
+    const LEND_TO_AAVE_MIGRATOR =
+      this.migratorConfig && this.migratorConfig
+        ? this.migratorConfig.LEND_TO_AAVE_MIGRATOR
+        : '';
 
     if (!utils.isAddress(LEND_TO_AAVE_MIGRATOR)) {
       console.error(`[MigratorValidator] You need to pass valid addresses`);
@@ -172,12 +172,8 @@ export function IncentivesValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const {
-      INCENTIVES_CONTROLLER,
-      INCENTIVES_CONTROLLER_REWARD_TOKEN,
-    } = this.incentivesConfig[currentNetwork];
+    const { INCENTIVES_CONTROLLER, INCENTIVES_CONTROLLER_REWARD_TOKEN } =
+      this.incentivesConfig || {};
 
     if (
       !utils.isAddress(INCENTIVES_CONTROLLER_REWARD_TOKEN) ||
@@ -204,11 +200,11 @@ export function LiquiditySwapValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const { SWAP_COLLATERAL_ADAPTER } = this.swapCollateralConfig[
-      currentNetwork
-    ];
+    const SWAP_COLLATERAL_ADAPTER =
+      this.swapCollateralConfig &&
+      this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
+        ? this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
+        : '';
 
     if (!utils.isAddress(SWAP_COLLATERAL_ADAPTER)) {
       console.error(
@@ -236,11 +232,11 @@ export function RepayWithCollateralValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const { REPAY_WITH_COLLATERAL_ADAPTER } = this.repayWithCollateralConfig[
-      currentNetwork
-    ];
+    const REPAY_WITH_COLLATERAL_ADAPTER =
+      this.swapCollateralConfig &&
+      this.swapCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
+        ? this.swapCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
+        : '';
 
     if (!utils.isAddress(REPAY_WITH_COLLATERAL_ADAPTER)) {
       console.error(
@@ -268,21 +264,51 @@ export function StakingValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
     // No need to check if addresses exist for network
     // because this is checked at initialization and type checking of config
-    const {
-      TOKEN_STAKING_ADDRESS,
-      STAKING_REWARD_TOKEN_ADDRESS,
-      STAKING_HELPER_ADDRESS,
-    } = this.stakingConfig[currentNetwork];
+
+    const { TOKEN_STAKING, STAKING_REWARD_TOKEN } = this.stakingConfig || {};
 
     // Check if addresses are valid.
     if (
-      !utils.isAddress(TOKEN_STAKING_ADDRESS) ||
-      !utils.isAddress(STAKING_REWARD_TOKEN_ADDRESS) ||
-      (STAKING_HELPER_ADDRESS && !utils.isAddress(TOKEN_STAKING_ADDRESS))
+      !utils.isAddress(TOKEN_STAKING) ||
+      !utils.isAddress(STAKING_REWARD_TOKEN)
+    ) {
+      console.error(`[StakingValidator] You need to pass valid addresses`);
+      return [];
+    }
+
+    const isParamOptional = optionalValidator(target, propertyName, arguments);
+
+    isEthAddressValidator(target, propertyName, arguments, isParamOptional);
+
+    amountGtThan0Validator(target, propertyName, arguments, isParamOptional);
+
+    return method?.apply(this, arguments);
+  };
+}
+
+export function SignStakingValidator(
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  target: any,
+  propertyName: string,
+  descriptor: TypedPropertyDescriptor<any>
+): any {
+  const method = descriptor.value;
+  // eslint-disable-next-line no-param-reassign
+  descriptor.value = function () {
+    // No need to check if addresses exist for network
+    // because this is checked at initialization and type checking of config
+
+    const { TOKEN_STAKING, STAKING_REWARD_TOKEN, STAKING_HELPER } =
+      this.stakingConfig || {};
+
+    // Check if addresses are valid.
+    if (
+      !utils.isAddress(TOKEN_STAKING) ||
+      !utils.isAddress(STAKING_REWARD_TOKEN) ||
+      !STAKING_HELPER ||
+      !utils.isAddress(TOKEN_STAKING)
     ) {
       console.error(`[StakingValidator] You need to pass valid addresses`);
       return [];
@@ -307,9 +333,10 @@ export function FaucetValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const { FAUCET } = this.faucetConfig.faucet[currentNetwork];
+    const FAUCET =
+      this.faucetConfig && this.faucetConfig.FAUCET
+        ? this.faucetConfig.FAUCET
+        : '';
 
     if (!utils.isAddress(FAUCET)) {
       console.error(`[FaucetValidator] You need to pass valid addresses`);
@@ -335,10 +362,12 @@ export function WETHValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
+    const WETH_GATEWAY =
+      this.wethGatewayConfig && this.wethGatewayConfig.WETH_GATEWAY
+        ? this.wethGatewayConfig.WETH_GATEWAY
+        : '';
 
-    const { WETH_GATEWAY } = this.wethGatewayConfig[currentNetwork];
-    if (!WETH_GATEWAY || (WETH_GATEWAY && !utils.isAddress(WETH_GATEWAY))) {
+    if (!utils.isAddress(WETH_GATEWAY)) {
       console.error(`[WethGatewayValidator] You need to pass valid addresses`);
       return [];
     }
@@ -362,14 +391,12 @@ export function GovValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
     const {
       AAVE_GOVERNANCE_V2,
       AAVE_GOVERNANCE_V2_HELPER,
       AAVE_GOVERNANCE_V2_EXECUTOR_SHORT,
       AAVE_GOVERNANCE_V2_EXECUTOR_LONG,
-    } = this.governanceConfig[currentNetwork];
+    } = this.governanceConfig || {};
 
     if (
       !utils.isAddress(AAVE_GOVERNANCE_V2) ||

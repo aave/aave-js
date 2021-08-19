@@ -8,6 +8,8 @@ import FaucetInterface from './Faucet';
 import AaveGovernanceV2Interface from './v2/AaveGovernanceV2';
 import GovernanceDelegationTokenInterface from './v2/GovernanceDelegationToken';
 import { IncentivesControllerInterface } from '../services/IncentivesController';
+import RepayWithCollateralAdapterInterface from './RepayWithCollateralAdapter';
+import LiquiditySwapAdapterInterface from './LiquiditySwapAdapterParaswap';
 
 export default interface TxBuilderInterface {
   erc20Service: IERC20ServiceInterface;
@@ -20,4 +22,8 @@ export default interface TxBuilderInterface {
   getLendingPool: (market: string) => LendingPoolInterfaceV2;
   getStaking: (stake: string) => StakingInterface;
   getWethGateway: (market: string) => WETHGatewayInterface;
+  getRepayWithCollateralAdapter: (
+    market: string
+  ) => RepayWithCollateralAdapterInterface;
+  getSwapCollateralAdapter: (market: string) => LiquiditySwapAdapterInterface;
 }

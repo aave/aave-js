@@ -28,11 +28,15 @@ export default class TxBuilder
     [market: string]: WETHGatewayInterface;
   };
 
+  readonly swapCollateralAdapters: {
+    [market: string]: LiquiditySwapAdapterInterface;
+  };
+
+  readonly repayWithCollateralAdapters: {
+    [market: string]: RepayWithCollateralAdapterInterface;
+  };
+
   readonly baseDebtTokenService: BaseDebtTokenInterface;
-
-  readonly liquiditySwapAdapterService: LiquiditySwapAdapterInterface;
-
-  readonly repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface;
 
   public aaveGovernanceV2Service: AaveGovernanceV2Interface;
 
@@ -52,97 +56,111 @@ export default class TxBuilder
 
     this.wethGateways = {};
     this.lendingPools = {};
+    this.swapCollateralAdapters = {};
+    this.repayWithCollateralAdapters = {};
     this.baseDebtTokenService = new BaseDebtToken(
       this.configuration,
       this.erc20Service
     );
 
-    if (
-      this.txBuilderConfig.swapCollateral &&
-      this.txBuilderConfig.swapCollateral[network]
-    ) {
-      this.liquiditySwapAdapterService = new LiquiditySwapAdapterService(
-        this.configuration,
-        this.txBuilderConfig.swapCollateral
-      );
-    }
-
-    if (
-      this.txBuilderConfig.repayWithCollateral &&
-      this.txBuilderConfig.repayWithCollateral[network]
-    ) {
-      this.repayWithCollateralAdapterService = new RepayWithCollateralAdapterService(
-        this.configuration,
-        this.txBuilderConfig.repayWithCollateral
-      );
-    }
-
-    if (
+    this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
+      this.configuration,
       this.txBuilderConfig.governance &&
       this.txBuilderConfig.governance[network]
-    ) {
-      this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
-        this.configuration,
-        this.txBuilderConfig.governance
-      );
-    }
+        ? this.txBuilderConfig.governance[network]
+        : undefined
+    );
 
     this.governanceDelegationTokenService = new GovernanceDelegationTokenService(
       this.configuration
     );
   }
 
-  public getWethGateway = (market: string): WETHGatewayInterface => {
+  public getRepayWithCollateralAdapter = (
+    market: string
+  ): RepayWithCollateralAdapterInterface => {
     const { network } = this.configuration;
-    if (
+    const repayConfig =
       this.txBuilderConfig.lendingPool &&
-      this.txBuilderConfig.lendingPool[network] &&
-      this.txBuilderConfig.lendingPool[network][market]
-    ) {
-      if (!this.wethGateways[market]) {
-        this.wethGateways[market] = new WETHGatewayService(
-          this.configuration,
-          this.baseDebtTokenService,
-          this.erc20Service,
-          this.txBuilderConfig.lendingPool[network][market]
-        );
-      }
+      this.txBuilderConfig.lendingPool[network]
+        ? this.txBuilderConfig.lendingPool[network][market]
+        : undefined;
 
-      return this.wethGateways[market];
-    } else {
-      throw new Error(
-        `Market: ${market} not in configuration. Please change market or add it to the configuration object`
+    if (!this.repayWithCollateralAdapters[market]) {
+      this.repayWithCollateralAdapters[
+        market
+      ] = new RepayWithCollateralAdapterService(
+        this.configuration,
+        repayConfig
       );
     }
+
+    return this.repayWithCollateralAdapters[market];
+  };
+
+  public getSwapCollateralAdapter = (
+    market: string
+  ): LiquiditySwapAdapterInterface => {
+    const { network } = this.configuration;
+    const swapConfig =
+      this.txBuilderConfig.lendingPool &&
+      this.txBuilderConfig.lendingPool[network]
+        ? this.txBuilderConfig.lendingPool[network][market]
+        : undefined;
+
+    if (!this.swapCollateralAdapters[market]) {
+      this.swapCollateralAdapters[market] = new LiquiditySwapAdapterService(
+        this.configuration,
+        swapConfig
+      );
+    }
+
+    return this.swapCollateralAdapters[market];
+  };
+
+  public getWethGateway = (market: string): WETHGatewayInterface => {
+    const { network } = this.configuration;
+
+    const wethConfig =
+      this.txBuilderConfig.lendingPool &&
+      this.txBuilderConfig.lendingPool[network]
+        ? this.txBuilderConfig.lendingPool[network][market]
+        : undefined;
+
+    if (!this.wethGateways[market]) {
+      this.wethGateways[market] = new WETHGatewayService(
+        this.configuration,
+        this.baseDebtTokenService,
+        this.erc20Service,
+        wethConfig
+      );
+    }
+
+    return this.wethGateways[market];
   };
 
   public getLendingPool = (market: string): LendingPoolInterface => {
     const { network } = this.configuration;
-    if (
-      this.txBuilderConfig.lendingPool &&
-      this.txBuilderConfig.lendingPool[network] &&
-      this.txBuilderConfig.lendingPool[network][market]
-    ) {
-      if (!this.lendingPools[market]) {
-        this.lendingPools[market] = new LendingPool(
-          this.configuration,
-          this.erc20Service,
-          this.synthetixService,
-          this.getWethGateway(market),
-          this.liquiditySwapAdapterService,
-          this.repayWithCollateralAdapterService,
-          market,
-          this.txBuilderConfig.lendingPool[network][market],
-          this.txBuilderConfig.swapCollateral,
-          this.txBuilderConfig.repayWithCollateral
-        );
-      }
 
-      return this.lendingPools[market];
-    } else {
-      throw new Error(
-        `Network: ${network} or Market: ${market} not in configuration. Please review the configuration object`
+    if (!this.lendingPools[market]) {
+      const lendingPoolConfig =
+        this.txBuilderConfig.lendingPool &&
+        this.txBuilderConfig.lendingPool[network]
+          ? this.txBuilderConfig.lendingPool[network][market]
+          : undefined;
+
+      this.lendingPools[market] = new LendingPool(
+        this.configuration,
+        this.erc20Service,
+        this.synthetixService,
+        this.getWethGateway(market),
+        this.getSwapCollateralAdapter(market),
+        this.getRepayWithCollateralAdapter(market),
+        market,
+        lendingPoolConfig
       );
     }
+
+    return this.lendingPools[market];
   };
 }

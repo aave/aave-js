@@ -117,24 +117,27 @@ export default class AaveGovernanceV2Service
 
   readonly executors: tEthereumAddress[] = [];
 
-  readonly governanceConfig: GovernanceConfig;
+  readonly governanceConfig: GovernanceConfig | undefined;
 
-  constructor(config: Configuration, governanceConfig: GovernanceConfig) {
+  constructor(
+    config: Configuration,
+    governanceConfig: GovernanceConfig | undefined
+  ) {
     super(config, IAaveGovernanceV2__factory);
     this.governanceConfig = governanceConfig;
 
-    const { network } = this.config;
     const {
       AAVE_GOVERNANCE_V2,
       AAVE_GOVERNANCE_V2_HELPER,
       AAVE_GOVERNANCE_V2_EXECUTOR_SHORT,
       AAVE_GOVERNANCE_V2_EXECUTOR_LONG,
-    } = this.governanceConfig[network];
+    } = this.governanceConfig || {};
 
-    this.aaveGovernanceV2Address = AAVE_GOVERNANCE_V2;
-    this.aaveGovernanceV2HelperAddress = AAVE_GOVERNANCE_V2_HELPER;
-    this.executors[ExecutorType.Short] = AAVE_GOVERNANCE_V2_EXECUTOR_SHORT;
-    this.executors[ExecutorType.Long] = AAVE_GOVERNANCE_V2_EXECUTOR_LONG;
+    this.aaveGovernanceV2Address = AAVE_GOVERNANCE_V2 || '';
+    this.aaveGovernanceV2HelperAddress = AAVE_GOVERNANCE_V2_HELPER || '';
+    this.executors[ExecutorType.Short] =
+      AAVE_GOVERNANCE_V2_EXECUTOR_SHORT || '';
+    this.executors[ExecutorType.Long] = AAVE_GOVERNANCE_V2_EXECUTOR_LONG || '';
   }
 
   @GovValidator
