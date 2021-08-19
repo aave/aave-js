@@ -66,15 +66,23 @@ export type MigratorConfig = {
 };
 
 export type LendingPoolNetworkConfig = {
-  [network: string]: {
+  [market: string]: {
     LENDINGPOOL_ADDRESS: tEthereumAddress;
     WETH_GATEWAY?: tEthereumAddress;
     FLASHLIQUIDATION?: tEthereumAddress;
   };
 };
 
+export type LendingPoolMarketConfig = {
+  LENDINGPOOL_ADDRESS: tEthereumAddress;
+  WETH_GATEWAY?: tEthereumAddress;
+  FLASHLIQUIDATION?: tEthereumAddress;
+};
+
 export type LendingPoolConfig = {
-  [market: string]: LendingPoolNetworkConfig;
+  [network: string]: {
+    [market: string]: LendingPoolMarketConfig;
+  };
 };
 
 export type StakingNetworkConfig = {

@@ -8,7 +8,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   InterestRate,
-  LendingPoolNetworkConfig,
+  LendingPoolMarketConfig,
   ProtocolAction,
   transactionType,
   tStringDecimalUnits,
@@ -40,22 +40,20 @@ export default class WETHGatewayService
 
   readonly erc20Service: IERC20ServiceInterface;
 
-  readonly wethGatewayConfig: LendingPoolNetworkConfig;
+  readonly wethGatewayConfig: LendingPoolMarketConfig;
 
   constructor(
     config: Configuration,
     baseDebtTokenService: BaseDebtTokenInterface,
     erc20Service: IERC20ServiceInterface,
-    wethGatewayConfig: LendingPoolNetworkConfig
+    wethGatewayConfig: LendingPoolMarketConfig
   ) {
     super(config, IWETHGateway__factory);
     this.wethGatewayConfig = wethGatewayConfig;
     this.baseDebtTokenService = baseDebtTokenService;
     this.erc20Service = erc20Service;
 
-    const { network } = this.config;
-    this.wethGatewayAddress =
-      this.wethGatewayConfig[network].WETH_GATEWAY || '';
+    this.wethGatewayAddress = this.wethGatewayConfig.WETH_GATEWAY || '';
   }
 
   @WETHValidator

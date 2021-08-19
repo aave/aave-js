@@ -19,9 +19,9 @@ import {
   transactionType,
   tStringDecimalUnits,
   tEthereumAddress,
-  LendingPoolNetworkConfig,
   SwapCollateralConfig,
   RepayWithCollateralConfig,
+  LendingPoolMarketConfig,
 } from '../../types';
 import { getTxValue, parseNumber } from '../../utils/parsings';
 import {
@@ -103,7 +103,7 @@ export default class LendingPool
 
   readonly repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface;
 
-  readonly lendingPoolConfig: LendingPoolNetworkConfig;
+  readonly lendingPoolConfig: LendingPoolMarketConfig;
 
   readonly flashLiquidationAddress: string;
 
@@ -123,7 +123,7 @@ export default class LendingPool
     liquiditySwapAdapterService: LiquiditySwapAdapterInterface,
     repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface,
     market: string,
-    lendingPoolConfig: LendingPoolNetworkConfig,
+    lendingPoolConfig: LendingPoolMarketConfig,
     swapCollateralConfig: SwapCollateralConfig | undefined,
     repayWithCollateralConfig: RepayWithCollateralConfig | undefined
   ) {
@@ -140,8 +140,7 @@ export default class LendingPool
 
     const { network } = this.config;
 
-    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } =
-      this.lendingPoolConfig[network];
+    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } = this.lendingPoolConfig;
     this.lendingPoolAddress = LENDINGPOOL_ADDRESS;
     this.flashLiquidationAddress = FLASHLIQUIDATION || '';
 

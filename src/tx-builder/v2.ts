@@ -85,16 +85,18 @@ export default class TxBuilder
   }
 
   public getWethGateway = (market: string): WETHGatewayInterface => {
+    const { network } = this.configuration;
     if (
       this.txBuilderConfig.lendingPool &&
-      this.txBuilderConfig.lendingPool[market]
+      this.txBuilderConfig.lendingPool[network] &&
+      this.txBuilderConfig.lendingPool[network][market]
     ) {
       if (!this.wethGateways[market]) {
         this.wethGateways[market] = new WETHGatewayService(
           this.configuration,
           this.baseDebtTokenService,
           this.erc20Service,
-          this.txBuilderConfig.lendingPool[market]
+          this.txBuilderConfig.lendingPool[network][market]
         );
       }
 
@@ -107,9 +109,11 @@ export default class TxBuilder
   };
 
   public getLendingPool = (market: string): LendingPoolInterface => {
+    const { network } = this.configuration;
     if (
       this.txBuilderConfig.lendingPool &&
-      this.txBuilderConfig.lendingPool[market]
+      this.txBuilderConfig.lendingPool[network] &&
+      this.txBuilderConfig.lendingPool[network][market]
     ) {
       if (!this.lendingPools[market]) {
         this.lendingPools[market] = new LendingPool(
@@ -120,7 +124,7 @@ export default class TxBuilder
           this.liquiditySwapAdapterService,
           this.repayWithCollateralAdapterService,
           market,
-          this.txBuilderConfig.lendingPool[market],
+          this.txBuilderConfig.lendingPool[network][market],
           this.txBuilderConfig.swapCollateral,
           this.txBuilderConfig.repayWithCollateral
         );
@@ -129,7 +133,7 @@ export default class TxBuilder
       return this.lendingPools[market];
     } else {
       throw new Error(
-        `Market: ${market} not in configuration. Please change market or add it to the configuration object`
+        `Network: ${network} or Market: ${market} not in configuration. Please review the configuration object`
       );
     }
   };

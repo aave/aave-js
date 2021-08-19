@@ -4,12 +4,10 @@ import {
   amount0OrPositiveValidator,
   amountGtThan0OrMinus1,
   amountGtThan0Validator,
-  // isEthAddressArrayValidator,
   isEthAddressOrEnsValidator,
   isEthAddressValidator,
   optionalValidator,
 } from './validations';
-// import { enabledNetworksByService } from '../config';
 import { utils } from 'ethers';
 
 export function LPFlashLiquidationValidator(
@@ -21,10 +19,7 @@ export function LPFlashLiquidationValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } =
-      this.lendingPoolConfig[currentNetwork];
+    const { LENDINGPOOL_ADDRESS, FLASHLIQUIDATION } = this.lendingPoolConfig;
 
     if (
       !utils.isAddress(LENDINGPOOL_ADDRESS) ||
@@ -55,17 +50,14 @@ export function LPRepayWithCollateralValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig[currentNetwork];
+    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig;
 
     if (
       !utils.isAddress(LENDINGPOOL_ADDRESS) ||
       !this.repayWithCollateralConfig ||
       (this.repayWithCollateralConfig &&
         !utils.isAddress(
-          this.repayWithCollateralConfig[currentNetwork]
-            .REPAY_WITH_COLLATERAL_ADAPTER
+          this.repayWithCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
         ))
     ) {
       console.error(
@@ -93,17 +85,13 @@ export function LPSwapCollateralValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const currentNetwork = this.config.network;
-
-    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig[currentNetwork];
+    const { LENDINGPOOL_ADDRESS } = this.lendingPoolConfig;
 
     if (
       !utils.isAddress(LENDINGPOOL_ADDRESS) ||
       !this.swapCollateralConfig ||
       (this.swapCollateralConfig &&
-        !utils.isAddress(
-          this.swapCollateralConfig[currentNetwork].SWAP_COLLATERAL_ADAPTER
-        ))
+        !utils.isAddress(this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER))
     ) {
       console.error(
         `[LPSwapCollateralValidator] You need to pass valid addresses`
