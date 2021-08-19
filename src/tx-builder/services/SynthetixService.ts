@@ -14,7 +14,7 @@ export default class SynthetixService
     const { network } = this.config;
 
     this.synthAddress =
-      cosntantAddressesByNetwork[network].SYNTHETIX_PROXY_ADDRESS || '';
+      cosntantAddressesByNetwork[network]?.SYNTHETIX_PROXY_ADDRESS || '';
   }
 
   public synthetixValidation = async (
