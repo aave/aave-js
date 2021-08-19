@@ -9,7 +9,6 @@ import {
   optionalValidator,
 } from './validations';
 import { utils } from 'ethers';
-import { LendingPoolMarketConfig } from '../types';
 
 export function LPFlashLiquidationValidator(
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
