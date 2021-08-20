@@ -37,12 +37,7 @@ export default class BaseTxBuilder {
 
   constructor(
     network: Network = Network.mainnet,
-    injectedProvider?:
-      | providers.ExternalProvider
-      | providers.StaticJsonRpcProvider
-      | providers.Web3Provider
-      | string
-      | undefined,
+    injectedProvider?: providers.Provider | string | undefined,
     defaultProviderKeys?: DefaultProviderKeys
   ) {
     let provider: providers.Provider;
@@ -62,10 +57,7 @@ export default class BaseTxBuilder {
       }
     } else if (typeof injectedProvider === 'string') {
       provider = new providers.StaticJsonRpcProvider(injectedProvider, chainId);
-    } else if (
-      injectedProvider instanceof providers.Web3Provider ||
-      injectedProvider instanceof providers.StaticJsonRpcProvider
-    ) {
+    } else if (injectedProvider instanceof providers.Provider) {
       provider = injectedProvider;
     } else {
       provider = new providers.Web3Provider(injectedProvider, chainId);
