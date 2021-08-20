@@ -44,11 +44,7 @@ export default class TxBuilder
 
   constructor(
     network: Network = Network.mainnet,
-    injectedProvider?:
-      | providers.ExternalProvider
-      | providers.Web3Provider
-      | string
-      | undefined,
+    injectedProvider?: providers.Provider | string | undefined,
     defaultProviderKeys?: DefaultProviderKeys,
     config?: TxBuilderConfig
   ) {
