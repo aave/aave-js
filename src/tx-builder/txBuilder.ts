@@ -57,10 +57,7 @@ export default class BaseTxBuilder {
       }
     } else if (typeof injectedProvider === 'string') {
       provider = new providers.StaticJsonRpcProvider(injectedProvider, chainId);
-    } else if (
-      injectedProvider instanceof providers.Web3Provider ||
-      injectedProvider instanceof providers.StaticJsonRpcProvider
-    ) {
+    } else if (injectedProvider instanceof providers.Provider) {
       provider = injectedProvider;
     } else {
       provider = new providers.Web3Provider(injectedProvider, chainId);
