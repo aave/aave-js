@@ -165,10 +165,7 @@ export type ContractAddresses = {
 
 export type Configuration = {
   network: Network;
-  provider:
-    | providers.JsonRpcProvider
-    | providers.BaseProvider
-    | providers.Web3Provider;
+  provider: providers.Provider;
 };
 
 export type EthereumTransactionTypeExtended = {
