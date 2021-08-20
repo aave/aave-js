@@ -41,8 +41,7 @@ export default class LiquiditySwapAdapterService
   constructor(config: Configuration) {
     super(config, IParaSwapLiquiditySwapAdapter__factory);
 
-    const { SWAP_COLLATERAL_ADAPTER } =
-      commonContractAddressBetweenMarketsV2[this.config.network];
+    const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[this.config.network];
     this.liquiditySwapAdapterAddress = SWAP_COLLATERAL_ADAPTER;
   }
 
