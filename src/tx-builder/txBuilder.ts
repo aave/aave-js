@@ -37,12 +37,7 @@ export default class BaseTxBuilder {
 
   constructor(
     network: Network = Network.mainnet,
-    injectedProvider?:
-      | providers.ExternalProvider
-      | providers.StaticJsonRpcProvider
-      | providers.Web3Provider
-      | string
-      | undefined,
+    injectedProvider?: providers.Provider | string | undefined,
     defaultProviderKeys?: DefaultProviderKeys
   ) {
     let provider: providers.Provider;
