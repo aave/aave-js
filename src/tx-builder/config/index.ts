@@ -7,6 +7,7 @@ import {
   ProtocolAction,
   Stake,
   StakingConfigType,
+  StakeActions,
 } from '../types';
 
 export const DEFAULT_NULL_VALUE_ON_TX = BigNumber.from(0).toHexString();
@@ -66,79 +67,98 @@ export const gasLimitRecommendations: GasRecommendationType = {
 export const distinctStakingAddressesBetweenTokens: StakingConfigType = {
   [Stake.Aave]: {
     [Network.kovan]: {
-      canUsePermit: true,
       TOKEN_STAKING_ADDRESS: '0xf2fbf9A6710AfDa1c4AaB2E922DE9D69E0C97fd2',
       STAKING_REWARD_TOKEN_ADDRESS:
         '0xb597cd8d3217ea6477232f9217fa70837ff667af',
-      STAKING_HELPER_ADDRESS: '0xf267aCc8BF1D8b41c89b6dc1a0aD8439dfbc890c',
     },
     [Network.ropsten]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
       STAKING_REWARD_TOKEN_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
     [Network.mainnet]: {
-      canUsePermit: true,
       TOKEN_STAKING_ADDRESS: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
       STAKING_REWARD_TOKEN_ADDRESS:
         '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-      STAKING_HELPER_ADDRESS: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
     },
     [Network.polygon]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
       STAKING_REWARD_TOKEN_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
     [Network.mumbai]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
       STAKING_REWARD_TOKEN_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
   },
   [Stake.Balancer]: {
     [Network.kovan]: {
-      canUsePermit: false,
-      TOKEN_STAKING_ADDRESS: '0x31ce45Ab6E26C72c47C52c27498D460099545ef2',
+      TOKEN_STAKING_ADDRESS: '0xCe7021eDabaf82D28adBBea449Bc4dF70261F33E',
       STAKING_REWARD_TOKEN_ADDRESS:
         '0xb597cd8d3217ea6477232f9217fa70837ff667af',
-      STAKING_HELPER_ADDRESS: '',
     },
     [Network.ropsten]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
       STAKING_REWARD_TOKEN_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
     [Network.mainnet]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
       STAKING_REWARD_TOKEN_ADDRESS:
         '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-      STAKING_HELPER_ADDRESS: '',
     },
     [Network.polygon]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
       STAKING_REWARD_TOKEN_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
     [Network.mumbai]: {
-      canUsePermit: false,
       TOKEN_STAKING_ADDRESS: '',
       STAKING_REWARD_TOKEN_ADDRESS: '',
-      STAKING_HELPER_ADDRESS: '',
     },
   },
 };
 
 export const enabledNetworksByService: EnabledNetworksType = {
   staking: {
-    [Stake.Balancer]: [Network.kovan, Network.mainnet],
-    [Stake.Aave]: [Network.kovan, Network.mainnet],
+    [StakeActions.signStaking]: {
+      [Stake.Balancer]: [Network.kovan, Network.mainnet],
+      [Stake.Aave]: [Network.kovan, Network.mainnet],
+    },
+    [StakeActions.stakeWithPermit]: {
+      [Stake.Balancer]: [Network.kovan],
+      [Stake.Aave]: [Network.kovan],
+    },
+    [StakeActions.stake]: {
+      [Stake.Balancer]: [Network.kovan, Network.mainnet],
+      [Stake.Aave]: [Network.kovan, Network.mainnet],
+    },
+    [StakeActions.redeem]: {
+      [Stake.Balancer]: [Network.kovan, Network.mainnet],
+      [Stake.Aave]: [Network.kovan, Network.mainnet],
+    },
+    [StakeActions.cooldown]: {
+      [Stake.Balancer]: [Network.kovan, Network.mainnet],
+      [Stake.Aave]: [Network.kovan, Network.mainnet],
+    },
+    [StakeActions.claimRewards]: {
+      [Stake.Balancer]: [Network.kovan, Network.mainnet],
+      [Stake.Aave]: [Network.kovan, Network.mainnet],
+    },
+    [StakeActions.claimRewardsAndStake]: {
+      [Stake.Balancer]: [Network.kovan, Network.mainnet],
+      [Stake.Aave]: [Network.kovan, Network.mainnet],
+    },
+    [StakeActions.claimRewardsAndRedeem]: {
+      [Stake.Balancer]: [Network.kovan],
+      [Stake.Aave]: [Network.kovan],
+    },
+    [StakeActions.claimAllRewards]: {
+      [Stake.Balancer]: [Network.kovan],
+      [Stake.Aave]: [Network.kovan],
+    },
+    [StakeActions.claimAllRewardsAndStake]: {
+      [Stake.Balancer]: [Network.kovan],
+      [Stake.Aave]: [Network.kovan],
+    },
   },
+  claimStakingRewardsHelper: [Network.kovan],
   lendingPool: {
     [Market.Proto]: [
       Network.kovan,

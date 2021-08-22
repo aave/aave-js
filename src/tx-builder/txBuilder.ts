@@ -16,6 +16,9 @@ import {
   Network,
   Stake,
 } from './types';
+import ClaimStakingRewardsHelperService, {
+  ClaimStakingRewardsHelperInterface,
+} from './services/ClaimStakingRewardsHelper';
 import IncentivesController, {
   IncentivesControllerInterface,
 } from './services/IncentivesController';
@@ -30,6 +33,8 @@ export default class BaseTxBuilder {
   public ltaMigratorService: LTAMigratorInterface;
 
   public faucetService: FaucetInterface;
+
+  readonly claimStakingRewardsHelperService: ClaimStakingRewardsHelperInterface;
 
   public incentiveService: IncentivesControllerInterface;
 
@@ -71,6 +76,9 @@ export default class BaseTxBuilder {
       this.configuration,
       this.erc20Service
     );
+    this.claimStakingRewardsHelperService = new ClaimStakingRewardsHelperService(
+      this.configuration
+    );
     this.faucetService = new FaucetService(this.configuration);
     this.incentiveService = new IncentivesController(this.configuration);
 
@@ -83,6 +91,7 @@ export default class BaseTxBuilder {
       this.stakings[stakeToken] = new StakingService(
         this.configuration,
         this.erc20Service,
+        this.claimStakingRewardsHelperService,
         stakeToken
       );
     }

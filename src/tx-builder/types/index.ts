@@ -37,6 +37,19 @@ export enum ChainId {
   polygon_fork = 1338,
 }
 
+export enum StakeActions {
+  signStaking = 'signStaking',
+  stakeWithPermit = 'stakeWithPermit',
+  stake = 'stake',
+  redeem = 'redeem',
+  cooldown = 'cooldown',
+  claimRewards = 'claimRewards',
+  claimRewardsAndStake = 'claimRewardsAndStake',
+  claimRewardsAndRedeem = 'claimRewardsAndRedeem',
+  claimAllRewardsAndStake = 'claimAllRewardsAndStake',
+  claimAllRewards = 'claimAllRewards',
+}
+
 export enum eEthereumTxType {
   ERC20_APPROVAL = 'ERC20_APPROVAL',
   DLP_ACTION = 'DLP_ACTION',
@@ -114,6 +127,7 @@ export type AddressModel = {
   AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
   FLASHLIQUIDATION: tEthereumAddress;
+  CLAIM_HELPER_ADDRESS: tEthereumAddress;
   INCENTIVES_CONTROLLER: tEthereumAddress;
   INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
 };
@@ -128,6 +142,7 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'SWAP_COLLATERAL_ADAPTER'
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
   | 'FLASHLIQUIDATION'
+  | 'CLAIM_HELPER_ADDRESS'
   | 'INCENTIVES_CONTROLLER'
   | 'INCENTIVES_CONTROLLER_REWARD_TOKEN'
 >;
@@ -155,8 +170,6 @@ export type tDistinctGovernanceV2Addresses = Pick<
 export type tdistinctStakingAddressesBetweenTokens = {
   TOKEN_STAKING_ADDRESS: tEthereumAddress;
   STAKING_REWARD_TOKEN_ADDRESS: tEthereumAddress;
-  STAKING_HELPER_ADDRESS: tEthereumAddress;
-  canUsePermit: boolean;
 };
 
 export type ContractAddresses = {
@@ -227,8 +240,11 @@ export type LendingPoolConfigType = {
 
 export type EnabledNetworksType = {
   staking: {
-    [sToken: string]: Network[];
+    [action: string]: {
+      [sToken: string]: Network[];
+    };
   };
+  claimStakingRewardsHelper: Network[];
   lendingPool: {
     [market: string]: Network[];
   };
