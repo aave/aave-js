@@ -324,9 +324,9 @@ export function FaucetValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const FAUCET = this.faucetConfig?.FAUCET || '';
+    const FAUCET = this.faucetConfig?.FAUCET;
 
-    if (!utils.isAddress(FAUCET)) {
+    if (!FAUCET || (FAUCET && !utils.isAddress(FAUCET))) {
       console.error(`[FaucetValidator] You need to pass valid addresses`);
       return [];
     }
