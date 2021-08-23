@@ -145,9 +145,7 @@ export function LTAMigratorValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const LEND_TO_AAVE_MIGRATOR =
-      this.migratorConfig && this.migratorConfig
-        ? this.migratorConfig.LEND_TO_AAVE_MIGRATOR
-        : '';
+      this.migratorConfig?.LEND_TO_AAVE_MIGRATOR || '';
 
     if (!utils.isAddress(LEND_TO_AAVE_MIGRATOR)) {
       console.error(`[MigratorValidator] You need to pass valid addresses`);
@@ -200,10 +198,7 @@ export function LiquiditySwapValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const SWAP_COLLATERAL_ADAPTER =
-      this.swapCollateralConfig &&
-      this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
-        ? this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
-        : '';
+      this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER || '';
 
     if (!utils.isAddress(SWAP_COLLATERAL_ADAPTER)) {
       console.error(
@@ -232,10 +227,7 @@ export function RepayWithCollateralValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const REPAY_WITH_COLLATERAL_ADAPTER =
-      this.swapCollateralConfig &&
-      this.swapCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
-        ? this.swapCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
-        : '';
+      this.swapCollateralConfig?.REPAY_WITH_COLLATERAL_ADAPTER || '';
 
     if (!utils.isAddress(REPAY_WITH_COLLATERAL_ADAPTER)) {
       console.error(
@@ -332,10 +324,7 @@ export function FaucetValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const FAUCET =
-      this.faucetConfig && this.faucetConfig.FAUCET
-        ? this.faucetConfig.FAUCET
-        : '';
+    const FAUCET = this.faucetConfig?.FAUCET || '';
 
     if (!utils.isAddress(FAUCET)) {
       console.error(`[FaucetValidator] You need to pass valid addresses`);
@@ -361,10 +350,7 @@ export function WETHValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const WETH_GATEWAY =
-      this.wethGatewayConfig && this.wethGatewayConfig.WETH_GATEWAY
-        ? this.wethGatewayConfig.WETH_GATEWAY
-        : '';
+    const WETH_GATEWAY = this.wethGatewayConfig?.WETH_GATEWAY || '';
 
     if (!utils.isAddress(WETH_GATEWAY)) {
       console.error(`[WethGatewayValidator] You need to pass valid addresses`);

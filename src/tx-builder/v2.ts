@@ -61,10 +61,7 @@ export default class TxBuilder
 
     this.aaveGovernanceV2Service = new AaveGovernanceV2Service(
       this.configuration,
-      this.txBuilderConfig.governance &&
-      this.txBuilderConfig.governance[network]
-        ? this.txBuilderConfig.governance[network]
-        : undefined
+      this.txBuilderConfig.governance?.[network]
     );
 
     this.governanceDelegationTokenService = new GovernanceDelegationTokenService(
@@ -76,18 +73,13 @@ export default class TxBuilder
     market: string
   ): RepayWithCollateralAdapterInterface => {
     const { network } = this.configuration;
-    const repayConfig =
-      this.txBuilderConfig.lendingPool &&
-      this.txBuilderConfig.lendingPool[network]
-        ? this.txBuilderConfig.lendingPool[network][market]
-        : undefined;
 
     if (!this.repayWithCollateralAdapters[market]) {
       this.repayWithCollateralAdapters[
         market
       ] = new RepayWithCollateralAdapterService(
         this.configuration,
-        repayConfig
+        this.txBuilderConfig.lendingPool?.[network]?.[market]
       );
     }
 
@@ -98,16 +90,11 @@ export default class TxBuilder
     market: string
   ): LiquiditySwapAdapterInterface => {
     const { network } = this.configuration;
-    const swapConfig =
-      this.txBuilderConfig.lendingPool &&
-      this.txBuilderConfig.lendingPool[network]
-        ? this.txBuilderConfig.lendingPool[network][market]
-        : undefined;
 
     if (!this.swapCollateralAdapters[market]) {
       this.swapCollateralAdapters[market] = new LiquiditySwapAdapterService(
         this.configuration,
-        swapConfig
+        this.txBuilderConfig.lendingPool?.[network]?.[market]
       );
     }
 
@@ -116,19 +103,12 @@ export default class TxBuilder
 
   public getWethGateway = (market: string): WETHGatewayInterface => {
     const { network } = this.configuration;
-
-    const wethConfig =
-      this.txBuilderConfig.lendingPool &&
-      this.txBuilderConfig.lendingPool[network]
-        ? this.txBuilderConfig.lendingPool[network][market]
-        : undefined;
-
     if (!this.wethGateways[market]) {
       this.wethGateways[market] = new WETHGatewayService(
         this.configuration,
         this.baseDebtTokenService,
         this.erc20Service,
-        wethConfig
+        this.txBuilderConfig.lendingPool?.[network]?.[market]
       );
     }
 
@@ -139,12 +119,6 @@ export default class TxBuilder
     const { network } = this.configuration;
 
     if (!this.lendingPools[market]) {
-      const lendingPoolConfig =
-        this.txBuilderConfig.lendingPool &&
-        this.txBuilderConfig.lendingPool[network]
-          ? this.txBuilderConfig.lendingPool[network][market]
-          : undefined;
-
       this.lendingPools[market] = new LendingPool(
         this.configuration,
         this.erc20Service,
@@ -153,7 +127,7 @@ export default class TxBuilder
         this.getSwapCollateralAdapter(market),
         this.getRepayWithCollateralAdapter(market),
         market,
-        lendingPoolConfig
+        this.txBuilderConfig.lendingPool?.[network]?.[market]
       );
     }
 

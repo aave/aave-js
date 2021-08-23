@@ -35,12 +35,9 @@ export default class FaucetService
 
     const { provider } = this.config;
 
-    this.faucetAddress =
-      this.faucetConfig && this.faucetConfig.FAUCET
-        ? this.faucetConfig.FAUCET
-        : '';
+    this.faucetAddress = this.faucetConfig?.FAUCET || '';
 
-    if (this.faucetAddress) {
+    if (this.faucetAddress !== '') {
       this.faucetContract = IFaucet__factory.connect(
         this.faucetAddress,
         provider

@@ -75,24 +75,17 @@ export default class BaseTxBuilder {
     this.ltaMigratorService = new LTAMigratorService(
       this.configuration,
       this.erc20Service,
-      this.txBuilderConfig.migrator && this.txBuilderConfig.migrator[network]
-        ? this.txBuilderConfig.migrator[network]
-        : undefined
+      this.txBuilderConfig.migrator?.[network]
     );
 
     this.faucetService = new FaucetService(
       this.configuration,
-      this.txBuilderConfig.faucet && this.txBuilderConfig.faucet[network]
-        ? this.txBuilderConfig.faucet[network]
-        : undefined
+      this.txBuilderConfig.faucet?.[network]
     );
 
     this.incentiveService = new IncentivesController(
       this.configuration,
-      this.txBuilderConfig.incentives &&
-      this.txBuilderConfig.incentives[network]
-        ? this.txBuilderConfig.incentives[network]
-        : undefined
+      this.txBuilderConfig.incentives?.[network]
     );
 
     this.stakings = {};
@@ -101,10 +94,7 @@ export default class BaseTxBuilder {
   public getStaking = (stake: string): StakingInterface => {
     if (!this.stakings[stake]) {
       const { network } = this.configuration;
-      const stakingConfig =
-        this.txBuilderConfig.staking && this.txBuilderConfig.staking[network]
-          ? this.txBuilderConfig.staking[network][stake]
-          : undefined;
+      const stakingConfig = this.txBuilderConfig.staking?.[network]?.[stake];
 
       this.stakings[stake] = new StakingService(
         this.configuration,

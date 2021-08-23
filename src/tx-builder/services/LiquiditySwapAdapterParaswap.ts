@@ -47,10 +47,7 @@ export default class LiquiditySwapAdapterService
     this.swapCollateralConfig = swapCollateralConfig;
 
     this.liquiditySwapAdapterAddress =
-      this.swapCollateralConfig &&
-      this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
-        ? this.swapCollateralConfig.SWAP_COLLATERAL_ADAPTER
-        : '';
+      this.swapCollateralConfig?.SWAP_COLLATERAL_ADAPTER || '';
   }
 
   @LiquiditySwapValidator

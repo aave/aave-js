@@ -30,10 +30,7 @@ export default class RepayWithCollateralAdapterService
     this.repayWithCollateralConfig = repayWithCollateralConfig;
 
     this.repayWithCollateralAddress =
-      this.repayWithCollateralConfig &&
-      this.repayWithCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
-        ? this.repayWithCollateralConfig.REPAY_WITH_COLLATERAL_ADAPTER
-        : '';
+      this.repayWithCollateralConfig?.REPAY_WITH_COLLATERAL_ADAPTER || '';
   }
 
   @RepayWithCollateralValidator

@@ -52,10 +52,7 @@ export default class WETHGatewayService
     this.baseDebtTokenService = baseDebtTokenService;
     this.erc20Service = erc20Service;
 
-    this.wethGatewayAddress =
-      this.wethGatewayConfig && this.wethGatewayConfig.WETH_GATEWAY
-        ? this.wethGatewayConfig.WETH_GATEWAY
-        : '';
+    this.wethGatewayAddress = this.wethGatewayConfig?.WETH_GATEWAY || '';
   }
 
   @WETHValidator

@@ -37,10 +37,7 @@ export default class LTAMigratorService
     this.erc20Service = erc20Service;
     this.migratorConfig = migratorConfig;
 
-    this.migratorAddress =
-      this.migratorConfig && this.migratorConfig
-        ? this.migratorConfig.LEND_TO_AAVE_MIGRATOR
-        : '';
+    this.migratorAddress = this.migratorConfig?.LEND_TO_AAVE_MIGRATOR || '';
   }
 
   @LTAMigratorValidator
