@@ -10,7 +10,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
-  FaucetConfig,
+  LendingPoolMarketConfig,
   transactionType,
 } from '../types';
 import { FaucetParamsType } from '../types/FaucetMethodTypes';
@@ -26,9 +26,12 @@ export default class FaucetService
 
   readonly faucetContract: IFaucet;
 
-  readonly faucetConfig: FaucetConfig | undefined;
+  readonly faucetConfig: LendingPoolMarketConfig | undefined;
 
-  constructor(config: Configuration, faucetConfig: FaucetConfig | undefined) {
+  constructor(
+    config: Configuration,
+    faucetConfig: LendingPoolMarketConfig | undefined
+  ) {
     super(config, IMinter__factory);
 
     this.faucetConfig = faucetConfig;

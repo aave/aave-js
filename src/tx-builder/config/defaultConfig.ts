@@ -46,6 +46,7 @@ export const defaultConfig: TxBuilderConfig = {
         REPAY_WITH_COLLATERAL_ADAPTER:
           '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
         SWAP_COLLATERAL_ADAPTER: '0xC18451d36aA370fDACe8d45839bF975F48f7AEa1',
+        FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
       },
       amm: {
         LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
@@ -54,6 +55,7 @@ export const defaultConfig: TxBuilderConfig = {
         REPAY_WITH_COLLATERAL_ADAPTER:
           '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
         SWAP_COLLATERAL_ADAPTER: '0xC18451d36aA370fDACe8d45839bF975F48f7AEa1',
+        FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
       },
     },
     polygon: {
@@ -67,15 +69,8 @@ export const defaultConfig: TxBuilderConfig = {
       proto: {
         LENDING_POOL: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
         WETH_GATEWAY: '0xee9eE614Ad26963bEc1Bec0D2c92879ae1F209fA',
+        FAUCET: '0x0b3C23243106A69449e79C14c58BB49E358f9B10',
       },
-    },
-  },
-  faucet: {
-    kovan: {
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-    },
-    mumbai: {
-      FAUCET: '0x0b3C23243106A69449e79C14c58BB49E358f9B10',
     },
   },
   staking: {

@@ -56,8 +56,6 @@ export type GovernanceConfig = {
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
 };
 
-export type FaucetConfig = { FAUCET: tEthereumAddress };
-
 export type IncentivesConfig = {
   INCENTIVES_CONTROLLER: tEthereumAddress;
   INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
@@ -73,6 +71,7 @@ export type LendingPoolMarketConfig = {
   FLASH_LIQUIDATION_ADAPTER?: tEthereumAddress;
   REPAY_WITH_COLLATERAL_ADAPTER?: tEthereumAddress;
   SWAP_COLLATERAL_ADAPTER?: tEthereumAddress;
+  FAUCET?: tEthereumAddress;
 };
 
 export type LendingPoolConfig = {
@@ -95,7 +94,6 @@ export type TxBuilderConfig = {
   governance?: {
     [network: string]: GovernanceConfig;
   };
-  faucet?: { [network: string]: FaucetConfig };
   incentives?: {
     [network: string]: IncentivesConfig;
   };
