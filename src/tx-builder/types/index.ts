@@ -25,6 +25,10 @@ export enum Network {
   fork = 'fork',
   mumbai = 'mumbai',
   polygon_fork = 'polygon_fork',
+  avalanche = 'avalanche',
+  fuji = 'fuji', // avalanche test network
+  arbitrum_one = 'arbitrum_one',
+  arbitrum_rinkeby = 'arbitrum_rinkeby',
 }
 
 export enum ChainId {
@@ -35,6 +39,10 @@ export enum ChainId {
   fork = 1337,
   mumbai = 80001,
   polygon_fork = 1338,
+  avalanche = 43114,
+  fuji = 43113, // avalanche test network
+  arbitrum_one = 42161,
+  arbitrum_rinkeby = 421611,
 }
 export type ConstantAddressesByNetwork = {
   [network: string]: {
