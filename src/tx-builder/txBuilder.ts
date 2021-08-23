@@ -92,7 +92,7 @@ export default class BaseTxBuilder {
       const { network } = this.configuration;
       this.faucets[market] = new FaucetService(
         this.configuration,
-        this.txBuilderConfig.lendingPool?.[market]?.[network]
+        this.txBuilderConfig.lendingPool?.[network]?.[market]
       );
     }
     return this.faucets[market];
