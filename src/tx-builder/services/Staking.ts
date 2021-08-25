@@ -1,10 +1,6 @@
 import { constants, utils, Signature } from 'ethers';
 import IERC20ServiceInterface from '../interfaces/ERC20';
-import {
-  DEFAULT_APPROVE_AMOUNT,
-  distinctStakingAddressesBetweenTokens,
-  MAX_UINT_AMOUNT,
-} from '../config';
+import { DEFAULT_APPROVE_AMOUNT, MAX_UINT_AMOUNT } from '../config';
 import {
   IStakedToken,
   IAaveStakingHelper,
@@ -17,14 +13,17 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
-  Stake,
+  StakingNetworkConfig,
   tEthereumAddress,
   transactionType,
   tStringCurrencyUnits,
   tStringDecimalUnits,
 } from '../types';
 import { parseNumber } from '../utils/parsings';
-import { StakingValidator } from '../validators/methodValidators';
+import {
+  SignStakingValidator,
+  StakingValidator,
+} from '../validators/methodValidators';
 import {
   IsEthAddress,
   IsPositiveAmount,
@@ -42,52 +41,49 @@ export default class StakingService
 
   public readonly stakingRewardTokenContractAddress: tEthereumAddress;
 
-  readonly stakingHelperContractAddress: string;
+  readonly stakingHelperContractAddress: tEthereumAddress | undefined;
 
   readonly erc20Service: IERC20ServiceInterface;
 
-  readonly tokenStake: Stake;
+  readonly tokenStake: string;
 
-  readonly canUsePermit: boolean;
+  readonly stakingConfig: StakingNetworkConfig | undefined;
 
   constructor(
     config: Configuration,
     erc20Service: IERC20ServiceInterface,
-    tokenStake: Stake
+    tokenStake: string,
+    stakingConfig: StakingNetworkConfig | undefined
   ) {
     super(config, IStakedToken__factory);
+    this.stakingConfig = stakingConfig;
     this.tokenStake = tokenStake;
     this.erc20Service = erc20Service;
 
-    const { provider, network } = this.config;
+    const { provider } = this.config;
 
-    const {
-      TOKEN_STAKING_ADDRESS,
-      STAKING_REWARD_TOKEN_ADDRESS,
-      STAKING_HELPER_ADDRESS,
-      canUsePermit,
-    } = distinctStakingAddressesBetweenTokens[this.tokenStake][network];
+    const { TOKEN_STAKING, STAKING_REWARD_TOKEN, STAKING_HELPER } =
+      this.stakingConfig || {};
 
-    this.stakingContractAddress = TOKEN_STAKING_ADDRESS;
-    this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN_ADDRESS;
-    this.stakingHelperContractAddress = STAKING_HELPER_ADDRESS;
-    this.canUsePermit = canUsePermit;
+    this.stakingContractAddress = TOKEN_STAKING || '';
+    this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN || '';
+    this.stakingHelperContractAddress = STAKING_HELPER;
 
-    if (this.canUsePermit) {
+    if (this.stakingHelperContractAddress) {
       this.stakingHelperContract = IAaveStakingHelper__factory.connect(
-        STAKING_HELPER_ADDRESS,
+        this.stakingHelperContractAddress,
         provider
       );
     }
   }
 
-  @StakingValidator
+  @SignStakingValidator
   public async signStaking(
     @IsEthAddress() user: tEthereumAddress,
     @IsPositiveAmount() amount: tStringCurrencyUnits,
     nonce: string
   ): Promise<string> {
-    if (!this.canUsePermit) return '';
+    if (!this.stakingHelperContractAddress) return '';
 
     const { getTokenData } = this.erc20Service;
     const stakingContract: IStakedToken = this.getContractInstance(
@@ -138,7 +134,7 @@ export default class StakingService
     @IsPositiveAmount() amount: tStringCurrencyUnits,
     signature: string
   ): Promise<EthereumTransactionTypeExtended[]> {
-    if (!this.canUsePermit) return [];
+    if (!this.stakingHelperContractAddress) return [];
 
     const txs: EthereumTransactionTypeExtended[] = [];
     const { decimalsOf } = this.erc20Service;

@@ -33,6 +33,7 @@ Once the branch is merged to master a npm release will be published automaticall
 
 ```bash
 # make sure you're on latest master before doing this
+git fetch # fetch latest tags
 git checkout -b <branch>
 yarn release:prod
 git push origin <branch>

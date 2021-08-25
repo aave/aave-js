@@ -1,4 +1,3 @@
-import { commonContractAddressBetweenMarketsV2 } from '../config';
 import {
   IParaSwapLiquiditySwapAdapter__factory,
   IParaSwapLiquiditySwapAdapter,
@@ -8,6 +7,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  LendingPoolMarketConfig,
   transactionType,
 } from '../types';
 import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
@@ -37,13 +37,17 @@ export default class LiquiditySwapAdapterService
   implements LiquiditySwapAdapterInterface {
   readonly liquiditySwapAdapterAddress: string;
 
-  constructor(config: Configuration) {
-    super(config, IParaSwapLiquiditySwapAdapter__factory);
+  readonly swapCollateralConfig: LendingPoolMarketConfig | undefined;
 
-    const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
-      this.config.network
-    ];
-    this.liquiditySwapAdapterAddress = SWAP_COLLATERAL_ADAPTER;
+  constructor(
+    config: Configuration,
+    swapCollateralConfig: LendingPoolMarketConfig | undefined
+  ) {
+    super(config, IParaSwapLiquiditySwapAdapter__factory);
+    this.swapCollateralConfig = swapCollateralConfig;
+
+    this.liquiditySwapAdapterAddress =
+      this.swapCollateralConfig?.SWAP_COLLATERAL_ADAPTER || '';
   }
 
   @LiquiditySwapValidator

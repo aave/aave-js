@@ -25,6 +25,10 @@ export enum Network {
   fork = 'fork',
   mumbai = 'mumbai',
   polygon_fork = 'polygon_fork',
+  avalanche = 'avalanche',
+  fuji = 'fuji', // avalanche test network
+  arbitrum_one = 'arbitrum_one',
+  arbitrum_rinkeby = 'arbitrum_rinkeby',
 }
 
 export enum ChainId {
@@ -35,7 +39,68 @@ export enum ChainId {
   fork = 1337,
   mumbai = 80001,
   polygon_fork = 1338,
+  avalanche = 43114,
+  fuji = 43113, // avalanche test network
+  arbitrum_one = 42161,
+  arbitrum_rinkeby = 421611,
 }
+export type ConstantAddressesByNetwork = {
+  [network: string]: {
+    SYNTHETIX_PROXY_ADDRESS?: tEthereumAddress;
+  };
+};
+export type GovernanceConfig = {
+  AAVE_GOVERNANCE_V2: tEthereumAddress;
+  AAVE_GOVERNANCE_V2_EXECUTOR_SHORT: tEthereumAddress;
+  AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
+  AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
+};
+
+export type IncentivesConfig = {
+  INCENTIVES_CONTROLLER: tEthereumAddress;
+  INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
+};
+
+export type MigratorConfig = {
+  LEND_TO_AAVE_MIGRATOR: tEthereumAddress;
+};
+
+export type LendingPoolMarketConfig = {
+  LENDING_POOL: tEthereumAddress;
+  WETH_GATEWAY?: tEthereumAddress;
+  FLASH_LIQUIDATION_ADAPTER?: tEthereumAddress;
+  REPAY_WITH_COLLATERAL_ADAPTER?: tEthereumAddress;
+  SWAP_COLLATERAL_ADAPTER?: tEthereumAddress;
+  FAUCET?: tEthereumAddress;
+};
+
+export type LendingPoolConfig = {
+  [network: string]: {
+    [market: string]: LendingPoolMarketConfig;
+  };
+};
+
+export type StakingNetworkConfig = {
+  TOKEN_STAKING: tEthereumAddress;
+  STAKING_REWARD_TOKEN: tEthereumAddress;
+  STAKING_HELPER?: tEthereumAddress;
+};
+
+export type StakingConfig = {
+  [network: string]: { [stake: string]: StakingNetworkConfig };
+};
+
+export type TxBuilderConfig = {
+  governance?: {
+    [network: string]: GovernanceConfig;
+  };
+  incentives?: {
+    [network: string]: IncentivesConfig;
+  };
+  migrator?: { [network: string]: MigratorConfig };
+  lendingPool?: LendingPoolConfig;
+  staking?: StakingConfig;
+};
 
 export enum eEthereumTxType {
   ERC20_APPROVAL = 'ERC20_APPROVAL',
@@ -68,8 +133,8 @@ export enum GovernanceVote {
 }
 
 export enum Stake {
-  Aave = 'Aave',
-  Balancer = 'Balancer',
+  aave = 'aave',
+  bpt = 'bpt',
 }
 
 export type GasRecommendationType = {

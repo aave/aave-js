@@ -1,5 +1,4 @@
 import { constants } from 'ethers';
-import { commonContractAddressBetweenMarketsV2 } from '../config';
 import {
   IAaveIncentivesController,
   IAaveIncentivesController__factory,
@@ -8,6 +7,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  IncentivesConfig,
   tEthereumAddress,
   transactionType,
 } from '../types';
@@ -34,13 +34,21 @@ export default class IncentivesController
   public readonly incentivesControllerRewardTokenAddress: tEthereumAddress;
   readonly incentivesControllerAddress: string;
 
-  constructor(config: Configuration) {
+  readonly incentivesConfig: IncentivesConfig | undefined;
+
+  constructor(
+    config: Configuration,
+    incentivesConfig: IncentivesConfig | undefined
+  ) {
     super(config, IAaveIncentivesController__factory);
-    const { network } = this.config;
-    const addresses = commonContractAddressBetweenMarketsV2[network];
-    this.incentivesControllerAddress = addresses.INCENTIVES_CONTROLLER;
+    this.incentivesConfig = incentivesConfig;
+
+    const { INCENTIVES_CONTROLLER, INCENTIVES_CONTROLLER_REWARD_TOKEN } =
+      this.incentivesConfig || {};
+
+    this.incentivesControllerAddress = INCENTIVES_CONTROLLER || '';
     this.incentivesControllerRewardTokenAddress =
-      addresses.INCENTIVES_CONTROLLER_REWARD_TOKEN;
+      INCENTIVES_CONTROLLER_REWARD_TOKEN || '';
   }
 
   @IncentivesValidator

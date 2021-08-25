@@ -1,8 +1,4 @@
-import {
-  commonContractAddressBetweenMarketsV2,
-  DEFAULT_NULL_VALUE_ON_TX,
-  enabledNetworksByService,
-} from '../config';
+import { DEFAULT_NULL_VALUE_ON_TX } from '../config';
 import {
   IFaucet,
   IMinter,
@@ -14,6 +10,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  LendingPoolMarketConfig,
   transactionType,
 } from '../types';
 import { FaucetParamsType } from '../types/FaucetMethodTypes';
@@ -29,15 +26,21 @@ export default class FaucetService
 
   readonly faucetContract: IFaucet;
 
-  constructor(config: Configuration) {
+  readonly faucetConfig: LendingPoolMarketConfig | undefined;
+
+  constructor(
+    config: Configuration,
+    faucetConfig: LendingPoolMarketConfig | undefined
+  ) {
     super(config, IMinter__factory);
 
-    const { provider, network } = this.config;
+    this.faucetConfig = faucetConfig;
 
-    const { FAUCET } = commonContractAddressBetweenMarketsV2[network];
-    this.faucetAddress = FAUCET;
+    const { provider } = this.config;
 
-    if (enabledNetworksByService.faucet.indexOf(network) > -1) {
+    this.faucetAddress = this.faucetConfig?.FAUCET || '';
+
+    if (this.faucetAddress !== '') {
       this.faucetContract = IFaucet__factory.connect(
         this.faucetAddress,
         provider
