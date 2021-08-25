@@ -259,7 +259,8 @@ export function StakingValidator(
     // because this is checked at initialization and type checking of config
 
     const { TOKEN_STAKING, STAKING_REWARD_TOKEN } = this.stakingConfig || {};
-
+    console.log('TOKEN_STAKING ', TOKEN_STAKING);
+    console.log('STAKING_REWARD_TOKEN', STAKING_REWARD_TOKEN);
     // Check if addresses are valid.
     if (
       !utils.isAddress(TOKEN_STAKING) ||
@@ -296,10 +297,10 @@ export function SignStakingValidator(
 
     // Check if addresses are valid.
     if (
+      !STAKING_HELPER ||
       !utils.isAddress(TOKEN_STAKING) ||
       !utils.isAddress(STAKING_REWARD_TOKEN) ||
-      !STAKING_HELPER ||
-      !utils.isAddress(TOKEN_STAKING)
+      (STAKING_HELPER && !utils.isAddress(STAKING_HELPER))
     ) {
       console.error(`[StakingValidator] You need to pass valid addresses`);
       return [];
