@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/aave/aave-js/compare/v3.3.0...v4.0.0) (2021-08-25)
+
+
+### Features
+
+* Added new configuration to not use hardcoded addresses. WIP: ch… ([#224](https://github.com/aave/aave-js/issues/224)) ([9f6430f](https://github.com/aave/aave-js/commit/9f6430fceba59694480d1d533d17fb2875b98c49))
+
+
+### Bug Fixes
+
+* fix interface ([#227](https://github.com/aave/aave-js/issues/227)) ([9971d35](https://github.com/aave/aave-js/commit/9971d35dac06c1f2a0d2369bef3ab0f06d17ff99))
+
 ## [3.3.0](https://github.com/aave/aave-js/compare/v3.2.0...v3.3.0) (2021-08-20)
 
 
