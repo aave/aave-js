@@ -117,7 +117,6 @@ export default class TxBuilder
 
   public getLendingPool = (market: string): LendingPoolInterface => {
     const { network } = this.configuration;
-    console.log(this.txBuilderConfig.lendingPool, network, market);
     if (!this.lendingPools[market]) {
       this.lendingPools[market] = new LendingPool(
         this.configuration,
