@@ -100,8 +100,10 @@ export default class BaseTxBuilder {
   };
 
   public getStaking = (stake: string): StakingInterface => {
+    const { network } = this.configuration;
+    console.log('stake market::: ', stake);
+    console.log('network::: ', network);
     if (!this.stakings[stake]) {
-      const { network } = this.configuration;
       console.log('config staking=========>. ', this.txBuilderConfig);
       const stakingConfig = this.txBuilderConfig.staking?.[network]?.[stake];
 
