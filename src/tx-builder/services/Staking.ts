@@ -64,7 +64,7 @@ export default class StakingService
 
     const { TOKEN_STAKING, STAKING_REWARD_TOKEN, STAKING_HELPER } =
       this.stakingConfig || {};
-
+    console.log('staking service:::::::: ', this.stakingConfig);
     this.stakingContractAddress = TOKEN_STAKING || '';
     this.stakingRewardTokenContractAddress = STAKING_REWARD_TOKEN || '';
     this.stakingHelperContractAddress = STAKING_HELPER;

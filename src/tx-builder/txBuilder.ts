@@ -44,6 +44,7 @@ export default class BaseTxBuilder {
     defaultProviderKeys?: DefaultProviderKeys,
     config: TxBuilderConfig = defaultConfig
   ) {
+    console.log('general config:::: ', config);
     this.txBuilderConfig = config;
     let provider: providers.Provider;
     // TODO: this is probably not enough as we use network down the road
