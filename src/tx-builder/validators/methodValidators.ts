@@ -227,7 +227,7 @@ export function RepayWithCollateralValidator(
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
     const REPAY_WITH_COLLATERAL_ADAPTER =
-      this.swapCollateralConfig?.REPAY_WITH_COLLATERAL_ADAPTER || '';
+      this.repayWithCollateralConfig?.REPAY_WITH_COLLATERAL_ADAPTER || '';
 
     if (!utils.isAddress(REPAY_WITH_COLLATERAL_ADAPTER)) {
       console.error(
