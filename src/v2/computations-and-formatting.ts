@@ -744,11 +744,12 @@ export function calculateRewards(
   ) {
     currentReserveIndex = valueToZDBigNumber(reserveIndex);
   } else {
-    const linearReward = valueToZDBigNumber(timeDelta).multipliedBy(
+    const linearCumulatedReward = valueToZDBigNumber(timeDelta).multipliedBy(
       emissionPerSecond
     );
 
-    currentReserveIndex = linearReward
+    currentReserveIndex = linearCumulatedReward
+      .multipliedBy(pow10(precision))
       .dividedBy(totalSupply)
       .plus(reserveIndex);
   }
@@ -757,5 +758,6 @@ export function calculateRewards(
     .multipliedBy(currentReserveIndex.minus(userIndex))
     .dividedBy(pow10(precision));
 
+  console.log(normalize(reward, rewardTokenDecimals));
   return normalize(reward, rewardTokenDecimals);
 }

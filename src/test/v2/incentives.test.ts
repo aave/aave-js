@@ -514,6 +514,6 @@ describe('incentives', () => {
       snapshot.rewardInfo
     );
 
-    expect(user.totalRewards).toBe('0.161708680804975921');
+    expect(user.totalRewards).toBe('0.165234623077527118');
   });
 });
