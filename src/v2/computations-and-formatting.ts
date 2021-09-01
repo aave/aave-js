@@ -744,8 +744,11 @@ export function calculateRewards(
   ) {
     currentReserveIndex = valueToZDBigNumber(reserveIndex);
   } else {
-    currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
-      .multipliedBy(timeDelta)
+    const linearReward = valueToZDBigNumber(timeDelta).multipliedBy(
+      emissionPerSecond
+    );
+
+    currentReserveIndex = linearReward
       .dividedBy(totalSupply)
       .plus(reserveIndex);
   }
