@@ -746,7 +746,6 @@ export function calculateRewards(
   } else {
     currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
       .multipliedBy(timeDelta)
-      .multipliedBy(pow10(precision))
       .dividedBy(totalSupply)
       .plus(reserveIndex);
   }
