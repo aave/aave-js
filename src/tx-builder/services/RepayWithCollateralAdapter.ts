@@ -50,7 +50,8 @@ export default class RepayWithCollateralAdapterService
       debtRateMode,
       permit,
       useEthPath,
-    }: RepayWithCollateralType
+    }: RepayWithCollateralType,
+    txs?: EthereumTransactionTypeExtended[]
   ): EthereumTransactionTypeExtended {
     const repayWithCollateralContract: IRepayWithCollateral = this.getContractInstance(
       this.repayWithCollateralAddress
@@ -74,7 +75,7 @@ export default class RepayWithCollateralAdapterService
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
       gas: this.generateTxPriceEstimation(
-        [],
+        txs || [],
         txCallback,
         ProtocolAction.repayCollateral
       ),

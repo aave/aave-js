@@ -69,7 +69,8 @@ export default class LiquiditySwapAdapterService
       augustus,
       swapCallData,
       swapAll,
-    }: SwapAndDepositMethodType
+    }: SwapAndDepositMethodType,
+    txs?: EthereumTransactionTypeExtended[]
   ): EthereumTransactionTypeExtended {
     const liquiditySwapContract = this.getContractInstance(
       this.liquiditySwapAdapterAddress
@@ -96,7 +97,7 @@ export default class LiquiditySwapAdapterService
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
       gas: this.generateTxPriceEstimation(
-        [],
+        txs || [],
         txCallback,
         ProtocolAction.swapCollateral
       ),
