@@ -8,6 +8,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   LendingPoolMarketConfig,
+  ProtocolAction,
   transactionType,
 } from '../types';
 import { RepayWithCollateralType } from '../types/RepayWithCollateralMethodTypes';
@@ -72,7 +73,11 @@ export default class RepayWithCollateralAdapterService
     return {
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
-      gas: this.generateTxPriceEstimation([], txCallback),
+      gas: this.generateTxPriceEstimation(
+        [],
+        txCallback,
+        ProtocolAction.repayCollateral
+      ),
     };
   }
 }
