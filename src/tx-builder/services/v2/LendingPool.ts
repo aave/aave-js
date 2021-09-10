@@ -715,7 +715,14 @@ export default class LendingPool
       }
     );
 
-    txs.push(swapAndDepositTx);
+    txs.push({
+      ...swapAndDepositTx,
+      gas: this.generateTxPriceEstimation(
+        txs,
+        swapAndDepositTx.tx,
+        ProtocolAction.swapCollateral
+      ),
+    });
     return txs;
   }
 
