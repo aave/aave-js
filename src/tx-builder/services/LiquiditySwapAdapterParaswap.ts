@@ -8,6 +8,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   LendingPoolMarketConfig,
+  ProtocolAction,
   transactionType,
 } from '../types';
 import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
@@ -94,7 +95,11 @@ export default class LiquiditySwapAdapterService
     return {
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
-      gas: this.generateTxPriceEstimation([], txCallback),
+      gas: this.generateTxPriceEstimation(
+        [],
+        txCallback,
+        ProtocolAction.swapCollateral
+      ),
     };
   }
 }
