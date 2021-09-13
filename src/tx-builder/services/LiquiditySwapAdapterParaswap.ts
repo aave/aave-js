@@ -8,6 +8,7 @@ import {
   eEthereumTxType,
   EthereumTransactionTypeExtended,
   LendingPoolMarketConfig,
+  ProtocolAction,
   transactionType,
 } from '../types';
 import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
@@ -68,7 +69,8 @@ export default class LiquiditySwapAdapterService
       augustus,
       swapCallData,
       swapAll,
-    }: SwapAndDepositMethodType
+    }: SwapAndDepositMethodType,
+    txs?: EthereumTransactionTypeExtended[]
   ): EthereumTransactionTypeExtended {
     const liquiditySwapContract = this.getContractInstance(
       this.liquiditySwapAdapterAddress
@@ -94,7 +96,11 @@ export default class LiquiditySwapAdapterService
     return {
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
-      gas: this.generateTxPriceEstimation([], txCallback),
+      gas: this.generateTxPriceEstimation(
+        txs || [],
+        txCallback,
+        ProtocolAction.swapCollateral
+      ),
     };
   }
 }

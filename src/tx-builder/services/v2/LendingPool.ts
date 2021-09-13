@@ -712,7 +712,8 @@ export default class LendingPool
         swapCallData,
         augustus,
         permitParams,
-      }
+      },
+      txs
     );
 
     txs.push(swapAndDepositTx);
@@ -862,7 +863,8 @@ export default class LendingPool
         debtRateMode: numericInterestRate,
         permit: permitParams,
         useEthPath,
-      }
+      },
+      txs
     );
 
     txs.push(swapAndRepayTx);
