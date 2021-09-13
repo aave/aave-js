@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.2](https://github.com/aave/aave-js/compare/v4.0.1...v4.0.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* set recommendation for swap/repaywithcollateral ([#247](https://github.com/aave/aave-js/issues/247)) ([a959500](https://github.com/aave/aave-js/commit/a9595007c30e57562234c647b0d9b4bab9bb0d14))
+
 ### [4.0.1](https://github.com/aave/aave-js/compare/v4.0.0...v4.0.1) (2021-08-25)
 
 
