@@ -51,8 +51,8 @@ export const gasLimitRecommendations: GasRecommendationType = {
     recommended: '640000',
   },
   [ProtocolAction.swapCollateral]: {
-    limit: '700000',
-    recommended: '700000',
+    limit: '1000000',
+    recommended: '1000000',
   },
   [ProtocolAction.repayCollateral]: {
     limit: '700000',
