@@ -8,6 +8,7 @@ import {
   pow10,
   normalizeBN,
 } from '../helpers/bignumber';
+import { wadMul, wadDiv } from '../helpers/ray-math';
 import {
   calculateAvailableBorrowsETH,
   calculateHealthFactorFromBalances,
@@ -659,15 +660,15 @@ export function calculateReserveDebtSuppliesRaw(
   reserve: ReserveSupplyData,
   currentTimestamp: number
 ) {
-  const totalVariableDebt = rayMul(
-    rayMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
+  const totalVariableDebt = wadMul(
+    wadMul(reserve.totalScaledVariableDebt, reserve.variableBorrowIndex),
     calculateCompoundedInterest(
       reserve.variableBorrowRate,
       currentTimestamp,
       reserve.lastUpdateTimestamp
     )
   );
-  const totalStableDebt = rayMul(
+  const totalStableDebt = wadMul(
     reserve.totalPrincipalStableDebt,
     calculateCompoundedInterest(
       reserve.averageStableRate,
@@ -737,23 +738,77 @@ export function calculateRewards(
 
   const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
 
+  console.log(`
+    principalUserBalance:: ${principalUserBalance}
+    reserveIndex:: ${reserveIndex}
+    userIndex:: ${userIndex}
+    precision:: ${precision}
+    rewardTokenDecimals:: ${rewardTokenDecimals}
+    reserveIndexTimestamp:: ${reserveIndexTimestamp}
+    emissionPerSecond:: ${emissionPerSecond}
+    totalSupply:: ${totalSupply}
+    currentTimestamp:: ${currentTimestamp}
+    emissionEndTimestamp:: ${emissionEndTimestamp}
+    timeDelta:: ${timeDelta} 
+  `);
+
   let currentReserveIndex;
+  let currentReserveIndex1;
   if (
     reserveIndexTimestamp == +currentTimestamp ||
     reserveIndexTimestamp >= emissionEndTimestamp
   ) {
     currentReserveIndex = valueToZDBigNumber(reserveIndex);
+    currentReserveIndex1 = valueToZDBigNumber(reserveIndex);
   } else {
+    console.log('totalsupply1:: ', valueToBigNumber(totalSupply).toString());
+    console.log('totalsupply2:: ', valueToZDBigNumber(totalSupply).toString());
+
     currentReserveIndex = valueToZDBigNumber(emissionPerSecond)
       .multipliedBy(timeDelta)
       .multipliedBy(pow10(precision))
       .dividedBy(totalSupply)
       .plus(reserveIndex);
+
+    currentReserveIndex1 = wadDiv(
+      wadMul(
+        wadMul(
+          valueToZDBigNumber(emissionPerSecond),
+          valueToBigNumber(timeDelta)
+        ),
+        pow10(precision)
+      ),
+      totalSupply
+    ).plus(reserveIndex);
+
+    const currentReserveIndex2 = valueToZDBigNumber(
+      valueToZDBigNumber(
+        valueToZDBigNumber(
+          valueToZDBigNumber(emissionPerSecond).multipliedBy(timeDelta)
+        )
+      )
+        .multipliedBy(pow10(precision))
+        .dividedBy(totalSupply)
+    ).plus(reserveIndex);
+
+    console.log('index 0:: ', currentReserveIndex.toNumber());
+    console.log('index 1:: ', currentReserveIndex1.toNumber());
+    console.log('index 2:: ', currentReserveIndex2.toNumber());
   }
 
   const reward = valueToZDBigNumber(principalUserBalance)
     .multipliedBy(currentReserveIndex.minus(userIndex))
     .dividedBy(pow10(precision));
 
-  return normalize(reward, rewardTokenDecimals);
+  const reward1 = wadDiv(
+    wadMul(
+      valueToZDBigNumber(principalUserBalance),
+      currentReserveIndex1.minus(userIndex)
+    ),
+    pow10(precision)
+  );
+  console.log('reward 0:: ', normalize(reward, rewardTokenDecimals));
+  console.log('reward 1:: ', normalize(reward1, rewardTokenDecimals));
+
+  return normalize(reward1, rewardTokenDecimals);
 }
