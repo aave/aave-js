@@ -163,7 +163,11 @@ export default class LendingPool
         referralCode,
       });
     }
-    const { isApproved, approve, decimalsOf }: IERC20ServiceInterface =
+    const {
+      isApproved,
+      approve,
+      decimalsOf,
+    }: IERC20ServiceInterface = this.erc20Service;
       this.erc20Service;
     const txs: EthereumTransactionTypeExtended[] = [];
     const reserveDecimals: number = await decimalsOf(reserve);
@@ -869,6 +873,7 @@ export default class LendingPool
       },
       txs
     );
+
     txs.push(swapAndRepayTx);
 
     return txs;
