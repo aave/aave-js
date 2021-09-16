@@ -87,7 +87,8 @@ const buildParaSwapLiquiditySwapParams = (
 
 export default class LendingPool
   extends BaseService<ILendingPool>
-  implements LendingPoolInterface {
+  implements LendingPoolInterface
+{
   readonly market: string;
 
   readonly erc20Service: IERC20ServiceInterface;
@@ -119,13 +120,9 @@ export default class LendingPool
     wethGatewayService: WETHGatewayInterface,
     liquiditySwapAdapterService: LiquiditySwapAdapterInterface,
     repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface,
-<<<<<<< HEAD
     baseDebtTokenService: BaseDebtTokenInterface,
-    market: Market
-=======
     market: string,
     lendingPoolConfig: LendingPoolMarketConfig | undefined
->>>>>>> master
   ) {
     super(config, ILendingPool__factory);
     this.erc20Service = erc20Service;
@@ -167,11 +164,8 @@ export default class LendingPool
         referralCode,
       });
     }
-    const {
-      isApproved,
-      approve,
-      decimalsOf,
-    }: IERC20ServiceInterface = this.erc20Service;
+    const { isApproved, approve, decimalsOf }: IERC20ServiceInterface =
+      this.erc20Service;
     const txs: EthereumTransactionTypeExtended[] = [];
     const reserveDecimals: number = await decimalsOf(reserve);
     const convertedAmount: tStringDecimalUnits = parseNumber(
@@ -179,11 +173,12 @@ export default class LendingPool
       reserveDecimals
     );
 
-    const fundsAvailable: boolean = await this.synthetixService.synthetixValidation(
-      user,
-      reserve,
-      convertedAmount
-    );
+    const fundsAvailable: boolean =
+      await this.synthetixService.synthetixValidation(
+        user,
+        reserve,
+        convertedAmount
+      );
     if (!fundsAvailable) {
       throw new Error('Not enough funds to execute operation');
     }
@@ -377,11 +372,8 @@ export default class LendingPool
       });
     }
     const txs: EthereumTransactionTypeExtended[] = [];
-    const {
-      isApproved,
-      approve,
-      decimalsOf,
-    }: IERC20ServiceInterface = this.erc20Service;
+    const { isApproved, approve, decimalsOf }: IERC20ServiceInterface =
+      this.erc20Service;
 
     const lendingPoolContract = this.getContractInstance(
       this.lendingPoolAddress
@@ -396,11 +388,12 @@ export default class LendingPool
         : parseNumber(amount, decimals);
 
     if (amount !== '-1') {
-      const fundsAvailable: boolean = await this.synthetixService.synthetixValidation(
-        user,
-        reserve,
-        convertedAmount
-      );
+      const fundsAvailable: boolean =
+        await this.synthetixService.synthetixValidation(
+          user,
+          reserve,
+          convertedAmount
+        );
       if (!fundsAvailable) {
         throw new Error('Not enough funds to execute operation');
       }
@@ -523,11 +516,8 @@ export default class LendingPool
     }: LPLiquidationCall
   ): Promise<EthereumTransactionTypeExtended[]> {
     const txs: EthereumTransactionTypeExtended[] = [];
-    const {
-      isApproved,
-      approve,
-      getTokenData,
-    }: IERC20ServiceInterface = this.erc20Service;
+    const { isApproved, approve, getTokenData }: IERC20ServiceInterface =
+      this.erc20Service;
 
     const approved = await isApproved(
       debtReserve,
@@ -631,12 +621,13 @@ export default class LendingPool
     );
 
     if (!approved) {
-      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
-        user,
-        fromAToken,
-        this.swapCollateralAddress,
-        constants.MaxUint256.toString()
-      );
+      const approveTx: EthereumTransactionTypeExtended =
+        this.erc20Service.approve(
+          user,
+          fromAToken,
+          this.swapCollateralAddress,
+          constants.MaxUint256.toString()
+        );
 
       txs.push(approveTx);
     }
@@ -682,8 +673,8 @@ export default class LendingPool
         tokenDecimals
       );
 
-      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
-        {
+      const txCallback: () => Promise<transactionType> =
+        this.generateTxCallback({
           rawTxMethod: () =>
             lendingPoolContract.populateTransaction.flashLoan(
               this.swapCollateralAddress,
@@ -695,8 +686,7 @@ export default class LendingPool
               referralCode || '0'
             ),
           from: user,
-        }
-      );
+        });
 
       txs.push({
         tx: txCallback,
@@ -711,20 +701,21 @@ export default class LendingPool
     }
 
     // Direct call to swap and deposit
-    const swapAndDepositTx: EthereumTransactionTypeExtended = await this.liquiditySwapAdapterService.swapAndDeposit(
-      {
-        user,
-        assetToSwapFrom: fromAsset,
-        assetToSwapTo: toAsset,
-        amountToSwap: convertedAmount,
-        minAmountToReceive: amountSlippageConverted,
-        swapAll,
-        swapCallData,
-        augustus,
-        permitParams,
-      },
-      txs
-    );
+    const swapAndDepositTx: EthereumTransactionTypeExtended =
+      await this.liquiditySwapAdapterService.swapAndDeposit(
+        {
+          user,
+          assetToSwapFrom: fromAsset,
+          assetToSwapTo: toAsset,
+          amountToSwap: convertedAmount,
+          minAmountToReceive: amountSlippageConverted,
+          swapAll,
+          swapCallData,
+          augustus,
+          permitParams,
+        },
+        txs
+      );
 
     txs.push(swapAndDepositTx);
     return txs;
@@ -773,12 +764,13 @@ export default class LendingPool
     );
 
     if (!approved) {
-      const approveTx: EthereumTransactionTypeExtended = this.erc20Service.approve(
-        user,
-        fromAToken,
-        this.repayWithCollateralAddress,
-        constants.MaxUint256.toString()
-      );
+      const approveTx: EthereumTransactionTypeExtended =
+        this.erc20Service.approve(
+          user,
+          fromAToken,
+          this.repayWithCollateralAddress,
+          constants.MaxUint256.toString()
+        );
 
       txs.push(approveTx);
     }
@@ -834,8 +826,8 @@ export default class LendingPool
         this.lendingPoolAddress
       );
 
-      const txCallback: () => Promise<transactionType> = this.generateTxCallback(
-        {
+      const txCallback: () => Promise<transactionType> =
+        this.generateTxCallback({
           rawTxMethod: () =>
             lendingPoolContract.populateTransaction.flashLoan(
               this.repayWithCollateralAddress,
@@ -847,8 +839,7 @@ export default class LendingPool
               referralCode || '0'
             ),
           from: user,
-        }
-      );
+        });
 
       txs.push({
         tx: txCallback,
@@ -863,19 +854,20 @@ export default class LendingPool
       return txs;
     }
 
-    const swapAndRepayTx: EthereumTransactionTypeExtended = this.repayWithCollateralAdapterService.swapAndRepay(
-      {
-        user,
-        collateralAsset: fromAsset,
-        debtAsset: assetToRepay,
-        collateralAmount: convertedRepayWithAmount,
-        debtRepayAmount: convertedRepayAmount,
-        debtRateMode: numericInterestRate,
-        permit: permitParams,
-        useEthPath,
-      },
-      txs
-    );
+    const swapAndRepayTx: EthereumTransactionTypeExtended =
+      this.repayWithCollateralAdapterService.swapAndRepay(
+        {
+          user,
+          collateralAsset: fromAsset,
+          debtAsset: assetToRepay,
+          collateralAmount: convertedRepayWithAmount,
+          debtRepayAmount: convertedRepayAmount,
+          debtRateMode: numericInterestRate,
+          permit: permitParams,
+          useEthPath,
+        },
+        txs
+      );
 
     txs.push(swapAndRepayTx);
 
