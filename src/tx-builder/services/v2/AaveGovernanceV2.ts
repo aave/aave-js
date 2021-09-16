@@ -1,6 +1,5 @@
 import { Signature, utils } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
-import { aaveGovernanceV2Addresses } from '../../config';
 import {
   IGovernanceStrategy,
   IGovernanceStrategy__factory,
@@ -15,6 +14,7 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  GovernanceConfig,
   tEthereumAddress,
   transactionType,
 } from '../../types';
@@ -117,21 +117,27 @@ export default class AaveGovernanceV2Service
 
   readonly executors: tEthereumAddress[] = [];
 
-  constructor(config: Configuration) {
-    super(config, IAaveGovernanceV2__factory);
+  readonly governanceConfig: GovernanceConfig | undefined;
 
-    const { network } = this.config;
+  constructor(
+    config: Configuration,
+    governanceConfig: GovernanceConfig | undefined
+  ) {
+    super(config, IAaveGovernanceV2__factory);
+    this.governanceConfig = governanceConfig;
+
     const {
       AAVE_GOVERNANCE_V2,
       AAVE_GOVERNANCE_V2_HELPER,
       AAVE_GOVERNANCE_V2_EXECUTOR_SHORT,
       AAVE_GOVERNANCE_V2_EXECUTOR_LONG,
-    } = aaveGovernanceV2Addresses[network];
+    } = this.governanceConfig || {};
 
-    this.aaveGovernanceV2Address = AAVE_GOVERNANCE_V2;
-    this.aaveGovernanceV2HelperAddress = AAVE_GOVERNANCE_V2_HELPER;
-    this.executors[ExecutorType.Short] = AAVE_GOVERNANCE_V2_EXECUTOR_SHORT;
-    this.executors[ExecutorType.Long] = AAVE_GOVERNANCE_V2_EXECUTOR_LONG;
+    this.aaveGovernanceV2Address = AAVE_GOVERNANCE_V2 || '';
+    this.aaveGovernanceV2HelperAddress = AAVE_GOVERNANCE_V2_HELPER || '';
+    this.executors[ExecutorType.Short] =
+      AAVE_GOVERNANCE_V2_EXECUTOR_SHORT || '';
+    this.executors[ExecutorType.Long] = AAVE_GOVERNANCE_V2_EXECUTOR_LONG || '';
   }
 
   @GovValidator

@@ -3,6 +3,7 @@ import { RepayWithCollateralType } from '../types/RepayWithCollateralMethodTypes
 
 export default interface RepayWithCollateralAdapterInterface {
   swapAndRepay: (
-    args: RepayWithCollateralType
+    args: RepayWithCollateralType,
+    txs: EthereumTransactionTypeExtended[]
   ) => EthereumTransactionTypeExtended;
 }

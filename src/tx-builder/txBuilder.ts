@@ -14,11 +14,12 @@ import {
   Configuration,
   DefaultProviderKeys,
   Network,
-  Stake,
+  TxBuilderConfig,
 } from './types';
 import IncentivesController, {
   IncentivesControllerInterface,
 } from './services/IncentivesController';
+import { defaultConfig } from './config/defaultConfig';
 
 export default class BaseTxBuilder {
   readonly configuration: Configuration;
@@ -29,26 +30,22 @@ export default class BaseTxBuilder {
 
   public ltaMigratorService: LTAMigratorInterface;
 
-  public faucetService: FaucetInterface;
-
   public incentiveService: IncentivesControllerInterface;
 
   readonly stakings: { [stake: string]: StakingInterface };
 
+  readonly faucets: { [market: string]: FaucetInterface };
+
+  readonly txBuilderConfig: TxBuilderConfig;
+
   constructor(
     network: Network = Network.mainnet,
-    injectedProvider?:
-      | providers.ExternalProvider
-      | providers.Web3Provider
-      | string
-      | undefined,
-    defaultProviderKeys?: DefaultProviderKeys
+    injectedProvider?: providers.Provider | string | undefined,
+    defaultProviderKeys?: DefaultProviderKeys,
+    config: TxBuilderConfig = defaultConfig
   ) {
-    let provider:
-      | providers.JsonRpcProvider
-      | providers.BaseProvider
-      | providers.Web3Provider;
-
+    this.txBuilderConfig = config;
+    let provider: providers.Provider;
     // TODO: this is probably not enough as we use network down the road
     const chainId = ChainId[network];
 
@@ -63,8 +60,8 @@ export default class BaseTxBuilder {
         );
       }
     } else if (typeof injectedProvider === 'string') {
-      provider = new providers.JsonRpcProvider(injectedProvider, chainId);
-    } else if (injectedProvider instanceof providers.Web3Provider) {
+      provider = new providers.StaticJsonRpcProvider(injectedProvider, chainId);
+    } else if (injectedProvider instanceof providers.Provider) {
       provider = injectedProvider;
     } else {
       provider = new providers.Web3Provider(injectedProvider, chainId);
@@ -74,26 +71,45 @@ export default class BaseTxBuilder {
 
     this.erc20Service = new ERC20Service(this.configuration);
     this.synthetixService = new SynthetixService(this.configuration);
+
     this.ltaMigratorService = new LTAMigratorService(
       this.configuration,
-      this.erc20Service
+      this.erc20Service,
+      this.txBuilderConfig.migrator?.[network]
     );
-    this.faucetService = new FaucetService(this.configuration);
-    this.incentiveService = new IncentivesController(this.configuration);
+
+    this.incentiveService = new IncentivesController(
+      this.configuration,
+      this.txBuilderConfig.incentives?.[network]
+    );
 
     this.stakings = {};
+    this.faucets = {};
   }
 
-  public getStaking = (stake?: Stake): StakingInterface => {
-    const stakeToken = stake || Stake.Aave;
-    if (!this.stakings[stakeToken]) {
-      this.stakings[stakeToken] = new StakingService(
+  public getFaucet = (market: string): FaucetInterface => {
+    if (!this.faucets[market]) {
+      const { network } = this.configuration;
+      this.faucets[market] = new FaucetService(
         this.configuration,
-        this.erc20Service,
-        stakeToken
+        this.txBuilderConfig.lendingPool?.[network]?.[market]
       );
     }
+    return this.faucets[market];
+  };
 
-    return this.stakings[stakeToken];
+  public getStaking = (stake: string): StakingInterface => {
+    if (!this.stakings[stake]) {
+      const { network } = this.configuration;
+      const stakingConfig = this.txBuilderConfig.staking?.[network]?.[stake];
+
+      this.stakings[stake] = new StakingService(
+        this.configuration,
+        this.erc20Service,
+        stake,
+        stakingConfig
+      );
+    }
+    return this.stakings[stake];
   };
 }

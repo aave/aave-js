@@ -3,6 +3,7 @@ import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapM
 
 export default interface LiquiditySwapAdapterInterface {
   swapAndDeposit: (
-    args: SwapAndDepositMethodType
+    args: SwapAndDepositMethodType,
+    txs?: EthereumTransactionTypeExtended[]
   ) => EthereumTransactionTypeExtended;
 }

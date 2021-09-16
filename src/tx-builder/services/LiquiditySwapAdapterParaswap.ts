@@ -1,4 +1,3 @@
-import { commonContractAddressBetweenMarketsV2 } from '../config';
 import {
   IParaSwapLiquiditySwapAdapter__factory,
   IParaSwapLiquiditySwapAdapter,
@@ -8,6 +7,8 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
+  LendingPoolMarketConfig,
+  ProtocolAction,
   transactionType,
 } from '../types';
 import { SwapAndDepositMethodType } from '../types/LiquiditySwapAdapterParaswapMethodTypes';
@@ -37,13 +38,17 @@ export default class LiquiditySwapAdapterService
   implements LiquiditySwapAdapterInterface {
   readonly liquiditySwapAdapterAddress: string;
 
-  constructor(config: Configuration) {
-    super(config, IParaSwapLiquiditySwapAdapter__factory);
+  readonly swapCollateralConfig: LendingPoolMarketConfig | undefined;
 
-    const { SWAP_COLLATERAL_ADAPTER } = commonContractAddressBetweenMarketsV2[
-      this.config.network
-    ];
-    this.liquiditySwapAdapterAddress = SWAP_COLLATERAL_ADAPTER;
+  constructor(
+    config: Configuration,
+    swapCollateralConfig: LendingPoolMarketConfig | undefined
+  ) {
+    super(config, IParaSwapLiquiditySwapAdapter__factory);
+    this.swapCollateralConfig = swapCollateralConfig;
+
+    this.liquiditySwapAdapterAddress =
+      this.swapCollateralConfig?.SWAP_COLLATERAL_ADAPTER || '';
   }
 
   @LiquiditySwapValidator
@@ -64,7 +69,8 @@ export default class LiquiditySwapAdapterService
       augustus,
       swapCallData,
       swapAll,
-    }: SwapAndDepositMethodType
+    }: SwapAndDepositMethodType,
+    txs?: EthereumTransactionTypeExtended[]
   ): EthereumTransactionTypeExtended {
     const liquiditySwapContract = this.getContractInstance(
       this.liquiditySwapAdapterAddress
@@ -90,7 +96,11 @@ export default class LiquiditySwapAdapterService
     return {
       tx: txCallback,
       txType: eEthereumTxType.DLP_ACTION,
-      gas: this.generateTxPriceEstimation([], txCallback),
+      gas: this.generateTxPriceEstimation(
+        txs || [],
+        txCallback,
+        ProtocolAction.swapCollateral
+      ),
     };
   }
 }

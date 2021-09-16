@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.2](https://github.com/aave/aave-js/compare/v4.0.1...v4.0.2) (2021-09-13)
+
+
+### Bug Fixes
+
+* set recommendation for swap/repaywithcollateral ([#247](https://github.com/aave/aave-js/issues/247)) ([a959500](https://github.com/aave/aave-js/commit/a9595007c30e57562234c647b0d9b4bab9bb0d14))
+
+### [4.0.1](https://github.com/aave/aave-js/compare/v4.0.0...v4.0.1) (2021-08-25)
+
+
+### Bug Fixes
+
+* remove log ([#230](https://github.com/aave/aave-js/issues/230)) ([45a3f9b](https://github.com/aave/aave-js/commit/45a3f9bd27a8f52735eedd06f9afad25b55643a4))
+
+## [4.0.0](https://github.com/aave/aave-js/compare/v3.3.0...v4.0.0) (2021-08-25)
+
+
+### Features
+
+* Added new configuration to not use hardcoded addresses. WIP: ch… ([#224](https://github.com/aave/aave-js/issues/224)) ([9f6430f](https://github.com/aave/aave-js/commit/9f6430fceba59694480d1d533d17fb2875b98c49))
+
+
+### Bug Fixes
+
+* fix interface ([#227](https://github.com/aave/aave-js/issues/227)) ([9971d35](https://github.com/aave/aave-js/commit/9971d35dac06c1f2a0d2369bef3ab0f06d17ff99))
+
+## [3.3.0](https://github.com/aave/aave-js/compare/v3.2.0...v3.3.0) (2021-08-20)
+
+
+### Features
+
+* added mumbai faucet ([#223](https://github.com/aave/aave-js/issues/223)) ([9296571](https://github.com/aave/aave-js/commit/929657191d1cb6dcfa370c961327fd106756392b))
+
+
+### Bug Fixes
+
+* update provider typing ([#225](https://github.com/aave/aave-js/issues/225)) ([9cee2ad](https://github.com/aave/aave-js/commit/9cee2ada3e8e62ee2e1b98ed8423499597593e92))
+
+## [3.2.0](https://github.com/aave/aave-js/compare/v3.1.0...v3.2.0) (2021-07-27)
+
+
+### Features
+
+* add swap adapter on polygon ([#208](https://github.com/aave/aave-js/issues/208)) ([66cff72](https://github.com/aave/aave-js/commit/66cff729299f11e721538488d987ff377eb0b616))
+
+
+### Bug Fixes
+
+* drop fee deduction as paraswap needs exact amount ([#196](https://github.com/aave/aave-js/issues/196)) ([aad2d41](https://github.com/aave/aave-js/commit/aad2d41e323e2ff429001fcc2baace738865f012))
+
 ## [3.1.0](https://github.com/aave/aave-js/compare/v3.0.0...v3.1.0) (2021-06-21)
 
 
