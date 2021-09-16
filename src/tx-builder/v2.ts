@@ -19,8 +19,7 @@ import GovernanceDelegationTokenService from './services/v2/GovernanceDelegation
 
 export default class TxBuilder
   extends BaseTxBuilder
-  implements TxBuilderInterface
-{
+  implements TxBuilderInterface {
   readonly lendingPools: {
     [market: string]: LendingPoolInterface;
   };
@@ -65,8 +64,9 @@ export default class TxBuilder
       this.txBuilderConfig.governance?.[network]
     );
 
-    this.governanceDelegationTokenService =
-      new GovernanceDelegationTokenService(this.configuration);
+    this.governanceDelegationTokenService = new GovernanceDelegationTokenService(
+      this.configuration
+    );
   }
 
   public getRepayWithCollateralAdapter = (
@@ -75,11 +75,12 @@ export default class TxBuilder
     const { network } = this.configuration;
 
     if (!this.repayWithCollateralAdapters[market]) {
-      this.repayWithCollateralAdapters[market] =
-        new RepayWithCollateralAdapterService(
-          this.configuration,
-          this.txBuilderConfig.lendingPool?.[network]?.[market]
-        );
+      this.repayWithCollateralAdapters[
+        market
+      ] = new RepayWithCollateralAdapterService(
+        this.configuration,
+        this.txBuilderConfig.lendingPool?.[network]?.[market]
+      );
     }
 
     return this.repayWithCollateralAdapters[market];
