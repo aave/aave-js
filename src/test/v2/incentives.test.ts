@@ -51,7 +51,8 @@ describe('calculateUserReserveIncentives', () => {
     },
   };*/
   const reserveData = {
-    id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
+    id: 
+      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
     underlyingAsset: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
     symbol: 'aWETH',
     decimals: 18,
@@ -108,7 +109,8 @@ describe('calculateUserReserveIncentives', () => {
       vTokenincentivesUserIndex: '24934844000963410',
       sTokenincentivesUserIndex: '0',
       reserve: {
-        id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
+        id: 
+          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc20xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
         symbol: 'ETH',
         decimals: 18,
         liquidityRate: '222438954027153387451224',
