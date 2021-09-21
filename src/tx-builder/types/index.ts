@@ -26,6 +26,7 @@ export enum Network {
   mumbai = 'mumbai',
   polygon_fork = 'polygon_fork',
   avalanche = 'avalanche',
+  avalanche_fork = 'avalanche_fork',
   fuji = 'fuji', // avalanche test network
   arbitrum_one = 'arbitrum_one',
   arbitrum_rinkeby = 'arbitrum_rinkeby',
@@ -40,6 +41,7 @@ export enum ChainId {
   mumbai = 80001,
   polygon_fork = 1338,
   avalanche = 43114,
+  avalanche_fork = 1337,
   fuji = 43113, // avalanche test network
   arbitrum_one = 42161,
   arbitrum_rinkeby = 421611,
