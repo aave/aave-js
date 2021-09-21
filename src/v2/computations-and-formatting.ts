@@ -18,7 +18,7 @@ import {
   calculateCompoundedInterest,
   getLinearBalance,
 } from '../helpers/pool-math';
-import { rayMul } from '../helpers/ray-math';
+import { rayDiv, rayMul } from '../helpers/ray-math';
 import {
   ComputedUserReserve,
   ReserveData,
@@ -148,14 +148,14 @@ export function computeUserReserveData(
 
   const aTokenRewards = totalLiquidity.gt(0)
     ? calculateRewards(
-        underlyingBalance,
+        userReserve.scaledATokenBalance,
         poolReserve.aTokenIncentivesIndex,
         userReserve.aTokenincentivesUserIndex,
         rewardsInfo.incentivePrecision,
         rewardsInfo.rewardTokenDecimals,
         poolReserve.aIncentivesLastUpdateTimestamp,
         poolReserve.aEmissionPerSecond,
-        totalLiquidity,
+        rayDiv(totalLiquidity, poolReserve.liquidityIndex),
         currentTimestamp,
         rewardsInfo.emissionEndTimestamp
       )
@@ -170,14 +170,14 @@ export function computeUserReserveData(
 
   const vTokenRewards = totalVariableDebt.gt(0)
     ? calculateRewards(
-        variableBorrows,
+        userReserve.scaledVariableDebt,
         poolReserve.vTokenIncentivesIndex,
         userReserve.vTokenincentivesUserIndex,
         rewardsInfo.incentivePrecision,
         rewardsInfo.rewardTokenDecimals,
         poolReserve.vIncentivesLastUpdateTimestamp,
         poolReserve.vEmissionPerSecond,
-        totalVariableDebt,
+        new BigNumber(poolReserve.totalScaledVariableDebt),
         currentTimestamp,
         rewardsInfo.emissionEndTimestamp
       )
@@ -191,14 +191,14 @@ export function computeUserReserveData(
   );
   const sTokenRewards = totalStableDebt.gt(0)
     ? calculateRewards(
-        stableBorrows,
+        userReserve.principalStableDebt,
         poolReserve.sTokenIncentivesIndex,
         userReserve.sTokenincentivesUserIndex,
         rewardsInfo.incentivePrecision,
         rewardsInfo.rewardTokenDecimals,
         poolReserve.sIncentivesLastUpdateTimestamp,
         poolReserve.sEmissionPerSecond,
-        totalStableDebt,
+        new BigNumber(poolReserve.totalPrincipalStableDebt),
         currentTimestamp,
         rewardsInfo.emissionEndTimestamp
       )
