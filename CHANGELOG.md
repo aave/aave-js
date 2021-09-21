@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/aave/aave-js/compare/v4.0.2...v4.1.0) (2021-09-21)
+
+
+### Features
+
+* added avalanche fork network and chain id ([#253](https://github.com/aave/aave-js/issues/253)) ([58feb26](https://github.com/aave/aave-js/commit/58feb26dbbc81e410738a962342d8cab5376b660))
+
+
+### Bug Fixes
+
+* incentive calculations ([#251](https://github.com/aave/aave-js/issues/251)) ([6a5ddd6](https://github.com/aave/aave-js/commit/6a5ddd6f8526bac6667096b9581e5209031987dd))
+
 ### [4.0.2](https://github.com/aave/aave-js/compare/v4.0.1...v4.0.2) (2021-09-13)
 
 
