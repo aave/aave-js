@@ -60,7 +60,7 @@
   "devDependencies": {
     "@typechain/ethers-v5": "^4.0.0",
     "@types/bs58": "^4.0.1",
-    "@types/jest": "^26.0.14",
+    "@types/jest": "^27.0.2",
     "@types/node": "^12.7.5",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
