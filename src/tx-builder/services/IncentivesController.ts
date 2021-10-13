@@ -7,7 +7,6 @@ import {
   Configuration,
   eEthereumTxType,
   EthereumTransactionTypeExtended,
-  IncentivesConfig,
   tEthereumAddress,
   transactionType,
 } from '../types';
@@ -34,21 +33,9 @@ export default class IncentivesController
   public readonly incentivesControllerRewardTokenAddress: tEthereumAddress;
   readonly incentivesControllerAddress: string;
 
-  readonly incentivesConfig: IncentivesConfig | undefined;
-
-  constructor(
-    config: Configuration,
-    incentivesConfig: IncentivesConfig | undefined
-  ) {
+  constructor(config: Configuration, incentivesControllerAddress: string) {
     super(config, IAaveIncentivesController__factory);
-    this.incentivesConfig = incentivesConfig;
-
-    const { INCENTIVES_CONTROLLER, INCENTIVES_CONTROLLER_REWARD_TOKEN } =
-      this.incentivesConfig || {};
-
-    this.incentivesControllerAddress = INCENTIVES_CONTROLLER || '';
-    this.incentivesControllerRewardTokenAddress =
-      INCENTIVES_CONTROLLER_REWARD_TOKEN || '';
+    this.incentivesControllerAddress = incentivesControllerAddress;
   }
 
   @IncentivesValidator

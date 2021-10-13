@@ -58,11 +58,6 @@ export type GovernanceConfig = {
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
 };
 
-export type IncentivesConfig = {
-  INCENTIVES_CONTROLLER: tEthereumAddress;
-  INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
-};
-
 export type MigratorConfig = {
   LEND_TO_AAVE_MIGRATOR: tEthereumAddress;
 };
@@ -95,9 +90,6 @@ export type StakingConfig = {
 export type TxBuilderConfig = {
   governance?: {
     [network: string]: GovernanceConfig;
-  };
-  incentives?: {
-    [network: string]: IncentivesConfig;
   };
   migrator?: { [network: string]: MigratorConfig };
   lendingPool?: LendingPoolConfig;
@@ -181,8 +173,6 @@ export type AddressModel = {
   AAVE_GOVERNANCE_V2_EXECUTOR_LONG: tEthereumAddress;
   AAVE_GOVERNANCE_V2_HELPER: tEthereumAddress;
   FLASHLIQUIDATION: tEthereumAddress;
-  INCENTIVES_CONTROLLER: tEthereumAddress;
-  INCENTIVES_CONTROLLER_REWARD_TOKEN: tEthereumAddress;
 };
 
 export type tCommonContractAddressBetweenMarkets = Pick<
@@ -195,8 +185,6 @@ export type tCommonContractAddressBetweenMarkets = Pick<
   | 'SWAP_COLLATERAL_ADAPTER'
   | 'REPAY_WITH_COLLATERAL_ADAPTER'
   | 'FLASHLIQUIDATION'
-  | 'INCENTIVES_CONTROLLER'
-  | 'INCENTIVES_CONTROLLER_REWARD_TOKEN'
 >;
 
 export type tDistinctContractAddressBetweenMarkets = Pick<
