@@ -97,23 +97,6 @@ export const defaultConfig: TxBuilderConfig = {
       },
     },
   },
-  incentives: {
-    mainnet: {
-      INCENTIVES_CONTROLLER: '0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5',
-      INCENTIVES_CONTROLLER_REWARD_TOKEN:
-        '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
-    },
-    polygon: {
-      INCENTIVES_CONTROLLER: '0x357d51124f59836ded84c8a1730d72b749d8bc23',
-      INCENTIVES_CONTROLLER_REWARD_TOKEN:
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
-    },
-    mumbai: {
-      INCENTIVES_CONTROLLER: '0xd41aE58e803Edf4304334acCE4DC4Ec34a63C644',
-      INCENTIVES_CONTROLLER_REWARD_TOKEN:
-        '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
-    },
-  },
   migrator: {
     mainnet: {
       LEND_TO_AAVE_MIGRATOR: '0x317625234562b1526ea2fac4030ea499c5291de4',
