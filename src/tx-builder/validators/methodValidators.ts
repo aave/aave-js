@@ -169,13 +169,7 @@ export function IncentivesValidator(
   const method = descriptor.value;
   // eslint-disable-next-line no-param-reassign
   descriptor.value = function () {
-    const { INCENTIVES_CONTROLLER, INCENTIVES_CONTROLLER_REWARD_TOKEN } =
-      this.incentivesConfig || {};
-
-    if (
-      !utils.isAddress(INCENTIVES_CONTROLLER_REWARD_TOKEN) ||
-      !utils.isAddress(INCENTIVES_CONTROLLER)
-    ) {
+    if (!utils.isAddress(this.incentivesControllerAddress)) {
       console.error(`[IncentivesValidator] You need to pass valid addresses`);
       return [];
     }
