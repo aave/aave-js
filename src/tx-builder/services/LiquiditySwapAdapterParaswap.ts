@@ -28,6 +28,16 @@ export function augustusFromAmountOffsetFromCalldata(calldata: string) {
       return 68; // 4 + 2 * 32
     case '0xec1d21dd': // Augustus V4 megaSwap
       return 68; // 4 + 2 * 32
+    case '0x54840d1a': // Augustus V5 swapOnUniswap
+      return 4; // 4 + 0 * 32
+    case '0xf5661034': // Augustus V5 swapOnUniswapFork
+      return 68; // 4 + 2 * 32
+    case '0x64466805': // Augustus V5 swapOnZeroXv4
+      return 68; // 4 + 2 * 32
+    case '0xa94e78ef': // Augustus V5 multiSwap
+      return 68; // 4 + 2 * 32
+    case '0x46c67b6d': // Augustus V5 megaSwap
+      return 68; // 4 + 2 * 32
     default:
       throw new Error('Unrecognized function selector for Augustus');
   }
