@@ -18,7 +18,7 @@ import {
   calculateCompoundedInterest,
   getLinearBalance,
 } from '../helpers/pool-math';
-import { rayDiv, rayMul } from '../helpers/ray-math';
+import { RAY, rayDiv, rayMul, rayPow } from '../helpers/ray-math';
 import {
   ComputedUserReserve,
   ReserveData,
@@ -586,6 +586,27 @@ export function formatReserves(
           )
         : '0';
 
+    const exactLiquidityRate = rayPow(
+      valueToZDBigNumber(reserve.liquidityRate)
+        .dividedBy(SECONDS_PER_YEAR)
+        .plus(RAY),
+      SECONDS_PER_YEAR
+    ).minus(RAY);
+
+    const exactVariableBorrowRate = rayPow(
+      valueToZDBigNumber(reserve.variableBorrowRate)
+        .dividedBy(SECONDS_PER_YEAR)
+        .plus(RAY),
+      SECONDS_PER_YEAR
+    ).minus(RAY);
+
+    const exactStableBorrowRate = rayPow(
+      valueToZDBigNumber(reserve.stableBorrowRate)
+        .dividedBy(SECONDS_PER_YEAR)
+        .plus(RAY),
+      SECONDS_PER_YEAR
+    ).minus(RAY);
+
     return {
       ...reserve,
       totalVariableDebt,
@@ -606,7 +627,7 @@ export function formatReserves(
         LTV_PRECISION
       ),
       reserveFactor: normalize(reserve.reserveFactor, LTV_PRECISION),
-      variableBorrowRate: normalize(reserve.variableBorrowRate, RAY_DECIMALS),
+      variableBorrowRate: normalize(exactVariableBorrowRate, RAY_DECIMALS),
       avg30DaysVariableBorrowRate: reserve30DaysAgo
         ? calculateAverageRate(
             reserve30DaysAgo.variableBorrowIndex,
@@ -624,8 +645,8 @@ export function formatReserves(
           )
         : undefined,
 
-      stableBorrowRate: normalize(reserve.stableBorrowRate, RAY_DECIMALS),
-      liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
+      stableBorrowRate: normalize(exactStableBorrowRate, RAY_DECIMALS),
+      liquidityRate: normalize(exactLiquidityRate, RAY_DECIMALS),
       liquidityIndex: normalize(reserve.liquidityIndex, RAY_DECIMALS),
       reserveLiquidationThreshold: normalize(
         reserve.reserveLiquidationThreshold,
