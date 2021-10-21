@@ -591,21 +591,21 @@ export function formatReserves(
         .dividedBy(SECONDS_PER_YEAR)
         .plus(RAY),
       SECONDS_PER_YEAR
-    );
+    ).minus(RAY);
 
     const exactVariableBorrowRate = rayPow(
       valueToZDBigNumber(reserve.variableBorrowRate)
         .dividedBy(SECONDS_PER_YEAR)
         .plus(RAY),
       SECONDS_PER_YEAR
-    );
+    ).minus(RAY);
 
     const exactStableBorrowRate = rayPow(
       valueToZDBigNumber(reserve.stableBorrowRate)
         .dividedBy(SECONDS_PER_YEAR)
         .plus(RAY),
       SECONDS_PER_YEAR
-    );
+    ).minus(RAY);
 
     return {
       ...reserve,
