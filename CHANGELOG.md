@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1](https://github.com/aave/aave-js/compare/v4.1.0...v4.1.1) (2021-10-21)
+
+
+### Bug Fixes
+
+* account for approximation error in deposit and borrow rates ([#270](https://github.com/aave/aave-js/issues/270)) ([de6a678](https://github.com/aave/aave-js/commit/de6a678f4d013a1dd9614ad2642c111aea65860f))
+* remove unnecessary [skip ci] ([50b3a88](https://github.com/aave/aave-js/commit/50b3a88ab1c5706f41e6c01a9bc9afc9bcf5e5b0))
+
 ## [4.1.0](https://github.com/aave/aave-js/compare/v4.0.2...v4.1.0) (2021-09-21)
 
 
