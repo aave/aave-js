@@ -411,6 +411,19 @@ export function formatUserSummaryData(
   const userReservesData = userData.reservesData.map(
     ({ reserve, ...userReserve }): ComputedUserReserve => {
       const reserveDecimals = reserve.decimals;
+      const exactLiquidityRate = rayPow(
+        valueToZDBigNumber(reserve.liquidityRate)
+          .dividedBy(SECONDS_PER_YEAR)
+          .plus(RAY),
+        SECONDS_PER_YEAR
+      ).minus(RAY);
+
+      const exactStableBorrowRate = rayPow(
+        valueToZDBigNumber(userReserve.stableBorrowRate)
+          .dividedBy(SECONDS_PER_YEAR)
+          .plus(RAY),
+        SECONDS_PER_YEAR
+      ).minus(RAY);
       return {
         ...userReserve,
         reserve: {
@@ -421,13 +434,13 @@ export function formatUserSummaryData(
             ),
             4
           ),
-          liquidityRate: normalize(reserve.liquidityRate, RAY_DECIMALS),
+          liquidityRate: normalize(exactLiquidityRate, RAY_DECIMALS),
         },
         scaledATokenBalance: normalize(
           userReserve.scaledATokenBalance,
           reserveDecimals
         ),
-        stableBorrowRate: normalize(userReserve.stableBorrowRate, RAY_DECIMALS),
+        stableBorrowRate: normalize(exactStableBorrowRate, RAY_DECIMALS),
         variableBorrowIndex: normalize(
           userReserve.variableBorrowIndex,
           RAY_DECIMALS
