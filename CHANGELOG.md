@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.2](https://github.com/aave/aave-js/compare/v4.1.1...v4.1.2) (2021-10-22)
+
+
+### Bug Fixes
+
+* userReserve deposit and borrow rate calculations ([#272](https://github.com/aave/aave-js/issues/272)) ([52c3356](https://github.com/aave/aave-js/commit/52c33566cc646a1f20e73eedfa17ee899b0efdc5))
+
 ### [4.1.1](https://github.com/aave/aave-js/compare/v4.1.0...v4.1.1) (2021-10-21)
 
 
