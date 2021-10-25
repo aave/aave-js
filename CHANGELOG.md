@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.3](https://github.com/aave/aave-js/compare/v4.1.2...v4.1.3) (2021-10-25)
+
+
+### Bug Fixes
+
+* update to paraswap v5 ([#269](https://github.com/aave/aave-js/issues/269)) ([01e6c10](https://github.com/aave/aave-js/commit/01e6c1022d37176eec2bbb69dfde15e7fd34cb53))
+
 ### [4.1.2](https://github.com/aave/aave-js/compare/v4.1.1...v4.1.2) (2021-10-22)
 
 
