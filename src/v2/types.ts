@@ -86,6 +86,12 @@ export type ComputedReserveData = {
   totalVariableDebt: string;
   totalDebt: string;
   totalLiquidity: string;
+  supplyAPY: string;
+  supplyAPR: string;
+  variableBorrowAPY: string;
+  variableBorrowAPR: string;
+  stableBorrowAPY: string;
+  stableBorrowAPR: string;
   aIncentivesAPY: string;
   vIncentivesAPY: string;
   sIncentivesAPY: string;
@@ -149,6 +155,10 @@ export type ComputedUserReserve = UserReserveData & {
   totalRewards: string;
   totalRewardsETH: string;
   totalRewardsUSD: string;
+  supplyAPY: string;
+  supplyAPR: string;
+  stableBorrowAPY: string;
+  stableBorrowAPR: string;
 };
 
 export type UserSummaryData = {
