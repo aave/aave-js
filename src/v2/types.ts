@@ -86,6 +86,12 @@ export type ComputedReserveData = {
   totalVariableDebt: string;
   totalDebt: string;
   totalLiquidity: string;
+  supplyAPY: string;
+  supplyAPR: string;
+  variableBorrowAPY: string;
+  variableBorrowAPR: string;
+  stableBorrowAPY: string;
+  stableBorrowAPR: string;
   aIncentivesAPY: string;
   vIncentivesAPY: string;
   sIncentivesAPY: string;
@@ -102,7 +108,6 @@ export type UserReserveData = {
   usageAsCollateralEnabledOnUser: boolean;
   scaledVariableDebt: string;
   variableBorrowIndex: string;
-  stableBorrowRate: string;
   principalStableDebt: string;
   stableBorrowLastUpdateTimestamp: number;
   reserve: {
@@ -111,7 +116,6 @@ export type UserReserveData = {
     name: string;
     symbol: string;
     decimals: number;
-    liquidityRate: string;
     reserveLiquidationBonus: string;
     lastUpdateTimestamp: number;
   };

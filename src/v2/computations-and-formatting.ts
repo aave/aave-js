@@ -117,7 +117,7 @@ export function computeUserReserveData(
 
   const stableBorrows = getCompoundedStableBalance(
     userReserve.principalStableDebt,
-    userReserve.stableBorrowRate,
+    poolReserve.stableBorrowRate,
     userReserve.stableBorrowLastUpdateTimestamp,
     currentTimestamp
   ).toString();
@@ -411,19 +411,6 @@ export function formatUserSummaryData(
   const userReservesData = userData.reservesData.map(
     ({ reserve, ...userReserve }): ComputedUserReserve => {
       const reserveDecimals = reserve.decimals;
-      const exactLiquidityRate = rayPow(
-        valueToZDBigNumber(reserve.liquidityRate)
-          .dividedBy(SECONDS_PER_YEAR)
-          .plus(RAY),
-        SECONDS_PER_YEAR
-      ).minus(RAY);
-
-      const exactStableBorrowRate = rayPow(
-        valueToZDBigNumber(userReserve.stableBorrowRate)
-          .dividedBy(SECONDS_PER_YEAR)
-          .plus(RAY),
-        SECONDS_PER_YEAR
-      ).minus(RAY);
       return {
         ...userReserve,
         reserve: {
@@ -434,13 +421,11 @@ export function formatUserSummaryData(
             ),
             4
           ),
-          liquidityRate: normalize(exactLiquidityRate, RAY_DECIMALS),
         },
         scaledATokenBalance: normalize(
           userReserve.scaledATokenBalance,
           reserveDecimals
         ),
-        stableBorrowRate: normalize(exactStableBorrowRate, RAY_DECIMALS),
         variableBorrowIndex: normalize(
           userReserve.variableBorrowIndex,
           RAY_DECIMALS
@@ -599,21 +584,21 @@ export function formatReserves(
           )
         : '0';
 
-    const exactLiquidityRate = rayPow(
+    const supplyAPY = rayPow(
       valueToZDBigNumber(reserve.liquidityRate)
         .dividedBy(SECONDS_PER_YEAR)
         .plus(RAY),
       SECONDS_PER_YEAR
     ).minus(RAY);
 
-    const exactVariableBorrowRate = rayPow(
+    const variableBorrowAPY = rayPow(
       valueToZDBigNumber(reserve.variableBorrowRate)
         .dividedBy(SECONDS_PER_YEAR)
         .plus(RAY),
       SECONDS_PER_YEAR
     ).minus(RAY);
 
-    const exactStableBorrowRate = rayPow(
+    const stableBorrowAPY = rayPow(
       valueToZDBigNumber(reserve.stableBorrowRate)
         .dividedBy(SECONDS_PER_YEAR)
         .plus(RAY),
@@ -640,7 +625,8 @@ export function formatReserves(
         LTV_PRECISION
       ),
       reserveFactor: normalize(reserve.reserveFactor, LTV_PRECISION),
-      variableBorrowRate: normalize(exactVariableBorrowRate, RAY_DECIMALS),
+      variableBorrowAPR: normalize(reserve.variableBorrowRate, RAY_DECIMALS),
+      variableBorrowAPY: normalize(variableBorrowAPY, RAY_DECIMALS),
       avg30DaysVariableBorrowRate: reserve30DaysAgo
         ? calculateAverageRate(
             reserve30DaysAgo.variableBorrowIndex,
@@ -658,8 +644,10 @@ export function formatReserves(
           )
         : undefined,
 
-      stableBorrowRate: normalize(exactStableBorrowRate, RAY_DECIMALS),
-      liquidityRate: normalize(exactLiquidityRate, RAY_DECIMALS),
+      stableBorrowAPR: normalize(reserve.stableBorrowRate, RAY_DECIMALS),
+      stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
+      supplyAPR: normalize(reserve.liquidityRate, RAY_DECIMALS),
+      supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
       liquidityIndex: normalize(reserve.liquidityIndex, RAY_DECIMALS),
       reserveLiquidationThreshold: normalize(
         reserve.reserveLiquidationThreshold,
