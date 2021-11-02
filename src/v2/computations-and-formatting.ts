@@ -117,7 +117,7 @@ export function computeUserReserveData(
 
   const stableBorrows = getCompoundedStableBalance(
     userReserve.principalStableDebt,
-    userReserve.stableBorrowRate,
+    poolReserve.stableBorrowRate,
     userReserve.stableBorrowLastUpdateTimestamp,
     currentTimestamp
   ).toString();
@@ -211,20 +211,6 @@ export function computeUserReserveData(
     usdPriceEth
   );
 
-  const supplyAPY = rayPow(
-    valueToZDBigNumber(userReserve.reserve.liquidityRate)
-      .dividedBy(SECONDS_PER_YEAR)
-      .plus(RAY),
-    SECONDS_PER_YEAR
-  ).minus(RAY);
-
-  const stableBorrowAPY = rayPow(
-    valueToZDBigNumber(userReserve.stableBorrowRate)
-      .dividedBy(SECONDS_PER_YEAR)
-      .plus(RAY),
-    SECONDS_PER_YEAR
-  ).minus(RAY);
-
   return {
     ...userReserve,
     underlyingBalance,
@@ -266,10 +252,6 @@ export function computeUserReserveData(
       .plus(vTokenRewardsUSD)
       .plus(sTokenRewardsUSD)
       .toString(),
-    supplyAPR: normalize(userReserve.reserve.liquidityRate, RAY_DECIMALS),
-    supplyAPY: normalize(supplyAPY, RAY_DECIMALS),
-    stableBorrowAPR: normalize(userReserve.stableBorrowRate, RAY_DECIMALS),
-    stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
   };
 }
 
@@ -429,19 +411,6 @@ export function formatUserSummaryData(
   const userReservesData = userData.reservesData.map(
     ({ reserve, ...userReserve }): ComputedUserReserve => {
       const reserveDecimals = reserve.decimals;
-      const supplyAPY = rayPow(
-        valueToZDBigNumber(reserve.liquidityRate)
-          .dividedBy(SECONDS_PER_YEAR)
-          .plus(RAY),
-        SECONDS_PER_YEAR
-      ).minus(RAY);
-
-      const stableBorrowAPY = rayPow(
-        valueToZDBigNumber(userReserve.stableBorrowRate)
-          .dividedBy(SECONDS_PER_YEAR)
-          .plus(RAY),
-        SECONDS_PER_YEAR
-      ).minus(RAY);
       return {
         ...userReserve,
         reserve: {
@@ -452,14 +421,11 @@ export function formatUserSummaryData(
             ),
             4
           ),
-          liquidityRate: normalize(supplyAPY, RAY_DECIMALS),
         },
         scaledATokenBalance: normalize(
           userReserve.scaledATokenBalance,
           reserveDecimals
         ),
-        stableBorrowAPR: normalize(userReserve.stableBorrowAPR, RAY_DECIMALS),
-        stableBorrowAPY: normalize(stableBorrowAPY, RAY_DECIMALS),
         variableBorrowIndex: normalize(
           userReserve.variableBorrowIndex,
           RAY_DECIMALS
