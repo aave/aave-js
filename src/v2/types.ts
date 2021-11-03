@@ -108,6 +108,7 @@ export type UserReserveData = {
   usageAsCollateralEnabledOnUser: boolean;
   scaledVariableDebt: string;
   variableBorrowIndex: string;
+  stableBorrowRate: string;
   principalStableDebt: string;
   stableBorrowLastUpdateTimestamp: number;
   reserve: {
@@ -136,6 +137,8 @@ export type ComputedUserReserve = UserReserveData & {
   stableBorrows: string;
   stableBorrowsETH: string;
   stableBorrowsUSD: string;
+  stableBorrowAPR: string;
+  stableBorrowAPY: string;
 
   totalBorrows: string;
   totalBorrowsETH: string;
