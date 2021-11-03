@@ -61,6 +61,7 @@ const mockUserReserve: UserReserveData = {
   scaledATokenBalance: '0',
   usageAsCollateralEnabledOnUser: false,
   scaledVariableDebt: '137602026075945229933190',
+  stableBorrowRate: '0',
   principalStableDebt: '0',
   stableBorrowLastUpdateTimestamp: 0,
   variableBorrowIndex: '0',

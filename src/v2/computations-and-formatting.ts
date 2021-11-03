@@ -211,6 +211,13 @@ export function computeUserReserveData(
     usdPriceEth
   );
 
+  const exactStableBorrowRate = rayPow(
+    valueToZDBigNumber(userReserve.stableBorrowRate)
+      .dividedBy(SECONDS_PER_YEAR)
+      .plus(RAY),
+    SECONDS_PER_YEAR
+  ).minus(RAY);
+
   return {
     ...userReserve,
     underlyingBalance,
@@ -252,6 +259,8 @@ export function computeUserReserveData(
       .plus(vTokenRewardsUSD)
       .plus(sTokenRewardsUSD)
       .toString(),
+    stableBorrowAPR: normalize(userReserve.stableBorrowRate, RAY_DECIMALS),
+    stableBorrowAPY: normalize(exactStableBorrowRate, RAY_DECIMALS),
   };
 }
 
@@ -411,6 +420,14 @@ export function formatUserSummaryData(
   const userReservesData = userData.reservesData.map(
     ({ reserve, ...userReserve }): ComputedUserReserve => {
       const reserveDecimals = reserve.decimals;
+
+      const exactStableBorrowRate = rayPow(
+        valueToZDBigNumber(userReserve.stableBorrowRate)
+          .dividedBy(SECONDS_PER_YEAR)
+          .plus(RAY),
+        SECONDS_PER_YEAR
+      ).minus(RAY);
+
       return {
         ...userReserve,
         reserve: {
@@ -426,6 +443,8 @@ export function formatUserSummaryData(
           userReserve.scaledATokenBalance,
           reserveDecimals
         ),
+        stableBorrowAPR: normalize(userReserve.stableBorrowRate, RAY_DECIMALS),
+        stableBorrowAPY: normalize(exactStableBorrowRate, RAY_DECIMALS),
         variableBorrowIndex: normalize(
           userReserve.variableBorrowIndex,
           RAY_DECIMALS
