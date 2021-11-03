@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/aave/aave-js/compare/v4.1.3...v4.3.0) (2021-11-03)
+
+
+### Features
+
+* add APR and APY fields to computed reserve ([#286](https://github.com/aave/aave-js/issues/286)) ([a5398ae](https://github.com/aave/aave-js/commit/a5398aea7778096e0bfc2ed9ed83d75cb0f18bc5))
+
+
+### Bug Fixes
+
+* fix stable rates ([#288](https://github.com/aave/aave-js/issues/288)) ([88a919b](https://github.com/aave/aave-js/commit/88a919b63158b239d10cee499342704ebb64e184))
+
 ## [4.2.0](https://github.com/aave/aave-js/compare/v4.1.3...v4.2.0) (2021-11-02)
 
 
