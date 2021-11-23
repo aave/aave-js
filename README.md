@@ -111,7 +111,8 @@ Returns formatted summary of AAVE user portfolio including: array of holdings, t
    : Can also be fetched using this subscription: /src/[v1 or v2]/graphql/subscriptions/usd-price-eth-update-subscription.graphql
 - @param `currentTimestamp` Current Unix timestamp in seconds: Math.floor(Date.now() / 1000)
 - @param @optional `rewardsInfo` Information used to compute aTokenRewards (deposit rewards), vTokenRewards (variable debt rewards), and sTokenRewards (stable debt rewards). Object with format:
-  ```{
+  ```
+  {
     rewardTokenAddress: string;
     rewardTokenDecimals: number;
     incentivePrecision: number;
