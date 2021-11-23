@@ -135,7 +135,8 @@ v2.formatUserSummaryData(
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
-  currentTimestamp: number
+  currentTimestamp: number,
+  rewardsInfo?: RewardInformation
 );
 ```
 
@@ -151,19 +152,26 @@ Note: liquidityRate = deposit rate in the return object
 	- subscription: src/[v1 or v2]/graphql/subscriptions/reserves-update-subscription.graphql
       : Requires input of pool (address of market which can be found above, or remove this filter to fetch all markets)
 	- types: src/[v1 or v2]/graphql/fragments/pool-reserve-data.graphql
-- @param `reservesIndexed30DaysAgo` GraphQL input:
+- @param @optional `reservesIndexed30DaysAgo` GraphQL input:
    - subscription: src/[v1 or v2]/graphql/subscriptions/reserve-rates-30-days-ago.graphql
    - types: src/[v1 or v2]/graphql/fragments/reserve-rates-history-data.graphql
+- @param @optional `currentTimestamp` Current Unix timestamp in seconds: Math.floor(Date.now() / 1000)
+- @param @optional `rewardTokenPriceEth` Price of reward token in market base currency. Can use the priceInEth from the reserve data if there is a corresponding reserve for the reward token (stkAave -> Aave reserve price, WMATIC -> MATIC reserve price, etc.)
+- @param @optional `emissionEndTimestamp` Timestamp of reward emission end. Can be fetched from IncentivesController subgraph entity
+
 
 ```
 v1.formatReserves(
-	reserves, // ReserveData[] 
-	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+	reserves: ReserveData[] 
+	reservesIndexed30DaysAgo?: ReserveRatesData[]
 );
 
 v2.formatReserves(
-	reserves, // ReserveData[] 
-	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+	reserves: ReserveData[] 
+	reservesIndexed30DaysAgo?: ReserveRatesData[],
+  currentTimestamp?: number,
+  rewardTokenPriceEth?: string,
+  emissionEndTimestamp?: number
 );
 ```
 
