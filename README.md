@@ -110,6 +110,16 @@ Returns formatted summary of AAVE user portfolio including: array of holdings, t
 - @param `usdPriceEth` Current price of USD in ETH in small units (10^18). For example, if ETH price in USD = $1900, usdPriceEth = (1 / 1900) * 10^18
    : Can also be fetched using this subscription: /src/[v1 or v2]/graphql/subscriptions/usd-price-eth-update-subscription.graphql
 - @param `currentTimestamp` Current Unix timestamp in seconds: Math.floor(Date.now() / 1000)
+- @param @optional `rewardsInfo` Information used to compute aTokenRewards (deposit rewards), vTokenRewards (variable debt rewards), and sTokenRewards (stable debt rewards). Object with format:
+  ```{
+    rewardTokenAddress: string;
+    rewardTokenDecimals: number;
+    incentivePrecision: number;
+    rewardTokenPriceEth: string; 
+    emissionEndTimestamp: number;
+  }
+  ```
+  All fields can be fetched from the IncentivesController subgraph entity with the exception of rewardTokenPriceEth. Since reward tokens are not guaranteed to be Aave reserve tokens, the price feed for reward tokens is not directly attached to the controller. For stkAAVE, WMATIC, and WAVAX rewards the reveserve price feed from AAVE, MATIC, and AVAX repectively can be used. 
 
 ```
 v1.formatUserSummaryData(
