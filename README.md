@@ -110,6 +110,17 @@ Returns formatted summary of AAVE user portfolio including: array of holdings, t
 - @param `usdPriceEth` Current price of USD in ETH in small units (10^18). For example, if ETH price in USD = $1900, usdPriceEth = (1 / 1900) * 10^18
    : Can also be fetched using this subscription: /src/[v1 or v2]/graphql/subscriptions/usd-price-eth-update-subscription.graphql
 - @param `currentTimestamp` Current Unix timestamp in seconds: Math.floor(Date.now() / 1000)
+- @param @optional `rewardsInfo` Information used to compute aTokenRewards (deposit rewards), vTokenRewards (variable debt rewards), and sTokenRewards (stable debt rewards). Object with format:
+  ```
+  {
+    rewardTokenAddress: string;
+    rewardTokenDecimals: number;
+    incentivePrecision: number;
+    rewardTokenPriceEth: string; 
+    emissionEndTimestamp: number;
+  }
+  ```
+  All fields can be fetched from the IncentivesController subgraph entity with the exception of rewardTokenPriceEth. Since reward tokens are not guaranteed to be Aave reserve tokens, the price feed for reward tokens is not directly attached to the controller. For stkAAVE, WMATIC, and WAVAX rewards the reveserve price feed from AAVE, MATIC, and AVAX repectively can be used. 
 
 ```
 v1.formatUserSummaryData(
@@ -125,7 +136,8 @@ v2.formatUserSummaryData(
   rawUserReserves: UserReserveData[],
   userId: string,
   usdPriceEth: BigNumberValue,
-  currentTimestamp: number
+  currentTimestamp: number,
+  rewardsInfo?: RewardInformation
 );
 ```
 
@@ -141,19 +153,26 @@ Note: liquidityRate = deposit rate in the return object
 	- subscription: src/[v1 or v2]/graphql/subscriptions/reserves-update-subscription.graphql
       : Requires input of pool (address of market which can be found above, or remove this filter to fetch all markets)
 	- types: src/[v1 or v2]/graphql/fragments/pool-reserve-data.graphql
-- @param `reservesIndexed30DaysAgo` GraphQL input:
+- @param @optional `reservesIndexed30DaysAgo` GraphQL input:
    - subscription: src/[v1 or v2]/graphql/subscriptions/reserve-rates-30-days-ago.graphql
    - types: src/[v1 or v2]/graphql/fragments/reserve-rates-history-data.graphql
+- @param @optional `currentTimestamp` Current Unix timestamp in seconds: Math.floor(Date.now() / 1000)
+- @param @optional `rewardTokenPriceEth` Price of reward token in market base currency. Can use the priceInEth from the reserve data if there is a corresponding reserve for the reward token (stkAave -> Aave reserve price, WMATIC -> MATIC reserve price, etc.)
+- @param @optional `emissionEndTimestamp` Timestamp of reward emission end. Can be fetched from IncentivesController subgraph entity
+
 
 ```
 v1.formatReserves(
-	reserves, // ReserveData[] 
-	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+	reserves: ReserveData[] 
+	reservesIndexed30DaysAgo?: ReserveRatesData[]
 );
 
 v2.formatReserves(
-	reserves, // ReserveData[] 
-	reservesIndexed30DaysAgo, // ? ReserveRatesData[]
+	reserves: ReserveData[] 
+	reservesIndexed30DaysAgo?: ReserveRatesData[],
+  currentTimestamp?: number,
+  rewardTokenPriceEth?: string,
+  emissionEndTimestamp?: number
 );
 ```
 
