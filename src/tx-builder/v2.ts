@@ -7,7 +7,7 @@ import BaseTxBuilder from './txBuilder';
 import WETHGatewayInterface from './interfaces/WETHGateway';
 import WETHGatewayService from './services/WETHGateway';
 import BaseDebtTokenInterface from './interfaces/BaseDebtToken';
-import BaseDebtToken from './services/BaseDebtToken';
+import BaseDebtTokenService from './services/BaseDebtToken';
 import LiquiditySwapAdapterService from './services/LiquiditySwapAdapterParaswap';
 import LiquiditySwapAdapterInterface from './interfaces/LiquiditySwapAdapterParaswap';
 import RepayWithCollateralAdapterService from './services/RepayWithCollateralAdapter';
@@ -54,7 +54,7 @@ export default class TxBuilder
     this.lendingPools = {};
     this.swapCollateralAdapters = {};
     this.repayWithCollateralAdapters = {};
-    this.baseDebtTokenService = new BaseDebtToken(
+    this.baseDebtTokenService = new BaseDebtTokenService(
       this.configuration,
       this.erc20Service
     );
@@ -125,6 +125,7 @@ export default class TxBuilder
         this.getWethGateway(market),
         this.getSwapCollateralAdapter(market),
         this.getRepayWithCollateralAdapter(market),
+        this.baseDebtTokenService,
         market,
         this.txBuilderConfig.lendingPool?.[network]?.[market]
       );

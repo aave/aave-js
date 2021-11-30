@@ -39,6 +39,7 @@ import {
   LPSwapCollateral,
   LPWithdrawParamsType,
   LPFlashLiquidation,
+  LPApproveDelegation,
 } from '../../types/LendingPoolMethodTypes';
 import WETHGatewayInterface from '../../interfaces/WETHGateway';
 import {
@@ -49,6 +50,7 @@ import {
 import LiquiditySwapAdapterInterface from '../../interfaces/LiquiditySwapAdapterParaswap';
 import RepayWithCollateralAdapterInterface from '../../interfaces/RepayWithCollateralAdapter';
 import BaseService from '../BaseService';
+import BaseDebtTokenInterface from '../../interfaces/BaseDebtToken';
 import { augustusFromAmountOffsetFromCalldata } from '../LiquiditySwapAdapterParaswap';
 
 const buildParaSwapLiquiditySwapParams = (
@@ -100,6 +102,8 @@ export default class LendingPool
 
   readonly repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface;
 
+  readonly baseDebtTokenService: BaseDebtTokenInterface;
+
   readonly lendingPoolConfig: LendingPoolMarketConfig | undefined;
 
   readonly flashLiquidationAddress: string;
@@ -115,6 +119,7 @@ export default class LendingPool
     wethGatewayService: WETHGatewayInterface,
     liquiditySwapAdapterService: LiquiditySwapAdapterInterface,
     repayWithCollateralAdapterService: RepayWithCollateralAdapterInterface,
+    baseDebtTokenService: BaseDebtTokenInterface,
     market: string,
     lendingPoolConfig: LendingPoolMarketConfig | undefined
   ) {
@@ -124,6 +129,7 @@ export default class LendingPool
     this.wethGatewayService = wethGatewayService;
     this.liquiditySwapAdapterService = liquiditySwapAdapterService;
     this.repayWithCollateralAdapterService = repayWithCollateralAdapterService;
+    this.baseDebtTokenService = baseDebtTokenService;
     this.market = market;
     this.lendingPoolConfig = lendingPoolConfig;
 
@@ -950,6 +956,27 @@ export default class LendingPool
         ProtocolAction.liquidationFlash
       ),
     });
+    return txs;
+  }
+
+  @LPValidator
+  public async approveDelegation(
+    @IsEthAddress('delegator')
+    @IsEthAddress('delegatee')
+    @IsEthAddress('debtToken')
+    { delegator, delegatee, debtToken, amount }: LPApproveDelegation
+  ): Promise<EthereumTransactionTypeExtended[]> {
+    const txs: EthereumTransactionTypeExtended[] = [];
+
+    const approveDelegation = this.baseDebtTokenService.approveDelegation(
+      delegator,
+      delegatee,
+      debtToken,
+      amount
+    );
+
+    txs.push(approveDelegation);
+
     return txs;
   }
 }

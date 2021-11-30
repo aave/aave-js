@@ -10,6 +10,7 @@ import {
   LPSwapCollateral,
   LPWithdrawParamsType,
   LPFlashLiquidation,
+  LPApproveDelegation,
 } from '../../types/LendingPoolMethodTypes';
 
 export default interface LendingPoolInterface {
@@ -52,5 +53,8 @@ export default interface LendingPoolInterface {
   ) => Promise<EthereumTransactionTypeExtended[]>;
   flashLiquidation(
     args: LPFlashLiquidation
+  ): Promise<EthereumTransactionTypeExtended[]>;
+  approveDelegation(
+    args: LPApproveDelegation
   ): Promise<EthereumTransactionTypeExtended[]>;
 }
