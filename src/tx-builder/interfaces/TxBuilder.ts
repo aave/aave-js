@@ -15,7 +15,6 @@ export default interface TxBuilderInterface {
   erc20Service: IERC20ServiceInterface;
   synthetixService: SynthetixInterface;
   ltaMigratorService: LTAMigratorInterface;
-  incentiveService: IncentivesControllerInterface;
   aaveGovernanceV2Service: AaveGovernanceV2Interface;
   governanceDelegationTokenService: GovernanceDelegationTokenInterface;
   getLendingPool: (market: string) => LendingPoolInterfaceV2;
@@ -26,4 +25,7 @@ export default interface TxBuilderInterface {
   ) => RepayWithCollateralAdapterInterface;
   getSwapCollateralAdapter: (market: string) => LiquiditySwapAdapterInterface;
   getFaucet: (market: string) => FaucetInterface;
+  getIncentives: (
+    incentivesControllerAddress: string
+  ) => IncentivesControllerInterface;
 }

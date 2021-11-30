@@ -30,11 +30,13 @@ export default class BaseTxBuilder {
 
   public ltaMigratorService: LTAMigratorInterface;
 
-  public incentiveService: IncentivesControllerInterface;
-
   readonly stakings: { [stake: string]: StakingInterface };
 
   readonly faucets: { [market: string]: FaucetInterface };
+
+  readonly incentives: {
+    [incentivesControllerAddress: string]: IncentivesControllerInterface;
+  };
 
   readonly txBuilderConfig: TxBuilderConfig;
 
@@ -78,13 +80,9 @@ export default class BaseTxBuilder {
       this.txBuilderConfig.migrator?.[network]
     );
 
-    this.incentiveService = new IncentivesController(
-      this.configuration,
-      this.txBuilderConfig.incentives?.[network]
-    );
-
     this.stakings = {};
     this.faucets = {};
+    this.incentives = {};
   }
 
   public getFaucet = (market: string): FaucetInterface => {
@@ -111,5 +109,18 @@ export default class BaseTxBuilder {
       );
     }
     return this.stakings[stake];
+  };
+
+  public getIncentives = (
+    incentivesControllerAddress: string
+  ): IncentivesControllerInterface => {
+    if (!this.incentives[incentivesControllerAddress]) {
+      this.incentives[incentivesControllerAddress] = new IncentivesController(
+        this.configuration,
+        incentivesControllerAddress
+      );
+    }
+
+    return this.incentives[incentivesControllerAddress];
   };
 }
