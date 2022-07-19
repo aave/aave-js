@@ -193,7 +193,7 @@ import { TxBuilderV2, Network, Market } from '@aave/protocol-js'
 
 const httpProvider = new Web3.providers.HttpProvider(
     process.env.ETHEREUM_URL ||
-      "https://kovan.infura.io/v3/<project_id>"
+      "https://polygon-mumbai.g.alchemy.com/v2/<api key>"
   );
 const txBuilder = new TxBuilderV2(Network.main, httpProvider);
 
@@ -206,7 +206,7 @@ The library accepts 3 kinds of providers:
 
 - web3 provider
 - JsonRPC url
-- no provider: if no provider is passed it will default to ethers Infura / etherscan providers (shared providers, do not use in production)
+- no provider: if no provider is passed it will default to ethers Alchemy / Infura / etherscan providers (shared providers, do not use in production)
 
 To learn more about supported providers, see the [ethers documentation on providers](https://docs.ethers.io/v5/api/providers/#providers).
 
@@ -487,7 +487,7 @@ import {
 
 const httpProvider = new Web3.providers.HttpProvider(
    process.env.ETHEREUM_URL ||
-   "https://kovan.infura.io/v3/<project_id>"
+      "https://polygon-mumbai.g.alchemy.com/v2/<api key>"
 );
 const txBuilder = new TxBuilderV2(Network.main, httpProvider);
 const gov2 = txBuilder.aaveGovernanceV2Service;
@@ -631,7 +631,7 @@ import { TxBuilderV2, Network, Market } from '@aave/protocol-js'
 
 const httpProvider = new Web3.providers.HttpProvider(
     process.env.ETHEREUM_URL ||
-      "https://kovan.infura.io/v3/<project_id>"
+      "https://polygon-mumbai.g.alchemy.com/v2/<api key>"
   );
 const txBuilder = new TxBuilderV2(Network.main, httpProvider);
 const faucet = txBuilder.faucetService;
